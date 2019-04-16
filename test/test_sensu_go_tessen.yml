@@ -1,0 +1,34 @@
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - flowerysong.sensu_go
+  module_defaults:
+    group/sensu_go:
+      url: "http://localhost:{{ sensu_port }}/"
+  tasks:
+    - name: Disable Tessen
+      sensu_go_tessen:
+
+    - name: Test disable idempotence
+      sensu_go_tessen:
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Enable Tessen
+      sensu_go_tessen:
+        enabled: true
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Test enable idempotence
+      sensu_go_tessen:
+        enabled: true
+      register: result
+
+    - assert:
+        that: result is not changed
