@@ -198,7 +198,7 @@ def main():
             ),
             env_vars=dict(
                 type='dict',
-            )
+            ),
             low_flap_threshold=dict(
                 type='int',
             ),
