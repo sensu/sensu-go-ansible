@@ -79,7 +79,7 @@ class SensuHandler(SensuObject):
             if self.params[key] is not None:
                 self.payload[key] = self.params[key]
 
-        self.param_dict_to_payload_list('env_vars')
+        self.param_dict_to_payload_kv_list('env_vars')
 
         if self.params['type'] in ('tcp', 'udp'):
             self.payload['socket'] = {

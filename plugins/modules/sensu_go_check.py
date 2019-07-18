@@ -147,10 +147,7 @@ class SensuCheck(SensuObject):
                 self.payload[key] = self.params[key]
 
         self.param_dict_to_payload_list('check_hooks')
-        self.param_dict_to_payload_list('env_vars')
-
-        if self.params['check_hooks']:
-            self.payload['check_hooks'] = [{k, v} for k, v in self.params['check_hooks'].items() ].sorted()
+        self.param_dict_to_payload_kv_list('env_vars')
 
         if self.params['proxy_entity_attributes']:
             self.payload['proxy_requests'] = {
