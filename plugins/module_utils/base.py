@@ -88,7 +88,6 @@ class AnsibleSensuClient():
             result = self._open_url(path, method='PUT', data=data)
         except HTTPError as e:
             self.module.fail_json(msg='put failed: {0}'.format(e.reason))
-        return json.loads(result.read())
 
     def delete(self, path):
         try:
@@ -158,8 +157,8 @@ class SensuObject():
     def delete(self):
         return self.client.delete(self.path)
 
-    def get(self):
-        if not hasattr(self, 'server_object'):
+    def get(self, cached=True):
+        if not cached or not hasattr(self, 'server_object'):
             self.server_object = self.client.get(self.path)
         return self.server_object
 
@@ -170,7 +169,7 @@ class SensuObject():
         return True
 
     def update(self):
-        return self.client.put(self.path, self.payload)
+        self.client.put(self.path, self.payload)
 
     def reconcile(self):
         result = self.get()
@@ -188,6 +187,7 @@ class SensuObject():
             if self.module.check_mode:
                 result = self.payload
             else:
-                result = self.update()
+                self.update()
+                result = self.get(False)
 
         return({'changed': changed, 'object': result})
