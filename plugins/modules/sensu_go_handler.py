@@ -106,8 +106,8 @@ def main():
         ),
         command=dict(),
         env_vars=dict(
-            type='list',
-            default=[],
+            type='dict',
+            default={},
         ),
         socket_host=dict(),
         socket_port=dict(),
