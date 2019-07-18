@@ -71,6 +71,7 @@ class PlaybookFile(pytest.File):
                     else:
                         yield PlaybookItem(self, name, matches.group(1), matches.group(2))
 
+
 class PlaybookItem(pytest.Item):
     def __init__(self, parent, name, state, obj):
         super(PlaybookItem, self).__init__(name, parent)
