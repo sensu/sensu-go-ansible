@@ -1,0 +1,73 @@
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - flowerysong.sensu_go
+  module_defaults:
+    group/sensu_go:
+      url: "http://localhost:{{ sensu_port }}/"
+  tasks:
+    - name: Create a check
+      sensu_go_asset:
+        name: asset
+        download_url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+        sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+        filters:
+          - "entity.system.os == 'linux'"
+          - "entity.system.arch == 'amd64'"
+          - "entity.system.platform == 'rhel'"
+        annotations:
+          sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+          sensio.io.bonsai.tier: Community
+          sensio.io.bonsai.version: 4.0.0
+          sensio.io.bonsai.tags: ruby-runtime-2.4.4
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Test asset creation idempotence
+      sensu_go_asset:
+        name: asset
+        download_url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+        sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+        filters:
+          - "entity.system.os == 'linux'"
+          - "entity.system.arch == 'amd64'"
+          - "entity.system.platform == 'rhel'"
+        annotations:
+          sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+          sensio.io.bonsai.tier: Community
+          sensio.io.bonsai.version: 4.0.0
+          sensio.io.bonsai.tags: ruby-runtime-2.4.4
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Create a second check
+      sensu_go_asset:
+        name: asset2
+        download_url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+        sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+        filters:
+          - "entity.system.os == 'linux'"
+          - "entity.system.arch == 'amd64'"
+          - "entity.system.platform == 'rhel'"
+        annotations:
+          sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+          sensio.io.bonsai.tier: Community
+          sensio.io.bonsai.version: 4.0.0
+          sensio.io.bonsai.tags: ruby-runtime-2.4.4
+
+    - name: Test getting all checks
+      sensu_go_asset_info:
+
+    - name: Test getting specific check
+      sensu_go_check_info:
+        name: asset
+      register: result
+
+    - assert:
+        that:
+          - result.checks | length == 1
+          - result.checks.0.metadata.name == 'check'

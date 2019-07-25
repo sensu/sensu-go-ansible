@@ -107,7 +107,6 @@ options:
     description:
       - List of handlers which receive check results. I'm not sure why this exists.
     type: list
-    default: []
 '''
 
 EXAMPLES = '''
@@ -225,7 +224,6 @@ def main():
             ),
             output_metric_handlers=dict(
                 type='list',
-                default=[],
             ),
         )
     )

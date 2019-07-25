@@ -5,6 +5,7 @@
 class ModuleGroup(object):
     MODULES = [
         'flowerysong.sensu_go.sensu_go_asset_info',
+        'flowerysong.sensu_go.sensu_go_asset',
         'flowerysong.sensu_go.sensu_go_check_info',
         'flowerysong.sensu_go.sensu_go_check',
         'flowerysong.sensu_go.sensu_go_entity_info',
@@ -25,6 +26,7 @@ class ModuleGroup(object):
         'flowerysong.sensu_go.sensu_go_user_info',
         'flowerysong.sensu_go.sensu_go_user',
         'sensu_go_asset_info',
+        'sensu_go_asset',
         'sensu_go_check_info',
         'sensu_go_check',
         'sensu_go_entity_info',
