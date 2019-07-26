@@ -73,6 +73,15 @@
         state: absent
         <<: *sensu_connection_info
 
+    - name: Get all checks
+      sensu_go_check_info:
+        <<: *sensu_connection_info
+
+    - assert:
+        that:
+          - result.checks | length == 1
+          - result.checks.0.metadata.name == 'check2'
+
   always:
     - import_role:
         name: setup_kill_sensu_backend

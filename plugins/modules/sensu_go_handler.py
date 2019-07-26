@@ -33,7 +33,6 @@ options:
     description:
       - List of filters to use when determining whether to pass the check result to this handler.
     type: list
-    default: []
   mutator:
     description:
       - Mutator to call for transforming the check result before passing it to this handler.
@@ -44,7 +43,8 @@ options:
     default: 60
   env_vars:
     description:
-      - A mapping of environment variable names and values to set when calling the handler C(command)
+      - A mapping of environment variable names and values to use with command execution.
+    type: dict
   socket_host:
     description:
       - Hostname to connect to for C(tcp) or C(udp)
@@ -61,6 +61,16 @@ options:
 '''
 
 EXAMPLES = '''
+sensu_go_handler:
+  name: influx-db
+  type: pipe
+  command: sensu-influxdb-handler -d sensu
+  env_vars:
+    INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
+    INFLUXDB_USER: sensu
+    INFLUXDB_PASS: password
+  runtime_assets:
+    - sensu-influxdb-handler
 '''
 
 RETURN = '''
@@ -97,7 +107,6 @@ def main():
         ),
         filters=dict(
             type='list',
-            default=[],
         ),
         mutator=dict(),
         timeout=dict(
@@ -107,7 +116,6 @@ def main():
         command=dict(),
         env_vars=dict(
             type='dict',
-            default={},
         ),
         socket_host=dict(),
         socket_port=dict(),

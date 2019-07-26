@@ -107,6 +107,10 @@ options:
     description:
       - List of handlers which receive check results. I'm not sure why this exists.
     type: list
+  env_vars:
+    description:
+      - A mapping of environment variable names and values to use with command execution.
+    type: dict
 '''
 
 EXAMPLES = '''
