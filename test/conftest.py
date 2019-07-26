@@ -19,28 +19,40 @@ def pytest_collect_file(parent, path):
 
 class PlaybookFile(pytest.File):
     def collect(self):
-        port = openport(14567)
-
         tmpdir = tempfile.mkdtemp(prefix='sensu-backend', dir='/var/tmp')
 
-        conf = os.path.join(tmpdir, 'backend.yml')
-        datadir = os.path.join(tmpdir, 'sensu-backend')
+        # This is an irritating number of ports, which highlights the racy
+        # nature of this approach.
+        sensu_kwargs = {
+            'port': openport(14567),
+            'dashboard_port': openport(3000),
+            'etcd_client_port': openport(2379),
+            'etcd_peer_port': openport(12379),
+            'datadir': os.path.join(tmpdir, 'sensu-backend'),
+        }
 
-        with open(conf, 'w') as f:
-            f.write('log-level: debug\n')
-            f.write('state-dir: {}\n'.format(datadir))
-            f.write('cache-dir: {}\n'.format(datadir))
-            f.write('api-listen-address: "[::]:{}"\n'.format(port))
-            f.write('api-url: http://localhost:{}\n'.format(port))
+        conf = '''log-level: debug
+state-dir: {datadir}
+cache-dir: {datadir}
+api-listen-address: "[::]:{port}"
+api-url: http://localhost:{port}
+dashboard-port: {dashboard_port}
+etcd-listen-client-urls: ["http://127.0.0.1:{etcd_client_port}"]
+etcd-client-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
+'''.format(**sensu_kwargs)
+
+        conf_file = os.path.join(tmpdir, 'backend.yml')
+        with open(conf_file, 'w') as f:
+            f.write(conf)
 
         devnull = open(os.devnull, 'w')
-        sensu_proc = subprocess.Popen(['sensu-backend', 'start', '-c', conf], stdout=devnull, stderr=devnull)
+        sensu_proc = subprocess.Popen(['sensu-backend', 'start', '-c', conf_file], stdout=devnull, stderr=devnull)
 
         try:
             out = subprocess.check_output([
                 'ansible-playbook', '-v',
                 '-i', '/dev/null',
-                '-e', 'sensu_port={}'.format(port),
+                '-e', 'sensu_port={}'.format(sensu_kwargs['port']),
                 str(self.fspath),
             ])
         except subprocess.CalledProcessError as e:
