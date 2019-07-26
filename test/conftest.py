@@ -72,6 +72,8 @@ etcd-client-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
         shutil.rmtree(tmpdir)
         time.sleep(1)
 
+        out = out.decode('utf-8')
+
         started = False
         count = 0
         for line in out.split('\n'):
