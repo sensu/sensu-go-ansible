@@ -161,11 +161,8 @@ def main():
     argspec = SensuCheck.argument_spec()
     argspec.update(
         dict(
-            command=dict(
-                required=True,
-            ),
+            command=dict(),
             subscriptions=dict(
-                required=True,
                 type='list',
             ),
             handlers=dict(
@@ -228,9 +225,12 @@ def main():
         )
     )
 
+    required_if = [('state', 'present', ['subscriptions', 'command'])]
+
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=argspec,
+        required_if=required_if,
     )
 
     check = SensuCheck(module)

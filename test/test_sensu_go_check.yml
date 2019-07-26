@@ -19,7 +19,9 @@
       register: result
 
     - assert:
-        that: result is changed
+        that:
+          - result is changed
+          - result.check.metadata.name == 'check'
 
     - name: Test check creation idempotence
       sensu_go_check:
@@ -43,10 +45,10 @@
         subscriptions: checks
         handlers: default
 
-    - name: Test getting all checks
+    - name: Fetch all checks
       sensu_go_check_info:
 
-    - name: Test getting specific check
+    - name: Fetch a specific check
       sensu_go_check_info:
         name: check
       register: result
@@ -55,3 +57,8 @@
         that:
           - result.checks | length == 1
           - result.checks.0.metadata.name == 'check'
+
+    - name: Delete a check
+      sensu_go_check:
+        name: check
+        state: absent
