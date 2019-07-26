@@ -1,0 +1,12 @@
+log-level: debug
+state-dir: {{ sensu_storage_dir }}
+cache-dir: {{ sensu_storage_dir }}
+api-listen-address: "[::]:{{ sensu_port }}"
+api-url: http://localhost:{{ sensu_port }}
+dashboard-port: {{ sensu_dashboard_port }}
+etcd-initial-cluster: "default=http://127.0.0.1:{{ etcd_peer_port }}"
+etcd-initial-cluster-token: ansibletest
+etcd-initial-advertise-peer-urls: "http://127.0.0.1:{{ etcd_peer_port }}"
+etcd-listen-peer-urls: "http://127.0.0.1:{{ etcd_peer_port }}"
+etcd-listen-client-urls: "http://127.0.0.1:{{ etcd_client_port }}"
+etcd-advertise-client-urls: "http://127.0.0.1:{{ etcd_client_port }}"

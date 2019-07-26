@@ -1,8 +1,15 @@
-- hosts: localhost
-  gather_facts: false
-  collections:
+- import_role:
+    name: setup_sensu_backend
+
+- name: Set up Sensu connection info
+  set_fact:
+    sensu_connection_info: &sensu_connection_info
+      url: http://localhost:{{ sensu_port }}
+
+- collections:
     - flowerysong.sensu_go
-  tasks:
+
+  block:
     - name: Create an asset
       sensu_go_asset:
         name: asset
@@ -17,6 +24,7 @@
           sensio.io.bonsai.tier: Community
           sensio.io.bonsai.version: 4.0.0
           sensio.io.bonsai.tags: ruby-runtime-2.4.4
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -36,6 +44,7 @@
           sensio.io.bonsai.tier: Community
           sensio.io.bonsai.version: 4.0.0
           sensio.io.bonsai.tags: ruby-runtime-2.4.4
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -55,16 +64,23 @@
           sensio.io.bonsai.tier: Community
           sensio.io.bonsai.version: 4.0.0
           sensio.io.bonsai.tags: ruby-runtime-2.4.4
+        <<: *sensu_connection_info
 
     - name: Test getting all assets
       sensu_go_asset_info:
+        <<: *sensu_connection_info
 
     - name: Test getting specific asset
       sensu_go_asset_info:
         name: asset
+        <<: *sensu_connection_info
       register: result
 
     - assert:
         that:
           - result.assets | length == 1
           - result.assets.0.metadata.name == 'asset'
+
+  always:
+    - import_role:
+        name: setup_kill_sensu_backend

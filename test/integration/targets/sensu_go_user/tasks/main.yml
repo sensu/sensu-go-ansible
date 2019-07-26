@@ -1,8 +1,15 @@
-- hosts: localhost
-  gather_facts: false
-  collections:
+- import_role:
+    name: setup_sensu_backend
+
+- name: Set up Sensu connection info
+  set_fact:
+    sensu_connection_info: &sensu_connection_info
+      url: http://localhost:{{ sensu_port }}
+
+- collections:
     - flowerysong.sensu_go
-  tasks:
+
+  block:
     - name: Create a user
       sensu_go_user:
         name: testuser
@@ -10,6 +17,7 @@
         groups:
           - foo
           - bar
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -25,6 +33,7 @@
         groups:
           - foo
           - bar
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -34,13 +43,16 @@
       sensu_go_user:
         name: testuser2
         user_password: poirewilliam
+        <<: *sensu_connection_info
 
     - name: Fetch all users
       sensu_go_user_info:
+        <<: *sensu_connection_info
 
     - name: Fetch a specific user
       sensu_go_user_info:
         name: testuser
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -54,6 +66,7 @@
         groups:
           - baz
         purge_groups: false
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -66,6 +79,7 @@
         name: testuser
         groups:
           - foo
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -76,6 +90,7 @@
     - name: Remove all groups from a user
       sensu_go_user:
         name: testuser
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -87,6 +102,7 @@
       sensu_go_user:
         name: testuser
         state: absent
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -98,6 +114,7 @@
       sensu_go_user:
         name: testuser
         state: absent
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -108,6 +125,7 @@
     - name: Enable a user
       sensu_go_user:
         name: testuser
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -119,6 +137,7 @@
       sensu_go_user:
         name: testuser
         user_password: william1
+        <<: *sensu_connection_info
       register: result
 
     - assert:
@@ -128,7 +147,12 @@
       sensu_go_user:
         name: testuser
         user_password: fitzwilliam
+        <<: *sensu_connection_info
       register: result
 
     - assert:
         that: result is changed
+
+  always:
+    - import_role:
+        name: setup_kill_sensu_backend

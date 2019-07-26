@@ -1,7 +1,0 @@
-- hosts: localhost
-  gather_facts: false
-  collections:
-    - flowerysong.sensu_go
-  tasks:
-    - name: Get cluster info
-      sensu_go_cluster_info:

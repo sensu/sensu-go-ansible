@@ -1,0 +1,23 @@
+- name: Fetch Sensu tarball
+  get_url:
+    url: https://s3-us-west-2.amazonaws.com/sensu.io/sensu-go/{{ sensu_version }}/sensu-enterprise-go_{{ sensu_version }}_{{ test_platform }}_{{ test_arch }}.tar.gz
+    dest: "{{ output_dir }}/sensu.tar.gz"
+
+- name: Extract Sensu tarball
+  unarchive:
+    src: "{{ output_dir }}/sensu.tar.gz"
+    dest: "{{ output_dir }}"
+
+- name: Configure sensu-backend
+  template:
+    src: backend.yml.j2
+    dest: "{{ output_dir }}/backend.yml"
+
+- name: Run sensu-backend
+  shell: "{{ output_dir }}/sensu-backend start -c {{ output_dir }}/backend.yml &> {{ output_dir }}/sensu-backend.log"
+  async: 300
+  poll: 0
+
+- name: Wait for the backend to start
+  wait_for:
+    port: "{{ sensu_port }}"

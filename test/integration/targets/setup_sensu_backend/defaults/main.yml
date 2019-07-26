@@ -1,0 +1,10 @@
+sensu_version: 5.11.1
+test_platform: linux
+test_arch: amd64
+
+# I don't love this lookup, but Sensu won't expand ~/ on its own
+sensu_storage_dir: "{{ lookup('pipe', 'echo ' ~ output_dir) }}/sensu_data"
+sensu_port: 14567
+sensu_dashboard_port: 14568
+etcd_client_port: 14569
+etcd_peer_port: 14570

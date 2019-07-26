@@ -1,0 +1,3 @@
+- name: Kill sensu-backend
+  command: killall sensu-backend
+  ignore_errors: true
