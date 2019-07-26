@@ -78,14 +78,14 @@ class AnsibleSensuClient():
         except HTTPError as e:
             if e.code == 404:
                 return {}
-            self.module.fail_json(msg='get failed: {0}'.format(e.reason))
+            self.module.fail_json(msg='get failed: {0} {1}'.format(e.reason, e.read()))
         return json.loads(result.read())
 
     def put(self, path, data):
         try:
             result = self._open_url(path, method='PUT', data=data)
         except HTTPError as e:
-            self.module.fail_json(msg='put failed: {0}'.format(e.reason))
+            self.module.fail_json(msg='put failed: {0} {1}'.format(e.reason, e.read()))
 
     def delete(self, path):
         try:
@@ -93,7 +93,7 @@ class AnsibleSensuClient():
         except HTTPError as e:
             if e.code == 404:
                 return False
-            self.module.fail_json(msg='delete failed: {0}'.format(e.reason))
+            self.module.fail_json(msg='delete failed: {0} {1}'.format(e.reason, e.read()))
         return True
 
 
