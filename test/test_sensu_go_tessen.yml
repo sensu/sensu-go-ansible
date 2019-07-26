@@ -2,9 +2,6 @@
   gather_facts: false
   collections:
     - flowerysong.sensu_go
-  module_defaults:
-    group/sensu_go:
-      url: "http://localhost:{{ sensu_port }}/"
   tasks:
     - name: Disable Tessen
       sensu_go_tessen:

@@ -52,14 +52,16 @@ etcd-client-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
             stderr=subprocess.STDOUT,
         )
 
+        env = os.environ.copy()
+        env['SENSU_BACKEND_URL'] = 'http://localhost:{}'.format(sensu_kwargs['port'])
         try:
             out = subprocess.check_output(
                 [
                     'ansible-playbook', '-v',
                     '-i', '/dev/null',
-                    '-e', 'sensu_port={}'.format(sensu_kwargs['port']),
                     str(self.fspath),
                 ],
+                env=env,
                 stderr=subprocess.STDOUT,
             )
         except subprocess.CalledProcessError as e:
