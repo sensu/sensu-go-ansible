@@ -45,8 +45,6 @@ class AnsibleSensuClient():
         self.password = self.params['password']
         self.namespace = self.params['namespace']
 
-        # The /auth endpoint is currently undocumented, but it's what
-        # sensuctl uses to generate tokens
         try:
             auth = open_url(
                 '{0}/auth'.format(self.url),
