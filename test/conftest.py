@@ -49,12 +49,15 @@ etcd-client-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
         sensu_proc = subprocess.Popen(['sensu-backend', 'start', '-c', conf_file], stdout=devnull, stderr=devnull)
 
         try:
-            out = subprocess.check_output([
-                'ansible-playbook', '-v',
-                '-i', '/dev/null',
-                '-e', 'sensu_port={}'.format(sensu_kwargs['port']),
-                str(self.fspath),
-            ])
+            out = subprocess.check_output(
+                [
+                    'ansible-playbook', '-v',
+                    '-i', '/dev/null',
+                    '-e', 'sensu_port={}'.format(sensu_kwargs['port']),
+                    str(self.fspath),
+                ],
+                stderr=subprocess.STDOUT,
+            )
         except subprocess.CalledProcessError as e:
             out = e.output
 
@@ -63,8 +66,10 @@ etcd-client-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
         time.sleep(1)
 
         started = False
+        count = 0
         for line in out.split('\n'):
             if line.startswith('TASK'):
+                count += 1
                 new_name = re.match('TASK \[(.+)\] ', line).group(1)
                 if new_name != 'assert':
                     name = new_name
@@ -82,6 +87,9 @@ etcd-client-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
                         lines = '{'
                     else:
                         yield PlaybookItem(self, name, matches.group(1), matches.group(2))
+
+        if count == 0:
+            yield PlaybookItem(self, 'syntax', 'failed', json.dumps(out))
 
 
 class PlaybookItem(pytest.Item):
