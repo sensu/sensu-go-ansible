@@ -45,8 +45,12 @@ etcd-client-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
         with open(conf_file, 'w') as f:
             f.write(conf)
 
-        devnull = open(os.devnull, 'w')
-        sensu_proc = subprocess.Popen(['sensu-backend', 'start', '-c', conf_file], stdout=devnull, stderr=devnull)
+        log_handle = open(os.path.join(tmpdir, 'log'), 'w')
+        sensu_proc = subprocess.Popen(
+            ['sensu-backend', 'start', '-c', conf_file],
+            stdout=log_handle,
+            stderr=subprocess.STDOUT,
+        )
 
         try:
             out = subprocess.check_output(
@@ -62,6 +66,7 @@ etcd-client-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
             out = e.output
 
         sensu_proc.terminate()
+        log_handle.close()
         shutil.rmtree(tmpdir)
         time.sleep(1)
 
