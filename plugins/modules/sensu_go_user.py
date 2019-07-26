@@ -34,6 +34,9 @@ RETURN = '''
 '''
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.urls import open_url
+from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
+
 from ansible_collections.flowerysong.sensu_go.plugins.module_utils.base import sensu_argument_spec, AnsibleSensuClient
 
 
@@ -58,10 +61,6 @@ def main():
             type='bool',
             default=True,
         ),
-        update_password=dict(
-            default='on_create',
-            choices=['always', 'on_create'],
-        )
     ))
 
     module = AnsibleModule(
@@ -75,35 +74,77 @@ def main():
     params = module.params
     user_path = '/users/{0}'.format(params['name'])
 
-    payload = {
-        'username': params['name'],
-        'groups': params['groups'],
-        'disabled': params['state'] == 'absent',
-    }
-
-    old = client.get(user_path)
-    if params['state'] == 'absent':
-        if not old or old['disabled']:
-            module.exit_json(changed=False, user={})
-        if not module.check_mode:
-            client.delete(user_path)
-        module.exit_json(changed=True, user=old)
-
-    if old and not params['purge_groups']:
-        payload['groups'] = list(set( payload['groups'] + old['groups']))
-
-    if not old or (params['user_password'] and params['update_password'] == 'always'):
-        payload['password'] = params['user_password']
-
+    user = client.get(user_path)
     changed = False
-    for key in payload:
-        if payload[key] != old.get(key):
+
+    if params['state'] == 'absent':
+        if user and not user['disabled']:
             changed = True
+            if not module.check_mode:
+                client.delete(user_path)
+                user = client.get(user_path)
+        module.exit_json(changed=changed, user=user)
 
-    if changed and not module.check_mode:
-        old = client.put(user_path, payload)
+    if not user:
+        payload = {
+            'username': params['name'],
+            'groups': params['groups'],
+            'password': params['user_password'],
+            'disabled': False,
+        }
 
-    module.exit_json(changed=changed, user=old)
+        if module.check_mode:
+            user = payload
+        else:
+            client.put(user_path, payload)
+            user = client.get(user_path)
+
+        module.exit_json(changed=True, user=user)
+
+
+    if user['disabled']:
+        changed = True
+        if not module.check_mode:
+            client.put('{0}/reinstate'.format(user_path), {})
+
+    groups = params['groups']
+    if params['purge_groups']:
+        for group in user.get('groups', []):
+            if group not in groups:
+                changed = True
+                if not module.check_mode:
+                    client.delete('{0}/groups/{1}'.format(user_path, group))
+
+    for group in groups:
+        if group not in user.get('groups', []):
+            changed = True
+            if not module.check_mode:
+                client.put('{0}/groups/{1}'.format(user_path, group), {})
+
+    if params['user_password']:
+        try:
+            pw_check = open_url(
+                '{0}/auth/test'.format(client.url),
+                url_username=params['name'],
+                url_password=params['user_password'],
+                force_basic_auth=True,
+            )
+        except HTTPError as e:
+            if e.code == 401:
+                changed = True
+                if not module.check_mode:
+                    payload = {
+                        'username': params['name'],
+                        'password': params['user_password'],
+                    }
+                    client.put('{0}/password'.format(user_path), payload)
+        except URLError:
+            pass
+
+    if changed:
+        user = client.get(user_path)
+
+    module.exit_json(changed=changed, user=user)
 
 
 if __name__ == '__main__':
