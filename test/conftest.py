@@ -38,7 +38,7 @@ api-listen-address: "[::]:{port}"
 api-url: http://localhost:{port}
 dashboard-port: {dashboard_port}
 etcd-listen-client-urls: ["http://127.0.0.1:{etcd_client_port}"]
-etcd-client-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
+etcd-listen-peer-urls: ["http://127.0.0.1:{etcd_peer_port}"]
 '''.format(**sensu_kwargs)
 
         conf_file = os.path.join(tmpdir, 'backend.yml')
