@@ -21,6 +21,11 @@ extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.object
 options:
+  state:
+    description:
+      - Target state of the Sensu object.
+    choices: [ 'present' ]
+    default: present
   download_url:
     description:
       - The URL location of the asset.
@@ -135,6 +140,10 @@ def main():
     argspec = SensuAsset.argument_spec()
     argspec.update(
         dict(
+            state=dict(
+                default='present',
+                choices=['present'],
+            ),
             download_url=dict(
                 required=True,
             ),
