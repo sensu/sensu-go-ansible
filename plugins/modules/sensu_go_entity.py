@@ -90,7 +90,6 @@ def main():
             'type': 'str',
         },
         'subscriptions': {
-            'default': [],
             'type': 'list',
         },
         'deregister': {

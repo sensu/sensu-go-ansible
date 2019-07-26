@@ -1,0 +1,40 @@
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - flowerysong.sensu_go
+  module_defaults:
+    group/sensu_go:
+      url: "http://localhost:{{ sensu_port }}/"
+  tasks:
+    - name: Create an entity
+      sensu_go_entity:
+        name: entity
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Test entity creation idempotence
+      sensu_go_entity:
+        name: entity
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Create a second entity
+      sensu_go_entity:
+        name: entity2
+
+    - name: Fetch all entities
+      sensu_go_entity_info:
+
+    - name: Fetch a specific entity
+      sensu_go_entity_info:
+        name: entity
+      register: result
+
+    - assert:
+        that:
+          - result.entities | length == 1
+          - result.entities.0.metadata.name == 'entity'
