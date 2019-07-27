@@ -1,0 +1,18 @@
+namespace: flowerysong
+name: sensu_go
+version: 0.1.0
+
+authors:
+  - Paul Arthur <paul.arthur@flowerysong.com> (@flowerysong)
+
+tags:
+  - sensu
+  - sensugo
+  - monitoring
+
+readme: README.md
+license_file: COPYING
+description: Modules for interacting with Sensu Go
+
+repository: https://github.com/flowerysong/ansible-sensu-go
+issues: https://github.com/flowerysong/ansible-sensu-go/issues
