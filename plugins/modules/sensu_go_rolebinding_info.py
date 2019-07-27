@@ -65,7 +65,7 @@ def main():
         endpoint = '/clusterrolebindings'
 
     if module.params['name']:
-        result = [client.get('{}/{}'.format(endpoint, module.params['name']))]
+        result = [client.get('{0}/{1}'.format(endpoint, module.params['name']))]
     else:
         result = client.get(endpoint)
 
