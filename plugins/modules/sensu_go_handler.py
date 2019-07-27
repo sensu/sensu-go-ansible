@@ -77,6 +77,9 @@ RETURN = '''
 '''
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.common.validation import check_missing_parameters
+from ansible.module_utils._text import to_native
+
 from ansible_collections.flowerysong.sensu_go.plugins.module_utils.base import SensuObject
 
 
@@ -130,13 +133,24 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=argspec,
-        required_if=[
-            ('type', 'pipe', ['command']),
-            ('type', 'tcp', ['socket_host', 'socket_port']),
-            ('type', 'udp', ['socket_host', 'socket_port']),
-            ('type', 'set', ['handlers']),
-        ],
     )
+
+    # We only care about this if we're creating the handler, so we can't
+    # use `required_if`
+    if module.params['state'] == 'present':
+        requirements = [
+            ('pipe', ['command']),
+            ('tcp', ['socket_host', 'socket_port']),
+            ('udp', ['socket_host', 'socket_port']),
+            ('set', ['handlers']),
+        ]
+        for req in requirements:
+            if module.params['type'] == req[0]:
+                try:
+                    check_missing_parameters(module.params, req[1])
+                except TypeError as e:
+                    msg = to_native(e)
+                    module.fail_json(msg=msg)
 
     handler = SensuHandler(module)
     result = handler.reconcile()

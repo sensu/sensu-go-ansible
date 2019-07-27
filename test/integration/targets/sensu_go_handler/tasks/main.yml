@@ -14,11 +14,12 @@
       sensu_go_handler:
         name: handler
         type: pipe
+        command: sensu-influxdb-handler
         env_vars:
           INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
           INFLUXDB_USER: sensu
           INFLUXDB_PASS: password
-        runtime-assets:
+        runtime_assets:
           - sensu-influxdb-handler
         <<: *sensu_connection_info
       register: result
@@ -30,11 +31,12 @@
       sensu_go_handler:
         name: handler
         type: pipe
+        command: sensu-influxdb-handler
         env_vars:
           INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
           INFLUXDB_USER: sensu
           INFLUXDB_PASS: password
-        runtime-assets:
+        runtime_assets:
           - sensu-influxdb-handler
         <<: *sensu_connection_info
       register: result
@@ -46,11 +48,12 @@
       sensu_go_handler:
         name: handler
         type: pipe
+        command: sensu-influxdb-handler
         env_vars:
           INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
           INFLUXDB_USER: sensu
           INFLUXDB_PASS: pass
-        runtime-assets:
+        runtime_assets:
           - sensu-influxdb-handler
         <<: *sensu_connection_info
       register: result
@@ -62,11 +65,12 @@
       sensu_go_handler:
         name: handler2
         type: pipe
+        command: sensu-influxdb-handler
         env_vars:
           INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
           INFLUXDB_USER: sensu
           INFLUXDB_PASS: password
-        runtime-assets:
+        runtime_assets:
           - sensu-influxdb-handler
         <<: *sensu_connection_info
 
@@ -100,6 +104,19 @@
         that:
           - result.handlers | length == 1
           - result.handlers.0.metadata.name == 'handler2'
+
+    - name: Test missing parameter handling
+      sensu_go_handler:
+        name: handler
+        state: present
+        type: pipe
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'missing required arguments' in result.msg"
 
   always:
     - import_role:

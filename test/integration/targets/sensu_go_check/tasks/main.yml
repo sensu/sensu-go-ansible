@@ -76,6 +76,7 @@
     - name: Get all checks
       sensu_go_check_info:
         <<: *sensu_connection_info
+      register: result
 
     - assert:
         that:
