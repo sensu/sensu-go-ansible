@@ -6,13 +6,11 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-from ansible.module_utils._text import to_native, to_text
 from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.urls import open_url
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 
 import json
-import os
 
 
 def sensu_argument_spec():
