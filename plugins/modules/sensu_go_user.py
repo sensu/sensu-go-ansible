@@ -101,7 +101,6 @@ def main():
 
         module.exit_json(changed=True, user=user)
 
-
     if user['disabled']:
         changed = True
         if not module.check_mode:

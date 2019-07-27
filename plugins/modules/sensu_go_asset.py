@@ -64,54 +64,6 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-{
-    "changed": true,
-    "asset": {
-        "filters": [
-            "entity.system.os == 'linux'",
-            "entity.system.arch == 'amd64'",
-            "entity.system.platform == 'rhel'"
-        ],
-        "headers": null,
-        "metadata": {
-            "annotations": {
-                "sensio.io.bonsai.tags": "ruby-runtime-2.4.4",
-                "sensio.io.bonsai.tier": "Community",
-                "sensio.io.bonsai.url": "https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz",
-                "sensio.io.bonsai.version": "4.0.0"
-            },
-            "name": "asset",
-            "namespace": "default"
-        },
-        "sha512": "518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b",
-        "url": "https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz"
-    },
-    "invocation": {
-        "module_args": {
-            "annotations": {
-                "sensio.io.bonsai.tags": "ruby-runtime-2.4.4",
-                "sensio.io.bonsai.tier": "Community",
-                "sensio.io.bonsai.url": "https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz",
-                "sensio.io.bonsai.version": "4.0.0"
-            },
-            "download_url": "https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz",
-            "filters": [
-                "entity.system.os == 'linux'",
-                "entity.system.arch == 'amd64'",
-                "entity.system.platform == 'rhel'"
-            ],
-            "headers": null,
-            "labels": {},
-            "name": "asset",
-            "namespace": "default",
-            "password": "P@ssw0rd!",
-            "sha512": "518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b",
-            "state": "present",
-            "url": "http://localhost:8080",
-            "user": "admin"
-        }
-    }
-}
 '''
 
 from ansible.module_utils.basic import AnsibleModule
@@ -135,6 +87,7 @@ class SensuAsset(SensuObject):
                     self.payload["url"] = self.params[key]
                 else:
                     self.payload[key] = self.params[key]
+
 
 def main():
     argspec = SensuAsset.argument_spec()
