@@ -122,7 +122,7 @@ def main():
 
     if params['user_password']:
         try:
-            pw_check = open_url(
+            open_url(
                 '{0}/auth/test'.format(client.url),
                 url_username=params['name'],
                 url_password=params['user_password'],
