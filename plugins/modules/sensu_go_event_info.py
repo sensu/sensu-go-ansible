@@ -48,6 +48,7 @@ def main():
     argspec = sensu_argument_spec()
     argspec.update(
         dict(
+            name=dict(),
             entity=dict(),
         )
     )
@@ -55,11 +56,14 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=argspec,
+        required_by={'name': ['entity']},
     )
 
     client = AnsibleSensuClient(module)
 
-    if module.params['entity']:
+    if module.params['name']:
+        result = [client.get('/events/{0}/{1}'.format(module.params['entity'], module.params['name']))]
+    elif module.params['entity']:
         result = client.get('/events/{0}'.format(module.params['entity']))
     else:
         result = client.get('/events')
