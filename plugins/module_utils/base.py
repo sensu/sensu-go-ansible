@@ -165,7 +165,9 @@ class SensuObject():
 
     def compare(self):
         for key in self.payload:
-            if self.payload[key] != self.server_object.get(key):
+            cur = self.server_object.get(key)
+            val = self.payload[key]
+            if (cur or val) and (cur != val):
                 return False
         return True
 

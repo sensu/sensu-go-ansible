@@ -204,9 +204,11 @@ def main():
             ),
             runtime_assets=dict(
                 type='list',
+                default=[],
             ),
             check_hooks=dict(
                 type='dict',
+                default={},
             ),
             proxy_entity_name=dict(),
             proxy_entity_attributes=dict(
@@ -225,6 +227,7 @@ def main():
             ),
             output_metric_handlers=dict(
                 type='list',
+                default=[],
             ),
         )
     )

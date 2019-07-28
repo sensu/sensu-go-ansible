@@ -41,9 +41,9 @@ options:
     default: []
   headers:
     description:
-      - List of headers access secured assets.
-    type: list
-    default: []
+      - Additional headers to send when retrieving the asset, e.g. for authorization.
+    type: dict
+    default: {}
 '''
 
 EXAMPLES = '''
@@ -105,9 +105,11 @@ def main():
             ),
             filters=dict(
                 type='list',
+                default=[],
             ),
             headers=dict(
-                type='list',
+                type='dict',
+                default={},
             ),
         )
     )

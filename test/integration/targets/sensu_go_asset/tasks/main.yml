@@ -19,6 +19,8 @@
           - "entity.system.os == 'linux'"
           - "entity.system.arch == 'amd64'"
           - "entity.system.platform == 'rhel'"
+        headers:
+          Sensu-Blivet: foo
         annotations:
           sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
           sensio.io.bonsai.tier: Community
@@ -39,6 +41,8 @@
           - "entity.system.os == 'linux'"
           - "entity.system.arch == 'amd64'"
           - "entity.system.platform == 'rhel'"
+        headers:
+          Sensu-Blivet: foo
         annotations:
           sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
           sensio.io.bonsai.tier: Community
@@ -55,20 +59,20 @@
         name: asset
         download_url: https://assets.bonsai.sensu.io/73a6f8b6f56672630d83ec21676f9a6251094475/sensu-plugins-disk-checks_5.0.0_centos_linux_amd64.tar.gz
         sha512: 0ce9d52b270b77f4cab754e55732ae002228201d0bd01a89b954a0655b88c1ee6546e2f82cfd1eec04689af90ad940cde128e8867912d9e415f4a58d7fdcdadf
-        filters:
-          - "entity.system.os == 'linux'"
-          - "entity.system.arch == 'amd64'"
-          - "entity.system.platform == 'rhel'"
         annotations:
           sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
           sensio.io.bonsai.tier: Community
           sensio.io.bonsai.version: 4.0.0
-          sensio.io.bonsai.tags: ruby-runtime-2.4.4
         <<: *sensu_connection_info
       register: result
 
     - assert:
-        that: result is changed
+        that:
+          - result is changed
+          - not result.asset.headers
+          - not result.asset.filters
+          - result.asset.sha512 == '0ce9d52b270b77f4cab754e55732ae002228201d0bd01a89b954a0655b88c1ee6546e2f82cfd1eec04689af90ad940cde128e8867912d9e415f4a58d7fdcdadf'
+          - "'sensu.io.bonsai.tags' not in result.asset.metadata.annotations"
 
     - name: Create a second asset
       sensu_go_asset:

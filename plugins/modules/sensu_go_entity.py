@@ -91,6 +91,7 @@ def main():
         },
         'subscriptions': {
             'type': 'list',
+            'default': [],
         },
         'deregister': {
             'default': False,

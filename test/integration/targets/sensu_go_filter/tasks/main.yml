@@ -17,6 +17,7 @@
         expressions:
           - event.check.interval == 10
           - event.check.occurrences == 1
+        runtime_assets: awesomeness
         <<: *sensu_connection_info
       register: result
 
@@ -32,6 +33,7 @@
         expressions:
           - event.check.interval == 10
           - event.check.occurrences == 1
+        runtime_assets: awesomeness
         <<: *sensu_connection_info
       register: result
 
@@ -68,7 +70,9 @@
       register: result
 
     - assert:
-        that: result is changed
+        that:
+          - result is changed
+          - not result.filter.runtime_assets
 
     - name: Delete a filter
       sensu_go_filter:

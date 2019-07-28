@@ -67,6 +67,7 @@ def main():
             ),
             handlers=dict(
                 type='list',
+                default=[],
             ),
         )
     )

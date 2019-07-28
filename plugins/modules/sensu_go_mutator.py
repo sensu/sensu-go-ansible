@@ -72,9 +72,11 @@ def main():
         command=dict(),
         env_vars=dict(
             type='dict',
+            default={},
         ),
         runtime_assets=dict(
             type='list',
+            default=[],
         ),
     ))
 

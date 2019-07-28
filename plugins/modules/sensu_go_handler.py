@@ -110,6 +110,7 @@ def main():
         ),
         filters=dict(
             type='list',
+            default=[],
         ),
         mutator=dict(),
         timeout=dict(
@@ -119,14 +120,17 @@ def main():
         command=dict(),
         env_vars=dict(
             type='dict',
+            default={},
         ),
         socket_host=dict(),
         socket_port=dict(),
         handlers=dict(
             type='list',
+            default=[],
         ),
         runtime_assets=dict(
             type='list',
+            default=[],
         ),
     ))
 

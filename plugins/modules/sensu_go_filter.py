@@ -68,6 +68,7 @@ def main():
         ),
         runtime_assets=dict(
             type='list',
+            default=[],
         ),
     ))
 
