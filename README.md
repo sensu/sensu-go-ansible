@@ -26,6 +26,13 @@ multiple active module maintainers, and tie new modules and bugfixes
 to Ansible's release schedule. Publishing a Collection allows me to
 make these modules publicly available with minimal extra work.
 
+## Where's the Documentation?
+
+HTML documentation is not yet being built, but if you have
+the collection installed you can access each module's
+documentation via the ansible-doc command, e.g. `ansible-doc
+flowerysong.sensu_go.sensu_go_asset`
+
 ## Usage
 
 You can use the namespaced modules:
