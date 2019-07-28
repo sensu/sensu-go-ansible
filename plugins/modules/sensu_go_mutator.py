@@ -45,8 +45,6 @@ RETURN = '''
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.common.validation import check_missing_parameters
-from ansible.module_utils._text import to_native
 
 from ansible_collections.flowerysong.sensu_go.plugins.module_utils.base import SensuObject
 

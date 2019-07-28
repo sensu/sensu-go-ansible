@@ -78,7 +78,6 @@ def main():
 
     result = client.get('/namespaces')
 
-    changed = False
     for ns in result:
         if ns['name'] == module.params['name']:
             if module.params['state'] == 'present':

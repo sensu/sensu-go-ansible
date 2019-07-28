@@ -28,8 +28,6 @@ EXAMPLES = '''
 RETURN = '''
 '''
 
-import json
-
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.flowerysong.sensu_go.plugins.module_utils.base import sensu_argument_spec, AnsibleSensuClient
 
