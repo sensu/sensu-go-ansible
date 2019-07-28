@@ -83,6 +83,7 @@ class SensuRole(SensuObject):
             self.path = '/clusterroles/{0}'.format(self.params['name'])
         else:
             self.path = '/roles/{0}'.format(self.params['name'])
+            self.payload['metadata']['namespace'] = module.params['namespace']
 
         for r in self.params['rules']:
             for key in ('resources', 'verbs', 'resource_names'):
@@ -110,13 +111,14 @@ def main():
         rules=dict(
             type='list',
             elements='dict',
-            default=[]
+            default=[],
         ),
     ))
 
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=argspec,
+        required_if=[('state', 'present', ['rules'])],
     )
 
     role = SensuRole(module)
