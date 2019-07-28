@@ -1,0 +1,185 @@
+- import_role:
+    name: setup_sensu_backend
+
+- name: Set up Sensu connection info
+  set_fact:
+    sensu_connection_info: &sensu_connection_info
+      url: http://localhost:{{ sensu_port }}
+
+- collections:
+    - flowerysong.sensu_go
+
+  block:
+    - name: Create a rolebinding
+      sensu_go_rolebinding:
+        name: test
+        cluster_role: true
+        role: edit
+        users:
+          - testuser1
+          - testuser2
+        groups: testgroup
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Test create idempotence
+      sensu_go_rolebinding:
+        name: test
+        cluster_role: true
+        role: edit
+        users:
+          - testuser1
+          - testuser2
+        groups: testgroup
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Create a namespace role
+      sensu_go_role:
+        name: testrole
+        rules:
+          - verbs: '*'
+            resources: checks
+        <<: *sensu_connection_info
+
+    - name: Create another rolebinding
+      sensu_go_rolebinding:
+        name: test2
+        role: testrole
+        groups: testgroup
+        <<: *sensu_connection_info
+
+    - name: Fetch rolebindings
+      sensu_go_rolebinding_info:
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result.rolebindings | length == 2
+
+    - name: Delete a rolebinding
+      sensu_go_rolebinding:
+        name: test
+        state: absent
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Test delete idempotence
+      sensu_go_rolebinding:
+        name: test
+        state: absent
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Fetch rolebindings
+      sensu_go_rolebinding_info:
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result.rolebindings | length == 1
+
+    - name: Create a cluster rolebinding
+      sensu_go_rolebinding:
+        name: test
+        cluster: true
+        role: edit
+        users:
+          - testuser1
+          - testuser2
+        groups: testgroup
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Test create idempotence
+      sensu_go_rolebinding:
+        name: test
+        cluster: true
+        role: edit
+        users:
+          - testuser1
+          - testuser2
+        groups: testgroup
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Create a cluster role
+      sensu_go_role:
+        name: testrolec
+        cluster: true
+        rules:
+          - verbs: '*'
+            resources: checks
+        <<: *sensu_connection_info
+
+    - name: Create another cluster rolebinding
+      sensu_go_rolebinding:
+        name: test2
+        cluster: true
+        role: testrolec
+        groups: testgroup
+        <<: *sensu_connection_info
+
+    - name: Fetch rolebindings
+      sensu_go_rolebinding_info:
+        cluster: true
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result.rolebindings | length == 5
+
+    - name: Delete a rolebinding
+      sensu_go_rolebinding:
+        name: test
+        cluster: true
+        state: absent
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Test delete idempotence
+      sensu_go_rolebinding:
+        name: test
+        cluster: true
+        state: absent
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Fetch rolebindings
+      sensu_go_rolebinding_info:
+        cluster: true
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result.rolebindings | length == 4
+
+  always:
+    - import_role:
+        name: setup_kill_sensu_backend

@@ -140,7 +140,7 @@ def main():
             type='bool',
             default=False,
         ),
-        role=dict(required=True),
+        role=dict(),
         users=dict(
             type='list',
             elements='str',
@@ -156,6 +156,7 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=argspec,
+        required_if=[('state', 'present', ['role'])],
     )
 
     rb = SensuRoleBinding(module)
