@@ -65,17 +65,16 @@ def main():
         ),
         expressions=dict(
             type='list',
-            required=True,
         ),
         runtime_assets=dict(
             type='list',
-            default=[],
         ),
     ))
 
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=argspec,
+        required_if=[('state', 'present', ['expressions'])],
     )
 
     filter = SensuFilter(module)
