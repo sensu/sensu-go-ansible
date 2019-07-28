@@ -1,0 +1,108 @@
+- import_role:
+    name: setup_sensu_backend
+
+- name: Set up Sensu connection info
+  set_fact:
+    sensu_connection_info: &sensu_connection_info
+      url: http://localhost:{{ sensu_port }}
+
+- collections:
+    - flowerysong.sensu_go
+
+  block:
+    - name: Create a silence
+      sensu_go_silence:
+        name: entity:testentity:*
+        expire_on_resolve: true
+        reason: testing
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.silence.subscription == 'entity:testentity'
+          - result.silence.check == '*'
+
+    - name: Test silence creation idempotence
+      sensu_go_silence:
+        name: entity:testentity:*
+        expire_on_resolve: true
+        reason: testing
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify a silence
+      sensu_go_silence:
+        name: entity:testentity:*
+        expire_on_resolve: false
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Create a second silence
+      sensu_go_silence:
+        name: silence:check
+        <<: *sensu_connection_info
+
+    - name: Fetch all silences
+      sensu_go_silence_info:
+        <<: *sensu_connection_info
+
+    - name: Fetch a specific silence
+      sensu_go_silence_info:
+        name: entity:testentity:*
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that:
+          - result.silenced | length == 1
+          - result.silenced.0.metadata.name == 'entity:testentity:*'
+
+    - name: Fetch all silences for a subscription
+      sensu_go_silence_info:
+        subscription: entity:testentity
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that:
+         - result.silenced | length == 1
+         - result.silenced.0.metadata.name == 'entity:testentity:*'
+
+    - name: Fetch all silences for a check
+      sensu_go_silence_info:
+        check: check
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that:
+         - result.silenced | length == 1
+         - result.silenced.0.metadata.name == 'silence:check'
+
+    - name: Delete a silence
+      sensu_go_silence:
+        name: entity:testentity:*
+        state: absent
+        <<: *sensu_connection_info
+
+    - name: Fetch all silences
+      sensu_go_silence_info:
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that:
+          - result.silenced | length == 1
+          - result.silenced.0.metadata.name == 'silence:check'
+
+  always:
+    - import_role:
+        name: setup_kill_sensu_backend

@@ -1,0 +1,3 @@
+sensu_go
+needs/target/setup_sensu_backend
+needs/target/setup_kill_sensu_backend
