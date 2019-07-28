@@ -27,7 +27,7 @@ options:
     choices: [ 'allow', 'deny' ]
     default: allow
   expressions:
-    descripton:
+    description:
       - Filter expressions.
     type: list
   runtime_assets:

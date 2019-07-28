@@ -22,9 +22,11 @@ extends_documentation_fragment:
   - flowerysong.sensu_go.info
 options:
   subscription:
-    - Subscription to retrieve silencing entries for.
+    description:
+      - Subscription to retrieve silencing entries for.
   check:
-    - Check to retrieve silencing entries for.
+    description:
+      - Check to retrieve silencing entries for.
 '''
 
 EXAMPLES = '''

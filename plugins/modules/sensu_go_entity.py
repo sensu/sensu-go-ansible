@@ -18,7 +18,7 @@ short_description: Manages Sensu entities
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/entities/)'
 extends_documentation_fragment:
-  - flowerysong.sensu_go.core
+  - flowerysong.sensu_go.base
   - flowerysong.sensu_go.object
 options:
   class:
