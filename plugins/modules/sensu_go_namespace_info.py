@@ -19,7 +19,6 @@ description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/namespaces/)'
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
-  - flowerysong.sensu_go.info
 '''
 
 EXAMPLES = '''
@@ -51,6 +50,7 @@ def main():
     client.namespace = None
 
     result = client.get('/namespaces')
+    result = [x['name'] for x in result]
 
     module.exit_json(changed=False, namespaces=result)
 

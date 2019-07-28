@@ -1,0 +1,70 @@
+- import_role:
+    name: setup_sensu_backend
+
+- name: Set up Sensu connection info
+  set_fact:
+    sensu_connection_info: &sensu_connection_info
+      url: http://localhost:{{ sensu_port }}
+
+- collections:
+    - flowerysong.sensu_go
+
+  block:
+    - name: Create a namespace
+      sensu_go_namespace:
+        name: test
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Test create idempotence
+      sensu_go_namespace:
+        name: test
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Fetch namespaces
+      sensu_go_namespace_info:
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result.namespaces | length == 2
+
+    - name: Delete a namespace
+      sensu_go_namespace:
+        name: test
+        state: absent
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is changed
+
+    - name: Test delete idempotence
+      sensu_go_namespace:
+        name: test
+        state: absent
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Fetch namespaces
+      sensu_go_namespace_info:
+        <<: *sensu_connection_info
+      register: result
+
+    - assert:
+        that: result.namespaces | length == 1
+
+  always:
+    - import_role:
+        name: setup_kill_sensu_backend
