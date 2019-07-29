@@ -34,6 +34,14 @@ def sensu_argument_spec():
     )
 
 
+def clean_metadata_dict(tags):
+    # Sensu metadata must always be strings
+    ret = {}
+    for key in tags:
+        ret[key] = str(tags[key])
+    return ret
+
+
 class AnsibleSensuClient():
     def __init__(self, module):
         self.module = module
@@ -108,15 +116,7 @@ class SensuObject():
         }
         for key in ('labels', 'annotations'):
             if self.params[key]:
-                self.payload['metadata'][key] = SensuObject._clean_tags(self.params[key])
-
-    @staticmethod
-    def _clean_tags(tags):
-        # Sensu metadata must always be strings
-        ret = {}
-        for key in tags:
-            ret[key] = str(tags[key])
-        return ret
+                self.payload['metadata'][key] = clean_metadata_dict(self.params[key])
 
     @staticmethod
     def argument_spec():

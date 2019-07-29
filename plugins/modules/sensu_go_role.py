@@ -17,16 +17,19 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu roles
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/rbac/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
 options:
   name:
     description:
       - The Sensu object's name.
+    type: str
     required: yes
   state:
     description:
       - Target state of the Sensu object.
+    type: str
     choices: [ 'present', 'absent' ]
     default: present
   cluster:
@@ -37,6 +40,7 @@ options:
   rules:
     description:
       - Role rules
+    type: list
 '''
 
 EXAMPLES = '''
@@ -88,7 +92,7 @@ class SensuRole(SensuObject):
         for r in self.params['rules']:
             for key in ('resources', 'verbs', 'resource_names'):
                 if key in r:
-                    if type(r[key]) is not list:
+                    if not isinstance(r[key], list):
                         r[key] = [r[key]]
                 else:
                     r[key] = None

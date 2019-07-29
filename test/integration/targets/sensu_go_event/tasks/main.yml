@@ -19,6 +19,10 @@
         interval: 30
         duration: 0.5
         handlers: default
+        annotations:
+          foo: bar
+        labels:
+          awesome: sauce
         <<: *sensu_connection_info
 
     - name: Update an event

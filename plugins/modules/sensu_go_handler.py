@@ -17,6 +17,7 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu handlers
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/handlers/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.object
@@ -24,11 +25,13 @@ options:
   type:
     description:
       - Handler type.
+    type: str
     choices: [ 'pipe', 'tcp', 'udp', 'set' ]
     default: pipe
   command:
     description:
       - Command to C(pipe) the check result data into.
+    type: str
   filters:
     description:
       - List of filters to use when determining whether to pass the check result to this handler.
@@ -36,6 +39,7 @@ options:
   mutator:
     description:
       - Mutator to call for transforming the check result before passing it to this handler.
+    type: str
   timeout:
     description:
       - Timeout for handler execution
@@ -48,9 +52,11 @@ options:
   socket_host:
     description:
       - Hostname to connect to for C(tcp) or C(udp)
+    type: str
   socket_port:
     description:
       - Port to connect to for C(tcp) or C(udp)
+    type: str
   handlers:
     description:
       - List of handlers that comprise this C(set)
@@ -58,6 +64,8 @@ options:
   runtime_assets:
     description:
       - List of runtime assets to required to run the handler C(command)
+    type: list
+    default: []
 '''
 
 EXAMPLES = '''

@@ -17,16 +17,19 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu role bindings
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/rbac/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
 options:
   name:
     description:
       - The Sensu object's name.
+    type: str
     required: yes
   state:
     description:
       - Target state of the Sensu object.
+    type: str
     choices: [ 'present', 'absent' ]
     default: present
   cluster:
@@ -37,15 +40,22 @@ options:
   cluster_role:
     description:
       - Use a cluster role in a namespaced binding (has no effect when cluster is true)
+    type: bool
+    default: false
   role:
     description:
       - Role name
+    type: str
   users:
     description:
       - List of users to bind to the role
+    type: list
+    default: []
   groups:
     description:
       - List of groups to bind to the role
+    type: list
+    default: []
 '''
 
 EXAMPLES = '''

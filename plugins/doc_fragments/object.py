@@ -13,10 +13,12 @@ options:
   name:
     description:
       - The Sensu object's name.
+    type: str
     required: yes
   state:
     description:
       - Target state of the Sensu object.
+    type: str
     choices: [ 'present', 'absent' ]
     default: present
   labels:

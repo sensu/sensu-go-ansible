@@ -17,6 +17,7 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu checks
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/checks/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.object
@@ -24,6 +25,7 @@ options:
   command:
     description:
       - Check command to run.
+    type: str
     required: true
   subscriptions:
     description:
@@ -43,6 +45,7 @@ options:
   cron:
     description:
       - Schedule check requests using crontab syntax
+    type: str
   publish:
     description:
       - Enables or disables scheduled publication of check requests.
@@ -70,6 +73,7 @@ options:
   high_flap_threshold:
     description:
       - High flap threshold.
+    type: int
   runtime_assets:
     description:
       - List of runtime assets required to run the check
@@ -82,6 +86,7 @@ options:
   proxy_entity_name:
     description:
       - Entity name to associate this check with instead of the agent it ran on.
+    type: str
   proxy_entity_attributes:
     description:
       - List of attribute checks for determining which proxy entities this check should be scheduled against.
@@ -94,10 +99,13 @@ options:
   proxy_splay_coverage:
     description:
       - Percentage of the C(interval) over which to splay checks.
+    type: int
+    default: 90
   output_metric_format:
     description:
       - Enable parsing of metrics in the specified format from this check's
         output.
+    type: str
     choices:
       - graphite_plaintext
       - influxdb_line

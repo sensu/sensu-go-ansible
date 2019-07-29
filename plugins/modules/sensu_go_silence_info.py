@@ -17,6 +17,7 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Lists Sensu silence entries
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/silencing/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.info
@@ -24,9 +25,11 @@ options:
   subscription:
     description:
       - Subscription to retrieve silencing entries for.
+    type: str
   check:
     description:
       - Check to retrieve silencing entries for.
+    type: str
 '''
 
 EXAMPLES = '''
@@ -59,7 +62,7 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=argspec,
-        mutually_exclusive=['name', 'subscription', 'check'],
+        mutually_exclusive=[['name', 'subscription', 'check']],
     )
 
     client = AnsibleSensuClient(module)

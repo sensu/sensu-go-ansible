@@ -17,9 +17,20 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Lists Sensu events
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/events/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.info
+options:
+  name:
+    description:
+      - Limit results to a specific check.
+      - C(entity) must also be specified.
+    type: str
+  entity:
+    description:
+      - Limit results to a specific entity.
+    type: str
 '''
 
 EXAMPLES = '''

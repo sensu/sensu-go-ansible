@@ -18,6 +18,7 @@ short_description: Manages Sensu's phone-home configuration
 description:
   - Tessen cannot be disabled in licensed instances.
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/tessen/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
 options:

@@ -14,19 +14,23 @@ options:
     description:
       - The username to use for connecting to the Sensu API.
         If this is not set the value of the SENSU_USER environment variable will be checked.
+    type: str
     default: admin
   password:
     description:
       - The Sensu user's password.
         If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+    type: str
     default: P@ssw0rd!
   url:
     description:
       - Location of the Sensu backend API.
         If this is not set the value of the SENSU_BACKEND_URL environment variable will be checked.
+    type: str
     default: http://localhost:8080
   namespace:
     description:
       - RBAC namespace to operate in.
+    type: str
     default: default
 """

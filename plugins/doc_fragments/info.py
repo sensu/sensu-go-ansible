@@ -13,4 +13,5 @@ options:
   name:
     description:
       - Retrieve information about this specific object instead of listing all objects.
+    type: str
 """

@@ -17,14 +17,37 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu users
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/users/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
 options:
-  action:
+  state:
     description:
-      - Filter action.
-    choices: [ 'allow', 'deny' ]
-    default: allow
+      - Desired state of the user.
+      - Users cannot actually be deleted, only deactivated.
+    type: str
+    choices: ['present', 'absent']
+    default: present
+  name:
+    description:
+      - User name.
+    type: str
+    required: true
+  user_password:
+    description:
+      - Password for the user.
+    type: str
+  groups:
+    description:
+      - Groups to add the user to.
+      - If C(purge_groups) is false, this will be in addition to any groups the user is already in.
+    type: list
+    default: []
+  purge_groups:
+    description:
+      - Determines whether this module will remove the user from any groups that are not explicitly listed.
+    type: bool
+    default: true
 '''
 
 EXAMPLES = '''

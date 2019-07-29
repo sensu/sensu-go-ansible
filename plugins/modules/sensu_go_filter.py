@@ -17,6 +17,7 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu filters
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/filters/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.object
@@ -24,6 +25,7 @@ options:
   action:
     description:
       - Filter action.
+    type: str
     choices: [ 'allow', 'deny' ]
     default: allow
   expressions:
@@ -34,6 +36,7 @@ options:
     description:
       - Runtime assets for filter.
     type: list
+    default: []
 '''
 
 EXAMPLES = '''

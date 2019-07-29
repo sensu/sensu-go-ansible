@@ -17,6 +17,7 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu mutators
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/mutators/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.object
@@ -24,6 +25,7 @@ options:
   command:
     description:
       - Command to C(pipe) the check result data into.
+    type: str
   timeout:
     description:
       - Timeout for mutator execution
@@ -36,6 +38,7 @@ options:
   runtime_assets:
     description:
       - List of runtime assets to required to run the mutator C(command)
+    type: list
 '''
 
 EXAMPLES = '''

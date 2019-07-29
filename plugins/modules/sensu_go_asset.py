@@ -17,6 +17,7 @@ author: "Cameron Hurst (@wakemaster39)"
 short_description: Manages Sensu assets
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/assets/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.object
@@ -24,15 +25,18 @@ options:
   state:
     description:
       - Target state of the Sensu object.
+    type: str
     choices: [ 'present' ]
     default: present
   download_url:
     description:
       - The URL location of the asset.
+    type: str
     required: true
   sha512:
     description:
       - The checksum of the asset.
+    type: str
     required: true
   filters:
     description:

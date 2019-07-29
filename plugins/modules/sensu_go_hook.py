@@ -17,6 +17,7 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu hooks
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/hooks/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.object
@@ -24,6 +25,7 @@ options:
   command:
     description:
       - Command to run when the hook is triggered.
+    type: str
     required: true
   timeout:
     description:

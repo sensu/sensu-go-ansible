@@ -17,14 +17,16 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu entities
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/entities/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
   - flowerysong.sensu_go.object
 options:
-  class:
+  entity_class:
     description:
       - Entity class. Standard classes are 'proxy' and 'agent', but you can use
         whatever you want.
+    type: str
     default: proxy
   subscriptions:
     description:
@@ -39,6 +41,7 @@ options:
   deregistration_handler:
     description:
       - Handler to call for deregistration events.
+    type: str
 '''
 
 EXAMPLES = '''
@@ -71,7 +74,7 @@ class SensuEntity(SensuObject):
         super(SensuEntity, self).__init__(module)
         self.path = '/entities/{0}'.format(self.params['name'])
         self.payload.update({
-            'entity_class': self.params['class'],
+            'entity_class': self.params['entity_class'],
             'subscriptions': self.params['subscriptions'],
             'deregister': self.params['deregister'],
         })
@@ -84,23 +87,22 @@ class SensuEntity(SensuObject):
 
 def main():
     argspec = SensuEntity.argument_spec()
-    argspec.update({
-        'class': {
-            'default': 'proxy',
-            'type': 'str',
-        },
-        'subscriptions': {
-            'type': 'list',
-            'default': [],
-        },
-        'deregister': {
-            'default': False,
-            'type': 'bool',
-        },
-        'deregistration_handler': {
-            'type': 'str'
-        },
-    })
+    argspec.update(
+        dict(
+            entity_class=dict(
+                default='proxy',
+            ),
+            subscriptions=dict(
+                type='list',
+                default=[],
+            ),
+            deregister=dict(
+                type='bool',
+                default=False,
+            ),
+            deregistration_handler=dict(),
+        )
+    )
 
     module = AnsibleModule(
         supports_check_mode=True,

@@ -17,8 +17,58 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu events
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/events/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
+  - flowerysong.sensu_go.object
+options:
+  entity:
+    description:
+      - Name of the entity associated with this event.
+    type: str
+    required: true
+  entity_class:
+    description:
+      - Class the entity belongs to.
+      - The standard classes are 'proxy' and 'agent'.
+    type: str
+    default: proxy
+    aliases: ['class']
+  entity_annotations:
+    description:
+      - C(annotations) for the entity associated with this event.
+    type: dict
+    default: {}
+  entity_labels:
+    description:
+      - C(labels) for the entity associated with this event.
+    type: dict
+    default: {}
+  interval:
+    description:
+      - Interval the check runs at. I don't know why this is useful for ad-hoc events, but it is required by the API.
+    type: int
+    default: 60
+  output:
+    description:
+      - Event output.
+    type: str
+  status:
+    description:
+      - Event status.
+    type: str
+    choices: ['ok', 'warning', 'critical', 'unknown']
+    default: ok
+  duration:
+    description:
+      - Amount of time the check ran for.
+    type: float
+    default: 0.0
+  handlers:
+    description:
+      - Handlers for this event.
+    type: list
+    default: []
 '''
 
 EXAMPLES = '''
@@ -28,7 +78,7 @@ RETURN = '''
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.flowerysong.sensu_go.plugins.module_utils.base import sensu_argument_spec, AnsibleSensuClient
+from ansible_collections.flowerysong.sensu_go.plugins.module_utils.base import clean_metadata_dict, sensu_argument_spec, AnsibleSensuClient
 
 
 def main():
@@ -46,8 +96,8 @@ def main():
                 required=True,
             ),
             entity_class=dict(
-                choices=['proxy', 'agent'],
                 default='proxy',
+                aliases=['class'],
             ),
             interval=dict(
                 type='int',
@@ -65,6 +115,22 @@ def main():
             handlers=dict(
                 type='list',
                 default=[],
+            ),
+            labels=dict(
+                type='dict',
+                default={},
+            ),
+            annotations=dict(
+                type='dict',
+                default={},
+            ),
+            entity_labels=dict(
+                type='dict',
+                default={},
+            ),
+            entity_annotations=dict(
+                type='dict',
+                default={},
             ),
         )
     )
@@ -93,12 +159,16 @@ def main():
             'metadata': {
                 'name': module.params['entity'],
                 'namespace': module.params['namespace'],
+                'annotations': clean_metadata_dict(module.params['entity_annotations']),
+                'labels': clean_metadata_dict(module.params['entity_labels']),
             },
             'entity_class': module.params['entity_class'],
         },
         'check': {
             'metadata': {
                 'name': module.params['name'],
+                'annotations': clean_metadata_dict(module.params['annotations']),
+                'labels': clean_metadata_dict(module.params['labels']),
             },
             'interval': module.params['interval'],
             'status': status_map[module.params['status']],

@@ -17,6 +17,9 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Retrieves Sensu backend status
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/backend/)'
+version_added: 0.1.0
+extends_documentation_fragment:
+  - flowerysong.sensu_go.base
 '''
 
 EXAMPLES = '''

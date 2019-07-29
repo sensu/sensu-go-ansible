@@ -17,6 +17,7 @@ author: "Paul Arthur (@flowerysong)"
 short_description: Manages Sensu namespaces
 description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/rbac/)'
+version_added: 0.1.0
 extends_documentation_fragment:
   - flowerysong.sensu_go.base
 options:
@@ -25,12 +26,14 @@ options:
       - Name of the namespace
     aliases:
       - name
+    type: str
+    default: ~
+    required: true
   state:
     description:
       - Desired state of the namespace.
-    choices:
-      - present
-      - absent
+    type: str
+    choices: ['present', 'absent']
     default: present
 '''
 

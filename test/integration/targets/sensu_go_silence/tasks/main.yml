@@ -103,6 +103,18 @@
           - result.silenced | length == 1
           - result.silenced.0.metadata.name == 'silence:check'
 
+    - name: Test mutually exclusive arguments
+      sensu_go_silence_info:
+        subscription: foo
+        name: bar
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'parameters are mutually exclusive' in result.msg"
+
   always:
     - import_role:
         name: setup_kill_sensu_backend
