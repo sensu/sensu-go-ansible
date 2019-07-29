@@ -1,9 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-
-### Added
+## [0.2.0] - 2019-07-29
 
 ### Changed
 - Added annotation and label support to `sensu_go_event`.
