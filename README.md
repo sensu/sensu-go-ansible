@@ -1,73 +1,50 @@
 # Sensu Go Ansible Modules
 
-This [Ansible](https://www.ansible.com/) Collection implements a number of
-modules for interacting with [Sensu Go](https://sensu.io/).
+This [Ansible Collection][] contains:
+
+- Ansible role to install [Sensu Go][] on your nodes
+- Ansible modules for interacting with [Sensu Go][] REST API
+
+[Ansible Collection]: https://docs.ansible.com/ansible/devel/dev_guide/collections_tech_preview.html
+[Sensu Go]: https://docs.sensu.io/sensu-go/latest
 
 ## Installation
+Just install the collection from Ansible Galaxy and you're good to go:
 
-Ansible Collections were added as a technology preview in Ansible 2.8,
-and are a new method of distributing namespaced Ansible components
-that are not integrated into the core source tree.
-
-They can be installed into a playbook-adjacent `collections`
-directory, `~/.ansible/collections`, or the system-wide
-`/usr/share/ansible/collections`, or you can modify Ansible's
-configuration to specify custom locations.
-
-Clone this repo into whichever location strikes your fancy as
-`collections/ansible_collections/flowerysong/sensu_go`
-
-### Why a Collection?
-
-In-tree modules introduce a certain amount of overhead to every
-step of the development process, inevitably increase the workload
-on core developers even with ansibot's workflow automation and
-multiple active module maintainers, and tie new modules and bugfixes
-to Ansible's release schedule. Publishing a Collection allows me to
-make these modules publicly available with minimal extra work.
-
-## Where's the Documentation?
-
-HTML documentation is not yet being built, but if you have
-the collection installed you can access each module's
-documentation via the ansible-doc command, e.g. `ansible-doc
-flowerysong.sensu_go.sensu_go_asset`
+```
+ansible-galaxy collection install sensu.sensu_go
+```
 
 ## Usage
 
 You can use the namespaced modules:
 ```
-- name: Disable Tessen
-  flowerysong.sensu_go.sensu_go_tessen:
-    enabled: false
-    password: dead60ff
+- hosts: localhost
+  tasks:
+    - name: List Assets
+      sensu.sensu_go.sensu_go_asset_info:
+      register: assets
+
+    - name: List Filters
+      sensu.sensu_go.sensu_go_filter_info:
+      register: filters
 ```
 
 Or add the collection to the search path and use bare names:
 
 ```
-- collections:
-    - flowerysong.sensu_go
-  module_defaults:
-    group/sensu_go:
-      password: dead60ff
-  block:
-    - name: Bind admins to the admin role
-      sensu_go_rolebinding:
-        name: blackops-admin
-        cluster: true
-        role: cluster-admin
-        groups:
-          - blackops
+- hosts: localhost
+  collections: [sensu.sensu_go]
+  tasks:
+    - name: List Assets
+      sensu_go_asset_info:
+      register: assets
 
-    - name: Monitor vault
-      sensu_go_check:
-        name: vault
-        command: check-vault-status
-        subscriptions:
-          - Class_vault
+    - name: List Filters
+      sensu_go_filter_info:
+      register: filters
 ```
 
-Custom `module_defaults` groups are not supported in vanilla Ansible
-2.8, but the patch that enables them will hopefully be upstreamed in
-2.9.
+## Acknowledgement
+We would like to thank [@flowerysong](https://github.com/flowerysong/ansible-sensu-go) for
+initial implementation of the Ansible modules provided in this collection.
