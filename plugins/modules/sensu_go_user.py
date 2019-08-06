@@ -19,7 +19,7 @@ description:
   - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/users/)'
 version_added: 0.1.0
 extends_documentation_fragment:
-  - flowerysong.sensu_go.base
+  - sensu.sensu_go.base
 options:
   state:
     description:
@@ -60,7 +60,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.urls import open_url
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 
-from ansible_collections.flowerysong.sensu_go.plugins.module_utils.base import sensu_argument_spec, AnsibleSensuClient
+from ansible_collections.sensu.sensu_go.plugins.module_utils.base import sensu_argument_spec, AnsibleSensuClient
 
 
 def main():

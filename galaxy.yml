@@ -1,9 +1,10 @@
-namespace: flowerysong
+namespace: sensu
 name: sensu_go
-version: 0.2.0
+version: 0.3.0
 
 authors:
   - Paul Arthur <paul.arthur@flowerysong.com> (@flowerysong)
+  - XLAB Steampunk <steampunk@xlab.si>
 
 tags:
   - sensu
@@ -12,7 +13,7 @@ tags:
 
 readme: README.md
 license_file: COPYING
-description: Modules for interacting with Sensu Go
+description: Roles and modules for installing and using Sensu Go
 
-repository: https://github.com/flowerysong/ansible-sensu-go
-issues: https://github.com/flowerysong/ansible-sensu-go/issues
+repository: https://github.com/sensu/sensu-go-ansible
+issues: https://github.com/sensu/sensu-go-ansible/issues
