@@ -1,0 +1,28 @@
+version: 2
+
+jobs:
+  sanity:
+    docker: [{image: circleci/python:3.7}]
+    environment: {MANPATH: /tmp/man}
+    steps:
+      - checkout
+      - run:
+          name: Checkout Ansible 2.8 from GitHub
+          command: |
+            git clone -b stable-2.8  https://github.com/ansible/ansible.git ~/ansible
+      - run:
+          name: Copy collection to valid location
+          command: |
+            mkdir -p ~/ansible_collections/sensu
+            cp -r ~/project ~/ansible_collections/sensu
+      - run:
+          name: Sanity Check
+          command: |
+            . ~/ansible/hacking/env-setup
+            sudo ~/ansible/bin/ansible-test sanity --test pep8 --python 3.7 --requirements
+
+workflows:
+  version: 2
+  main_workflow:
+    jobs:
+      - sanity
