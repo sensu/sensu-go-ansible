@@ -1,3 +1,6 @@
 test/results
+test/runner
+.pytest_cache
 *.pyc
 *.swp
+meta
