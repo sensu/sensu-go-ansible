@@ -6,23 +6,67 @@ jobs:
     environment: {MANPATH: /tmp/man}
     steps:
       - checkout
-      - run:
-          name: Checkout Ansible 2.8 from GitHub
+      - run: &checkout_ansible
+          name: Checkout Ansible 2.9 from GitHub
           command: |
-            git clone -b stable-2.8  https://github.com/ansible/ansible.git ~/ansible
-      - run:
-          name: Copy collection to valid location
+            git clone -b devel  https://github.com/ansible/ansible.git ~/ansible
+      - run: &install_collection
+          name: Install collection so Ansible can see it
           command: |
-            mkdir -p ~/ansible_collections/sensu
-            cp -r ~/project ~/ansible_collections/sensu
+            mkdir -p ~/.ansible/collections/ansible_collections/sensu
+
+            # We can't use mazer to install it because it would create symlink and
+            # ansible-test command can not work with symlinks.
+            cp -r ~/project ~/.ansible/collections/ansible_collections/sensu/sensu_go/
       - run:
           name: Sanity Check
           command: |
             . ~/ansible/hacking/env-setup
+            cd ~/.ansible/collections/ansible_collections/sensu/sensu_go
             sudo ~/ansible/bin/ansible-test sanity --test pep8 --python 3.7 --requirements
+
+  unit_test: &unit_test
+    docker: [{image: circleci/python:3.7}]
+    steps:
+      - checkout
+      - run: { <<: *checkout_ansible }
+      - run: { <<: *install_collection }
+      - run:
+          name: Unit test
+          command: |
+            export MANPATH=/tmp/man
+            export PATH=$PATH:~/.local/bin
+            . ~/ansible/hacking/env-setup
+            cd ~/.ansible/collections/ansible_collections/sensu/sensu_go
+            sudo ~/ansible/bin/ansible-test units --python ${PY} --requirements --verbose
+
+  unit_py3: {<<: *unit_test, docker: [{image: circleci/python:3.7}],  environment: {PY: 3.7}}
+  unit_py2: {<<: *unit_test, docker: [{image: circleci/python:2.7}],  environment: {PY: 2.7}}
+
+  integration_modules:
+    docker: [{image: circleci/python:3.7}]
+    environment: {MANPATH: /tmp/man}
+    steps:
+      - checkout
+      - run: { <<: *checkout_ansible }
+      - run: { <<: *install_collection }
+      - setup_remote_docker
+      - run:
+          name: Install molecule
+          command: pip install -r ./requirements-dev.txt --user
+      - run:
+          name: Integration Tests (modules)
+          command: |
+            export PATH=$PATH:~/.local/bin
+            . ~/ansible/hacking/env-setup
+            cd test/integration/modules
+            molecule --base-config molecule/shared/base.yml test --all
 
 workflows:
   version: 2
   main_workflow:
     jobs:
       - sanity
+      - unit_py3
+#      - unit_py2
+      - integration_modules
