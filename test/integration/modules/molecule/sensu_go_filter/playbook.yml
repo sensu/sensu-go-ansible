@@ -1,0 +1,86 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Create a filter
+      sensu_go_filter:
+        name: filter
+        action: allow
+        expressions:
+          - event.check.interval == 10
+          - event.check.occurrences == 1
+        runtime_assets: awesomeness
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.filter.metadata.name == 'filter'
+
+    - name: Test filter creation idempotence
+      sensu_go_filter:
+        name: filter
+        action: allow
+        expressions:
+          - event.check.interval == 10
+          - event.check.occurrences == 1
+        runtime_assets: awesomeness
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Create a second filter
+      sensu_go_filter:
+        name: filter2
+        expressions: event.check.interval == 10
+        url: http://localhost:8080
+
+    - name: Fetch all filters
+      sensu_go_filter_info:
+        url: http://localhost:8080
+
+    - name: Fetch a specific filter
+      sensu_go_filter_info:
+        name: filter
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.filters | length == 1
+          - result.filters.0.metadata.name == 'filter'
+
+    - name: Modify a filter
+      sensu_go_filter:
+        name: filter
+        action: deny
+        expressions: event.check.interval > 10
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - not result.filter.runtime_assets
+
+    - name: Delete a filter
+      sensu_go_filter:
+        name: filter
+        state: absent
+        url: http://localhost:8080
+
+    - name: Get all filters
+      sensu_go_filter_info:
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.filters | length == 1
+          - result.filters.0.metadata.name == 'filter2'
