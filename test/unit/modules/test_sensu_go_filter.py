@@ -108,10 +108,7 @@ class TestSensuFilterModule(ModuleTestCase, TestSensuGoObjectBase):
             name='Delete Filter',
             params={
                 'name': 'test_filter',
-                'state': 'absent',
-                'action': 'allow',
-                'expressions': ['event.check.occurrences == 1'],
-                'runtime_assets': []
+                'state': 'absent'
             },
             expect_changed=False
         ),
@@ -193,10 +190,7 @@ class TestSensuFilterModule(ModuleTestCase, TestSensuGoObjectBase):
             name='(check) Delete Filter',
             params={
                 'name': 'test_filter',
-                'state': 'absent',
-                'action': 'allow',
-                'expressions': ['event.check.occurrences == 1'],
-                'runtime_assets': ['ruby-2.4.4']
+                'state': 'absent'
             },
             check_mode=True,
             expect_changed=False,

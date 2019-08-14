@@ -69,7 +69,6 @@ class TestSensuAssetModule(ModuleTestCase, TestSensuGoObjectBase):
         dict(
             name='Update existing asset',
             params={
-                'url': 'http://qweqweqweqwe:8081',
                 'name': 'test_asset',
                 'download_url': 'http://example.com/new-asset.tar.gz',
                 'sha512': 'new-sha512String',
