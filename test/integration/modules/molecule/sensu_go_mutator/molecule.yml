@@ -1,0 +1,7 @@
+---
+scenario:
+  name: sensu_go_mutator
+platforms:
+  - name: instance
+    image: sensu/sensu:latest
+    command: sensu-backend start --state-dir /var/lib/sensu/sensu-backend/etcd1 --state-dir /var/lib/sensu/sensu-backend/etcd1 --log-level debug
