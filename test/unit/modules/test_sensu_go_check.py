@@ -82,6 +82,67 @@ class TestSensuCheckModule(ModuleTestCase, TestSensuGoObjectBase):
             },
         ),
         dict(
+            name='Create Check on different namespace',
+            params={
+                'name': 'test_check',
+                'namespace': 'testing_namespace',
+                'command': 'echo "test"',
+                'subscriptions': ['switches'],
+                'handlers': ['email'],
+                'interval': 60,
+                'publish': True,
+                'timeout': 30,
+                'ttl': 100,
+                'stdin': False,
+                'env_vars': {'RUBY_VERSION': '2.5.0'},
+                'low_flap_threshold': 20,
+                'high_flap_threshold': 60,
+                'runtime_assets': ['ruby-2.5.0'],
+                'check_hooks': {},
+                'proxy_entity_name': 'switch-dc-01',
+                'proxy_entity_attributes': ['entity.entity_class == "proxy"'],
+                'proxy_splay': True,
+                'proxy_splay_coverage': 90,
+                'output_metric_format': 'nagios_perfdata',
+                'output_metric_handlers': ['influx-db'],
+                'round_robin': True
+            },
+            expect_changed=True,
+            expect_api_method='PUT',
+            expect_api_url='/api/core/v2/namespaces/testing_namespace/checks/test_check',
+            expect_api_headers={
+                'Authorization': 'Bearer token',
+                'Content-type': 'application/json'
+            },
+            expect_api_payload={
+                'metadata': {
+                    'name': 'test_check',
+                    'namespace': 'testing_namespace'
+                },
+                'command': 'echo "test"',
+                'subscriptions': ['switches'],
+                'handlers': ['email'],
+                'interval': 60,
+                'publish': True,
+                'timeout': 30,
+                'ttl': 100,
+                'stdin': False,
+                'env_vars': ['RUBY_VERSION=2.5.0'],
+                'low_flap_threshold': 20,
+                'high_flap_threshold': 60,
+                'runtime_assets': ['ruby-2.5.0'],
+                'proxy_entity_name': 'switch-dc-01',
+                'proxy_requests': {
+                    'entity_attributes': ['entity.entity_class == "proxy"'],
+                    'splay': True,
+                    'splay_coverage': 90
+                },
+                'output_metric_format': 'nagios_perfdata',
+                'output_metric_handlers': ['influx-db'],
+                'round_robin': True
+            },
+        ),
+        dict(
             name='Test idempotency',
             params={
                 'name': 'test_check',

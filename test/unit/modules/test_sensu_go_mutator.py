@@ -50,6 +50,34 @@ class TestSensuMutatorModule(ModuleTestCase, TestSensuGoObjectBase):
             },
         ),
         dict(
+            name='Create Mutator on different namespace',
+            params={
+                'name': 'test_mutator',
+                'namespace': 'testing_namespace',
+                'command': 'echo "test"',
+                'timeout': 30,
+                'env_vars': {'RUBY_VERSION': '2.5.0'},
+                'runtime_assets': ["ruby-2.5.0"]
+            },
+            expect_changed=True,
+            expect_api_method='PUT',
+            expect_api_url='/api/core/v2/namespaces/testing_namespace/mutators/test_mutator',
+            expect_api_headers={
+                'Authorization': 'Bearer token',
+                'Content-type': 'application/json'
+            },
+            expect_api_payload={
+                'metadata': {
+                    'name': 'test_mutator',
+                    'namespace': 'testing_namespace'
+                },
+                'command': 'echo "test"',
+                'timeout': 30,
+                'env_vars': ['RUBY_VERSION=2.5.0'],
+                'runtime_assets': ["ruby-2.5.0"]
+            },
+        ),
+        dict(
             name='Test idempotency',
             params={
                 'name': 'test_mutator',

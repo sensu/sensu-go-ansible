@@ -45,6 +45,31 @@ class TestSensuAssetModule(ModuleTestCase, TestSensuGoObjectBase):
             }
         ),
         dict(
+            name='Create Asset on different namespace',
+            params={
+                'name': 'test_asset',
+                'namespace': 'testing_namespace',
+                'state': 'present',
+                'download_url': 'http://example.com/asset.tar.gz',
+                'sha512': 'sha512String'
+            },
+            expect_changed=True,
+            expect_api_method='PUT',
+            expect_api_url='/api/core/v2/namespaces/testing_namespace/assets/test_asset',
+            expect_api_headers={
+                'Authorization': 'Bearer token',
+                'Content-type': 'application/json'
+            },
+            expect_api_payload={
+                'metadata': {
+                    'name': 'test_asset',
+                    'namespace': 'testing_namespace'
+                },
+                'url': 'http://example.com/asset.tar.gz',
+                'sha512': 'sha512String'
+            }
+        ),
+        dict(
             name='Test idempotency',
             params={
                 'name': 'test_asset',

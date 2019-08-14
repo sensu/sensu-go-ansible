@@ -43,6 +43,29 @@ class TestSensuFilterModule(ModuleTestCase, TestSensuGoObjectBase):
             },
         ),
         dict(
+            name='Create Filter on different namespace',
+            params={
+                'name': 'test_filter',
+                'namespace': 'testing_namespace',
+                'action': 'allow',
+                'expressions': ['event.check.occurrences == 1'],
+            },
+            expect_changed=True,
+            expect_api_method='PUT',
+            expect_api_url='/api/core/v2/namespaces/testing_namespace/filters/test_filter',
+            expect_api_headers={
+                'Authorization': 'Bearer token',
+                'Content-type': 'application/json'
+            },
+            expect_api_payload={
+                'metadata': {
+                    'name': 'test_filter',
+                    'namespace': 'testing_namespace'
+                },
+                'expressions': ['event.check.occurrences == 1']
+            },
+        ),
+        dict(
             name='Create Filter without expressions',
             params={
                 'name': 'test_filter',
