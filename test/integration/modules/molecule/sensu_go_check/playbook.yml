@@ -1,0 +1,130 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Create a check
+      sensu_go_check:
+        name: check
+        command: /bin/true
+        subscriptions:
+          - checks
+          - also_checks
+        handlers:
+          - default
+          - not_default
+        interval: 30
+        publish: True
+        timeout: 30
+        ttl: 100
+        stdin: False
+        low_flap_threshold: 20
+        high_flap_threshold: 60
+        proxy_entity_name: switch-dc-01
+        proxy_entity_attributes: ['entity.entity_class == "proxy"']
+        proxy_splay: True
+        proxy_splay_coverage: 90
+        output_metric_format: nagios_perfdata
+        output_metric_handlers: ['influx-db']
+        round_robin: True
+        env_vars:
+          foo: bar
+        runtime_assets: awesomeness
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.check.metadata.name == 'check'
+
+    - name: Test check creation idempotence
+      sensu_go_check:
+        name: check
+        command: /bin/true
+        subscriptions:
+          - checks
+          - also_checks
+        handlers:
+          - default
+          - not_default
+        interval: 30
+        publish: True
+        timeout: 30
+        ttl: 100
+        stdin: False
+        low_flap_threshold: 20
+        high_flap_threshold: 60
+        proxy_entity_name: switch-dc-01
+        proxy_entity_attributes: ['entity.entity_class == "proxy"']
+        proxy_splay: True
+        proxy_splay_coverage: 90
+        output_metric_format: nagios_perfdata
+        output_metric_handlers: ['influx-db']
+        round_robin: True
+        env_vars:
+          foo: bar
+        runtime_assets: awesomeness
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify a check
+      sensu_go_check:
+        name: check
+        command: /bin/true
+        subscriptions:
+          - checks
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - not result.check.handlers
+          - not result.check.env_vars
+          - not result.check.runtime_assets
+          - "'also_checks' not in result.check.subscriptions"
+
+    - name: Create a second check
+      sensu_go_check:
+        name: check2
+        command: /usr/bin/true
+        subscriptions: checks
+        handlers: default
+        url: http://localhost:8080
+
+    - name: Fetch all checks
+      sensu_go_check_info:
+        url: http://localhost:8080
+
+    - name: Fetch a specific check
+      sensu_go_check_info:
+        name: check
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.checks | length == 1
+          - result.checks.0.metadata.name == 'check'
+
+    - name: Delete a check
+      sensu_go_check:
+        name: check
+        state: absent
+        url: http://localhost:8080
+
+    - name: Get all checks
+      sensu_go_check_info:
+        url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.checks | length == 1
+          - result.checks.0.metadata.name == 'check2'
