@@ -115,6 +115,10 @@ options:
     description:
       - List of handlers which receive check results. I'm not sure why this exists.
     type: list
+  round_robin:
+    description:
+      -  An array of environment variables to use with command execution.
+    type: bool
   env_vars:
     description:
       - A mapping of environment variable names and values to use with command execution.
@@ -153,6 +157,7 @@ class SensuCheck(SensuObject):
             'proxy_entity_name',
             'output_metric_format',
             'output_metric_handlers',
+            'round_robin',
         ):
             if self.params[key] is not None:
                 self.payload[key] = self.params[key]
@@ -166,7 +171,7 @@ class SensuCheck(SensuObject):
                 'splay': self.params['proxy_splay'],
             }
             if self.params['proxy_splay']:
-                self.payload['proxy']['splay_coverage'] = self.params['proxy_splay_coverage']
+                self.payload['proxy_requests']['splay_coverage'] = self.params['proxy_splay_coverage']
 
 
 def main():
@@ -237,15 +242,23 @@ def main():
                 type='list',
                 default=[],
             ),
+            round_robin=dict(
+                type='bool',
+                default=False
+            )
         )
     )
 
     required_if = [('state', 'present', ['subscriptions', 'command'])]
+    required_one_of = [('interval', 'cron')]
+    mutually_exclusive = [('interval', 'cron')]
 
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=argspec,
         required_if=required_if,
+        required_one_of=required_one_of,
+        mutually_exclusive=mutually_exclusive
     )
 
     check = SensuCheck(module)
