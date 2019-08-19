@@ -9,10 +9,9 @@ from .common.utils import ModuleTestCase, generate_name
 from .common.sensu_go_object import TestSensuGoObjectBase
 
 
-class TestSensuCheckModule(ModuleTestCase, TestSensuGoObjectBase):
+class TestSensuGoCheck(ModuleTestCase, TestSensuGoObjectBase):
     module = sensu_go_check
-
-    @pytest.mark.parametrize('test_data', [
+    matrix = [
         dict(
             name='Test unreachable URL',
             params={
@@ -518,6 +517,8 @@ class TestSensuCheckModule(ModuleTestCase, TestSensuGoObjectBase):
                 'round_robin': True
             }
         ),
-    ], ids=generate_name)
-    def test_check_module(self, test_data):
+    ]
+
+    @pytest.mark.parametrize('test_data', matrix, ids=generate_name)
+    def test_module(self, test_data):
         self.run_test_case(test_data)

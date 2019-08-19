@@ -9,10 +9,9 @@ from .common.utils import ModuleTestCase, generate_name
 from .common.sensu_go_object import TestSensuGoObjectBase
 
 
-class TestSensuFilterModule(ModuleTestCase, TestSensuGoObjectBase):
+class TestSensuGoFilter(ModuleTestCase, TestSensuGoObjectBase):
     module = sensu_go_filter
-
-    @pytest.mark.parametrize('test_data', [
+    matrix = [
         dict(
             name='Test unreachable URL',
             params={
@@ -240,6 +239,8 @@ class TestSensuFilterModule(ModuleTestCase, TestSensuGoObjectBase):
                 'runtime_assets': ['ruby-2.4.4']
             }
         ),
-    ], ids=generate_name)
-    def test_filter_module(self, test_data):
+    ]
+
+    @pytest.mark.parametrize('test_data', matrix, ids=generate_name)
+    def test_module(self, test_data):
         self.run_test_case(test_data)

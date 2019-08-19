@@ -10,7 +10,7 @@ import pytest
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 
 from .utils import (
-    ModuleTestCase, set_module_args, AnsibleFailJson, AnsibleExitJson, patch
+    set_module_args, AnsibleFailJson, AnsibleExitJson, patch
 )
 
 
