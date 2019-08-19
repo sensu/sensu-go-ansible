@@ -33,7 +33,7 @@ RETURN = '''
 checks:
   description: list of Sensu checks
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

@@ -33,7 +33,7 @@ RETURN = '''
 users:
   description: list of Sensu users
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

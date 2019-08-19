@@ -51,7 +51,7 @@ options:
 '''
 
 EXAMPLES = '''
-- name: create asset
+- name: Create asset
   sensu_go_asset:
     name: asset
     download_url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz

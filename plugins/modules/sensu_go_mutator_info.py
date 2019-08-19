@@ -33,7 +33,7 @@ RETURN = '''
 mutators:
   description: list of Sensu mutators
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

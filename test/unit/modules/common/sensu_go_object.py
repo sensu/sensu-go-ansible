@@ -106,7 +106,10 @@ class TestSensuGoObjectBase(object):
     def _build_url(self, test_case):
         has_hostname = re.match('(?:http|ftp|https)://', test_case['expect_api_url'])
         if not has_hostname:
-            return '{}{}'.format(test_case['params']['url'], test_case['expect_api_url'])
+            return '{url}{api}'.format(
+                url=test_case['params']['url'],
+                api=test_case['expect_api_url'],
+            )
         return test_case['expect_api_url']
 
     def _parse_mock_call(self, mock_call):

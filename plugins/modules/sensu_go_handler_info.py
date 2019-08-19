@@ -33,7 +33,7 @@ RETURN = '''
 handlers:
   description: list of Sensu handlers
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

@@ -69,16 +69,17 @@ options:
 '''
 
 EXAMPLES = '''
-sensu_go_handler:
-  name: influx-db
-  type: pipe
-  command: sensu-influxdb-handler -d sensu
-  env_vars:
-    INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
-    INFLUXDB_USER: sensu
-    INFLUXDB_PASS: password
-  runtime_assets:
-    - sensu-influxdb-handler
+- name: Setup InfluxDB handler
+  sensu_go_handler:
+    name: influx-db
+    type: pipe
+    command: sensu-influxdb-handler -d sensu
+    env_vars:
+      INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
+      INFLUXDB_USER: sensu
+      INFLUXDB_PASS: password
+    runtime_assets:
+      - sensu-influxdb-handler
 '''
 
 RETURN = '''
