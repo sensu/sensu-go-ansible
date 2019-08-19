@@ -22,7 +22,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.base
   - sensu.sensu_go.info
 options:
-  name:
+  check:
     description:
       - Limit results to a specific check.
       - C(entity) must also be specified.
@@ -59,7 +59,7 @@ def main():
     argspec = sensu_argument_spec()
     argspec.update(
         dict(
-            name=dict(),
+            check=dict(),
             entity=dict(),
         )
     )
@@ -67,13 +67,13 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=argspec,
-        required_by={'name': ['entity']},
+        required_by={'check': ['entity']},
     )
 
     client = AnsibleSensuClient(module)
 
-    if module.params['name']:
-        result = [client.get('/events/{0}/{1}'.format(module.params['entity'], module.params['name']))]
+    if module.params['check']:
+        result = [client.get('/events/{0}/{1}'.format(module.params['entity'], module.params['check']))]
     elif module.params['entity']:
         result = client.get('/events/{0}'.format(module.params['entity']))
     else:
