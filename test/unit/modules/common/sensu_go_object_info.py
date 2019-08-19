@@ -31,12 +31,18 @@ class TestSensuGoObjectInfoBase(object):
                 self.module.main()
             result = context.value.args[0]
 
-            assert result[test_case['expect_result_key']] == test_case['expect_result']
+            assert result[test_case['expect_result_key']] == test_case['expect_result'], \
+                '{} != {}'.format(result[test_case['expect_result_key']], test_case['expect_result'])
             if len(open_url_mock.call_args_list) == 2:
                 api_url = open_url_mock.call_args_list[1][0][0]
-                assert api_url == self._build_url(test_case)
-            else:
+                kwrd_args = open_url_mock.call_args_list[1][1]
+                assert kwrd_args['method'] == 'GET', 'only GET method expected for info modules'
+                assert api_url == self._build_url(test_case), '{} != {}'.format(api_url, self._build_url(test_case))
+            elif len(open_url_mock.call_args_list) == 1:
                 assert False, 'no API call was performed'
+            else:
+                assert False, 'too many API calls were performed'
+            assert result['changed'] is False, 'info module should not change anything'
 
     def _extend_default_test_case(self, test_case):
         merged_test_case = self.default_test_case.copy()

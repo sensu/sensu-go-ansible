@@ -33,15 +33,15 @@ class TestSensuGoAssetInfo(ModuleTestCase, TestSensuGoObjectInfoBase):
         dict(
             name='Fetch unexisting asset',
             params={
-                'name': 'test_asset'
+                'name': 'unexisting'
             },
             expect_result_key='assets',
             expect_result=[{}],
-            expect_api_url='/api/core/v2/namespaces/default/assets/test_asset',
+            expect_api_url='/api/core/v2/namespaces/default/assets/unexisting',
             existing_object={}
         ),
         dict(
-            name='Fetch unexisting assets',
+            name='Fetch zero assets',
             params={},
             expect_result_key='assets',
             expect_result=[],
@@ -49,7 +49,7 @@ class TestSensuGoAssetInfo(ModuleTestCase, TestSensuGoObjectInfoBase):
             existing_object=[]
         ),
         dict(
-            name='(check) Test fetch assets',
+            name='(check) Test fetch asset',
             params={
                 'name': 'test_asset'
             },
