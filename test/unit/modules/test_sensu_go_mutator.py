@@ -9,10 +9,9 @@ from .common.utils import ModuleTestCase, generate_name
 from .common.sensu_go_object import TestSensuGoObjectBase
 
 
-class TestSensuMutatorModule(ModuleTestCase, TestSensuGoObjectBase):
+class TestSensuGoMutator(ModuleTestCase, TestSensuGoObjectBase):
     module = sensu_go_mutator
-
-    @pytest.mark.parametrize('test_data', [
+    matrix = [
         dict(
             name='Test unreachable URL',
             params={
@@ -254,6 +253,8 @@ class TestSensuMutatorModule(ModuleTestCase, TestSensuGoObjectBase):
                 'runtime_assets': ["ruby-2.5.0"]
             }
         ),
-    ], ids=generate_name)
-    def test_mutator_module(self, test_data):
+    ]
+
+    @pytest.mark.parametrize('test_data', matrix, ids=generate_name)
+    def test_module(self, test_data):
         self.run_test_case(test_data)
