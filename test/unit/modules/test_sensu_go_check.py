@@ -1,8 +1,12 @@
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.modules import sensu_go_check
-from ansible_collections.sensu.sensu_go.test.unit.modules.common.utils import ModuleTestCase, generate_name
-from ansible_collections.sensu.sensu_go.test.unit.modules.common.sensu_go_object import TestSensuGoObjectBase
+
+from .common.utils import ModuleTestCase, generate_name
+from .common.sensu_go_object import TestSensuGoObjectBase
 
 
 class TestSensuCheckModule(ModuleTestCase, TestSensuGoObjectBase):

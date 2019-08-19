@@ -1,8 +1,15 @@
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
 import json
 
-from unittest.mock import patch
 from ansible.module_utils import basic
 from ansible.module_utils._text import to_bytes
+
+try:
+    from unittest.mock import patch  # Python 3
+except ImportError:
+    from mock import patch  # Python 2 needs mock package installed
 
 
 def set_module_args(args):

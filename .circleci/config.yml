@@ -106,6 +106,6 @@ workflows:
   main_workflow:
     jobs:
       - sanity
-      # - unit_test_python27
+      - unit_test_python27
       - unit_test_python37
       - integration_modules

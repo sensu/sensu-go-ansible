@@ -1,13 +1,17 @@
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
 import re
 import json
 import copy
 
-from unittest.mock import patch
-from ansible_collections.sensu.sensu_go.test.unit.modules.common.utils import ModuleTestCase, \
-    set_module_args, AnsibleFailJson, AnsibleExitJson
+import pytest
+
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 
-import pytest
+from .utils import (
+    ModuleTestCase, set_module_args, AnsibleFailJson, AnsibleExitJson, patch
+)
 
 
 class TestSensuGoObjectBase(object):
