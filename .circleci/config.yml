@@ -62,6 +62,15 @@ commands:
               --requirements \
               << parameters.args >>
 
+  report_coverage:
+    description: Report coverage
+    steps:
+      - run:
+          name: Report coverage to console
+          command: |
+            cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
+            ansible-test coverage report --all
+
 jobs:
   sanity:
     executor: python37
@@ -77,7 +86,8 @@ jobs:
       - common_setup
       - run_test:
           kind: units
-          args: --verbose
+          args: --verbose --coverage
+      - report_coverage: {}
 
   unit_test_python37:
     executor: python37
@@ -85,7 +95,8 @@ jobs:
       - common_setup
       - run_test:
           kind: units
-          args: --verbose
+          args: --verbose --coverage
+      - report_coverage: {}
 
   integration_modules:
     executor: python37
