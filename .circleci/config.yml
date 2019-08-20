@@ -78,7 +78,6 @@ jobs:
       - common_setup
       - run_test:
           kind: sanity
-          args: --test pep8
 
   unit_test_python27:
     executor: python27
