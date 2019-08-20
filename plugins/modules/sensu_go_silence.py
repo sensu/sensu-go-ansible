@@ -46,13 +46,13 @@ options:
 '''
 
 EXAMPLES = '''
-# Silence a specific check
-sensu_go_silence:
-  name: Class_mx:check-disk
+- name: Silence a specific check
+  sensu_go_silence:
+    name: Class_mx:check-disk
 
-# Silence all checks on a specific host
-sensu_go_silence:
-  name: entity:punk-zenfusho.mx.x.mail.umich.edu:*
+- name: Silence all checks on a specific host
+  sensu_go_silence:
+    name: entity:punk-zenfusho.mx.x.mail.umich.edu:*
 '''
 
 RETURN = '''

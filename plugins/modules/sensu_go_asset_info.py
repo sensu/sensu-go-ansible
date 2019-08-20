@@ -33,7 +33,7 @@ RETURN = '''
 assets:
   description: list of Sensu assets
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

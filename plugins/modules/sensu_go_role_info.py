@@ -39,7 +39,7 @@ RETURN = '''
 roles:
   description: list of Sensu roles
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

@@ -33,7 +33,7 @@ options:
 '''
 
 EXAMPLES = '''
-- name: List Sensu silence entrues
+- name: List Sensu silence entries
   sensu_go_silence_info:
   register: result
 '''
@@ -42,7 +42,7 @@ RETURN = '''
 silence_entries:
   description: list of Sensu silence entries
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

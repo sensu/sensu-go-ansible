@@ -38,13 +38,13 @@ options:
 '''
 
 EXAMPLES = '''
-# Create a new namespace
-- sensu_go_namespace:
+- name: Create a new namespace
+  sensu_go_namespace:
     name: production
     state: present
 
-# Delete a namespace
-- sensu_go_namespace:
+- name: Delete a namespace
+  sensu_go_namespace:
     name: staging
     state: absent
 '''

@@ -24,8 +24,7 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = '''
-# List all entities
-- name: List Sensu entities
+- name: List all Sensu entities
   sensu_go_entity_info:
   register: result
 '''

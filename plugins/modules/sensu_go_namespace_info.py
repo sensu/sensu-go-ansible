@@ -32,7 +32,7 @@ RETURN = '''
 namespaces:
   description: list of Sensu namespaces
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

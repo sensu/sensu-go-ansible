@@ -33,7 +33,7 @@ RETURN = '''
 filters:
   description: list of Sensu filters
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

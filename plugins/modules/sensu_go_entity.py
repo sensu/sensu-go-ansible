@@ -45,8 +45,8 @@ options:
 '''
 
 EXAMPLES = '''
-# Create a proxy entity
-- sensu_go_entity:
+- name: Create a proxy entity
+  sensu_go_entity:
     name: api.example.com
     subscriptions:
       - tls
@@ -54,8 +54,8 @@ EXAMPLES = '''
       labels:
         Status: production
 
-# Modify an agent entity
-- sensu_go_entity:
+- name: Modify an agent entity
+  sensu_go_entity:
     name: api-server-01.example.com
     entity_class: agent
     labels:

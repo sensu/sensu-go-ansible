@@ -32,12 +32,12 @@ class TestSensuGoObjectInfoBase(object):
             result = context.value.args[0]
 
             assert result[test_case['expect_result_key']] == test_case['expect_result'], \
-                '{} != {}'.format(result[test_case['expect_result_key']], test_case['expect_result'])
+                '{0} != {1}'.format(result[test_case['expect_result_key']], test_case['expect_result'])
             if len(open_url_mock.call_args_list) == 2:
                 api_url = open_url_mock.call_args_list[1][0][0]
                 kwrd_args = open_url_mock.call_args_list[1][1]
                 assert kwrd_args['method'] == 'GET', 'only GET method expected for info modules'
-                assert api_url == self._build_url(test_case), '{} != {}'.format(api_url, self._build_url(test_case))
+                assert api_url == self._build_url(test_case), '{0} != {1}'.format(api_url, self._build_url(test_case))
             elif len(open_url_mock.call_args_list) == 1:
                 assert False, 'no API call was performed'
             else:
@@ -65,7 +65,10 @@ class TestSensuGoObjectInfoBase(object):
     def _build_url(self, test_case):
         has_hostname = re.match('(?:http|ftp|https)://', test_case['expect_api_url'])
         if not has_hostname:
-            return '{}{}'.format(test_case['params']['url'], test_case['expect_api_url'])
+            return '{url}{api}'.format(
+                url=test_case['params']['url'],
+                api=test_case['expect_api_url'],
+            )
         return test_case['expect_api_url']
 
     def _prepare_input_params(self, test_case):

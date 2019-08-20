@@ -33,7 +33,7 @@ RETURN = '''
 hooks:
   description: list of Sensu hooks
   returned: always
-  type: complex
+  type: list
 '''
 
 from ansible.module_utils.basic import AnsibleModule
