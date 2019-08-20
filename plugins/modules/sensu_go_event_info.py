@@ -20,7 +20,6 @@ description:
 version_added: 0.1.0
 extends_documentation_fragment:
   - sensu.sensu_go.base
-  - sensu.sensu_go.info
 options:
   check:
     description:
