@@ -70,6 +70,14 @@ commands:
           command: |
             cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
             ansible-test coverage report --all
+      - run:
+          name: Report coverage details as HTML
+          command: |
+            cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
+            ansible-test coverage html --all
+      - store_artifacts:
+          path: /home/circleci/.ansible/collections/ansible_collections/sensu/sensu_go/test/results/reports/coverage
+          destination: coverage-report
 
 jobs:
   sanity:
