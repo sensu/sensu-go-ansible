@@ -13,3 +13,7 @@ class Error(Exception):
 
 class ClientError(Error):
     """ Error that signals failure in HTTP connection. """
+
+
+class SyncError(Error):
+    """ Error that signals failure when syncing state with remote. """
