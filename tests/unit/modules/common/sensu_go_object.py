@@ -34,7 +34,9 @@ class TestSensuGoObjectBase(object):
         with patch('ansible_collections.sensu.sensu_go.plugins.module_utils.base.open_url') as open_url_mock:
             self._configure_mock(open_url_mock, test_case)
             # _ansible_* keys are added here, we deepcopy it so it doesn't mess with our test case
-            set_module_args(self._prepare_input_params(copy.deepcopy(test_case)))
+            set_module_args(
+                **self._prepare_input_params(copy.deepcopy(test_case))
+            )
 
             with pytest.raises(self._get_exit_class(test_case)) as context:
                 self.module.main()

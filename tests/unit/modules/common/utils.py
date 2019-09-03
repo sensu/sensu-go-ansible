@@ -12,7 +12,7 @@ except ImportError:
     from mock import patch  # Python 2 needs mock package installed
 
 
-def set_module_args(args):
+def set_module_args(**args):
     if '_ansible_remote_tmp' not in args:
         args['_ansible_remote_tmp'] = '/tmp'
     if '_ansible_keep_remote_files' not in args:
@@ -43,10 +43,10 @@ def fail_json(*args, **kwargs):
 
 class ModuleTestCase:
     def setup_method(self):
-        self.mock_module = patch.multiple(basic.AnsibleModule, exit_json=exit_json,
-                                          fail_json=fail_json)
+        self.mock_module = patch.multiple(
+            basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json,
+        )
         self.mock_module.start()
-        set_module_args({})
 
     def teardown_method(self):
         self.mock_module.stop()
