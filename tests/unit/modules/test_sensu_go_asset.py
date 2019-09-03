@@ -3,194 +3,86 @@ __metaclass__ = type
 
 import pytest
 
+from ansible_collections.sensu.sensu_go.plugins.module_utils import (
+    errors, utils,
+)
 from ansible_collections.sensu.sensu_go.plugins.modules import sensu_go_asset
 
-from .common.utils import ModuleTestCase, generate_name
-from .common.sensu_go_object import TestSensuGoObjectBase
+from .common.utils import (
+    AnsibleExitJson, AnsibleFailJson, ModuleTestCase, set_module_args,
+)
 
 
-class TestSensuGoAsset(ModuleTestCase, TestSensuGoObjectBase):
-    module = sensu_go_asset
-    matrix = [
-        dict(
-            name='Test unreachable URL',
-            params={
-                'name': 'test_asset',
-                'download_url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String',
-            },
-            is_http_error=True,
-            expect_failed=True,
-            expect_msg='authentication failed: unreachable'
-        ),
-        dict(
-            name='Create Asset',
-            params={
-                'name': 'test_asset',
-                'state': 'present',
-                'download_url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String'
-            },
-            expect_changed=True,
-            expect_api_method='PUT',
-            expect_api_url='/api/core/v2/namespaces/default/assets/test_asset',
-            expect_api_headers={
-                'Authorization': 'Bearer token',
-                'Content-type': 'application/json'
-            },
-            expect_api_payload={
-                'metadata': {
-                    'name': 'test_asset',
-                    'namespace': 'default'
-                },
-                'url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String'
-            }
-        ),
-        dict(
-            name='Create Asset on different namespace',
-            params={
-                'name': 'test_asset',
-                'namespace': 'testing_namespace',
-                'state': 'present',
-                'download_url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String'
-            },
-            expect_changed=True,
-            expect_api_method='PUT',
-            expect_api_url='/api/core/v2/namespaces/testing_namespace/assets/test_asset',
-            expect_api_headers={
-                'Authorization': 'Bearer token',
-                'Content-type': 'application/json'
-            },
-            expect_api_payload={
-                'metadata': {
-                    'name': 'test_asset',
-                    'namespace': 'testing_namespace'
-                },
-                'url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String'
-            }
-        ),
-        dict(
-            name='Test idempotency',
-            params={
-                'name': 'test_asset',
-                'state': 'present',
-                'download_url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String',
-                'filters': ["entity.system.os == 'linux'"],
-                'headers': {'X-Test': 'Test'}
-            },
-            expect_changed=False,
-            existing_object={
-                'metadata': {
-                    'name': 'test_asset',
-                    'namespace': 'default'
-                },
-                'url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String',
-                'filters': ["entity.system.os == 'linux'"],
-                'headers': {'X-Test': 'Test'}
-            }
-        ),
-        dict(
-            name='Update existing asset',
-            params={
-                'name': 'test_asset',
-                'download_url': 'http://example.com/new-asset.tar.gz',
-                'sha512': 'new-sha512String',
-                'filters': ["new.filter == 'new'"],
-                'headers': {'X-Test': 'new-header'}
-            },
-            expect_changed=True,
-            expect_api_method='PUT',
-            expect_api_url='/api/core/v2/namespaces/default/assets/test_asset',
-            expect_api_headers={
-                'Authorization': 'Bearer token',
-                'Content-type': 'application/json'
-            },
-            expect_api_payload={
-                'metadata': {
-                    'name': 'test_asset',
-                    'namespace': 'default'
-                },
-                'url': 'http://example.com/new-asset.tar.gz',
-                'sha512': 'new-sha512String',
-                'filters': ["new.filter == 'new'"],
-                'headers': {'X-Test': 'new-header'}
-            },
-            existing_object={
-                'metadata': {
-                    'name': 'test_asset',
-                    'namespace': 'default'
-                },
-                'url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String',
-                'filters': ["entity.system.os == 'linux'"],
-                'headers': {'X-Test': 'Test'}
-            }
-        ),
-        dict(
-            name='(check) Create Asset',
-            params={
-                'name': 'test_asset',
-                'state': 'present',
-                'download_url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String',
-                'filters': ["entity.system.os == 'linux'"],
-                'headers': {'X-Test': 'Test'}
-            },
-            check_mode=True,
-            expect_changed=True,
-        ),
-        dict(
-            name='(check) Update Asset',
-            params={
-                'name': 'test_asset',
-                'download_url': 'http://example.com/new-asset.tar.gz',
-                'sha512': 'new-sha512String',
-                'filters': ["new.filter == 'new'"],
-                'headers': {'X-Test': 'new-header'}
-            },
-            check_mode=True,
-            expect_changed=True,
-            existing_object={
-                'metadata': {
-                    'name': 'test_asset',
-                    'namespace': 'default'
-                },
-                'url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String',
-                'filters': ["entity.system.os == 'linux'"],
-                'headers': {'X-Test': 'Test'}
-            }
-        ),
-        dict(
-            name='(check) Update Asset idempotency',
-            params={
-                'name': 'test_asset',
-                'state': 'present',
-                'download_url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String',
-                'filters': ["entity.system.os == 'linux'"],
-                'headers': {'X-Test': 'Test'}
-            },
-            check_mode=True,
-            expect_changed=False,
-            existing_object={
-                'metadata': {
-                    'name': 'test_asset',
-                    'namespace': 'default'
-                },
-                'url': 'http://example.com/asset.tar.gz',
-                'sha512': 'sha512String',
-                'filters': ["entity.system.os == 'linux'"],
-                'headers': {'X-Test': 'Test'}
-            }
-        ),
-    ]
+class TestSensuGoAsset(ModuleTestCase):
+    def test_minimal_asset_parameters(self, mocker):
+        sync_mock = mocker.patch.object(utils, "sync")
+        sync_mock.return_value = True, {}
+        set_module_args(
+            name="test_asset",
+            download_url="http://example.com/asset.tar.gz",
+            sha512="sha512String",
+        )
 
-    @pytest.mark.parametrize('test_data', matrix, ids=generate_name)
-    def test_module(self, test_data):
-        self.run_test_case(test_data)
+        with pytest.raises(AnsibleExitJson) as context:
+            sensu_go_asset.main()
+
+        state, _client, path, payload, check_mode = sync_mock.call_args[0]
+        assert state == "present"
+        assert path == "/assets/test_asset"
+        assert payload == dict(
+            url="http://example.com/asset.tar.gz",
+            sha512="sha512String",
+            filters=[],
+            headers={},
+            metadata=dict(
+                name="test_asset",
+                namespace="default",
+            ),
+        )
+        assert check_mode is False
+
+    def test_all_asset_parameters(self, mocker):
+        sync_mock = mocker.patch.object(utils, "sync")
+        sync_mock.return_value = True, {}
+        set_module_args(
+            name="test_asset",
+            state="absent",
+            download_url="http://example.com/asset.tar.gz",
+            sha512="sha512String",
+            filters=["a", "b", "c"],
+            headers={"header": "h"},
+            labels={"region": "us-west-1"},
+            annotations={"playbook": 12345},
+        )
+
+        with pytest.raises(AnsibleExitJson) as context:
+            sensu_go_asset.main()
+
+        state, _client, path, payload, check_mode = sync_mock.call_args[0]
+        assert state == "absent"
+        assert path == "/assets/test_asset"
+        assert payload == dict(
+            url="http://example.com/asset.tar.gz",
+            sha512="sha512String",
+            filters=["a", "b", "c"],
+            headers={"header": "h"},
+            metadata=dict(
+                name="test_asset",
+                namespace="default",
+                labels={"region": "us-west-1"},
+                annotations={"playbook": "12345"},
+            ),
+        )
+        assert check_mode is False
+
+    def test_failure(self, mocker):
+        sync_mock = mocker.patch.object(utils, "sync")
+        sync_mock.side_effect = errors.Error("Bad error")
+        set_module_args(
+            name="test_asset",
+            download_url="http://example.com/asset.tar.gz",
+            sha512="sha512String",
+        )
+
+        with pytest.raises(AnsibleFailJson):
+            sensu_go_asset.main()

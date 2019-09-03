@@ -3,64 +3,45 @@ __metaclass__ = type
 
 import pytest
 
+from ansible_collections.sensu.sensu_go.plugins.module_utils import (
+    errors, utils,
+)
 from ansible_collections.sensu.sensu_go.plugins.modules import sensu_go_asset_info
 
-from .common.utils import ModuleTestCase, generate_name
-from .common.sensu_go_object_info import TestSensuGoObjectInfoBase
+from .common.utils import (
+    AnsibleExitJson, AnsibleFailJson, ModuleTestCase, set_module_args,
+)
 
 
-class TestSensuGoAssetInfo(ModuleTestCase, TestSensuGoObjectInfoBase):
-    module = sensu_go_asset_info
-    matrix = [
-        dict(
-            name='Fetch specific asset',
-            params={
-                'name': 'test_asset'
-            },
-            expect_result_key='assets',
-            expect_result=[{'name': 'test_asset'}],
-            expect_api_url='/api/core/v2/namespaces/default/assets/test_asset',
-            existing_object={'name': 'test_asset'}
-        ),
-        dict(
-            name='Fetch multiple assets',
-            params={},
-            expect_result_key='assets',
-            expect_result=[{'name': 'test_asset'}, {'name': 'asset2'}],
-            expect_api_url='/api/core/v2/namespaces/default/assets',
-            existing_object=[{'name': 'test_asset'}, {'name': 'asset2'}]
-        ),
-        dict(
-            name='Fetch unexisting asset',
-            params={
-                'name': 'unexisting'
-            },
-            expect_result_key='assets',
-            expect_result=[{}],
-            expect_api_url='/api/core/v2/namespaces/default/assets/unexisting',
-            existing_object={}
-        ),
-        dict(
-            name='Fetch zero assets',
-            params={},
-            expect_result_key='assets',
-            expect_result=[],
-            expect_api_url='/api/core/v2/namespaces/default/assets',
-            existing_object=[]
-        ),
-        dict(
-            name='(check) Test fetch asset',
-            params={
-                'name': 'test_asset'
-            },
-            check_mode=True,
-            expect_result_key='assets',
-            expect_result=[{'name': 'test_asset'}],
-            expect_api_url='/api/core/v2/namespaces/default/assets/test_asset',
-            existing_object={'name': 'test_asset'}
-        ),
-    ]
+class TestSensuGoAssetInfo(ModuleTestCase):
+    def test_get_all_assets(self, mocker):
+        get_mock = mocker.patch.object(utils, "get")
+        get_mock.return_value = [1, 2, 3]
+        set_module_args()
 
-    @pytest.mark.parametrize('test_data', matrix, ids=generate_name)
-    def test_module(self, test_data):
-        self.run_test_case(test_data)
+        with pytest.raises(AnsibleExitJson) as context:
+            sensu_go_asset_info.main()
+
+        _client, path = get_mock.call_args[0]
+        assert path == "/assets"
+        assert context.value.args[0]["assets"] == [1, 2, 3]
+
+    def test_get_single_asset(self, mocker):
+        get_mock = mocker.patch.object(utils, "get")
+        get_mock.return_value = 4
+        set_module_args(name="sample-asset")
+
+        with pytest.raises(AnsibleExitJson) as context:
+            sensu_go_asset_info.main()
+
+        _client, path = get_mock.call_args[0]
+        assert path == "/assets/sample-asset"
+        assert context.value.args[0]["assets"] == [4]
+
+    def test_failure(self, mocker):
+        get_mock = mocker.patch.object(utils, "get")
+        get_mock.side_effect = errors.Error("Bad error")
+        set_module_args(name="sample-asset")
+
+        with pytest.raises(AnsibleFailJson):
+            sensu_go_asset_info.main()
