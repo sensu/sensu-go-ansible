@@ -69,12 +69,12 @@ commands:
           name: Report coverage to console
           command: |
             cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
-            ansible-test coverage report --all
+            ansible-test coverage report
       - run:
           name: Report coverage details as HTML
           command: |
             cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
-            ansible-test coverage html --all
+            ansible-test coverage html
       - store_artifacts:
           path: /home/circleci/.ansible/collections/ansible_collections/sensu/sensu_go/tests/output/reports/coverage
           destination: coverage-report
