@@ -69,14 +69,14 @@ commands:
           name: Report coverage to console
           command: |
             cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
-            ansible-test coverage report --all
+            ansible-test coverage report
       - run:
           name: Report coverage details as HTML
           command: |
             cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
-            ansible-test coverage html --all
+            ansible-test coverage html
       - store_artifacts:
-          path: /home/circleci/.ansible/collections/ansible_collections/sensu/sensu_go/test/results/reports/coverage
+          path: /home/circleci/.ansible/collections/ansible_collections/sensu/sensu_go/tests/output/reports/coverage
           destination: coverage-report
 
 jobs:
@@ -116,7 +116,7 @@ jobs:
       - run:
           name: Integration Tests (modules)
           command: |
-            cd test/integration/modules
+            cd tests/integration/modules
             molecule --base-config molecule/shared/base.yml test --all
 
 workflows:

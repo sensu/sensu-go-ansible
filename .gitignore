@@ -1,5 +1,5 @@
-test/results
-test/runner
+tests/output
+tests/runner
 .pytest_cache
 *.pyc
 *.swp
