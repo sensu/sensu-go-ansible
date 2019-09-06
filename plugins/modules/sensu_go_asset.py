@@ -1,22 +1,26 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2019, Cameron Hurst <cahurst@cisco.com>
+# Copyright: (c) 2019, XLAB Steampunk <steampunk@xlab.si>
 #
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 module: sensu_go_asset
 author: "Cameron Hurst (@wakemaster39)"
 short_description: Manages Sensu assets
 description:
-  - 'For more information, refer to the Sensu documentation: U(https://docs.sensu.io/sensu-go/latest/reference/assets/)'
+  - For more information, refer to the Sensu documentation at
+    U(https://docs.sensu.io/sensu-go/latest/reference/assets/)
 version_added: 0.1.0
 extends_documentation_fragment:
   - sensu.sensu_go.base
@@ -26,7 +30,7 @@ options:
     description:
       - Target state of the Sensu object.
     type: str
-    choices: [ 'present' ]
+    choices: [ "present", "absent" ]
     default: present
   download_url:
     description:
@@ -40,17 +44,19 @@ options:
     required: true
   filters:
     description:
-      - A set of Sensu query expressions used to determine if the asset should be installed.
+      - A set of Sensu query expressions used to determine if the asset
+        should be installed.
     type: list
     default: []
   headers:
     description:
-      - Additional headers to send when retrieving the asset, e.g. for authorization.
+      - Additional headers to send when retrieving the asset, e.g. for
+        authorization.
     type: dict
     default: {}
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create asset
   sensu_go_asset:
     name: asset
@@ -65,42 +71,23 @@ EXAMPLES = '''
       sensio.io.bonsai.tier: Community
       sensio.io.bonsai.version: 4.0.0
       sensio.io.bonsai.tags: ruby-runtime-2.4.4
-'''
+"""
 
-RETURN = '''
-'''
+RETURN = """
+"""
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.sensu.sensu_go.plugins.module_utils.base import SensuObject
 
-
-class SensuAsset(SensuObject):
-    def __init__(self, module):
-        super(SensuAsset, self).__init__(module)
-
-        self.path = '/assets/{0}'.format(self.params['name'])
-
-        for key in (
-            'download_url',
-            "sha512",
-            "filters",
-            "headers"
-        ):
-            if self.params[key] is not None:
-                if key == "download_url":
-                    self.payload["url"] = self.params[key]
-                else:
-                    self.payload[key] = self.params[key]
+from ansible_collections.sensu.sensu_go.plugins.module_utils import (
+    arguments, errors, utils,
+)
 
 
 def main():
-    argspec = SensuAsset.argument_spec()
-    argspec.update(
-        dict(
-            state=dict(
-                default='present',
-                choices=['present'],
-            ),
+    module = AnsibleModule(
+        supports_check_mode=True,
+        argument_spec=dict(
+            arguments.MUTATION_ARGUMENTS,
             download_url=dict(
                 required=True,
             ),
@@ -108,25 +95,31 @@ def main():
                 required=True,
             ),
             filters=dict(
-                type='list',
+                type="list",
                 default=[],
             ),
             headers=dict(
-                type='dict',
+                type="dict",
                 default={},
             ),
+        ),
+    )
+
+    client = arguments.get_sensu_client(module.params)
+    path = "/assets/{0}".format(module.params["name"])
+    payload = arguments.get_mutation_payload(
+        module.params, "download_url", "sha512", "filters", "headers",
+    )
+    payload["url"] = payload.pop("download_url")  # Remap download_url -> url
+
+    try:
+        changed, asset = utils.sync(
+            module.params["state"], client, path, payload, module.check_mode,
         )
-    )
-
-    module = AnsibleModule(
-        supports_check_mode=True,
-        argument_spec=argspec,
-    )
-
-    asset = SensuAsset(module)
-    result = asset.reconcile()
-    module.exit_json(changed=result['changed'], asset=result['object'])
+        module.exit_json(changed=changed, asset=asset)
+    except errors.Error as e:
+        module.fail_json(msg=str(e))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
