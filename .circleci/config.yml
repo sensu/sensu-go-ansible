@@ -11,7 +11,8 @@ workflows:
       - unit_python36_ansible29
       - unit_python37_ansible29
 
-      - integration_ansible29_git
+      - modules_integration_ansible29_git
+      - install_role_integration_ansible29_git
 
   daily_master:
     triggers:
@@ -19,7 +20,8 @@ workflows:
           cron: "12 4 * * *"
           filters: { branches: { only: [ master ] } }
     jobs:
-      - integration_ansible29_git
+      - modules_integration_ansible29_git
+      - install_role_integration_ansible29_git
 
   daily_released:
     triggers:
@@ -27,7 +29,8 @@ workflows:
           cron: "12 5 * * *"
           filters: { branches: { only: [ stable ] } }
     jobs:
-      - integration_ansible29_galaxy
+      - modules_integration_ansible29_galaxy
+      - install_role_integration_ansible29_galaxy
 
 # A list of all supported python versions.
 executors:
@@ -98,16 +101,32 @@ jobs:
 
   # Integration tests run on single python version, because python portability
   # is checked by sanity and unit tests.
-  integration_ansible29_git:
+  modules_integration_ansible29_git:
     executor: python37
     environment:
       ANSIBLE_VERSION: ==2.9.0b1
+      INTEGRATION_TEST_SECTION: modules
     steps: [ integration_test_git ]
 
-  integration_ansible29_galaxy:
+  install_role_integration_ansible29_git:
     executor: python37
     environment:
       ANSIBLE_VERSION: ==2.9.0b1
+      INTEGRATION_TEST_SECTION: roles/install
+    steps: [ integration_test_git ]
+
+  modules_integration_ansible29_galaxy:
+    executor: python37
+    environment:
+      ANSIBLE_VERSION: ==2.9.0b1
+      INTEGRATION_TEST_SECTION: modules
+    steps: [ integration_test_galaxy ]
+
+  install_role_integration_ansible29_galaxy:
+    executor: python37
+    environment:
+      ANSIBLE_VERSION: ==2.9.0b1
+      INTEGRATION_TEST_SECTION: role/installs
     steps: [ integration_test_galaxy ]
 
 commands:
@@ -207,7 +226,7 @@ commands:
       - run:
           name: Run integration tests
           command: |
-            cd tests/integration/modules
+            cd tests/integration/${INTEGRATION_TEST_SECTION}
             molecule --base-config molecule/shared/base.yml test --all
 
   report_coverage:

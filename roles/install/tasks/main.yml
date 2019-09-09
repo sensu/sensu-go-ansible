@@ -1,0 +1,22 @@
+---
+- name: Prepare package manager ({{ ansible_pkg_mgr }})
+  include_tasks: '{{ ansible_pkg_mgr }}/prepare.yml'
+  tags:
+    - prepare_install
+    - install
+
+# Each component can be either simple string (package name) or
+# a dict {name: NAME, version: VERSION}. Here we unify this.
+- name: Normalize components list
+  set_fact:
+    _components: |
+      {{ _components | default([]) + [{'name': item.name|default(item),
+      'version': item.version|default('latest')}] }}
+  loop: '{{ components }}'
+  tags:
+    - install
+
+- name: Install components
+  include_tasks: '{{ ansible_pkg_mgr }}/install.yml'
+  tags:
+    - install
