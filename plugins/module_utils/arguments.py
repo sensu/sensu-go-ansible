@@ -12,22 +12,29 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import client
 
 
 COMMON_ARGUMENTS = dict(
-    user=dict(
-        default="admin",
-        fallback=(env_fallback, ["SENSU_USER"]),
-    ),
-    password=dict(
-        default="P@ssw0rd!",
-        no_log=True,
-        fallback=(env_fallback, ["SENSU_PASSWORD"]),
-    ),
-    url=dict(
-        default="http://localhost:8080",
-        fallback=(env_fallback, ["SENSU_BACKEND_URL"]),
-    ),
-    namespace=dict(
-        default="default",
-    ),
+    auth=dict(
+        type="dict",
+        apply_defaults=True,
+        options=dict(
+            user=dict(
+                default="admin",
+                fallback=(env_fallback, ["SENSU_USER"]),
+            ),
+            password=dict(
+                default="P@ssw0rd!",
+                no_log=True,
+                fallback=(env_fallback, ["SENSU_PASSWORD"]),
+            ),
+            url=dict(
+                default="http://localhost:8080",
+                fallback=(env_fallback, ["SENSU_URL"]),
+            ),
+            namespace=dict(
+                default="default",
+                fallback=(env_fallback, ["SENSU_NAMESPACE"]),
+            )
+        ),
+    )
 )
 
 MUTATION_ARGUMENTS = dict(
@@ -56,7 +63,7 @@ def get_mutation_payload(source, *wanted_params):
     }
     payload["metadata"] = dict(
         name=source["name"],
-        namespace=source["namespace"],
+        namespace=source["auth"]["namespace"],
     )
     for kind in "labels", "annotations":
         if source.get(kind):
@@ -66,7 +73,7 @@ def get_mutation_payload(source, *wanted_params):
     return payload
 
 
-def get_sensu_client(params):
+def get_sensu_client(auth):
     return client.Client(
-        params["url"], params["user"], params["password"], params["namespace"],
+        auth["url"], auth["user"], auth["password"], auth["namespace"],
     )

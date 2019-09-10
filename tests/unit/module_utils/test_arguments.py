@@ -11,8 +11,10 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 class TestGetMutationPayload:
     def test_no_key(self):
         params = dict(
+            auth=dict(
+                namespace="space"
+            ),
             name="name",
-            namespace="space",
         )
 
         assert arguments.get_mutation_payload(params) == dict(
@@ -24,8 +26,10 @@ class TestGetMutationPayload:
 
     def test_wanted_key(self):
         params = dict(
+            auth=dict(
+                namespace="space"
+            ),
             name="name",
-            namespace="space",
             key="value",
         )
 
@@ -39,8 +43,10 @@ class TestGetMutationPayload:
 
     def test_labels(self):
         params = dict(
+            auth=dict(
+                namespace="space"
+            ),
             name="name",
-            namespace="space",
             labels=dict(
                 some="label",
                 numeric=3,
@@ -60,8 +66,10 @@ class TestGetMutationPayload:
 
     def test_annotations(self):
         params = dict(
+            auth=dict(
+                namespace="space"
+            ),
             name="name",
-            namespace="space",
             annotations=dict(
                 my="Annotation",
                 number=45,

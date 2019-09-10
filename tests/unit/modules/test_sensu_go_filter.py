@@ -48,8 +48,10 @@ class TestSensuGoFilter(ModuleTestCase, TestSensuGoObjectBase):
         dict(
             name='Create Filter on different namespace',
             params={
+                'auth': {
+                    'namespace': 'testing_namespace',
+                },
                 'name': 'test_filter',
-                'namespace': 'testing_namespace',
                 'action': 'allow',
                 'expressions': ['event.check.occurrences == 1'],
             },
