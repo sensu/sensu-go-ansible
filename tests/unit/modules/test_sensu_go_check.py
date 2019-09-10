@@ -87,8 +87,10 @@ class TestSensuGoCheck(ModuleTestCase, TestSensuGoObjectBase):
         dict(
             name='Create Check on different namespace',
             params={
+                'auth': {
+                    'namespace': 'testing_namespace',
+                },
                 'name': 'test_check',
-                'namespace': 'testing_namespace',
                 'command': 'echo "test"',
                 'subscriptions': ['switches'],
                 'handlers': ['email'],

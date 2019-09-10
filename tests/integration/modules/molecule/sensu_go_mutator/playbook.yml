@@ -7,6 +7,8 @@
   tasks:
     - name: Create a mutator
       sensu_go_mutator:
+        auth:
+          url: http://localhost:8080
         name: mutator
         command: sensu-influxdb-mutator
         timeout: 30
@@ -15,7 +17,6 @@
           INFLUXDB_USER: sensu
         runtime_assets:
           - sensu-influxdb-mutator
-        url: http://localhost:8080
       register: result
 
     - assert:
@@ -23,6 +24,8 @@
 
     - name: Test mutator creation idempotence
       sensu_go_mutator:
+        auth:
+          url: http://localhost:8080
         name: mutator
         command: sensu-influxdb-mutator
         timeout: 30
@@ -31,7 +34,6 @@
           INFLUXDB_USER: sensu
         runtime_assets:
           - sensu-influxdb-mutator
-        url: http://localhost:8080
       register: result
 
     - assert:
@@ -39,10 +41,11 @@
 
     - name: Modify a mutator
       sensu_go_mutator:
+        auth:
+          url: http://localhost:8080
         name: mutator
         command: sensu-influxdb-mutator
         timeout: 60
-        url: http://localhost:8080
       register: result
 
     - assert:
@@ -53,19 +56,22 @@
 
     - name: Create a second mutator
       sensu_go_mutator:
+        auth:
+          url: http://localhost:8080
         name: mutator2
         command: sensu-influxdb-mutator
         timeout: 30
-        url: http://localhost:8080
 
     - name: Fetch all mutators
       sensu_go_mutator_info:
-        url: http://localhost:8080
+        auth:
+          url: http://localhost:8080
 
     - name: Fetch a specific mutator
       sensu_go_mutator_info:
+        auth:
+          url: http://localhost:8080
         name: mutator
-        url: http://localhost:8080
       register: result
 
     - assert:
@@ -75,13 +81,15 @@
 
     - name: Delete a mutator
       sensu_go_mutator:
+        auth:
+          url: http://localhost:8080
         name: mutator
         state: absent
-        url: http://localhost:8080
 
     - name: Fetch all mutators
       sensu_go_mutator_info:
-        url: http://localhost:8080
+        auth:
+          url: http://localhost:8080
       register: result
 
     - assert:

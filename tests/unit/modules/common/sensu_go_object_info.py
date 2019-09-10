@@ -13,7 +13,7 @@ from .utils import ModuleTestCase, set_module_args, AnsibleExitJson, patch
 class TestSensuGoObjectInfoBase(object):
     module = None
     default_test_case = dict(
-        params={'url': 'http://test:8080'},  # Module input parameters
+        params={'auth': {'url': 'http://test:8080'}},  # Module input parameters
         expect_result_key=None,  # key in module result
         check_mode=False,  # Module check mode
         expect_api_url=None,  # expected api url
@@ -49,8 +49,11 @@ class TestSensuGoObjectInfoBase(object):
     def _extend_default_test_case(self, test_case):
         merged_test_case = self.default_test_case.copy()
         merged_test_case.update(test_case)
-        merged_test_case['params']['url'] = (test_case['params'].get('url') or
-                                             self.default_test_case['params']['url'])
+        merged_test_case['params']['auth'] = {
+            'namespace': test_case['params'].get('auth', {}).get('namespace') or 'default',
+            'url': (test_case['params'].get('auth', {}).get('url') or
+                    self.default_test_case['params']['auth']['url'])
+        }
         return merged_test_case
 
     def _configure_mock(self, mock, test_case):
@@ -68,7 +71,7 @@ class TestSensuGoObjectInfoBase(object):
         has_hostname = re.match('(?:http|ftp|https)://', test_case['expect_api_url'])
         if not has_hostname:
             return '{url}{api}'.format(
-                url=test_case['params']['url'],
+                url=test_case['params']['auth']['url'],
                 api=test_case['expect_api_url'],
             )
         return test_case['expect_api_url']

@@ -6,32 +6,15 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.urls import open_url
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
+from ansible_collections.sensu.sensu_go.plugins.module_utils import arguments
 
 import json
 
 
 def sensu_argument_spec():
-    return dict(
-        user=dict(
-            default='admin',
-            fallback=(env_fallback, ['SENSU_USER']),
-        ),
-        password=dict(
-            default='P@ssw0rd!',
-            no_log=True,
-            fallback=(env_fallback, ['SENSU_PASSWORD']),
-        ),
-        url=dict(
-            default='http://localhost:8080',
-            fallback=(env_fallback, ['SENSU_BACKEND_URL']),
-        ),
-        namespace=dict(
-            default='default',
-        ),
-    )
+    return arguments.COMMON_ARGUMENTS.copy()
 
 
 def clean_metadata_dict(tags):
@@ -46,10 +29,11 @@ class AnsibleSensuClient():
     def __init__(self, module):
         self.module = module
         self.params = module.params
-        self.url = self.params['url'].rstrip('/')
-        self.user = self.params['user']
-        self.password = self.params['password']
-        self.namespace = self.params['namespace']
+        self.auth = module.params['auth']
+        self.url = self.auth['url'].rstrip('/')
+        self.user = self.auth['user']
+        self.password = self.auth['password']
+        self.namespace = self.auth['namespace']
 
         try:
             auth = open_url(
@@ -111,7 +95,7 @@ class SensuObject():
         self.payload = {
             'metadata': {
                 'name': self.params['name'],
-                'namespace': self.params['namespace'],
+                'namespace': self.params['auth']['namespace'],
             },
         }
         for key in ('labels', 'annotations'):

@@ -7,6 +7,8 @@
   tasks:
     - name: Create a check
       sensu_go_check:
+        auth:
+          url: http://localhost:8080
         name: check
         command: /bin/true
         subscriptions:
@@ -32,7 +34,6 @@
         env_vars:
           foo: bar
         runtime_assets: awesomeness
-        url: http://localhost:8080
       register: result
 
     - assert:
@@ -42,6 +43,8 @@
 
     - name: Test check creation idempotence
       sensu_go_check:
+        auth:
+          url: http://localhost:8080
         name: check
         command: /bin/true
         subscriptions:
@@ -67,7 +70,6 @@
         env_vars:
           foo: bar
         runtime_assets: awesomeness
-        url: http://localhost:8080
       register: result
 
     - assert:
@@ -75,11 +77,12 @@
 
     - name: Modify a check
       sensu_go_check:
+        auth:
+          url: http://localhost:8080
         name: check
         command: /bin/true
         subscriptions:
           - checks
-        url: http://localhost:8080
       register: result
 
     - assert:
@@ -92,20 +95,23 @@
 
     - name: Create a second check
       sensu_go_check:
+        auth:
+          url: http://localhost:8080
         name: check2
         command: /usr/bin/true
         subscriptions: checks
         handlers: default
-        url: http://localhost:8080
 
     - name: Fetch all checks
       sensu_go_check_info:
-        url: http://localhost:8080
+        auth:
+          url: http://localhost:8080
 
     - name: Fetch a specific check
       sensu_go_check_info:
+        auth:
+          url: http://localhost:8080
         name: check
-        url: http://localhost:8080
       register: result
 
     - assert:
@@ -115,13 +121,15 @@
 
     - name: Delete a check
       sensu_go_check:
+        auth:
+          url: http://localhost:8080
         name: check
         state: absent
-        url: http://localhost:8080
 
     - name: Get all checks
       sensu_go_check_info:
-        url: http://localhost:8080
+        auth:
+          url: http://localhost:8080
       register: result
 
     - assert:

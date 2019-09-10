@@ -55,8 +55,10 @@ class TestSensuGoMutator(ModuleTestCase, TestSensuGoObjectBase):
         dict(
             name='Create Mutator on different namespace',
             params={
+                'auth': {
+                    'namespace': 'testing_namespace',
+                },
                 'name': 'test_mutator',
-                'namespace': 'testing_namespace',
                 'command': 'echo "test"',
                 'timeout': 30,
                 'env_vars': {'RUBY_VERSION': '2.5.0'},

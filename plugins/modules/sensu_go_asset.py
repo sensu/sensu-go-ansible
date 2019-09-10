@@ -105,7 +105,7 @@ def main():
         ),
     )
 
-    client = arguments.get_sensu_client(module.params)
+    client = arguments.get_sensu_client(module.params["auth"])
     path = "/assets/{0}".format(module.params["name"])
     payload = arguments.get_mutation_payload(
         module.params, "download_url", "sha512", "filters", "headers",

@@ -56,7 +56,7 @@ def main():
         ),
     )
 
-    client = arguments.get_sensu_client(module.params)
+    client = arguments.get_sensu_client(module.params["auth"])
     if module.params["name"]:
         path = "/assets/{0}".format(module.params["name"])
     else:

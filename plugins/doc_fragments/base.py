@@ -10,27 +10,32 @@ __metaclass__ = type
 class ModuleDocFragment(object):
     DOCUMENTATION = """
 options:
-  user:
-    description:
-      - The username to use for connecting to the Sensu API.
-        If this is not set the value of the SENSU_USER environment variable will be checked.
-    type: str
-    default: admin
-  password:
-    description:
-      - The Sensu user's password.
-        If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
-    type: str
-    default: P@ssw0rd!
-  url:
-    description:
-      - Location of the Sensu backend API.
-        If this is not set the value of the SENSU_BACKEND_URL environment variable will be checked.
-    type: str
-    default: http://localhost:8080
-  namespace:
-    description:
-      - RBAC namespace to operate in.
-    type: str
-    default: default
+  auth:
+    description: Authentication parameters. Can define each of them with ENV as well
+    type: dict
+    suboptions:
+      user:
+        description:
+          - The username to use for connecting to the Sensu API.
+            If this is not set the value of the SENSU_USER environment variable will be checked.
+        type: str
+        default: admin
+      password:
+        description:
+          - The Sensu user's password.
+            If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+        type: str
+        default: P@ssw0rd!
+      url:
+        description:
+          - Location of the Sensu backend API.
+            If this is not set the value of the SENSU_URL environment variable will be checked.
+        type: str
+        default: http://localhost:8080
+      namespace:
+        description:
+          - RBAC namespace to operate in.
+            If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.
+        type: str
+        default: default
 """
