@@ -15,8 +15,12 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = """
-module: sensu_go_asset_info
-author: "Paul Arthur (@flowerysong)"
+module: asset_info
+author:
+  - Paul Arthur (@flowerysong)
+  - Aljaz Kosir (@aljazkosir)
+  - Miha Plesko (@miha-plesko)
+  - Tadej Borovsak (@tadeboro)
 short_description: Lists Sensu assets
 description:
   - For more information, refer to the Sensu documentation at
@@ -29,12 +33,12 @@ extends_documentation_fragment:
 
 EXAMPLES = """
 - name: List Sensu assets
-  sensu_go_asset_info:
+  asset_info:
   register: result
 """
 
 RETURN = """
-assets:
+objects:
   description: list of Sensu assets
   returned: always
   type: list
@@ -69,7 +73,7 @@ def main():
 
     if module.params["name"]:
         assets = [assets]
-    module.exit_json(changed=False, assets=assets)
+    module.exit_json(changed=False, objects=assets)
 
 
 if __name__ == "__main__":

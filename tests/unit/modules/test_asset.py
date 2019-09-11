@@ -6,7 +6,7 @@ import pytest
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
     errors, utils,
 )
-from ansible_collections.sensu.sensu_go.plugins.modules import sensu_go_asset
+from ansible_collections.sensu.sensu_go.plugins.modules import asset
 
 from .common.utils import (
     AnsibleExitJson, AnsibleFailJson, ModuleTestCase, set_module_args,
@@ -19,12 +19,12 @@ class TestSensuGoAsset(ModuleTestCase):
         sync_mock.return_value = True, {}
         set_module_args(
             name="test_asset",
-            download_url="http://example.com/asset.tar.gz",
+            url="http://example.com/asset.tar.gz",
             sha512="sha512String",
         )
 
         with pytest.raises(AnsibleExitJson) as context:
-            sensu_go_asset.main()
+            asset.main()
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == "present"
@@ -47,7 +47,7 @@ class TestSensuGoAsset(ModuleTestCase):
         set_module_args(
             name="test_asset",
             state="absent",
-            download_url="http://example.com/asset.tar.gz",
+            url="http://example.com/asset.tar.gz",
             sha512="sha512String",
             filters=["a", "b", "c"],
             headers={"header": "h"},
@@ -56,7 +56,7 @@ class TestSensuGoAsset(ModuleTestCase):
         )
 
         with pytest.raises(AnsibleExitJson) as context:
-            sensu_go_asset.main()
+            asset.main()
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == "absent"
@@ -80,9 +80,9 @@ class TestSensuGoAsset(ModuleTestCase):
         sync_mock.side_effect = errors.Error("Bad error")
         set_module_args(
             name="test_asset",
-            download_url="http://example.com/asset.tar.gz",
+            url="http://example.com/asset.tar.gz",
             sha512="sha512String",
         )
 
         with pytest.raises(AnsibleFailJson):
-            sensu_go_asset.main()
+            asset.main()
