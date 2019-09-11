@@ -15,8 +15,12 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = """
-module: sensu_go_asset
-author: "Cameron Hurst (@wakemaster39)"
+module: asset
+author:
+  - Cameron Hurst (@wakemaster39)
+  - Aljaz Kosir (@aljazkosir)
+  - Miha Plesko (@miha-plesko)
+  - Tadej Borovsak (@tadeboro)
 short_description: Manages Sensu assets
 description:
   - For more information, refer to the Sensu documentation at
@@ -32,7 +36,7 @@ options:
     type: str
     choices: [ "present", "absent" ]
     default: present
-  download_url:
+  url:
     description:
       - The URL location of the asset.
     type: str
@@ -58,7 +62,7 @@ options:
 
 EXAMPLES = """
 - name: Create asset
-  sensu_go_asset:
+  asset:
     name: asset
     download_url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
     sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
@@ -74,6 +78,10 @@ EXAMPLES = """
 """
 
 RETURN = """
+object:
+    description: object representing Sensu asset
+    returned: success
+    type: dict
 """
 
 from ansible.module_utils.basic import AnsibleModule
@@ -88,7 +96,7 @@ def main():
         supports_check_mode=True,
         argument_spec=dict(
             arguments.MUTATION_ARGUMENTS,
-            download_url=dict(
+            url=dict(
                 required=True,
             ),
             sha512=dict(
@@ -108,15 +116,13 @@ def main():
     client = arguments.get_sensu_client(module.params["auth"])
     path = "/assets/{0}".format(module.params["name"])
     payload = arguments.get_mutation_payload(
-        module.params, "download_url", "sha512", "filters", "headers",
+        module.params, "url", "sha512", "filters", "headers",
     )
-    payload["url"] = payload.pop("download_url")  # Remap download_url -> url
-
     try:
         changed, asset = utils.sync(
             module.params["state"], client, path, payload, module.check_mode,
         )
-        module.exit_json(changed=changed, asset=asset)
+        module.exit_json(changed=changed, object=asset)
     except errors.Error as e:
         module.fail_json(msg=str(e))
 

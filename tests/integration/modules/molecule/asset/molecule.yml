@@ -1,6 +1,6 @@
 ---
 scenario:
-  name: sensu_go_asset
+  name: asset
 platforms:
   - name: instance
     image: sensu/sensu:latest
