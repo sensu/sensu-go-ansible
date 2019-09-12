@@ -12,7 +12,7 @@ from ansible.module_utils.urls import open_url
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, response,
+    errors, response, debug
 )
 
 
@@ -47,8 +47,11 @@ class Client:
                 "{0}/auth".format(self.address), force_basic_auth=True,
                 url_username=self.username, url_password=self.password,
             )
-            return json.loads(resp.read())["access_token"]
+            token = json.loads(resp.read())["access_token"]
+            debug.log("Login token: [{0}/auth] {1}***", self.address, token[:5])
+            return token
         except URLError as e:
+            debug.log("Login failed: [{0}/auth] {1}", self.address, e.reason)
             _abort("Login failed: {}", e.reason)
 
     def request(self, method, path, payload=None):
@@ -64,12 +67,17 @@ class Client:
 
         try:
             resp = open_url(**arguments)
-            return response.Response(resp.getcode(), resp.read())
+            resp = response.Response(resp.getcode(), resp.read())
+            debug.log_request(arguments, resp)
+            return resp
         except HTTPError as e:
             # This is not an error, since client consumers might be able to
             # work around/expect non 20x codes.
-            return response.Response(e.code, e.reason)
+            resp = response.Response(e.code, e.reason)
+            debug.log_request(arguments, resp)
+            return resp
         except URLError as e:
+            debug.log_request(arguments, comment=e.reason)
             _abort("{} request failed: {}", method, e.reason)
 
     def get(self, path):
