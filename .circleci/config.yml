@@ -4,33 +4,40 @@ executors:
   python27:
     docker: [ { image: circleci/python:2.7 } ]
     environment: { PY: "2.7" }
+    working_directory: ~/ansible_collections/sensu/sensu_go
+
   python37:
     docker: [ { image: circleci/python:3.7 } ]
     environment: { PY: "3.7" }
+    working_directory: ~/ansible_collections/sensu/sensu_go
 
 commands:
   common_setup:
     description: Common steps for all jobs
     steps:
-      - checkout
+      - checkout: { path: . }
       - run:
           name: Create virtual environment
           command: virtualenv ${HOME}/venv
       - run:
-          name: Checkout the devel Ansible branch
+          name: Activate virtualenv
           command: |
-            git clone -b devel --depth 1 \
-              https://github.com/ansible/ansible.git ${HOME}/ansible
+            echo 'export PATH=${HOME}/venv/bin:$PATH' >> $BASH_ENV
+
+  install_ansible:
+    description: Install selected Ansible version
+    parameters:
+      version:
+        description: Ansible version
+        type: string
+    steps:
       - run:
-          name: Set environment variables
-          command: |
-            echo 'PATH=${HOME}/ansible/bin:${HOME}/venv/bin:$PATH' >> $BASH_ENV
-            echo 'PYTHONPATH=${HOME}/ansible/lib' >> $BASH_ENV
-            echo 'MANPATH=/tmp/man' >> $BASH_ENV
-            echo 'export PATH PYTHONPATH MANPATH' >> $BASH_ENV
-      - run:
-          name: Install Ansible and core dependencies
-          command: pip install -r ${HOME}/ansible/requirements.txt
+          name: Install Ansible
+          command: pip install 'ansible==<< parameters.version >>'
+
+  install_git_collection:
+    description: Install sensu_go collection from git sources
+    steps:
       - run:
           name: Build sensu_go collection
           command: ansible-galaxy collection build
@@ -41,42 +48,61 @@ commands:
               -p ${HOME}/.ansible/collections \
               sensu-sensu_go-*.tar.gz
 
-  run_test:
-    description: Run selected test
+  install_galaxy_collection:
+    description: Install sensu_go collection from Ansible Galaxy
+    steps:
+      - run:
+          name: Install sensu_go collection
+          command: |
+            ansible-galaxy collection install \
+              -p ${HOME}/.ansible/collections \
+              sensu.sensu_go
+
+  run_ansible_test:
+    description: Run selected Ansible test
     parameters:
       kind:
         description: Kind of tests to run
         type: enum
-        enum: [ sanity, units, integration ]
+        enum: [ sanity, units ]
       args:
         description: Arguments for this invocation
         type: string
         default: ""
     steps:
       - run:
+          name: Install requirements
+          command: pip install -r << parameters.kind >>.requirements
+      - run:
           name: Run test
           command: |
-            cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
             ansible-test << parameters.kind >> \
               --python ${PY} \
-              --requirements \
               << parameters.args >>
+
+  run_molecule_test:
+    description: Run molecule test
+    steps:
+      - run:
+          name: Install molecule
+          command: pip install molecule[docker]
+      - run:
+          name: Run integration tests
+          command: |
+            cd tests/integration/modules
+            molecule --base-config molecule/shared/base.yml test --all
 
   report_coverage:
     description: Report coverage
     steps:
       - run:
           name: Report coverage to console
-          command: |
-            cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
-            ansible-test coverage report
+          command: ansible-test coverage report
       - run:
           name: Report coverage details as HTML
-          command: |
-            cd ${HOME}/.ansible/collections/ansible_collections/sensu/sensu_go
-            ansible-test coverage html
+          command: ansible-test coverage html
       - store_artifacts:
-          path: /home/circleci/.ansible/collections/ansible_collections/sensu/sensu_go/tests/output/reports/coverage
+          path: tests/output/reports/coverage
           destination: coverage-report
 
 jobs:
@@ -84,14 +110,18 @@ jobs:
     executor: python37
     steps:
       - common_setup
-      - run_test:
+      - install_ansible:
+          version: 2.9.0b1
+      - run_ansible_test:
           kind: sanity
 
   unit_test_python27:
     executor: python27
     steps:
       - common_setup
-      - run_test:
+      - install_ansible:
+          version: 2.9.0b1
+      - run_ansible_test:
           kind: units
           args: --verbose --coverage
       - report_coverage: {}
@@ -100,7 +130,9 @@ jobs:
     executor: python37
     steps:
       - common_setup
-      - run_test:
+      - install_ansible:
+          version: 2.9.0b1
+      - run_ansible_test:
           kind: units
           args: --verbose --coverage
       - report_coverage: {}
@@ -110,14 +142,10 @@ jobs:
     steps:
       - common_setup
       - setup_remote_docker
-      - run:
-          name: Install molecule
-          command: pip install -r ./requirements-dev.txt
-      - run:
-          name: Integration Tests (modules)
-          command: |
-            cd tests/integration/modules
-            molecule --base-config molecule/shared/base.yml test --all
+      - install_ansible:
+          version: 2.9.0b1
+      - install_git_collection
+      - run_molecule_test
 
 workflows:
   version: 2

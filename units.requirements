@@ -1,0 +1,5 @@
+coverage
+mock
+pytest
+pytest-mock
+pytest-xdist
