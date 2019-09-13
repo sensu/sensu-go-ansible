@@ -1,22 +1,3 @@
 ---
 scenario:
   name: filter
-platforms:
-  - name: latest
-    image: sensu/sensu:latest
-    command: >
-      sensu-backend start
-        --state-dir /var/lib/sensu/sensu-backend/etcd1
-        --log-level debug
-  - name: v5.13.1
-    image: sensu/sensu:5.13.1
-    command: >
-      sensu-backend start
-        --state-dir /var/lib/sensu/sensu-backend/etcd1
-        --log-level debug
-  - name: v5.12.0
-    image: sensu/sensu:5.12.0
-    command: >
-      sensu-backend start
-        --state-dir /var/lib/sensu/sensu-backend/etcd1
-        --log-level debug

@@ -1,2 +1,2 @@
-molecule[docker]
+molecule[docker] == 3.0a4  # Exact version because this is prerelease
 selinux
