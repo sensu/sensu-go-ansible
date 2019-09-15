@@ -1,0 +1,140 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Create pipe handler with minimal parameters
+      pipe_handler:
+        auth:
+          url: http://localhost:8080
+        name: minimal_handler
+        command: sensu-influxdb-handler
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.command == 'sensu-influxdb-handler'
+          - result.object.metadata.name == 'minimal_handler'
+
+    - name: Create pipe handler with minimal parameters idempotence
+      pipe_handler:
+        auth:
+          url: http://localhost:8080
+        name: minimal_handler
+        command: sensu-influxdb-handler
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Create pipe handler
+      pipe_handler:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        command: sensu-influxdb-handler
+        mutator: mutate_input
+        timeout: 30
+        filters:
+          - occurances
+          - production
+        env_vars:
+          INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
+          INFLUXDB_USER: sensu
+          INFLUXDB_PASS: password
+        runtime_assets:
+          - sensu-influxdb-handler
+      register: result
+
+    - debug:
+        msg: "{{result}}"
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.command == 'sensu-influxdb-handler'
+          - result.object.mutator == 'mutate_input'
+          - result.object.timeout == 30
+          - result.object.filters == ['occurances', 'production']
+          - result.object.runtime_assets == ['sensu-influxdb-handler']
+          - result.object.metadata.name == 'handler'
+
+    - name: Test pipe handler creation idempotence
+      pipe_handler:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        command: sensu-influxdb-handler
+        mutator: mutate_input
+        timeout: 30
+        filters:
+          - occurances
+          - production
+        env_vars:
+          INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
+          INFLUXDB_USER: sensu
+          INFLUXDB_PASS: password
+        runtime_assets:
+          - sensu-influxdb-handler
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify pipe handler
+      pipe_handler:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        command: sensu-influxdb-handler
+        timeout: 60
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - not result.object.env_vars
+          - not result.object.runtime_assets
+
+    - name: Fetch all pipe handlers
+      handler_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
+
+    - name: Fetch a specific pipe handler
+      handler_info:
+        auth:
+          url: http://localhost:8080
+        name: handler
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'handler'
+
+    - name: Delete pipe handler
+      pipe_handler:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        state: absent
+
+    - name: Get all pipe handlers
+      handler_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'minimal_handler'
