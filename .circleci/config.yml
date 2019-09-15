@@ -13,6 +13,22 @@ workflows:
 
       - integration_ansible29_git
 
+  daily_master:
+    triggers:
+      - schedule:
+          cron: "12 4 * * *"
+          filters: { branches: { only: [ master ] } }
+    jobs:
+      - integration_ansible29_git
+
+  daily_released:
+    triggers:
+      - schedule:
+          cron: "12 5 * * *"
+          filters: { branches: { only: [ stable ] } }
+    jobs:
+      - integration_ansible29_galaxy
+
 # A list of all supported python versions.
 executors:
   python27:
