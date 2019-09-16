@@ -1,9 +1,49 @@
 version: "2.1"
 
+workflows:
+  version: 2
+  main_workflow:
+    jobs:
+      - sanity
+
+      - unit_python27_ansible29
+      - unit_python35_ansible29
+      - unit_python36_ansible29
+      - unit_python37_ansible29
+
+      - integration_ansible29_git
+
+  daily_master:
+    triggers:
+      - schedule:
+          cron: "12 4 * * *"
+          filters: { branches: { only: [ master ] } }
+    jobs:
+      - integration_ansible29_git
+
+  daily_released:
+    triggers:
+      - schedule:
+          cron: "12 5 * * *"
+          filters: { branches: { only: [ stable ] } }
+    jobs:
+      - integration_ansible29_galaxy
+
+# A list of all supported python versions.
 executors:
   python27:
     docker: [ { image: circleci/python:2.7 } ]
     environment: { PY: "2.7" }
+    working_directory: ~/ansible_collections/sensu/sensu_go
+
+  python35:
+    docker: [ { image: circleci/python:3.5 } ]
+    environment: { PY: "3.5" }
+    working_directory: ~/ansible_collections/sensu/sensu_go
+
+  python36:
+    docker: [ { image: circleci/python:3.6 } ]
+    environment: { PY: "3.6" }
     working_directory: ~/ansible_collections/sensu/sensu_go
 
   python37:
@@ -11,7 +51,101 @@ executors:
     environment: { PY: "3.7" }
     working_directory: ~/ansible_collections/sensu/sensu_go
 
+# Matrix of tests that we run. At the moment, the only supported Ansible is
+# 2.9 because previous versions do not install ansible-test executable.
+jobs:
+  # Sanity test is not python-dependent and should be always run with the
+  # latest supported, stable python and with latest stable Ansible.
+  sanity:
+    executor: python37
+    environment:
+      ANSIBLE_VERSION: ==2.9.0b1
+      TEST_KIND: sanity
+    steps: [ sanity_test ]
+
+  # Unit tests run on all supported python and Ansible versions.
+  unit_python27_ansible29:
+    executor: python27
+    environment:
+      ANSIBLE_VERSION: ==2.9.0b1
+      TEST_KIND: units
+      TEST_ARGS: --verbose --coverage
+    steps: [ unit_test ]
+
+  unit_python35_ansible29:
+    executor: python35
+    environment:
+      ANSIBLE_VERSION: ==2.9.0b1
+      TEST_KIND: units
+      TEST_ARGS: --verbose --coverage
+    steps: [ unit_test ]
+
+  unit_python36_ansible29:
+    executor: python36
+    environment:
+      ANSIBLE_VERSION: ==2.9.0b1
+      TEST_KIND: units
+      TEST_ARGS: --verbose --coverage
+    steps: [ unit_test ]
+
+  unit_python37_ansible29:
+    executor: python37
+    environment:
+      ANSIBLE_VERSION: ==2.9.0b1
+      TEST_KIND: units
+      TEST_ARGS: --verbose --coverage
+    steps: [ unit_test ]
+
+  # Integration tests run on single python version, because python portability
+  # is checked by sanity and unit tests.
+  integration_ansible29_git:
+    executor: python37
+    environment:
+      ANSIBLE_VERSION: ==2.9.0b1
+    steps: [ integration_test_git ]
+
+  integration_ansible29_galaxy:
+    executor: python37
+    environment:
+      ANSIBLE_VERSION: ==2.9.0b1
+    steps: [ integration_test_galaxy ]
+
 commands:
+  # Composite commands (parametrized jobs)
+  sanity_test:
+    description: Run sanity tests
+    steps:
+      - common_setup
+      - install_ansible
+      - run_ansible_test
+
+  unit_test:
+    description: Run unit tests
+    steps:
+      - common_setup
+      - install_ansible
+      - run_ansible_test
+      - report_coverage
+
+  integration_test_git:
+    description: Run integration tests on git collection
+    steps:
+      - common_setup
+      - setup_remote_docker
+      - install_ansible
+      - install_git_collection
+      - run_molecule_test
+
+  integration_test_galaxy:
+    description: Run integration tests on galaxy collection
+    steps:
+      - common_setup
+      - setup_remote_docker
+      - install_ansible
+      - install_galaxy_collection
+      - run_molecule_test
+
+  # Lower-level command implementations
   common_setup:
     description: Common steps for all jobs
     steps:
@@ -26,14 +160,10 @@ commands:
 
   install_ansible:
     description: Install selected Ansible version
-    parameters:
-      version:
-        description: Ansible version
-        type: string
     steps:
       - run:
           name: Install Ansible
-          command: pip install 'ansible==<< parameters.version >>'
+          command: pip install "ansible${ANSIBLE_VERSION}"
 
   install_git_collection:
     description: Install sensu_go collection from git sources
@@ -56,29 +186,17 @@ commands:
           command: |
             ansible-galaxy collection install \
               -p ${HOME}/.ansible/collections \
-              sensu.sensu_go
+              sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
 
   run_ansible_test:
     description: Run selected Ansible test
-    parameters:
-      kind:
-        description: Kind of tests to run
-        type: enum
-        enum: [ sanity, units ]
-      args:
-        description: Arguments for this invocation
-        type: string
-        default: ""
     steps:
       - run:
           name: Install requirements
-          command: pip install -r << parameters.kind >>.requirements
+          command: pip install -r ${TEST_KIND}.requirements
       - run:
           name: Run test
-          command: |
-            ansible-test << parameters.kind >> \
-              --python ${PY} \
-              << parameters.args >>
+          command: ansible-test ${TEST_KIND} --python ${PY} ${TEST_ARGS}
 
   run_molecule_test:
     description: Run molecule test
@@ -104,54 +222,3 @@ commands:
       - store_artifacts:
           path: tests/output/reports/coverage
           destination: coverage-report
-
-jobs:
-  sanity:
-    executor: python37
-    steps:
-      - common_setup
-      - install_ansible:
-          version: 2.9.0b1
-      - run_ansible_test:
-          kind: sanity
-
-  unit_test_python27:
-    executor: python27
-    steps:
-      - common_setup
-      - install_ansible:
-          version: 2.9.0b1
-      - run_ansible_test:
-          kind: units
-          args: --verbose --coverage
-      - report_coverage: {}
-
-  unit_test_python37:
-    executor: python37
-    steps:
-      - common_setup
-      - install_ansible:
-          version: 2.9.0b1
-      - run_ansible_test:
-          kind: units
-          args: --verbose --coverage
-      - report_coverage: {}
-
-  integration_modules:
-    executor: python37
-    steps:
-      - common_setup
-      - setup_remote_docker
-      - install_ansible:
-          version: 2.9.0b1
-      - install_git_collection
-      - run_molecule_test
-
-workflows:
-  version: 2
-  main_workflow:
-    jobs:
-      - sanity
-      - unit_test_python27
-      - unit_test_python37
-      - integration_modules
