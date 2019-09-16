@@ -5,8 +5,54 @@
   hosts: all
   gather_facts: true
   tasks:
+    - name: Create a check with missing required parameters
+      check:
+        auth:
+          url: http://localhost:8080
+        name: minimal_check
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'state is present but all of the following are missing: subscriptions, command'"
+
+
+    - name: Create a check with minimal parameters
+      check:
+        auth:
+          url: http://localhost:8080
+        name: minimal_check
+        command: /bin/true
+        subscriptions:
+          - checks
+          - also_checks
+        interval: 30
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'minimal_check'
+
+    - name: Create a check with minimal parameters idempotence
+      check:
+        auth:
+          url: http://localhost:8080
+        name: minimal_check
+        command: /bin/true
+        subscriptions:
+          - checks
+          - also_checks
+        interval: 30
+      register: result
+
+    - assert:
+        that: result is not changed
+
     - name: Create a check
-      sensu_go_check:
+      check:
         auth:
           url: http://localhost:8080
         name: check
@@ -25,9 +71,10 @@
         low_flap_threshold: 20
         high_flap_threshold: 60
         proxy_entity_name: switch-dc-01
-        proxy_entity_attributes: ['entity.entity_class == "proxy"']
-        proxy_splay: True
-        proxy_splay_coverage: 90
+        proxy_requests:
+          entity_attributes: ['entity.entity_class == "proxy"']
+          splay: True
+          splay_coverage: 90
         output_metric_format: nagios_perfdata
         output_metric_handlers: ['influx-db']
         round_robin: True
@@ -39,10 +86,10 @@
     - assert:
         that:
           - result is changed
-          - result.check.metadata.name == 'check'
+          - result.object.metadata.name == 'check'
 
     - name: Test check creation idempotence
-      sensu_go_check:
+      check:
         auth:
           url: http://localhost:8080
         name: check
@@ -61,9 +108,10 @@
         low_flap_threshold: 20
         high_flap_threshold: 60
         proxy_entity_name: switch-dc-01
-        proxy_entity_attributes: ['entity.entity_class == "proxy"']
-        proxy_splay: True
-        proxy_splay_coverage: 90
+        proxy_requests:
+          entity_attributes: ['entity.entity_class == "proxy"']
+          splay: True
+          splay_coverage: 90
         output_metric_format: nagios_perfdata
         output_metric_handlers: ['influx-db']
         round_robin: True
@@ -76,10 +124,11 @@
         that: result is not changed
 
     - name: Modify a check
-      sensu_go_check:
+      check:
         auth:
           url: http://localhost:8080
         name: check
+        interval: 30
         command: /bin/true
         subscriptions:
           - checks
@@ -88,27 +137,28 @@
     - assert:
         that:
           - result is changed
-          - not result.check.handlers
-          - not result.check.env_vars
-          - not result.check.runtime_assets
-          - "'also_checks' not in result.check.subscriptions"
+          - not result.object.handlers
+          - not result.object.env_vars
+          - not result.object.runtime_assets
+          - "'also_checks' not in result.object.subscriptions"
 
     - name: Create a second check
-      sensu_go_check:
+      check:
         auth:
           url: http://localhost:8080
         name: check2
+        interval: 30
         command: /usr/bin/true
         subscriptions: checks
         handlers: default
 
     - name: Fetch all checks
-      sensu_go_check_info:
+      check_info:
         auth:
           url: http://localhost:8080
 
     - name: Fetch a specific check
-      sensu_go_check_info:
+      check_info:
         auth:
           url: http://localhost:8080
         name: check
@@ -116,23 +166,23 @@
 
     - assert:
         that:
-          - result.checks | length == 1
-          - result.checks.0.metadata.name == 'check'
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'check'
 
     - name: Delete a check
-      sensu_go_check:
+      check:
         auth:
           url: http://localhost:8080
         name: check
         state: absent
 
     - name: Get all checks
-      sensu_go_check_info:
+      check_info:
         auth:
           url: http://localhost:8080
       register: result
 
     - assert:
         that:
-          - result.checks | length == 1
-          - result.checks.0.metadata.name == 'check2'
+          - result.objects | length == 2
+          - result.objects.0.metadata.name == 'check2'
