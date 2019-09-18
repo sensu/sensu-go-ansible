@@ -3,7 +3,7 @@
   collections:
     - sensu.sensu_go
   hosts: all
-  gather_facts: true
+  gather_facts: no
   tasks:
     - name: Create a mutator
       sensu_go_mutator:
