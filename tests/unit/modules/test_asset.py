@@ -13,7 +13,7 @@ from .common.utils import (
 )
 
 
-class TestSensuGoAsset(ModuleTestCase):
+class TestAsset(ModuleTestCase):
     def test_minimal_asset_parameters(self, mocker):
         sync_mock = mocker.patch.object(utils, "sync")
         sync_mock.return_value = True, {}
@@ -23,7 +23,7 @@ class TestSensuGoAsset(ModuleTestCase):
             sha512="sha512String",
         )
 
-        with pytest.raises(AnsibleExitJson) as context:
+        with pytest.raises(AnsibleExitJson):
             asset.main()
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
@@ -32,8 +32,6 @@ class TestSensuGoAsset(ModuleTestCase):
         assert payload == dict(
             url="http://example.com/asset.tar.gz",
             sha512="sha512String",
-            filters=[],
-            headers={},
             metadata=dict(
                 name="test_asset",
                 namespace="default",
@@ -55,7 +53,7 @@ class TestSensuGoAsset(ModuleTestCase):
             annotations={"playbook": 12345},
         )
 
-        with pytest.raises(AnsibleExitJson) as context:
+        with pytest.raises(AnsibleExitJson):
             asset.main()
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]

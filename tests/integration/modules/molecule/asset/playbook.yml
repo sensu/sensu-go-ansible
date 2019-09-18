@@ -26,7 +26,13 @@
       register: result
 
     - assert:
-        that: result is changed
+        that:
+          - result is changed
+          - result.object.url == 'https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz'
+          - result.object.sha512 == '518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b'
+          - result.object.headers['Sensu-Blivet'] == "foo"
+          - result.object.filters == ["entity.system.os == 'linux'", "entity.system.arch == 'amd64'", "entity.system.platform == 'rhel'"]
+          - result.object.metadata.name == 'asset'
 
     - name: Test asset creation idempotence
       asset:
@@ -89,16 +95,40 @@
           sensio.io.bonsai.version: 4.0.0
           sensio.io.bonsai.tags: ruby-runtime-2.4.4
 
-    - name: Fetch all assets
-      asset_info:
-        auth:
-          url: http://localhost:8080
-
     - name: Fetch a specific asset
       asset_info:
         auth:
           url: http://localhost:8080
         name: asset
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'asset'
+
+    - name: Fetch all assets
+      asset_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
+          - result.objects.0.metadata.name == 'asset'
+
+    - name: Delete second asset
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: asset2
+        state: absent
+
+    - name: Fetch all assets
+      asset_info:
+        auth:
+          url: http://localhost:8080
       register: result
 
     - assert:
