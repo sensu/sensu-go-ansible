@@ -11,7 +11,7 @@ __metaclass__ = type
 ANSIBLE_METADATA = {
     "metadata_version": "1.1",
     "status": ["preview"],
-    "supported_by": "community",
+    "supported_by": "XLAB Steampunk",
 }
 
 DOCUMENTATION = """
@@ -92,23 +92,21 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 
 
 def main():
+    required_if = [
+        ("state", "present", ["url", "sha512"])
+    ]
     module = AnsibleModule(
+        required_if=required_if,
         supports_check_mode=True,
         argument_spec=dict(
             arguments.MUTATION_ARGUMENTS,
-            url=dict(
-                required=True,
-            ),
-            sha512=dict(
-                required=True,
-            ),
+            url=dict(),
+            sha512=dict(),
             filters=dict(
                 type="list",
-                default=[],
             ),
             headers=dict(
                 type="dict",
-                default={},
             ),
         ),
     )

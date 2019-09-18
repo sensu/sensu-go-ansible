@@ -13,7 +13,7 @@ from .common.utils import (
 )
 
 
-class TestSensuGoAssetInfo(ModuleTestCase):
+class TestAssetInfo(ModuleTestCase):
     def test_get_all_assets(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.return_value = [1, 2, 3]
