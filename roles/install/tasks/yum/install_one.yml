@@ -1,0 +1,18 @@
+---
+- name: Latest component version
+  set_fact:
+    pkg_name: '{{ item.name }}'
+    pkg_state: latest
+  when: item.version == 'latest'
+
+- name: Specific component version ({{ item.version }})
+  set_fact:
+    pkg_name: '{{ item.name }}-{{ item.version }}'
+    pkg_state: present
+  when: item.version != 'latest'
+
+- name: Install component ({{ pkg_name }})
+  yum:
+    name: '{{ pkg_name }}'
+    state: '{{ pkg_state }}'
+    allow_downgrade: '{{ item.version != "latest" }}'

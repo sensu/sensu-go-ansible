@@ -1,0 +1,4 @@
+---
+- name: Install components
+  include_tasks: install_one.yml
+  loop: '{{ _components }}'

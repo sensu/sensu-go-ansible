@@ -1,0 +1,8 @@
+---
+os: unknown
+dist: unknown
+
+components:
+  - sensu-go-backend
+  - sensu-go-agent
+  - sensu-go-cli

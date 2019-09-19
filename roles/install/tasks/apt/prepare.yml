@@ -1,0 +1,28 @@
+---
+- name: Include distro-specific vars ({{ ansible_distribution }})
+  include_vars: file='{{ ansible_distribution }}.yml'
+
+- name: Install utility packages
+  apt:
+    name:
+      - gnupg
+      - debian-archive-keyring
+      - apt-transport-https
+    state: present
+
+- name: Add apt key
+  apt_key:
+    url: https://packagecloud.io/sensu/stable/gpgkey
+    id: 0A3F7426
+
+- name: Add apt repository
+  apt_repository:
+    repo: deb https://packagecloud.io/sensu/stable/{{ os }}/ {{ dist }} main
+    filename: /etc/apt/sources.list.d/sensu_stable.list
+    validate_certs: yes
+
+- name: Add apt source repository
+  apt_repository:
+    repo: deb-src https://packagecloud.io/sensu/stable/{{ os }}/ {{ dist }} main
+    filename: /etc/apt/sources.list.d/sensu_stable.list
+    validate_certs: yes

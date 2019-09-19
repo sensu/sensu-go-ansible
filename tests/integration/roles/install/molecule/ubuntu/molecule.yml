@@ -1,0 +1,63 @@
+---
+scenario:
+  name: ubuntu
+platforms:
+  #
+  # Install latest version of components
+  #
+  - name: ubuntu-14.04
+    image: ubuntu:14.04
+    pull: yes
+    groups: [latest_components]
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name: ubuntu-16.04
+    image: ubuntu:16.04
+    pull: yes
+    groups: [latest_components]
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name: ubuntu-18.04
+    image: ubuntu:18.04
+    pull: yes
+    groups: [latest_components]
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name: ubuntu-18.10
+    image: ubuntu:18.10
+    pull: yes
+    groups: [latest_components]
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name: ubuntu-19.04
+    image: ubuntu:19.04
+    pull: yes
+    groups: [latest_components]
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  #
+  # Install older version of components
+  #
+  - name: 2nd-ubuntu-16.04
+    image: ubuntu:16.04
+    pull: yes
+    groups: [older_components]
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
