@@ -46,6 +46,12 @@ Or add the collection to the search path and use bare names:
           register: filters
 
 
+## Support
+
+Sensu will offer support for the contents of the collection. Details about the
+support will be made available as soon as the collection is certified.
+
+
 ## Acknowledgement
 
 We would like to thank [@flowerysong][flowerysong] for initial implementation
