@@ -1,0 +1,153 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create socket handler with missing required parameters
+      socket_handler:
+        auth:
+          url: http://localhost:8080
+        name: handler
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'state is present but all of the following are missing: type, host, port'"
+
+    - name: Create socket handler with minimal parameters
+      socket_handler:
+        auth:
+          url: http://localhost:8080
+        name: minimal_handler
+        type: tcp
+        host: 10.1.0.99
+        port: 4444
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.socket.host == '10.1.0.99'
+          - result.object.socket.port == 4444
+          - result.object.type == 'tcp'
+          - result.object.metadata.name == 'minimal_handler'
+
+    - name: Create socket handler with minimal parameters idempotence
+      socket_handler:
+        auth:
+          url: http://localhost:8080
+        name: minimal_handler
+        type: tcp
+        host: 10.1.0.99
+        port: 4444
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Create an socket handler with full parameters
+      socket_handler:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        type: udp
+        mutator: mutate_input
+        timeout: 30
+        filters:
+          - occurances
+          - production
+        host: 10.1.0.99
+        port: 4444
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.socket.host == '10.1.0.99'
+          - result.object.socket.port == 4444
+          - result.object.type == 'udp'
+          - result.object.mutator == 'mutate_input'
+          - result.object.timeout == 30
+          - result.object.filters == ['occurances', 'production']
+
+    - name: Create socket handler with full parameters idempotence
+      socket_handler:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        type: udp
+        mutator: mutate_input
+        timeout: 30
+        filters:
+          - occurances
+          - production
+        host: 10.1.0.99
+        port: 4444
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify socket handler
+      socket_handler:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        type: tcp
+        timeout: 60
+        host: 10.1.0.99
+        port: 4444
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.type == 'tcp'
+          - result.object.socket.host == '10.1.0.99'
+          - result.object.socket.port == 4444
+          - not result.object.filters
+          - "'mutator' not in result.object"
+
+    - name: Fetch all socket handlers
+      handler_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
+
+    - name: Fetch a specific socket handler
+      handler_info:
+        auth:
+          url: http://localhost:8080
+        name: handler
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'handler'
+
+    - name: Delete socket handler
+      socket_handler:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        state: absent
+
+    - name: Get all socket handlers
+      handler_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'minimal_handler'
