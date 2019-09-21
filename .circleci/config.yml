@@ -14,6 +14,10 @@ workflows:
       - modules_integration_ansible29_git
       - install_role_integration_ansible29_git
 
+      - modules_integration_ansible29_galaxy: &stable_filter
+          filters: { branches: { only: [ stable ] } }
+      - install_role_integration_ansible29_galaxy: *stable_filter
+
   daily_master:
     triggers:
       - schedule:
@@ -126,7 +130,7 @@ jobs:
     executor: python37
     environment:
       ANSIBLE_VERSION: ==2.9.0b1
-      INTEGRATION_TEST_SECTION: role/installs
+      INTEGRATION_TEST_SECTION: roles/install
     steps: [ integration_test_galaxy ]
 
 commands:
