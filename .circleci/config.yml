@@ -126,7 +126,7 @@ jobs:
     executor: python37
     environment:
       ANSIBLE_VERSION: ==2.9.0b1
-      INTEGRATION_TEST_SECTION: role/installs
+      INTEGRATION_TEST_SECTION: roles/install
     steps: [ integration_test_galaxy ]
 
 commands:
