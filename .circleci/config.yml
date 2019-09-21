@@ -14,6 +14,10 @@ workflows:
       - modules_integration_ansible29_git
       - install_role_integration_ansible29_git
 
+      - modules_integration_ansible29_galaxy: &stable_filter
+          filters: { branches: { only: [ stable ] } }
+      - install_role_integration_ansible29_galaxy: *stable_filter
+
   daily_master:
     triggers:
       - schedule:
