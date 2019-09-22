@@ -66,7 +66,7 @@ jobs:
   sanity:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0b1
+      ANSIBLE_VERSION: ==2.9.0rc1
       TEST_KIND: sanity
     steps: [ sanity_test ]
 
@@ -74,7 +74,7 @@ jobs:
   unit_python27_ansible29:
     executor: python27
     environment:
-      ANSIBLE_VERSION: ==2.9.0b1
+      ANSIBLE_VERSION: ==2.9.0rc1
       TEST_KIND: units
       TEST_ARGS: --verbose --coverage
     steps: [ unit_test ]
@@ -82,7 +82,7 @@ jobs:
   unit_python35_ansible29:
     executor: python35
     environment:
-      ANSIBLE_VERSION: ==2.9.0b1
+      ANSIBLE_VERSION: ==2.9.0rc1
       TEST_KIND: units
       TEST_ARGS: --verbose --coverage
     steps: [ unit_test ]
@@ -90,7 +90,7 @@ jobs:
   unit_python36_ansible29:
     executor: python36
     environment:
-      ANSIBLE_VERSION: ==2.9.0b1
+      ANSIBLE_VERSION: ==2.9.0rc1
       TEST_KIND: units
       TEST_ARGS: --verbose --coverage
     steps: [ unit_test ]
@@ -98,7 +98,7 @@ jobs:
   unit_python37_ansible29:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0b1
+      ANSIBLE_VERSION: ==2.9.0rc1
       TEST_KIND: units
       TEST_ARGS: --verbose --coverage
     steps: [ unit_test ]
@@ -108,28 +108,28 @@ jobs:
   modules_integration_ansible29_git:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0b1
+      ANSIBLE_VERSION: ==2.9.0rc1
       INTEGRATION_TEST_SECTION: modules
     steps: [ integration_test_git ]
 
   install_role_integration_ansible29_git:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0b1
+      ANSIBLE_VERSION: ==2.9.0rc1
       INTEGRATION_TEST_SECTION: roles/install
     steps: [ integration_test_git ]
 
   modules_integration_ansible29_galaxy:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0b1
+      ANSIBLE_VERSION: ==2.9.0rc1
       INTEGRATION_TEST_SECTION: modules
     steps: [ integration_test_galaxy ]
 
   install_role_integration_ansible29_galaxy:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0b1
+      ANSIBLE_VERSION: ==2.9.0rc1
       INTEGRATION_TEST_SECTION: roles/install
     steps: [ integration_test_galaxy ]
 
