@@ -44,6 +44,38 @@ options:
 '''
 
 EXAMPLES = '''
+- name: Create a filter
+  filter:
+    name: filter
+    action: deny
+    expressions:
+      - event.check.interval == 10
+      - event.check.occurrences == 1
+    runtime_assets: awesomeness
+
+- name: Create a production filter
+  filter:
+    name: filter
+    action: allow
+    expressions:
+      - event.entity.labels['environment'] == 'production'
+
+- name: Create a filter with JS expression
+  filter:
+    name: filter
+    action: deny
+    expressions:
+      - "_.reduce(event.check.history, function(memo, h) { return (memo || h.status != 0); })"
+    runtime_assets:
+      - underscore
+
+- name: Handling repeated events
+  filter:
+    name: filter_interval_60_hourly
+    action: allow
+    expressions:
+      - event.check.interval == 60
+      - event.check.occurrences == 1 || event.check.occurrences % 60 == 0
 '''
 
 RETURN = '''
