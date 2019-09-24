@@ -5,8 +5,34 @@
   hosts: all
   gather_facts: no
   tasks:
+    - name: Create mutator with minimal parameters
+      mutator:
+        auth:
+          url: http://localhost:8080
+        name: minimal_mutator
+        command: /bin/true
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.command == '/bin/true'
+          - result.object.metadata.name == 'minimal_mutator'
+
+    - name: Create mutator with minimal parameters idempotence
+      mutator:
+        auth:
+          url: http://localhost:8080
+        name: minimal_mutator
+        command: /bin/true
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
     - name: Create a mutator
-      sensu_go_mutator:
+      mutator:
         auth:
           url: http://localhost:8080
         name: mutator
@@ -20,10 +46,15 @@
       register: result
 
     - assert:
-        that: result is changed
+        that:
+          - result is changed
+          - result.object.command == 'sensu-influxdb-mutator'
+          - result.object.timeout == 30
+          - result.object.runtime_assets == ['sensu-influxdb-mutator']
+          - result.object.metadata.name == 'mutator'
 
     - name: Test mutator creation idempotence
-      sensu_go_mutator:
+      mutator:
         auth:
           url: http://localhost:8080
         name: mutator
@@ -40,7 +71,7 @@
         that: result is not changed
 
     - name: Modify a mutator
-      sensu_go_mutator:
+      mutator:
         auth:
           url: http://localhost:8080
         name: mutator
@@ -51,11 +82,11 @@
     - assert:
         that:
           - result is changed
-          - not result.mutator.env_vars
-          - not result.mutator.runtime_assets
+          - not result.object.env_vars
+          - not result.object.runtime_assets
 
     - name: Create a second mutator
-      sensu_go_mutator:
+      mutator:
         auth:
           url: http://localhost:8080
         name: mutator2
@@ -63,12 +94,12 @@
         timeout: 30
 
     - name: Fetch all mutators
-      sensu_go_mutator_info:
+      mutator_info:
         auth:
           url: http://localhost:8080
 
     - name: Fetch a specific mutator
-      sensu_go_mutator_info:
+      mutator_info:
         auth:
           url: http://localhost:8080
         name: mutator
@@ -76,23 +107,23 @@
 
     - assert:
         that:
-          - result.mutators | length == 1
-          - result.mutators.0.metadata.name == 'mutator'
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'mutator'
 
     - name: Delete a mutator
-      sensu_go_mutator:
+      mutator:
         auth:
           url: http://localhost:8080
         name: mutator
         state: absent
 
     - name: Fetch all mutators
-      sensu_go_mutator_info:
+      mutator_info:
         auth:
           url: http://localhost:8080
       register: result
 
     - assert:
         that:
-          - result.mutators | length == 1
-          - result.mutators.0.metadata.name == 'mutator2'
+          - result.objects | length == 2
+          - result.objects.0.metadata.name == 'minimal_mutator'
