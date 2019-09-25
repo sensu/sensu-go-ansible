@@ -1,0 +1,128 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create hook with minimal parameters
+      hook:
+        auth:
+          url: http://localhost:8080
+        name: minimal_hook
+        command: /bin/true
+        timeout: 10
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.command == '/bin/true'
+          - result.object.metadata.name == 'minimal_hook'
+
+    - name: Create hook with minimal parameters idempotence
+      hook:
+        auth:
+          url: http://localhost:8080
+        name: minimal_hook
+        command: /bin/true
+        timeout: 10
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Create a hook
+      hook:
+        auth:
+          url: http://localhost:8080
+        name: hook
+        command: /bin/true
+        timeout: 30
+        stdin: yes
+        runtime_assets:
+          - ruby2.4
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.command == '/bin/true'
+          - result.object.timeout == 30
+          - result.object.stdin == True
+          - result.object.runtime_assets == ['ruby2.4']
+          - result.object.metadata.name == 'hook'
+
+    - name: Test hook creation idempotence
+      hook:
+        auth:
+          url: http://localhost:8080
+        name: hook
+        command: /bin/true
+        timeout: 30
+        stdin: yes
+        runtime_assets:
+          - ruby2.4
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify a hook
+      hook:
+        auth:
+          url: http://localhost:8080
+        name: hook
+        command: python -c "print('Modified.')"
+        timeout: 60
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - not result.object.stdin
+          - not result.object.runtime_assets
+
+    - name: Create a second hook
+      hook:
+        auth:
+          url: http://localhost:8080
+        name: hook2
+        command: sensu-influxdb-hook
+        timeout: 30
+
+    - name: Fetch all hooks
+      hook_info:
+        auth:
+          url: http://localhost:8080
+
+    - name: Fetch a specific hook
+      hook_info:
+        auth:
+          url: http://localhost:8080
+        name: hook
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'hook'
+
+    - name: Delete a hook
+      hook:
+        auth:
+          url: http://localhost:8080
+        name: hook
+        state: absent
+
+    - name: Fetch all hooks
+      hook_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
+          - result.objects.0.metadata.name == 'hook2'
