@@ -1,0 +1,173 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create entity with minimal parameters
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: minimal_entity
+        entity_class: proxy
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.entity_class == 'proxy'
+          - result.object.metadata.name == 'minimal_entity'
+
+    - name: Create entity with minimal parameters idempotence
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: minimal_entity
+        entity_class: proxy
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Create entity
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: entity
+        entity_class: proxy
+        subscriptions:
+          - web
+          - prod
+        system:
+          hostname: playbook-entity
+          os: linux
+          platform: ubutntu
+          network:
+            interfaces:
+              - name: lo
+                addresses:
+                  - 127.0.0.1/8
+                  - ::1/128
+              - name: eth0
+                mac: 52:54:00:20:1b:3c
+                addresses:
+                  - 93.184.216.34/24
+        last_seen: 1522798317
+        deregister: yes
+        deregistration_handler: email-handler
+        redact:
+          - password
+          - pass
+          - api_key
+        user: agent
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.entity_class == 'proxy'
+          - result.object.subscriptions == ['web', 'prod']
+          - result.object.system.network.interfaces.0.name == 'lo'
+          - result.object.system.network.interfaces.1.mac == '52:54:00:20:1b:3c'
+          - result.object.last_seen == 1522798317
+          - result.object.deregister == True
+          - result.object.deregistration.handler == 'email-handler'
+          - result.object.redact == ['password', 'pass', 'api_key']
+          - result.object.user == 'agent'
+          - result.object.metadata.name == 'entity'
+
+    - name: Test entity creation idempotence
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: entity
+        entity_class: proxy
+        subscriptions:
+          - web
+          - prod
+        system:
+          hostname: playbook-entity
+          os: linux
+          platform: ubutntu
+          network:
+            interfaces:
+              - name: lo
+                addresses:
+                  - 127.0.0.1/8
+                  - ::1/128
+              - name: eth0
+                mac: 52:54:00:20:1b:3c
+                addresses:
+                  - 93.184.216.34/24
+        last_seen: 1522798317
+        deregister: yes
+        deregistration_handler: email-handler
+        redact:
+          - password
+          - pass
+          - api_key
+        user: agent
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify entity
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: entity
+        entity_class: some_class
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.entity_class == 'some_class'
+          - not result.object.subscriptions
+          - not result.object.last_seen
+
+    - name: Create a second entity
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: entity2
+        entity_class: proxy
+
+    - name: Fetch all entities
+      entity_info:
+        auth:
+          url: http://localhost:8080
+
+    - name: Fetch a specific entity
+      entity_info:
+        auth:
+          url: http://localhost:8080
+        name: entity
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'entity'
+          - result.objects.0.entity_class == 'some_class'
+
+    - name: Delete entity
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: entity
+        state: absent
+
+    - name: Fetch all entities
+      entity_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
+          - result.objects.0.metadata.name == 'entity2'
