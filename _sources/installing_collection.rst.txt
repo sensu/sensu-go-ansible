@@ -1,0 +1,14 @@
+Installing Sensu Go Ansible Collection
+======================================
+
+Installing Sensu Go collection is as easy as running::
+
+   ansible-galaxy collection install -p ~/.ansible/collections sensu.sensu_go
+
+.. todo::
+
+   Describe how to install collection from git.
+
+.. todo::
+
+   Describe how to uninstall collection.

@@ -1,0 +1,80 @@
+
+asset -- Manages Sensu assets
+=============================
+
+.. contents::
+   :local:
+   :depth: 1
+
+Synopsis
+--------
+- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/assets/
+
+
+
+Parameters
+----------
+
+- annotations ({'description': ['Custom metadata fields with fewer restrictions, as key/value pairs.', 'These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.'], 'type': 'dict'})
+- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
+- filters ({'description': ['A set of Sensu query expressions used to determine if the asset should be installed.'], 'type': 'list', 'default': []})
+- headers ({'description': ['Additional headers to send when retrieving the asset, e.g. for authorization.'], 'type': 'dict', 'default': {}})
+- labels ({'description': ['Custom metadata fields that can be accessed within Sensu, as key/value pairs.'], 'type': 'dict'})
+- name ({'description': ["The Sensu object's name."], 'type': 'str', 'required': True})
+- sha512 ({'description': ['The checksum of the asset.'], 'type': 'str', 'required': True})
+- state ({'description': ['Target state of the Sensu object.'], 'type': 'str', 'choices': ['present', 'absent'], 'default': 'present'})
+- url ({'description': ['The URL location of the asset.'], 'type': 'str', 'required': True})
+
+
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: Create asset
+      asset:
+        name: asset
+        url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+        sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+        filters:
+          - "entity.system.os == 'linux'"
+          - "entity.system.arch == 'amd64'"
+          - "entity.system.platform == 'rhel'"
+        annotations:
+          sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+          sensio.io.bonsai.tier: Community
+          sensio.io.bonsai.version: 4.0.0
+          sensio.io.bonsai.tags: ruby-runtime-2.4.4
+
+
+
+
+Return Values
+-------------
+
+::
+    
+    object:
+        description: object representing Sensu asset
+        returned: success
+        type: dict
+
+
+Status
+------
+
+
+
+
+
+Authors
+~~~~~~~
+
+- Cameron Hurst (@wakemaster39)
+- Aljaz Kosir (@aljazkosir)
+- Miha Plesko (@miha-plesko)
+- Tadej Borovsak (@tadeboro)
+

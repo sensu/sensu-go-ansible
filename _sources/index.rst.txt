@@ -1,0 +1,14 @@
+Sensu Go Ansible Collection
+===========================
+
+.. todo::
+
+   Add intro documentation.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
+
+   installing_collection
+   using_collection
+   module_index

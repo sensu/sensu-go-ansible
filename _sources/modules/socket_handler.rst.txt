@@ -1,0 +1,80 @@
+
+socket_handler -- Manages Sensu TCP/UDP handler
+===============================================
+
+.. contents::
+   :local:
+   :depth: 1
+
+Synopsis
+--------
+- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/handlers/
+
+
+
+Parameters
+----------
+
+- annotations ({'description': ['Custom metadata fields with fewer restrictions, as key/value pairs.', 'These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.'], 'type': 'dict'})
+- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
+- filters ({'description': ['List of filters to use when determining whether to pass the check result to this handler.'], 'type': 'list'})
+- host ({'description': ['The socket host address (IP or hostname) to connect to.'], 'required': True, 'type': 'str'})
+- labels ({'description': ['Custom metadata fields that can be accessed within Sensu, as key/value pairs.'], 'type': 'dict'})
+- mutator ({'description': ['Mutator to call for transforming the check result before passing it to this handler.'], 'type': 'str'})
+- name ({'description': ["The Sensu object's name."], 'type': 'str', 'required': True})
+- port ({'description': ['The socket port to connect to.'], 'type': 'int', 'required': True})
+- state ({'description': ['Target state of the Sensu object.'], 'type': 'str', 'choices': ['present', 'absent'], 'default': 'present'})
+- timeout ({'description': ['Timeout for handler execution'], 'type': 'int'})
+- type ({'description': ['The handler type.'], 'choices': ['tcp', 'udp'], 'type': 'str', 'required': True})
+
+
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: TCP handler
+      socket_handler:
+        name: tcp_handler
+        type: tcp
+        host: 10.0.1.99
+        port: 4444
+
+    - name: UDP handler
+      socket_handler:
+        name: udp_handler
+        type: udp
+        host: 10.0.1.99
+        port: 4444
+
+
+
+
+Return Values
+-------------
+
+::
+    
+    object:
+        description: object representing Sensu socket handler
+        returned: success
+        type: dict
+
+
+Status
+------
+
+
+
+
+
+Authors
+~~~~~~~
+
+- Aljaz Kosir (@aljazkosir)
+- Miha Plesko (@miha-plesko)
+- Tadej Borovsak (@tadeboro)
+

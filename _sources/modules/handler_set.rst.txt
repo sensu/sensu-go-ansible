@@ -1,0 +1,69 @@
+
+handler_set -- Manages Sensu handler set
+========================================
+
+.. contents::
+   :local:
+   :depth: 1
+
+Synopsis
+--------
+- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/handlers/
+
+
+
+Parameters
+----------
+
+- annotations ({'description': ['Custom metadata fields with fewer restrictions, as key/value pairs.', 'These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.'], 'type': 'dict'})
+- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
+- handlers ({'description': ['List of Sensu event handlers (names) to use for events using the handler set.'], 'type': 'list'})
+- labels ({'description': ['Custom metadata fields that can be accessed within Sensu, as key/value pairs.'], 'type': 'dict'})
+- name ({'description': ["The Sensu object's name."], 'type': 'str', 'required': True})
+- state ({'description': ['Target state of the Sensu object.'], 'type': 'str', 'choices': ['present', 'absent'], 'default': 'present'})
+
+
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: Create set handler
+      handler_set:
+        name: notify_all_the_things
+        handlers:
+          - slack
+          - tcp_handler
+          - udp_handler
+
+
+
+
+Return Values
+-------------
+
+::
+    
+    object:
+        description: object representing Sensu handler set
+        returned: success
+        type: dict
+
+
+Status
+------
+
+
+
+
+
+Authors
+~~~~~~~
+
+- Aljaz Kosir (@aljazkosir)
+- Miha Plesko (@miha-plesko)
+- Tadej Borovsak (@tadeboro)
+

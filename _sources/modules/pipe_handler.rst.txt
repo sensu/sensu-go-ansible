@@ -1,0 +1,77 @@
+
+pipe_handler -- Manages Sensu pipe handler
+==========================================
+
+.. contents::
+   :local:
+   :depth: 1
+
+Synopsis
+--------
+- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/handlers/
+
+
+
+Parameters
+----------
+
+- annotations ({'description': ['Custom metadata fields with fewer restrictions, as key/value pairs.', 'These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.'], 'type': 'dict'})
+- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
+- command ({'description': ['The handler command to be executed. The event data is passed to the process via STDIN.'], 'type': 'str', 'required': True})
+- env_vars ({'description': ['A mapping of environment variable names and values to use with command execution.'], 'type': 'dict'})
+- filters ({'description': ['List of filters to use when determining whether to pass the check result to this handler.'], 'type': 'list'})
+- labels ({'description': ['Custom metadata fields that can be accessed within Sensu, as key/value pairs.'], 'type': 'dict'})
+- mutator ({'description': ['Mutator to call for transforming the check result before passing it to this handler.'], 'type': 'str'})
+- name ({'description': ["The Sensu object's name."], 'type': 'str', 'required': True})
+- runtime_assets ({'description': ['List of runtime assets to required to run the handler C(command)'], 'type': 'list'})
+- state ({'description': ['Target state of the Sensu object.'], 'type': 'str', 'choices': ['present', 'absent'], 'default': 'present'})
+- timeout ({'description': ['Timeout for handler execution'], 'type': 'int'})
+
+
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: Setup InfluxDB handler
+      pipe_handler:
+        name: influx-db
+        command: sensu-influxdb-handler -d sensu
+        env_vars:
+          INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
+          INFLUXDB_USER: sensu
+          INFLUXDB_PASS: password
+        runtime_assets:
+          - sensu-influxdb-handler
+
+
+
+
+Return Values
+-------------
+
+::
+    
+    object:
+        description: object representing Sensu pipe handler
+        returned: success
+        type: dict
+
+
+Status
+------
+
+
+
+
+
+Authors
+~~~~~~~
+
+- Aljaz Kosir (@aljazkosir)
+- Miha Plesko (@miha-plesko)
+- Tadej Borovsak (@tadeboro)
+
