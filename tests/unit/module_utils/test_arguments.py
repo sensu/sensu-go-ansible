@@ -1,11 +1,30 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
     arguments,
 )
+
+
+class TestGetSpecPayload:
+    def test_no_key(self):
+        params = dict(
+            name="name",
+            key="value"
+        )
+
+        assert arguments.get_spec_payload(params) == dict()
+
+    def test_spec_payload(self):
+        params = dict(
+            name="name",
+            key="value",
+        )
+
+        assert arguments.get_spec_payload(params, "key") == dict(
+            key="value",
+        )
 
 
 class TestGetMutationPayload:

@@ -57,10 +57,14 @@ MUTATION_ARGUMENTS = dict(
 )
 
 
-def get_mutation_payload(source, *wanted_params):
-    payload = {
+def get_spec_payload(source, *wanted_params):
+    return {
         k: source[k] for k in wanted_params if source.get(k) is not None
     }
+
+
+def get_mutation_payload(source, *wanted_params):
+    payload = get_spec_payload(source, *wanted_params)
     payload["metadata"] = dict(
         name=source["name"],
         namespace=source["auth"]["namespace"],

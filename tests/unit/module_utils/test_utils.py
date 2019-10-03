@@ -135,6 +135,17 @@ class TestSync:
         client.put.assert_not_called()
 
 
+class TestIsDifferentType:
+    def test_different_types(self):
+        assert not utils._is_same_type([1], 1)
+
+    def test_different_string_types(self):
+        assert utils._is_same_type(u'a', 'a')
+
+    def test_special_chars_same_types(self):
+        assert utils._is_same_type(u'£', '£')
+
+
 class TestDoDiffer:
     @pytest.mark.parametrize("desired", [None, {"a": "b"}, 1, False, 2.3])
     def test_current_none_always_differ(self, desired):
@@ -143,11 +154,24 @@ class TestDoDiffer:
     def test_extra_keys_in_current_do_not_matter(self):
         assert utils.do_differ({"a": "b", "c": 3}, {"a": "b"}) is False
 
+    def test_special_characters(self):
+        assert utils.do_differ({"a": "£", "c": 3}, {"a": "£"}) is False
+
     def test_detect_different_values(self):
         assert utils.do_differ({"a": "b"}, {"a": "c"}) is True
 
-    def test_detect_missing_keys_in_current(self):
+    def test_detect_different_value_structure(self, mocker):
+        debug_log = mocker.patch(
+            "ansible_collections.sensu.sensu_go.plugins.module_utils.debug.log")
+        assert utils.do_differ({"a": "b", "c": {"d": ["e"]}}, {"a": "b", "c": {"d": 1}}) is True
+        debug_log.assert_called_once_with(
+            "Remote and local value on key '{0}' structurally mismatch", "d")
+
+    def test_detect_missing_keys_in_current(self, mocker):
+        debug_log = mocker.patch(
+            "ansible_collections.sensu.sensu_go.plugins.module_utils.debug.log")
         assert utils.do_differ({"a": "b"}, {"c": "d"}) is True
+        debug_log.assert_not_called()
 
     def test_desired_none_values_are_ignored(self):
         assert utils.do_differ({"a": "b"}, {"c": None}) is False

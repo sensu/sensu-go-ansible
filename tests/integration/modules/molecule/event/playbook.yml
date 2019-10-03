@@ -1,0 +1,210 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  environment:
+    SENSU_ANSIBLE_DEBUG: True
+  tasks:
+    - name: Create simple entity
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: awesome_entity
+        entity_class: proxy
+      register: entity
+
+    - name: Create a simple check
+      check:
+        auth:
+          url: http://localhost:8080
+        name: awesome_check
+        command: /bin/true
+        subscriptions:
+          - checks
+          - also_checks
+        interval: 30
+      register: check
+
+    - name: Create event with minimal parameters
+      event:
+        auth:
+          url: http://localhost:8080
+        timestamp: 134532453
+        entity: "{{ entity.object }}"
+        check:
+          metadata:
+            name: not_so_awesome_check
+            namespace: default
+          interval: 60
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.namespace == 'default'
+          - result.object.entity.metadata.name == 'awesome_entity'
+          - result.object.entity.entity_class == 'proxy'
+          - result.object.check.metadata.name == 'not_so_awesome_check'
+
+    - name: Create event with minimal parameters idempotence
+      event:
+        auth:
+          url: http://localhost:8080
+        timestamp: 134532453
+        entity: "{{ entity.object }}"
+        check:
+          metadata:
+            name: not_so_awesome_check
+            namespace: default
+          interval: 60
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Create event
+      event:
+        auth:
+          url: http://localhost:8080
+        timestamp: 134532453
+        entity: "{{ entity.object }}"
+        check: "{{ check.object }}"
+        check_merge:
+          duration: 1.945
+          executed: 1522100915
+          history:
+            - executed: 1552505193
+              status: 1
+            - executed: 1552505293
+              status: 0
+            - executed: 1552505393
+              status: 0
+            - executed: 1552505493
+              status: 0
+          issued: 1552506033
+          last_ok: 1552506033
+          output: "sensu-go-sandbox.curl_timings.time_total 0.005"
+          state: passing
+          status: ok
+          total_state_change: 0
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.entity.metadata.name == 'awesome_entity'
+          - result.object.entity.entity_class == 'proxy'
+          - result.object.check.metadata.name == 'awesome_check'
+          - result.object.check.duration == 1.945
+          - result.object.check.executed == 1522100915
+          - result.object.check.history.0.executed == 1552505193
+          - result.object.check.history.0.status == 1
+          - result.object.check.issued == 1552506033
+          - result.object.check.last_ok == 1552506033
+          - result.object.check.output == "sensu-go-sandbox.curl_timings.time_total 0.005"
+          - result.object.check.state == 'passing'
+          - result.object.check.status == 0
+          - result.object.check.total_state_change == 0
+
+    - name: Test event idemopotence
+      event:
+        auth:
+          url: http://localhost:8080
+        timestamp: 134532453
+        entity: "{{ entity.object }}"
+        check: "{{ check.object }}"
+        check_merge:
+          duration: 1.945
+          executed: 1522100915
+          history:
+            - executed: 1552505193
+              status: 1
+            - executed: 1552505293
+              status: 0
+            - executed: 1552505393
+              status: 0
+            - executed: 1552505493
+              status: 0
+          issued: 1552506033
+          last_ok: 1552506033
+          output: "sensu-go-sandbox.curl_timings.time_total 0.005"
+          state: passing
+          status: ok
+          total_state_change: 0
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Create third event
+      event:
+        auth:
+          url: http://localhost:8080
+        timestamp: 134532453
+        entity:
+          metadata:
+            name: not_so_awesome_entity
+          entity_class: proxy
+        check:
+          metadata:
+            name: not_so_awesome_check
+            namespace: default
+          interval: 60
+
+    - name: Fetch by filtering on check and entity name
+      event_info:
+        auth:
+          url: http://localhost:8080
+        check_name: "{{ check.object.metadata.name }}"
+        entity_name: "{{ entity.object.metadata.name }}"
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+
+    - name: Fetch by filtering on entity name
+      event_info:
+        auth:
+          url: http://localhost:8080
+        entity_name: "{{ entity.object.metadata.name }}"
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
+
+    - name: Fetch all events
+      event_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 3
+
+    - name: Delete event
+      event:
+        auth:
+          url: http://localhost:8080
+        check:
+          metadata:
+            name: not_so_awesome_check
+        entity:
+          metadata:
+            name: not_so_awesome_entity
+        state: absent
+
+    - name: Fetch all events
+      event_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2

@@ -6,7 +6,8 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-from ansible_collections.sensu.sensu_go.plugins.module_utils import errors
+from ansible_collections.sensu.sensu_go.plugins.module_utils import errors, debug
+from ansible.module_utils.six import string_types
 
 
 def sync(state, client, path, payload, check_mode):
@@ -31,12 +32,27 @@ def sync(state, client, path, payload, check_mode):
     return False, remote_object
 
 
+def _is_same_type(a, b):
+    if isinstance(a, string_types) and isinstance(b, string_types):
+        return True
+    elif a is None or b is None:
+        # It means that one or both values are empty, could still be same type
+        return True
+    return isinstance(a, type(b))
+
+
 def do_differ(current, desired):
     if current is None:
         return True
-
     for key, value in desired.items():
-        if value != current.get(key):
+        current_value = current.get(key)
+        if not _is_same_type(current_value, value):
+            debug.log("Remote and local value on key '{0}' structurally mismatch", key)
+            return True
+        elif isinstance(value, dict):
+            if do_differ(current_value, value):
+                return True
+        elif value != current_value:
             return True
 
     return False
