@@ -1,0 +1,7 @@
+---
+- name: Restart backend
+  service:
+    name: sensu-backend
+    state: restarted
+  tags:
+    - run_backend
