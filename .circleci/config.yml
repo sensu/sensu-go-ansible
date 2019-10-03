@@ -13,10 +13,12 @@ workflows:
 
       - modules_integration_ansible29_git
       - install_role_integration_ansible29_git
+      - backend_role_integration_ansible29_git
 
       - modules_integration_ansible29_galaxy: &stable_filter
           filters: { branches: { only: [ stable ] } }
       - install_role_integration_ansible29_galaxy: *stable_filter
+      - backend_role_integration_ansible29_galaxy: *stable_filter
 
   daily_master:
     triggers:
@@ -26,6 +28,7 @@ workflows:
     jobs:
       - modules_integration_ansible29_git
       - install_role_integration_ansible29_git
+      - backend_role_integration_ansible29_git
 
   daily_released:
     triggers:
@@ -35,6 +38,7 @@ workflows:
     jobs:
       - modules_integration_ansible29_galaxy
       - install_role_integration_ansible29_galaxy
+      - backend_role_integration_ansible29_galaxy
 
 # A list of all supported python versions.
 executors:
@@ -105,32 +109,37 @@ jobs:
 
   # Integration tests run on single python version, because python portability
   # is checked by sanity and unit tests.
-  modules_integration_ansible29_git:
+  modules_integration_ansible29_git: &modules_integration
     executor: python37
     environment:
       ANSIBLE_VERSION: ==2.9.0rc1
       INTEGRATION_TEST_SECTION: modules
     steps: [ integration_test_git ]
 
-  install_role_integration_ansible29_git:
+  install_role_integration_ansible29_git: &install_role
     executor: python37
     environment:
       ANSIBLE_VERSION: ==2.9.0rc1
       INTEGRATION_TEST_SECTION: roles/install
+    steps: [ integration_test_git ]
+
+  backend_role_integration_ansible29_git: &backend_role
+    executor: python37
+    environment:
+      ANSIBLE_VERSION: ==2.9.0rc1
+      INTEGRATION_TEST_SECTION: roles/backend
     steps: [ integration_test_git ]
 
   modules_integration_ansible29_galaxy:
-    executor: python37
-    environment:
-      ANSIBLE_VERSION: ==2.9.0rc1
-      INTEGRATION_TEST_SECTION: modules
+    <<: *modules_integration
     steps: [ integration_test_galaxy ]
 
   install_role_integration_ansible29_galaxy:
-    executor: python37
-    environment:
-      ANSIBLE_VERSION: ==2.9.0rc1
-      INTEGRATION_TEST_SECTION: roles/install
+    <<: *install_role
+    steps: [ integration_test_galaxy ]
+
+  backend_role_integration_ansible29_galaxy:
+    <<: *backend_role
     steps: [ integration_test_galaxy ]
 
 commands:
