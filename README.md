@@ -13,9 +13,20 @@ This [Ansible Collection][] contains:
 
 ## Installation
 
-Just install the collection from Ansible Galaxy and you're good to go:
+Just install the collection from Ansible Galaxy and you're good to go. If you
+are using Ansible 2.9 or later, you can install Sensu Go collection by running
 
     ansible-galaxy collection install -p ~/.ansible/collections sensu.sensu_go
+
+If you are using Ansible 2.8, you will need to install [mazer][] first and
+then run:
+
+    mazer install sensu.sensu_go
+
+Older Ansible releases (< 2.8) do not support collections at all.
+
+   [mazer]: https://galaxy.ansible.com/docs/mazer/index.html
+            (Mazer documentation)
 
 
 ## Usage
