@@ -1,0 +1,64 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create namespace
+      namespace:
+        auth:
+          url: http://localhost:8080
+        name: dev
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.name == 'dev'
+
+    - name: Create namespace idempotence
+      namespace:
+        auth:
+          url: http://localhost:8080
+        name: dev
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Create a second namespace
+      namespace:
+        auth:
+          url: http://localhost:8080
+        name: production
+
+    - name: Fetch all namespaces
+      namespace_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 3
+          - result.objects.1.name == 'dev'
+
+    - name: Delete namespace
+      namespace:
+        auth:
+          url: http://localhost:8080
+        name: dev
+        state: absent
+
+    - name: Fetch all namespaces
+      namespace_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
+          - result.objects.1.name == 'production'

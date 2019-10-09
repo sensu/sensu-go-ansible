@@ -8,6 +8,26 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
+class TestGetSpecPayload:
+    def test_no_key(self):
+        params = dict(
+            name="name",
+            key="value"
+        )
+
+        assert arguments.get_spec_payload(params) == dict()
+
+    def test_spec_payload(self):
+        params = dict(
+            name="name",
+            key="value",
+        )
+
+        assert arguments.get_spec_payload(params, "key") == dict(
+            key="value",
+        )
+
+
 class TestGetMutationPayload:
     def test_no_key(self):
         params = dict(

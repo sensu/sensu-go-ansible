@@ -37,7 +37,7 @@ COMMON_ARGUMENTS = dict(
     )
 )
 
-MUTATION_ARGUMENTS = dict(
+OBJECT_ARGUMENTS = dict(
     COMMON_ARGUMENTS,
     state=dict(
         default="present",
@@ -46,6 +46,10 @@ MUTATION_ARGUMENTS = dict(
     name=dict(
         required=True,
     ),
+)
+
+MUTATION_ARGUMENTS = dict(
+    OBJECT_ARGUMENTS,
     labels=dict(
         type="dict",
         default={},
@@ -57,10 +61,14 @@ MUTATION_ARGUMENTS = dict(
 )
 
 
-def get_mutation_payload(source, *wanted_params):
-    payload = {
+def get_spec_payload(source, *wanted_params):
+    return {
         k: source[k] for k in wanted_params if source.get(k) is not None
     }
+
+
+def get_mutation_payload(source, *wanted_params):
+    payload = get_spec_payload(source, *wanted_params)
     payload["metadata"] = dict(
         name=source["name"],
         namespace=source["auth"]["namespace"],
