@@ -1,0 +1,125 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create user with minimal parameters
+      user:
+        auth:
+          url: http://localhost:8080
+        name: awesome_username
+        password: hidden_password?
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.username == 'awesome_username'
+
+    - name: Create a user
+      user:
+        auth:
+          url: http://localhost:8080
+        name: test_username
+        password: hidden_password?
+        state: disabled
+        groups:
+          - dev
+          - prod
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.username == 'test_username'
+          - result.object.disabled == True
+          - result.object.groups == ['dev', 'prod']
+
+    - name: Modify a user
+      user:
+        auth:
+          url: http://localhost:8080
+        name: test_username
+        password: hidden_password!
+        groups:
+          - dev
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.groups == ['dev']
+
+    - name: Fetch all users
+      user_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 4 # users admin and agent already exist
+
+    - name: Fetch specific user
+      user_info:
+        auth:
+          url: http://localhost:8080
+        name: test_username
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.username == 'test_username'
+
+    - name: Disable user
+      user:
+        auth:
+          url: http://localhost:8080
+        name: test_username
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result.object.username == 'test_username'
+          - result.object.disabled == True
+
+    - name: Disable already disabled user
+      user:
+        auth:
+          url: http://localhost:8080
+        name: test_username
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+
+    - name: Fetch test_username
+      user_info:
+        auth:
+          url: http://localhost:8080
+        name: test_username
+      register: result
+
+    - assert:
+        that:
+          - result.objects.0.username == 'test_username'
+          - result.objects.0.disabled == True
+
+    - name: Try to disable non-existent user
+      user:
+        auth:
+          url: http://localhost:8080
+        name: missing_user
+        state: disabled
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
