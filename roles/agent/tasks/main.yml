@@ -1,0 +1,20 @@
+---
+- name: Install sensu-go-agent binary
+  include_role:
+    name: install
+  vars:
+    components: [sensu-go-agent]
+
+- name: Configure sensu-agent (/etc/sensu/agent.yml)
+  template:
+    src: agent.yml.j2
+    dest: /etc/sensu/agent.yml
+  notify: Restart agent
+  tags: [configure_agent]
+
+- name: Start sensu-agent
+  service:
+    name: sensu-agent
+    state: started
+    enabled: yes
+  tags: [run_agent]

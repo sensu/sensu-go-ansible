@@ -1,0 +1,18 @@
+---
+#
+# {{ managed }}
+#
+
+##
+# Sensu agent configuration
+##
+{# -------------------------------------- #}
+backend-url:
+  {% for url in agent_backend_urls %}
+  - {{ url }}
+  {% endfor %}
+{# -------------------------------------- #}
+{% if agent_log_level %}
+log-level: {{ agent_log_level }}
+{% endif %}
+{# -------------------------------------- #}

@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: agents
+  collections:
+    - sensu.sensu_go
+  roles:
+    - agent
+  vars:
+    agent_backend_urls: ['ws://upstream-backend:4321']
