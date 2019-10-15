@@ -3,17 +3,8 @@
 # {{ managed }}
 #
 
-##
-# Sensu backend configuration
-##
-{# -------------------------------------- #}
-{% if backend_debug %}
-debug: {{ backend_debug }}
-{% endif %}
-{# -------------------------------------- #}
-{% if backend_log_level %}
-log-level: {{ backend_log_level }}
-{% endif %}
-{# -------------------------------------- #}
 state-dir: "/var/lib/sensu/sensu-backend"
-{# -------------------------------------- #}
+
+{% if backend_config %}
+{{ backend_config | to_nice_yaml }}
+{% endif %}
