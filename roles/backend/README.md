@@ -18,6 +18,7 @@ variables can be used in the playbooks:
 
 | Variable    | Examples  | Description |
 |-------------|-----------|-------------|
+| state-dir   | /var/lib/sensu/sensu-backend | Path to Sensu state storage. Default value: `/var/lib/sensu/sensu-backend`. |
 | debug       | false     | Enable debugging and profiling features |
 | log-level   | panic/fatal/error/*warn*/info/debug | Logging level: `panic`, `fatal`, `error`, `warn`, `info`, or `debug` |
 | agent-host  | "[::]"    | agent listener host, listens on all IPv4 and IPv6 addresses by default |
@@ -49,10 +50,6 @@ variables can be used in the playbooks:
 
 All of the `backend_config` variables are optional, so when we omit them from
 the role, the Sensu backend will use a version-specific default.
-The role automatically sets the following `backend_config` variables, so
-assigning custom values to them might have unexpected results:
-
-* `state-dir`
 
 [backend-conf]: https://docs.sensu.io/sensu-go/latest/reference/backend/#configuration-summary
 [Go TLS documentation]: https://golang.org/pkg/crypto/tls/#pkg-constants
