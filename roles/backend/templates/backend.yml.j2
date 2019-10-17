@@ -3,7 +3,9 @@
 # {{ managed }}
 #
 
+{% if not backend_config or "state-dir" not in backend_config %}
 state-dir: "/var/lib/sensu/sensu-backend"
+{% endif %}
 
 {% if backend_config %}
 {{ backend_config | to_nice_yaml }}
