@@ -40,24 +40,20 @@ options:
     description:
       - The URL location of the asset.
     type: str
-    required: true
   sha512:
     description:
       - The checksum of the asset.
     type: str
-    required: true
   filters:
     description:
       - A set of Sensu query expressions used to determine if the asset
         should be installed.
     type: list
-    default: []
   headers:
     description:
       - Additional headers to send when retrieving the asset, e.g. for
         authorization.
     type: dict
-    default: {}
 """
 
 EXAMPLES = """
