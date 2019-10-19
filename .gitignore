@@ -3,4 +3,3 @@ tests/runner
 .pytest_cache
 *.pyc
 *.swp
-meta
