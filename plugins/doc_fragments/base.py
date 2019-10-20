@@ -11,7 +11,8 @@ class ModuleDocFragment(object):
     DOCUMENTATION = """
 options:
   auth:
-    description: Authentication parameters. Can define each of them with ENV as well
+    description:
+      - Authentication parameters. Can define each of them with ENV as well.
     type: dict
     suboptions:
       user:
