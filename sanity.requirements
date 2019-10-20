@@ -1,4 +1,5 @@
 pycodestyle
 pylint
+rstcheck
 voluptuous
 yamllint
