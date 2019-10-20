@@ -1,0 +1,18 @@
+# TODO(@tadeboro): Replace the shell function with the wildcard function once
+# we remove sensu_go_ prefix from all the modules (which will also mean that
+# we have all modules properly documented).
+
+modules := $(shell find ../plugins/modules/ -name '*.py' | grep -v sensu_go_)
+module_docs := $(modules:../plugins/modules/%.py=source/modules/%.rst)
+
+.PHONY: all
+docs: $(module_docs)
+	$(MAKE) html
+
+.PHONY: clean
+clean:
+	rm -rf build source/modules
+
+source/modules/%.rst: ../plugins/modules/%.py ../plugins/doc_fragments/*.py
+	mkdir -p source/modules
+	ansible-doc-extractor source/modules $<

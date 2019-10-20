@@ -1,6 +1,7 @@
 tests/output
 tests/runner
 docs/build
+docs/source/modules
 .pytest_cache
 *.pyc
 *.swp
