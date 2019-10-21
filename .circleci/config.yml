@@ -11,14 +11,26 @@ workflows:
       - unit_python36_ansible29
       - unit_python37_ansible29
 
-      - modules_integration_ansible29_git
-      - install_role_integration_ansible29_git
-      - backend_role_integration_ansible29_git
+      - modules_integration_ansible29_git: &master_opts
+          requires:
+            - sanity
+            - unit_python27_ansible29
+            - unit_python35_ansible29
+            - unit_python36_ansible29
+            - unit_python37_ansible29
+      - install_role_integration_ansible29_git: *master_opts
+      - backend_role_integration_ansible29_git: *master_opts
 
-      - modules_integration_ansible29_galaxy: &stable_filter
+      - modules_integration_ansible29_galaxy: &stable_opts
           filters: { branches: { only: [ stable ] } }
-      - install_role_integration_ansible29_galaxy: *stable_filter
-      - backend_role_integration_ansible29_galaxy: *stable_filter
+          requires:
+            - sanity
+            - unit_python27_ansible29
+            - unit_python35_ansible29
+            - unit_python36_ansible29
+            - unit_python37_ansible29
+      - install_role_integration_ansible29_galaxy: *stable_opts
+      - backend_role_integration_ansible29_galaxy: *stable_opts
 
   daily_master:
     triggers:
