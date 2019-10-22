@@ -19,6 +19,7 @@ workflows:
             - unit_python36_ansible29
             - unit_python37_ansible29
       - install_role_integration_ansible29_git: *master_opts
+      - agent_role_integration_ansible29_git: *master_opts
       - backend_role_integration_ansible29_git: *master_opts
 
       - modules_integration_ansible29_galaxy: &stable_opts
@@ -40,6 +41,7 @@ workflows:
     jobs:
       - modules_integration_ansible29_git
       - install_role_integration_ansible29_git
+      - agent_role_integration_ansible29_git
       - backend_role_integration_ansible29_git
 
   daily_released:
@@ -135,6 +137,13 @@ jobs:
       INTEGRATION_TEST_SECTION: roles/install
     steps: [ integration_test_git ]
 
+  agent_role_integration_ansible29_git: &agent_role
+    executor: python37
+    environment:
+      ANSIBLE_VERSION: ==2.9.0rc4
+      INTEGRATION_TEST_SECTION: roles/agent
+    steps: [ integration_test_git ]
+
   backend_role_integration_ansible29_git: &backend_role
     executor: python37
     environment:
@@ -148,6 +157,10 @@ jobs:
 
   install_role_integration_ansible29_galaxy:
     <<: *install_role
+    steps: [ integration_test_galaxy ]
+
+  agent_role_integration_ansible29_galaxy:
+    <<: *agent_role
     steps: [ integration_test_galaxy ]
 
   backend_role_integration_ansible29_galaxy:
@@ -246,8 +259,8 @@ commands:
     description: Run molecule test
     steps:
       - run:
-          name: Install molecule
-          command: pip install molecule[docker]
+          name: Install integration test requirements
+          command: pip install -r integration.requirements
       - run:
           name: Run integration tests
           command: |
