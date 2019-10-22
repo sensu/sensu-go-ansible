@@ -1,0 +1,175 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create silence without parameters
+      silence:
+        auth:
+          url: http://localhost:8080
+      ignore_errors: True
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'one of the following is required: subscription, check'"
+
+    - name: Create silence with only check parameter
+      silence:
+        auth:
+          url: http://localhost:8080
+        check: check
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.check == 'check'
+          - result.object.metadata.name == '*:check'
+
+    - name: Create silence with only check parameter idempotence
+      silence:
+        auth:
+          url: http://localhost:8080
+        check: check
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Create silence with only subscription parameter
+      silence:
+        auth:
+          url: http://localhost:8080
+        subscription: agent
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.subscription == 'agent'
+          - result.object.metadata.name == 'agent:*'
+
+    - name: Create silence with only subscription parameter idempotence
+      silence:
+        auth:
+          url: http://localhost:8080
+        subscription: agent
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Create a silence
+      silence:
+        auth:
+          url: http://localhost:8080
+        subscription: entity:mail-server
+        check: some-check
+        begin: 1512512023
+        expire: 120
+        expire_on_resolve: True
+        reason: updating mail server
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'entity:mail-server:some-check'
+          - result.object.subscription == 'entity:mail-server'
+          - result.object.check == 'some-check'
+          - result.object.begin == 1512512023
+          - result.object.expire == 120
+          - result.object.expire_on_resolve == True
+          - result.object.creator == 'admin'
+          - result.object.reason == 'updating mail server'
+
+    - name: Test silence creation idempotence
+      silence:
+        auth:
+          url: http://localhost:8080
+        subscription: entity:mail-server
+        check: some-check
+        begin: 1512512023
+        expire: 120
+        expire_on_resolve: True
+        reason: updating mail server
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify a silence
+      silence:
+        auth:
+          url: http://localhost:8080
+        subscription: entity:mail-server
+        check: some-check
+        begin: 1512512024
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.begin == 1512512024
+          - result.object.subscription == 'entity:mail-server'
+          - result.object.check == 'some-check'
+          - not result.object.expire
+          - not result.object.expire_on_resolve
+
+    - name: Create a second silence
+      silence:
+        auth:
+          url: http://localhost:8080
+        subscription: agent
+        check: check-cpu
+
+    - name: Fetch all silences
+      silence_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 4
+          - result.objects.0.check == 'check'
+          - "'subscription' not in result.objects.0"
+
+    - name: Fetch a specific silence
+      silence_info:
+        auth:
+          url: http://localhost:8080
+        subscription: agent
+        check: check-cpu
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.subscription == 'agent'
+          - result.objects.0.check == 'check-cpu'
+
+    - name: Delete a silence
+      silence:
+        auth:
+          url: http://localhost:8080
+        check: check
+        state: absent
+
+    - name: Fetch all silecnes
+      silence_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 3
+          - result.objects.0.subscription == 'agent'
+          - "'check' not in result.objects.0"
