@@ -2,32 +2,12 @@
 scenario:
   name: reference
 platforms:
-  # CentOS
-  - { groups: [agents], pull: yes, networks: [{name: common}], name: centos-6, image: centos:6 }
   - { groups: [agents], pull: yes, networks: [{name: common}], name: centos-7, image: centos:7 }
 
-  # Ubuntu
-  - { groups: [agents], pull: yes, networks: [{name: common}], name: ubuntu-14.04, image: ubuntu:14.04 }
-  - { groups: [agents], pull: yes, networks: [{name: common}], name: ubuntu-16.04, image: ubuntu:16.04 }
-  - { groups: [agents], pull: yes, networks: [{name: common}], name: ubuntu-18.04, image: ubuntu:18.04 }
-  - { groups: [agents], pull: yes, networks: [{name: common}], name: ubuntu-18.10, image: ubuntu:18.10 }
-  - { groups: [agents], pull: yes, networks: [{name: common}], name: ubuntu-19.04, image: ubuntu:19.04 }
-
-  # Upstream container that we connect the agent to.
+  # Upstream container - just to populate the inventory
   - name: upstream-backend
     image: sensu/sensu:latest
     pull: yes
-    groups: [backend]
-    command: |
-      sensu-backend start \
-        --state-dir /var/lib/sensu/sensu-backend/etcd1 \
-        --agent-port 4321
-    networks:
-      - name: common
-
-  # Proxy. It's used by testinfra to access containers network.
-  - name: proxy
-    image: centos:7
-    groups: [proxy]
+    groups: [backends]
     networks:
       - name: common

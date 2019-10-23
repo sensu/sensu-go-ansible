@@ -1,9 +1,51 @@
 ---
 - name: Converge
   hosts: agents
-  collections:
-    - sensu.sensu_go
   roles:
-    - agent
+    - sensu.sensu_go.agent
+
+- name: Verify configure_agent
+  hosts: agents
   vars:
-    agent_backend_urls: ['ws://upstream-backend:4321']
+    agent_yml: /etc/sensu/agent.yml
+  tasks:
+    - name: Agent configuration must exist
+      stat:
+        path: '{{ agent_yml }}'
+      register: result
+
+    - assert:
+        that:
+          - result.stat.exists
+
+- name: Configure minimal configuration settings
+  hosts: agents
+  vars:
+    agent_backend_urls:
+      - "ws://upstream-backend:8085"
+    agent_config:
+      log-level: error
+  tags:
+    - configure_agent
+  become: yes
+  roles:
+    - role: sensu.sensu_go.agent
+
+- name: Verify configure_agent for minimal configuration settings
+  hosts: agents
+  vars:
+    agent_yml: /etc/sensu/agent.yml
+  tasks:
+    - name: Confirm minimal configuration settings
+      lineinfile:
+        path: '{{ agent_yml }}'
+        line: '{{ item }}'
+      with_items:
+        - 'log-level: error'
+        - 'backend-url:'
+        - '- ws://upstream-backend:8085'
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
