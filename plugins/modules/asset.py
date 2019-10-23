@@ -27,8 +27,11 @@ description:
     U(https://docs.sensu.io/sensu-go/latest/reference/assets/)
 version_added: 0.1.0
 extends_documentation_fragment:
-  - sensu.sensu_go.base
-  - sensu.sensu_go.object
+  - sensu.sensu_go.auth
+  - sensu.sensu_go.name
+  - sensu.sensu_go.state
+  - sensu.sensu_go.labels
+  - sensu.sensu_go.annotations
 options:
   state:
     description:

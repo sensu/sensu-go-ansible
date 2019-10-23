@@ -23,7 +23,8 @@ description:
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/users/)
 extends_documentation_fragment:
-  - sensu.sensu_go.base
+  - sensu.sensu_go.auth
+  - sensu.sensu_go.name
 notes:
   - Parameter C(auth.namespace) is ignored in this module.
 options:
@@ -32,13 +33,8 @@ options:
       - Desired state of the user.
       - Users cannot actually be deleted, only deactivated.
     type: str
-    choices: ['enabled', 'disabled']
+    choices: [ enabled, disabled ]
     default: enabled
-  name:
-    description:
-      - Username.
-    type: str
-    required: true
   password:
     description:
       - Password for the user.

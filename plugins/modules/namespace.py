@@ -24,21 +24,11 @@ description:
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces)
 extends_documentation_fragment:
-  - sensu.sensu_go.base
+  - sensu.sensu_go.auth
+  - sensu.sensu_go.name
+  - sensu.sensu_go.state
 notes:
   - Parameter C(auth.namespace) is ignored in this module.
-options:
-  name:
-    description:
-      - The Sensu object's name.
-    type: str
-    required: yes
-  state:
-    description:
-      - Target state of the Sensu object.
-    type: str
-    choices: [ 'present', 'absent' ]
-    default: present
 '''
 
 EXAMPLES = '''
