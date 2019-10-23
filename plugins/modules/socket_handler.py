@@ -22,8 +22,11 @@ description:
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/handlers/)
 extends_documentation_fragment:
-  - sensu.sensu_go.base
-  - sensu.sensu_go.object
+  - sensu.sensu_go.auth
+  - sensu.sensu_go.name
+  - sensu.sensu_go.state
+  - sensu.sensu_go.labels
+  - sensu.sensu_go.annotations
 options:
   type:
     description:

@@ -25,7 +25,7 @@ description:
     U(https://docs.sensu.io/sensu-go/latest/reference/mutators/)
 version_added: 0.1.0
 extends_documentation_fragment:
-  - sensu.sensu_go.base
+  - sensu.sensu_go.auth
   - sensu.sensu_go.info
 '''
 

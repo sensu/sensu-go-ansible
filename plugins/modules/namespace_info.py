@@ -23,7 +23,7 @@ description:
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces)
 extends_documentation_fragment:
-  - sensu.sensu_go.base
+  - sensu.sensu_go.auth
 notes:
   - Parameters C(auth.namespace) is ignored in this module.
 '''
