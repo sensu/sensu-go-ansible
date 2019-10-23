@@ -239,7 +239,9 @@ def main():
         required_if=required_if,
         mutually_exclusive=mutually_exclusive,
         argument_spec=dict(
-            arguments.MUTATION_ARGUMENTS,
+            arguments.get_spec(
+                "auth", "name", "state", "labels", "annotations",
+            ),
             command=dict(),
             subscriptions=dict(
                 type='list'

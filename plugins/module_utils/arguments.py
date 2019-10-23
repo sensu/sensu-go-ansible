@@ -11,7 +11,7 @@ from ansible.module_utils.basic import env_fallback
 from ansible_collections.sensu.sensu_go.plugins.module_utils import client
 
 
-COMMON_ARGUMENTS = dict(
+SHARED_SPECS = dict(
     auth=dict(
         type="dict",
         apply_defaults=True,
@@ -34,11 +34,7 @@ COMMON_ARGUMENTS = dict(
                 fallback=(env_fallback, ["SENSU_NAMESPACE"]),
             )
         ),
-    )
-)
-
-OBJECT_ARGUMENTS = dict(
-    COMMON_ARGUMENTS,
+    ),
     state=dict(
         default="present",
         choices=["present", "absent"],
@@ -46,10 +42,6 @@ OBJECT_ARGUMENTS = dict(
     name=dict(
         required=True,
     ),
-)
-
-MUTATION_ARGUMENTS = dict(
-    OBJECT_ARGUMENTS,
     labels=dict(
         type="dict",
         default={},
@@ -59,6 +51,10 @@ MUTATION_ARGUMENTS = dict(
         default={},
     ),
 )
+
+
+def get_spec(*param_names):
+    return {p: SHARED_SPECS[p] for p in param_names}
 
 
 def get_spec_payload(source, *wanted_params):

@@ -8,6 +8,23 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
+class TestGetSpec:
+    @pytest.mark.parametrize("param", [
+        "auth", "state", "name", "labels", "annotations",
+    ])
+    def test_valid_parameter(self, param):
+        assert set(arguments.get_spec(param).keys()) == {param}
+
+    def test_invalid_parameter(self):
+        with pytest.raises(KeyError):
+            arguments.get_spec("bad_parameter_name")
+
+    def test_multiple_parameters(self):
+        assert set(arguments.get_spec("auth", "name", "labels").keys()) == {
+            "auth", "name", "labels",
+        }
+
+
 class TestGetSpecPayload:
     def test_no_key(self):
         params = dict(

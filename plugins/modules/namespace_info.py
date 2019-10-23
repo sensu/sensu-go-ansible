@@ -51,7 +51,7 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=dict(
-            arguments.COMMON_ARGUMENTS,
+            arguments.get_spec("auth"),
         ),
     )
     module.params['auth']['namespace'] = None

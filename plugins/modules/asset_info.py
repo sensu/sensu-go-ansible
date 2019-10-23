@@ -55,8 +55,8 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=dict(
-            arguments.COMMON_ARGUMENTS,
-            name=dict(),
+            arguments.get_spec("auth"),
+            name=dict(),  # Name is not required in info modules.
         ),
     )
 
