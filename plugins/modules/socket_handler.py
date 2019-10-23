@@ -95,7 +95,9 @@ def main():
         supports_check_mode=True,
         required_if=required_if,
         argument_spec=dict(
-            arguments.MUTATION_ARGUMENTS,
+            arguments.get_spec(
+                "auth", "name", "state", "labels", "annotations",
+            ),
             type=dict(choices=['tcp', 'udp']),
             filters=dict(
                 type='list',

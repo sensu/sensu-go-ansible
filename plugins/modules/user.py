@@ -98,13 +98,10 @@ def main():
         required_if=required_if,
         supports_check_mode=True,
         argument_spec=dict(
-            arguments.COMMON_ARGUMENTS,
+            arguments.get_spec("auth", "name"),
             state=dict(
                 default='enabled',
                 choices=['enabled', 'disabled'],
-            ),
-            name=dict(
-                required=True
             ),
             password=dict(
                 no_log=True

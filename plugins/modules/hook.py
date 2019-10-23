@@ -88,7 +88,9 @@ def main():
         required_if=required_if,
         supports_check_mode=True,
         argument_spec=dict(
-            arguments.MUTATION_ARGUMENTS,
+            arguments.get_spec(
+                "auth", "name", "state", "labels", "annotations",
+            ),
             command=dict(),
             timeout=dict(
                 type='int',

@@ -72,7 +72,7 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 def main():
     module = AnsibleModule(
         supports_check_mode=True,
-        argument_spec=arguments.OBJECT_ARGUMENTS
+        argument_spec=arguments.get_spec("auth", "name", "state"),
     )
     module.params['auth']['namespace'] = None
     client = arguments.get_sensu_client(module.params['auth'])

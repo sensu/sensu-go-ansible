@@ -14,7 +14,7 @@ import json
 
 
 def sensu_argument_spec():
-    return arguments.COMMON_ARGUMENTS.copy()
+    return arguments.get_spec("auth")
 
 
 def clean_metadata_dict(tags):
