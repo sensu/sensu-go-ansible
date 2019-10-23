@@ -1,6 +1,0 @@
----
-scenario:
-  name: config
-platforms:
-  # CentOS
-  - { groups: [backends], pull: yes, networks: [{name: common}], name: centos-7, image: centos:7 }

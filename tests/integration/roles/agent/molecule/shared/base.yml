@@ -54,9 +54,3 @@ provisioner:
   name: ansible
   lint:
     enabled: false
-verifier:
-  name: testinfra
-  additional_files_or_dirs:
-    - ../../shared/tests/test_*
-  lint:
-    name: flake8

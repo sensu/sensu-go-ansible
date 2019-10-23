@@ -54,7 +54,3 @@ provisioner:
   name: ansible
   lint:
     enabled: false
-verifier:
-  name: testinfra
-  lint:
-    enabled: false
