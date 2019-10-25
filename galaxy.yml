@@ -1,6 +1,6 @@
 namespace: sensu
 name: sensu_go
-version: 0.7.5
+version: 0.7.6
 
 authors:
   - Paul Arthur <paul.arthur@flowerysong.com> (@flowerysong)
