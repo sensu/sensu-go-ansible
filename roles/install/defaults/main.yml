@@ -1,6 +1,7 @@
 ---
 os: unknown
 dist: unknown
+channel: stable
 
 components:
   - sensu-go-backend
