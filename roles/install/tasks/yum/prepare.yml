@@ -4,11 +4,11 @@
 
 - name: Add yum repository
   yum_repository:
-    name: sensu_stable
-    description: sensu_stable
+    name: sensu_{{ channel }}
+    description: sensu_{{ channel }}
     file: sensu
-    baseurl: https://packagecloud.io/sensu/stable/{{ os }}/{{ dist }}/$basearch
-    gpgkey: https://packagecloud.io/sensu/stable/gpgkey
+    baseurl: https://packagecloud.io/sensu/{{ channel }}/{{ os }}/{{ dist }}/$basearch
+    gpgkey: https://packagecloud.io/sensu/{{ channel }}/gpgkey
     gpgcheck: no
     repo_gpgcheck: yes
     enabled: yes
@@ -18,11 +18,11 @@
 
 - name: Add yum source repository
   yum_repository:
-    name: sensu_stable-source
-    description: sensu_stable-source
+    name: sensu_{{ channel }}-source
+    description: sensu_{{ channel }}-source
     file: sensu
-    baseurl: https://packagecloud.io/sensu/stable/{{ os }}/{{ dist }}/SRPMS
-    gpgkey: https://packagecloud.io/sensu/stable/gpgkey
+    baseurl: https://packagecloud.io/sensu/{{ channel }}/{{ os }}/{{ dist }}/SRPMS
+    gpgkey: https://packagecloud.io/sensu/{{ channel }}/gpgkey
     gpgcheck: no
     repo_gpgcheck: yes
     enabled: yes
