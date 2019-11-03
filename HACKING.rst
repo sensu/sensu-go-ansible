@@ -65,3 +65,39 @@ environment variable when running ``ansible-test``. But ``molecule`` is a
 general-purpose tool and knows nothing about Ansible's internal hackery.
 So it is up to us to set up the execution environment before running the
 integration tests.
+
+
+Adding a new integration test
+-----------------------------
+
+Integration tests are a vital part of the Sensu Go Ansible collection. We use
+them to make sure our modules and roles work with the supported set of Sensu
+Go and Ansible versions.
+
+Integration tests live in the ``tests/integration/molecule`` directory. As you
+may have already guessed, we use Molecule to manage our integration tests. We
+can add a new test scenario by creating a suitably named directory and
+populating it with a ``playbook.yml`` playbook and ``molecule.yml``
+configuration file.
+
+If we are creating an integration test for a module, we can leave the molecule
+configuration empty. But we must still create the configuration file, or
+Molecule will not detect this scenario. For example, if we would like to
+create a new Molecule scenario that is testing the ``asset`` module, we would
+run this sequence of commands::
+
+   $ cd tests/integration
+   $ mkdir molecule/module_asset
+   $ touch molecule/module_asset/molecule.yml
+
+Now we need to write down the ``molecule/module_asset/playbook.yml`` playbook
+that contains the actual test using ``vim``. And yes, the ``vim`` part is
+mandatory ;)
+
+Once we have our playbook ready, we can test our scenario by running::
+
+   $ molecule --base-config base.yml test -s module_asset
+
+One thing we need to make sure before we run this command is that we have
+``ANSIBLE_COLLECTIONS_PATHS`` environment variable set as shown in the
+quickstart section. And this is all there is to it.

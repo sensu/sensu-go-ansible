@@ -1,0 +1,9 @@
+---
+platforms:
+  - name: centos
+    image: centos:7
+    groups: [ backends ]
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
