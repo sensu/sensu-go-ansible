@@ -1,0 +1,10 @@
+---
+- name: Converge with latest versions of components
+  hosts: all
+  vars:
+    components:
+      - sensu-go-backend
+      - sensu-go-agent
+      - sensu-go-cli
+  roles:
+    - sensu.sensu_go.install
