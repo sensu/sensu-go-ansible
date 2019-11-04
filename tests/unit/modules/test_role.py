@@ -30,7 +30,7 @@ class TestRole(ModuleTestCase):
         with pytest.raises(AnsibleExitJson):
             role.main()
 
-        state, _client, path, payload, check_mode = sync_mock.call_args[0]
+        state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
         assert path == '/roles/test_role'
         assert payload == dict(
@@ -70,7 +70,7 @@ class TestRole(ModuleTestCase):
         with pytest.raises(AnsibleExitJson):
             role.main()
 
-        state, _client, path, payload, check_mode = sync_mock.call_args[0]
+        state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
         assert path == '/roles/test_role'
         assert payload == dict(
@@ -118,6 +118,17 @@ class TestRole(ModuleTestCase):
                     resources=[],
                 ),
             ]
+        )
+
+        with pytest.raises(AnsibleFailJson):
+            role.main()
+
+    def test_failure_empty_rules(self, mocker):
+        sync_mock = mocker.patch.object(utils, 'sync')
+        sync_mock.side_effect = Exception("Validation should fail but didn't")
+        set_module_args(
+            name='test_role',
+            rules=[]
         )
 
         with pytest.raises(AnsibleFailJson):

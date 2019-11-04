@@ -32,7 +32,6 @@ options:
     description:
       - Rules that the role applies.
     type: list
-    required: yes
     suboptions:
       verbs:
         description:
@@ -75,16 +74,21 @@ object:
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    arguments, errors, utils
+    arguments, errors, utils, role_utils
 )
 
 
+def validate_module_params(module):
+    params = module.params
+    if params['state'] == 'present':
+        if not params['rules']:
+            module.fail_json(
+                msg='state is present but all of the following are missing: rules'
+            )
+
+
 def main():
-    required_if = [
-        ("state", "present", ["rules"])
-    ]
     module = AnsibleModule(
-        required_if=required_if,
         supports_check_mode=True,
         argument_spec=dict(
             arguments.get_spec("auth", "name", "state"),
@@ -104,12 +108,12 @@ def main():
                     resource_names=dict(
                         type="list",
                     ),
-
                 )
             )
         )
     )
 
+    validate_module_params(module)
     client = arguments.get_sensu_client(module.params["auth"])
     path = "/roles/{0}".format(module.params["name"])
     payload = arguments.get_mutation_payload(
@@ -118,7 +122,8 @@ def main():
 
     try:
         changed, role = utils.sync(
-            module.params['state'], client, path, payload, module.check_mode,
+            module.params['state'], client, path,
+            payload, module.check_mode, role_utils.do_roles_differ
         )
         module.exit_json(changed=changed, object=role)
     except errors.Error as e:
