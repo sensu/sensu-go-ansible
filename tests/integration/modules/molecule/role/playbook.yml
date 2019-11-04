@@ -18,6 +18,20 @@
           - result is failed
           - "result.msg == 'state is present but all of the following are missing: rules'"
 
+    - name: Create a role with empty rules
+      role:
+        auth:
+          url: http://localhost:8080
+        name: test_role
+        rules: []
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'state is present but all of the following are missing: rules'"
+
     - name: Create a role with invalid rule verbs
       role:
         auth:
@@ -28,7 +42,7 @@
               - list
               - do_something
             resources:
-              - entity
+              - entities
       ignore_errors: true
       register: result
 
@@ -46,7 +60,7 @@
               - get
               - list
             resources:
-              - entity
+              - entities
       register: result
 
     - assert:
@@ -56,7 +70,7 @@
           - result.object.rules | length == 1
           - result.object.rules.0.verbs | length == 2
           - result.object.rules.0.verbs == ['get', 'list']
-          - result.object.rules.0.resources == ['entity']
+          - result.object.rules.0.resources == ['entities']
 
     - name: Check idempotence of role creation with minimal parameters
       role:
@@ -65,10 +79,10 @@
         name: minimal_test_role
         rules:
           - verbs:
-              - get
               - list
+              - get
             resources:
-              - entity
+              - entities
       register: result
 
     - assert:
@@ -83,8 +97,8 @@
           - verbs:
               - list
             resources:
-              - asset
-              - check
+              - assets
+              - checks
             resource_names:
               - some_resource_1
               - some_resource_2
@@ -92,7 +106,7 @@
               - list
               - get
             resources:
-              - check
+              - checks
       register: result
 
     - assert:
@@ -102,10 +116,10 @@
           - result.object.rules | length == 2
           - result.object.rules.0.verbs | length == 1
           - result.object.rules.0.verbs == ['list']
-          - result.object.rules.0.resources == ['asset', 'check']
+          - result.object.rules.0.resources == ['assets', 'checks']
           - result.object.rules.0.resource_names == ['some_resource_1', 'some_resource_2']
           - result.object.rules.1.verbs == ['list', 'get']
-          - result.object.rules.1.resources == ['check']
+          - result.object.rules.1.resources == ['checks']
           - not result.object.rules.1.resource_names
 
     - name: Check idempotence of role creation
@@ -117,16 +131,16 @@
           - verbs:
               - list
             resources:
-              - asset
-              - check
+              - checks
+              - assets
             resource_names:
-              - some_resource_1
               - some_resource_2
+              - some_resource_1
           - verbs:
-              - list
               - get
+              - list
             resources:
-              - check
+              - checks
       register: result
 
     - assert:
@@ -142,7 +156,7 @@
           - verbs:
               - list
             resources:
-              - asset
+              - assets
       register: result
 
     - assert:
@@ -150,7 +164,7 @@
           - result is changed
           - result.object.rules | length == 1
           - result.object.rules.0.verbs == ['list']
-          - result.object.rules.0.resources == ['asset']
+          - result.object.rules.0.resources == ['assets']
           - not result.object.rules.0.resource_names
 
     - name: Fetch all roles
