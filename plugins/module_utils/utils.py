@@ -9,7 +9,18 @@ __metaclass__ = type
 from ansible_collections.sensu.sensu_go.plugins.module_utils import errors
 
 
-def sync(state, client, path, payload, check_mode):
+def do_differ(current, desired):
+    if current is None:
+        return True
+
+    for key, value in desired.items():
+        if value != current.get(key):
+            return True
+
+    return False
+
+
+def sync(state, client, path, payload, check_mode, compare=do_differ):
     remote_object = get(client, path)
 
     if state == "absent" and remote_object is None:
@@ -22,24 +33,13 @@ def sync(state, client, path, payload, check_mode):
 
     # Making sure remote_object is present from here on
 
-    if do_differ(remote_object, payload):
+    if compare(remote_object, payload):
         if check_mode:
             return True, payload
         put(client, path, payload)
         return True, get(client, path)
 
     return False, remote_object
-
-
-def do_differ(current, desired):
-    if current is None:
-        return True
-
-    for key, value in desired.items():
-        if value != current.get(key):
-            return True
-
-    return False
 
 
 def _abort(msg, *args, **kwargs):
