@@ -78,6 +78,20 @@ class TestGetMutationPayload:
             ),
         )
 
+    def test_namespace_is_none(self):
+        params = dict(
+            auth=dict(
+                namespace=None
+            ),
+            name="name",
+        )
+
+        assert arguments.get_mutation_payload(params) == dict(
+            metadata=dict(
+                name="name"
+            ),
+        )
+
     def test_labels(self):
         params = dict(
             auth=dict(
