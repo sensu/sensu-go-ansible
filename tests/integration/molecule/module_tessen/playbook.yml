@@ -1,0 +1,53 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Call tessen with missing required parameters
+      tessen:
+        auth:
+          url: http://localhost:8080
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'missing required arguments: state'"
+
+    - name: Disable tessen  # Tessen is enabled by default on Sensu backends
+      tessen:
+        auth:
+          url: http://localhost:8080
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.opt_out == True
+
+    - name: Enable tessen
+      tessen:
+        auth:
+          url: http://localhost:8080
+        state: enabled
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.opt_out == False
+
+    - name: Try to enable already enabled tessen
+      tessen:
+        auth:
+          url: http://localhost:8080
+        state: enabled
+      register: result
+
+    - assert:
+        that:
+          - result is not changed

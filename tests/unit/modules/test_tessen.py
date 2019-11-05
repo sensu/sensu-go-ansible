@@ -1,0 +1,99 @@
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
+import pytest
+
+from ansible_collections.sensu.sensu_go.plugins.module_utils import (
+    errors, response, utils
+)
+from ansible_collections.sensu.sensu_go.plugins.modules import tessen
+
+from .common.utils import (
+    AnsibleExitJson, AnsibleFailJson, ModuleTestCase, set_module_args,
+)
+
+
+class TestSync:
+    def test_remote_and_desired_equal(self, mocker):
+        client = mocker.Mock()
+        client.get.return_value = response.Response(200, '{}')
+        changed, object = tessen.sync(client, "/path", {}, False)
+
+        assert changed is False
+        assert object == {}
+
+    def test_remote_and_desired_not_equal(self, mocker):
+        client = mocker.Mock()
+        client.get.side_effect = (
+            response.Response(200, '{"opt_out": "false"}'),
+            response.Response(200, '{"opt_out": "true"}'),
+        )
+        client.put.return_value = response.Response(200, "")
+        changed, object = tessen.sync(client, "/path", {'opt_out': True}, False)
+
+        assert changed is True
+        assert object == {'opt_out': 'true'}
+        client.put.assert_called_once_with("/path", {'opt_out': True})
+
+    def test_remote_and_desired_equal_check(self, mocker):
+        client = mocker.Mock()
+        client.get.return_value = response.Response(200, '{}')
+        changed, object = tessen.sync(client, "/path", {}, True)
+
+        assert changed is False
+        assert object == {}
+
+    def test_remote_and_desired_not_equal_check(self, mocker):
+        client = mocker.Mock()
+        client.get.return_value = response.Response(200, '{"opt_out": "false"}')
+        changed, object = tessen.sync(client, "/path", {'opt_out': True}, True)
+
+        assert changed is True
+        assert object == {'opt_out': True}
+        client.put.assert_not_called()
+
+
+class TestTessen(ModuleTestCase):
+    def test_enabled(self, mocker):
+        sync_mock = mocker.patch.object(tessen, 'sync')
+        sync_mock.return_value = True, {}
+        set_module_args(
+            state='enabled'
+        )
+
+        with pytest.raises(AnsibleExitJson):
+            tessen.main()
+
+        _client, path, payload, check_mode = sync_mock.call_args[0]
+        assert path == '/tessen'
+        assert payload == dict(
+            opt_out=False
+        )
+        assert check_mode is False
+
+    def test_disabled(self, mocker):
+        sync_mock = mocker.patch.object(tessen, 'sync')
+        sync_mock.return_value = True, {}
+        set_module_args(
+            state='disabled'
+        )
+
+        with pytest.raises(AnsibleExitJson):
+            tessen.main()
+
+        _client, path, payload, check_mode = sync_mock.call_args[0]
+        assert path == '/tessen'
+        assert payload == dict(
+            opt_out=True
+        )
+        assert check_mode is False
+
+    def test_failure(self, mocker):
+        sync_mock = mocker.patch.object(tessen, 'sync')
+        sync_mock.side_effect = errors.Error('Bad error')
+        set_module_args(
+            state='enabled'
+        )
+
+        with pytest.raises(AnsibleFailJson):
+            tessen.main()
