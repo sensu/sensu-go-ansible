@@ -67,8 +67,13 @@ def get_mutation_payload(source, *wanted_params):
     payload = get_spec_payload(source, *wanted_params)
     payload["metadata"] = dict(
         name=source["name"],
-        namespace=source["auth"]["namespace"],
     )
+    # Cluster-wide objects are not limited to a single namespace. This is why we set
+    # metadata.namespace field only if namespace is present in authentication parameters.
+    namespace = source["auth"]["namespace"]
+    if namespace:
+        payload["metadata"]["namespace"] = namespace
+
     for kind in "labels", "annotations":
         if source.get(kind):
             payload["metadata"][kind] = {
