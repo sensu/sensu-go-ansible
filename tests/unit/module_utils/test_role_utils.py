@@ -120,3 +120,169 @@ class TestDoDiffer:
             ]
         }
         assert role_utils.do_role_bindings_differ(current, desired) is True
+
+
+class TestRuleSets:
+    def test_all_keys_none(self):
+        assert role_utils._rule_set([{}]) == {
+            (frozenset(), frozenset(), frozenset())
+        }
+
+    def test_rules_multiple(self):
+        assert role_utils._rule_set([{
+            'verbs': ['list', 'get'],
+            'resources': ['entities', 'checks'],
+            'resource_names': None
+        }, {
+            'verbs': ['list', 'delete'],
+            'resources': ['entities', 'checks'],
+            'resource_names': None
+        }]) == {
+            (frozenset(['delete', 'list']), frozenset(['checks', 'entities']), frozenset()),
+            (frozenset(['get', 'list']), frozenset(['checks', 'entities']), frozenset())
+        }
+
+    def test_missing_key(self):
+        assert role_utils._rule_set([{
+            'verbs': ['list', 'get'],
+            'resources': ['entities', 'checks'],
+        }]) == {
+            (frozenset(['get', 'list']), frozenset(['checks', 'entities']), frozenset())
+        }
+
+
+class TestDoRulesDiffer:
+    def test_empty_values(self):
+        assert role_utils._do_rules_differ(
+            [{'verbs': []}],
+            [{'verbs': []}]
+        ) is False
+
+    def test_rules_when_current_values_are_none(self):
+        assert role_utils._do_rules_differ(
+            [{'verbs': None}],
+            [{'verbs': ['get', 'list']}]
+        ) is True
+
+    def test_rules_when_desired_values_are_none(self):
+        assert role_utils._do_rules_differ(
+            [{'verbs': ['get', 'list']}],
+            [{'verbs': None}]
+        ) is True
+
+    def test_rules_are_different(self):
+        assert role_utils._do_rules_differ(
+            [{'verbs': ['list', 'get']}],
+            [{'verbs': ['get', 'delete']}]
+        ) is True
+
+    def test_rules_with_additional_keys_in_current(self):
+        assert role_utils._do_rules_differ(
+            [{'verbs': ['list', 'get'], 'resources': ['checks', 'entities']}],
+            [{'verbs': ['get', 'list']}]
+        ) is True
+
+    def test_rules_are_the_same(self):
+        assert role_utils._do_rules_differ(
+            [{'verbs': ['list', 'get']}],
+            [{'verbs': ['get', 'list']}]
+        ) is False
+
+
+class TestDoRolesDiffer:
+    def test_rules_when_values_in_current_are_none(self):
+        current = {
+            'rules': [{
+                'resource_names': None
+            }]
+        }
+        desired = {
+            'rules': [{
+                'resource_names': ['check-cpu']
+            }]
+        }
+        assert role_utils.do_roles_differ(current, desired) is True
+
+    def test_rules_when_values_in_desired_are_none(self):
+        current = {
+            'rules': [{
+                'resource_names': ['check-cpu']
+            }]
+        }
+        desired = {
+            'rules': [{
+                'resource_names': None
+            }]
+        }
+        assert role_utils.do_roles_differ(current, desired) is True
+
+    def test_different_rules_order(self):
+        current = {
+            'rules': [{
+                'verbs': ['get', 'list'],
+                'resources': ['entities', 'checks']
+            }, {
+                'verbs': ['create', 'delete', 'update'],
+                'resources': ['assets', 'hooks']
+            }]
+        }
+        desired = {
+            'rules': [{
+                'verbs': ['delete', 'create', 'update'],
+                'resources': ['hooks', 'assets']
+            }, {
+                'verbs': ['list', 'get'],
+                'resources': ['checks', 'entities']
+            }]
+        }
+        assert role_utils.do_roles_differ(current, desired) is False
+
+    def test_key_missing_in_current(self):
+        current = {
+            'rules': [{
+                'verbs': ['update', 'create'],
+                'resources': ['hooks', 'assets']
+            }]
+        }
+        desired = {
+            'rules': [{
+                'verbs': ['create', 'update'],
+                'resources': ['hooks', 'assets'],
+                'resource_names': ['check-cpu']
+            }]
+        }
+        assert role_utils.do_roles_differ(current, desired) is True
+
+    def test_key_missing_in_desired(self):
+        current = {
+            'rules': [{
+                'verbs': ['update', 'create'],
+                'resources': ['hooks', 'assets'],
+                'resource_names': ['check-cpu']
+            }]
+        }
+        desired = {
+            'rules': [{
+                'verbs': ['create', 'update'],
+                'resources': ['hooks', 'assets']
+            }]
+        }
+        assert role_utils.do_roles_differ(current, desired) is True
+
+    def test_role_exists_but_with_additional_rules(self):
+        current = {
+            'rules': [{
+                'verbs': ['get', 'list'],
+                'resources': ['entities', 'check']
+            }, {
+                'verbs': ['create', 'update', 'delete'],
+                'resources': ['assets', 'hooks']
+            }]
+        }
+        desired = {
+            'rules': [{
+                'verbs': ['list', 'get'],
+                'resources': ['check', 'entities']
+            }]
+        }
+        assert role_utils.do_roles_differ(current, desired) is True

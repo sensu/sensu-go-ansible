@@ -1,0 +1,208 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create a cluster role with missing required parameters
+      cluster_role:
+        auth:
+          url: http://localhost:8080
+        name: test_cluster_role
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'state is present but all of the following are missing: rules'"
+
+    - name: Create a cluster role with empty rules
+      cluster_role:
+        auth:
+          url: http://localhost:8080
+        name: test_cluster_role
+        rules: []
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'state is present but all of the following are missing: rules'"
+
+    - name: Create a cluster role with invalid rule verbs
+      cluster_role:
+        auth:
+          url: http://localhost:8080
+        name: test_cluster_role
+        rules:
+          - verbs:
+              - list
+              - do_something
+            resources:
+              - entities
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+
+    - name: Create a cluster role with minimal parameters
+      cluster_role:
+        auth:
+          url: http://localhost:8080
+        name: minimal_test_cluster_role
+        rules:
+          - verbs:
+              - get
+              - list
+            resources:
+              - entities
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'minimal_test_cluster_role'
+          - result.object.rules | length == 1
+          - result.object.rules.0.verbs | length == 2
+          - result.object.rules.0.verbs == ['get', 'list']
+          - result.object.rules.0.resources == ['entities']
+
+    - name: Check idempotence of cluster role creation with minimal parameters
+      cluster_role:
+        auth:
+          url: http://localhost:8080
+        name: minimal_test_cluster_role
+        rules:
+          - verbs:
+              - list
+              - get
+            resources:
+              - entities
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Create a cluster role
+      cluster_role:
+        auth:
+          url: http://localhost:8080
+        name: test_cluster_role
+        rules:
+          - verbs:
+              - list
+            resources:
+              - assets
+              - checks
+            resource_names:
+              - some_resource_1
+              - some_resource_2
+          - verbs:
+              - list
+              - get
+            resources:
+              - checks
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'test_cluster_role'
+          - result.object.rules | length == 2
+          - result.object.rules.0.verbs | length == 1
+          - result.object.rules.0.verbs == ['list']
+          - result.object.rules.0.resources == ['assets', 'checks']
+          - result.object.rules.0.resource_names == ['some_resource_1', 'some_resource_2']
+          - result.object.rules.1.verbs == ['list', 'get']
+          - result.object.rules.1.resources == ['checks']
+          - not result.object.rules.1.resource_names
+
+    - name: Check idempotence of cluster role creation
+      cluster_role:
+        auth:
+          url: http://localhost:8080
+        name: test_cluster_role
+        rules:
+          - verbs:
+              - list
+            resources:
+              - checks
+              - assets
+            resource_names:
+              - some_resource_2
+              - some_resource_1
+          - verbs:
+              - get
+              - list
+            resources:
+              - checks
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Modify a cluster role
+      cluster_role:
+        auth:
+          url: http://localhost:8080
+        name: test_cluster_role
+        rules:
+          - verbs:
+              - list
+            resources:
+              - assets
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.rules | length == 1
+          - result.object.rules.0.verbs == ['list']
+          - result.object.rules.0.resources == ['assets']
+          - not result.object.rules.0.resource_names
+
+    - name: Fetch all cluster roles
+      cluster_role_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 8 # There are 6 default cluster roles
+
+    - name: Fetch a specific cluster role
+      cluster_role_info:
+        auth:
+          url: http://localhost:8080
+        name: test_cluster_role
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'test_cluster_role'
+
+    - name: Delete a cluster role
+      cluster_role:
+        auth:
+          url: http://localhost:8080
+        state: absent
+        name: minimal_test_cluster_role
+      register: result
+
+    - name: Fetch all cluster roles after deletion of a cluster role
+      cluster_role_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 7 # There are 6 default cluster roles

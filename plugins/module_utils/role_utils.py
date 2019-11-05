@@ -42,3 +42,36 @@ def _do_subjects_differ(a, b):
     sorted_a = sorted(a, key=lambda x: (x['type'], x['name']))
     sorted_b = sorted(b, key=lambda x: (x['type'], x['name']))
     return sorted_a != sorted_b
+
+
+def _rule_set(rules):
+    return {
+        (
+            frozenset(r.get('verbs', []) or []),
+            frozenset(r.get('resources', []) or []),
+            frozenset(r.get('resource_names', []) or [])
+        ) for r in rules
+    }
+
+
+def _do_rules_differ(current_rules, desired_rules):
+    if len(current_rules) != len(desired_rules):
+        return True
+    if _rule_set(current_rules) != _rule_set(desired_rules):
+        return True
+    return False
+
+
+def do_roles_differ(current, desired):
+    if current is None:
+        return True
+
+    for key, value in desired.items():
+        current_value = current.get(key)
+        if key == 'rules':
+            if _do_rules_differ(current_value, value):
+                return True
+        elif value != current.get(key):
+            return True
+
+    return False
