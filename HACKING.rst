@@ -34,27 +34,39 @@ version by running::
 All that separates now from the fully functioning development environment is a
 few dependencies. We can install them by running the next command::
 
-   (venv) $ pip install \
-              -r sanity.requirements \
-              -r units.requirements \
-              -r integration.requirements
+   (venv) $ make requirements
 
 And this is it. We are all set now. To validate our setup, we can run the
 bundled tests::
 
+   (venv) $ make sanity
+   (venv) $ make units
+   (venv) $ make -j8 integration
+
+We may want to go grab a cup of tea after running that last command, since it
+will take a while (about ten minutes on a semi-decent development machine).
+
+Also, for that last batch of tests, we need to have docker installed,
+configured, and running. And that is it. If nothing broke, we are ready to
+start developing.
+
+
+Section with content that will be reworked into a development story
+-------------------------------------------------------------------
+
+TODO: Describe the process of adding a new module.
+
    (venv) $ ansible-test sanity --python 3.7
    (venv) $ ansible-test units --python 3.7
    (venv) $ export ANSIBLE_COLLECTIONS_PATHS=$(pwd)/../../..
-   (venv) $ cd tests/integration/modules
-   (venv) $ molecule --base-config molecule/shared/base.yml test --all
+   (venv) $ cd tests/integration
+   (venv) $ molecule --base-config base.yml test -s module_asset
 
 .. note::
    In the example above, we used ``--python 3.7`` switch because we are using
    python 3.7 in our virtual environment. You can find appropriate value for
    your environment by first running ``python --version`` and using only major
    and minor version numbers.
-
-All green? Great!
 
 Before you start preparing the best pull request ever, let us quickly talk
 about that ``ANSIBLE_COLLECTIONS_PATHS`` export. Ansible looks at the contents
