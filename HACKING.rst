@@ -113,3 +113,34 @@ Once we have our playbook ready, we can test our scenario by running::
 One thing we need to make sure before we run this command is that we have
 ``ANSIBLE_COLLECTIONS_PATHS`` environment variable set as shown in the
 quickstart section. And this is all there is to it.
+
+
+Continuous integration
+----------------------
+
+We use CircleCI to run our test suite on each push and pull request. Our CI
+pipeline is composed of two stages: fast one and slow one.
+
+The fast stage is composed of sanity and unit tests. Once those tests are done
+executing and passing, we start execution of the slow stage that runs
+integration tests.
+
+In order to keep the test times as short as possible, the slow stage is
+parallelized. And in order to maximize the benefits of this parallel
+execution, we need to split the work into similarly sized chunks.
+
+How do we build those work chunks? By first measuring the time needed to
+execute each individual test and storing the results into
+``tests/integration/scenario.times`` file. We do this using a helper script
+``tests/integration/time_scenarios.sh``. Note that we are not really required
+to run this script after adding a new integration test. We can add it to the
+list in ``scenario.times`` manually and eyeball the testing time from other
+similar tests.
+
+When we execute the tests on the CI servers, we use those measurements to
+partition the tests using the *longest processing time first* (LPT_)
+sequencing rule. Implementation is stored in the
+`tests/integration/partition.py`` program. Note that this program needs to be
+completely deterministic or some tests may not be executed on the CI server.
+
+.. _LPT: https://www.encyclopediaofmath.org/index.php/LPT_sequencing

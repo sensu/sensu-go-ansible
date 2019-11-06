@@ -5,33 +5,22 @@ workflows:
   main_workflow:
     jobs:
       - sanity
-
       - unit_python27_ansible29
       - unit_python35_ansible29
       - unit_python36_ansible29
       - unit_python37_ansible29
 
-      - modules_integration_ansible29_git: &master_opts
-          requires:
+      - integration_ansible29_git:
+          requires: &reqs
             - sanity
             - unit_python27_ansible29
             - unit_python35_ansible29
             - unit_python36_ansible29
             - unit_python37_ansible29
-      - install_role_integration_ansible29_git: *master_opts
-      - agent_role_integration_ansible29_git: *master_opts
-      - backend_role_integration_ansible29_git: *master_opts
 
-      - modules_integration_ansible29_galaxy: &stable_opts
+      - integration_ansible29_galaxy:
           filters: { branches: { only: [ stable ] } }
-          requires:
-            - sanity
-            - unit_python27_ansible29
-            - unit_python35_ansible29
-            - unit_python36_ansible29
-            - unit_python37_ansible29
-      - install_role_integration_ansible29_galaxy: *stable_opts
-      - backend_role_integration_ansible29_galaxy: *stable_opts
+          requires: *reqs
 
   daily_master:
     triggers:
@@ -39,10 +28,7 @@ workflows:
           cron: "12 4 * * *"
           filters: { branches: { only: [ master ] } }
     jobs:
-      - modules_integration_ansible29_git
-      - install_role_integration_ansible29_git
-      - agent_role_integration_ansible29_git
-      - backend_role_integration_ansible29_git
+      - integration_ansible29_git
 
   daily_released:
     triggers:
@@ -50,31 +36,25 @@ workflows:
           cron: "12 5 * * *"
           filters: { branches: { only: [ stable ] } }
     jobs:
-      - modules_integration_ansible29_galaxy
-      - install_role_integration_ansible29_galaxy
-      - backend_role_integration_ansible29_galaxy
+      - integration_ansible29_galaxy
 
 # A list of all supported python versions.
 executors:
   python27:
     docker: [ { image: circleci/python:2.7 } ]
-    environment: { PY: "2.7" }
-    working_directory: ~/ansible_collections/sensu/sensu_go
+    working_directory: &wd ~/ansible_collections/sensu/sensu_go
 
   python35:
     docker: [ { image: circleci/python:3.5 } ]
-    environment: { PY: "3.5" }
-    working_directory: ~/ansible_collections/sensu/sensu_go
+    working_directory: *wd
 
   python36:
     docker: [ { image: circleci/python:3.6 } ]
-    environment: { PY: "3.6" }
-    working_directory: ~/ansible_collections/sensu/sensu_go
+    working_directory: *wd
 
   python37:
     docker: [ { image: circleci/python:3.7 } ]
-    environment: { PY: "3.7" }
-    working_directory: ~/ansible_collections/sensu/sensu_go
+    working_directory: *wd
 
 # Matrix of tests that we run. At the moment, the only supported Ansible is
 # 2.9 because previous versions do not install ansible-test executable.
@@ -84,7 +64,7 @@ jobs:
   sanity:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0rc4
+      ANSIBLE_VERSION: &ansible29 ==2.9.*
       TEST_KIND: sanity
     steps: [ sanity_test ]
 
@@ -92,79 +72,47 @@ jobs:
   unit_python27_ansible29:
     executor: python27
     environment:
-      ANSIBLE_VERSION: ==2.9.0rc4
+      ANSIBLE_VERSION: *ansible29
       TEST_KIND: units
-      TEST_ARGS: --verbose --coverage
     steps: [ unit_test ]
 
   unit_python35_ansible29:
     executor: python35
     environment:
-      ANSIBLE_VERSION: ==2.9.0rc4
+      ANSIBLE_VERSION: *ansible29
       TEST_KIND: units
-      TEST_ARGS: --verbose --coverage
     steps: [ unit_test ]
 
   unit_python36_ansible29:
     executor: python36
     environment:
-      ANSIBLE_VERSION: ==2.9.0rc4
+      ANSIBLE_VERSION: *ansible29
       TEST_KIND: units
-      TEST_ARGS: --verbose --coverage
     steps: [ unit_test ]
 
   unit_python37_ansible29:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0rc4
+      ANSIBLE_VERSION: *ansible29
       TEST_KIND: units
-      TEST_ARGS: --verbose --coverage
     steps: [ unit_test ]
 
   # Integration tests run on single python version, because python portability
   # is checked by sanity and unit tests.
-  modules_integration_ansible29_git: &modules_integration
+  integration_ansible29_git:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0rc4
-      INTEGRATION_TEST_SECTION: modules
+      ANSIBLE_VERSION: *ansible29
+      TEST_KIND: integration
+    parallelism: 4
     steps: [ integration_test_git ]
 
-  install_role_integration_ansible29_git: &install_role
+  integration_ansible29_galaxy:
     executor: python37
     environment:
-      ANSIBLE_VERSION: ==2.9.0rc4
-      INTEGRATION_TEST_SECTION: roles/install
-    steps: [ integration_test_git ]
-
-  agent_role_integration_ansible29_git: &agent_role
-    executor: python37
-    environment:
-      ANSIBLE_VERSION: ==2.9.0rc4
-      INTEGRATION_TEST_SECTION: roles/agent
-    steps: [ integration_test_git ]
-
-  backend_role_integration_ansible29_git: &backend_role
-    executor: python37
-    environment:
-      ANSIBLE_VERSION: ==2.9.0rc4
-      INTEGRATION_TEST_SECTION: roles/backend
-    steps: [ integration_test_git ]
-
-  modules_integration_ansible29_galaxy:
-    <<: *modules_integration
-    steps: [ integration_test_galaxy ]
-
-  install_role_integration_ansible29_galaxy:
-    <<: *install_role
-    steps: [ integration_test_galaxy ]
-
-  agent_role_integration_ansible29_galaxy:
-    <<: *agent_role
-    steps: [ integration_test_galaxy ]
-
-  backend_role_integration_ansible29_galaxy:
-    <<: *backend_role
+      ANSIBLE_VERSION: *ansible29
+      TEST_KIND: integration
+    parallelism: 4
     steps: [ integration_test_galaxy ]
 
 commands:
@@ -173,34 +121,33 @@ commands:
     description: Run sanity tests
     steps:
       - common_setup
-      - install_ansible
-      - run_ansible_test
+      - run_test
 
   unit_test:
     description: Run unit tests
     steps:
       - common_setup
-      - install_ansible
-      - run_ansible_test
-      - report_coverage
+      - run_test
+      - store_artifacts:
+          path: tests/output/reports/coverage
+          destination: coverage-report
+      - store_test_results:
+          path: tests/output/junit
 
   integration_test_git:
     description: Run integration tests on git collection
     steps:
       - common_setup
       - setup_remote_docker
-      - install_ansible
-      - install_git_collection
-      - run_molecule_test
+      - run_test
 
   integration_test_galaxy:
     description: Run integration tests on galaxy collection
     steps:
       - common_setup
       - setup_remote_docker
-      - install_ansible
       - install_galaxy_collection
-      - run_molecule_test
+      - run_test
 
   # Lower-level command implementations
   common_setup:
@@ -214,68 +161,29 @@ commands:
           name: Activate virtualenv
           command: |
             echo 'export PATH=${HOME}/venv/bin:$PATH' >> $BASH_ENV
-
-  install_ansible:
-    description: Install selected Ansible version
-    steps:
       - run:
           name: Install Ansible
           command: pip install "ansible${ANSIBLE_VERSION}"
-
-  install_git_collection:
-    description: Install sensu_go collection from git sources
-    steps:
-      - run:
-          name: Build sensu_go collection
-          command: ansible-galaxy collection build
-      - run:
-          name: Install sensu_go collection
-          command: |
-            ansible-galaxy collection install \
-              -p ${HOME}/.ansible/collections \
-              sensu-sensu_go-*.tar.gz
 
   install_galaxy_collection:
     description: Install sensu_go collection from Ansible Galaxy
     steps:
       - run:
+          name: Set ANSIBLE_COLLECTIONS_PATHS
+          command: >
+            echo 'export ANSIBLE_COLLECTIONS_PATHS=${HOME}/.ansible/collections' >> $BASH_ENV
+      - run:
           name: Install sensu_go collection
           command: |
             ansible-galaxy collection install \
-              -p ${HOME}/.ansible/collections \
               sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
 
-  run_ansible_test:
-    description: Run selected Ansible test
+  run_test:
+    description: Run selected test kind
     steps:
       - run:
           name: Install requirements
           command: pip install -r ${TEST_KIND}.requirements
       - run:
           name: Run test
-          command: ansible-test ${TEST_KIND} --python ${PY} ${TEST_ARGS}
-
-  run_molecule_test:
-    description: Run molecule test
-    steps:
-      - run:
-          name: Install integration test requirements
-          command: pip install -r integration.requirements
-      - run:
-          name: Run integration tests
-          command: |
-            cd tests/integration/${INTEGRATION_TEST_SECTION}
-            molecule --base-config molecule/shared/base.yml test --all
-
-  report_coverage:
-    description: Report coverage
-    steps:
-      - run:
-          name: Report coverage to console
-          command: ansible-test coverage report
-      - run:
-          name: Report coverage details as HTML
-          command: ansible-test coverage html
-      - store_artifacts:
-          path: tests/output/reports/coverage
-          destination: coverage-report
+          command: make ${TEST_KIND}

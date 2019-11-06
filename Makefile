@@ -15,7 +15,7 @@ else ifneq (ansible_collections,$(toplevel))
 endif
 
 # Make sure ansible can find our collection without having to install it.
-export ANSIBLE_COLLECTIONS_PATHS := $(realpath $(CURDIR)/../../..)
+export ANSIBLE_COLLECTIONS_PATHS ?= $(realpath $(CURDIR)/../../..)
 
 python_version := $(shell \
   python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))' \
@@ -47,7 +47,7 @@ units:  ## Run unit tests
 
 .PHONY: integration
 integration:  ## Run integration tests
-	$(MAKE) -C tests/integration
+	$(MAKE) -C tests/integration $(CI)
 
 .PHONY: docs
 docs:  ## Build collection documentation
