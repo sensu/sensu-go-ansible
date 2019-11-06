@@ -15,3 +15,8 @@ roles: $(roles)
 .PHONY: $(modules) $(roles)
 $(modules) $(roles):
 	molecule -c base.yml test --parallel -s $(notdir $@)
+
+# CI stuff - partitioning logic ("true" is the value of the $CI variable)
+.PHONY: true
+true:
+	$(MAKE) $$(python partition.py scenario.times)
