@@ -5,13 +5,31 @@
   vars:
     components: [sensu-go-backend]
 
+- name: Install etcd communication PKI
+  copy:
+    src: "{{ item.source }}"
+    dest: "/etc/sensu/{{ item.filename }}"
+    # Keep this in sync with what the backend service is running as from packager
+    owner: &sensu_user sensu
+    group: &sensu_group sensu
+    mode: "{{ item.mode | default('0644') }}"
+  with_items:
+    - { source: "{{ etcd_cert_file }}", filename: etcd-client.crt }
+    - { source: "{{ etcd_key_file }}", filename: etcd-client.key, mode: '0400' }
+    - { source: "{{ etcd_trusted_ca_file }}", filename: etcd-client-ca.crt }
+    - { source: "{{ etcd_peer_cert_file }}", filename: etcd-peer.crt }
+    - { source: "{{ etcd_peer_key_file }}", filename: etcd-peer.key, mode: '0400' }
+    - { source: "{{ etcd_peer_trusted_ca_file }}", filename: etcd-peer-ca.crt }
+  tags: [configure_backend]
+  when: etcd_trusted_ca_file is defined or etcd_cert_file is defined or
+        etcd_peer_cert_file is defined
+
 - name: Configure sensu-backend (/etc/sensu/backend.yml)
   template:
     src: backend.yml.j2
     dest: /etc/sensu/backend.yml
-    # Keep this in sync with what the backend service is running as from packager
-    owner: sensu
-    group: sensu
+    owner: *sensu_user
+    group: *sensu_group
     mode: '0600'
   notify: Restart backend
   tags: [configure_backend]
