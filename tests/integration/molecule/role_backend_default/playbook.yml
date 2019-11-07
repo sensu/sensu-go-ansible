@@ -8,6 +8,8 @@
   hosts: backends
   vars:
     backend_yml: /etc/sensu/backend.yml
+  tags:
+    - configure_backend
   tasks:
     - name: Backend configuration must exist
       stat:
@@ -37,8 +39,6 @@
       debug: no
       log-level: debug
       api-listen-address: "[::]:4430"
-  tags:
-    - configure_backend
   become: yes
   roles:
     - role: sensu.sensu_go.backend
@@ -47,6 +47,8 @@
   hosts: backends
   vars:
     backend_yml: /etc/sensu/backend.yml
+  tags:
+    - configure_backend
   tasks:
     - name: Confirm optional configuration settings
       lineinfile:
@@ -79,8 +81,6 @@
       etcd-initial-advertise-peer-urls:
         - https://10.10.0.1:2380
         - https://10.20.0.1:2380
-  tags:
-    - configure_backend
   become: yes
   roles:
     - role: sensu.sensu_go.backend
@@ -89,6 +89,8 @@
   hosts: backends
   vars:
     backend_yml: /etc/sensu/backend.yml
+  tags:
+    - configure_backend
   tasks:
     - name: Confirm full configuration settings
       lineinfile:
