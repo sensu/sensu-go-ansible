@@ -7,6 +7,13 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
+def validate_module_params(params):
+    if params['state'] == 'present':
+        if not params['rules']:
+            return 'state is present but all of the following are missing: rules'
+    return None
+
+
 def type_name_dict(obj_type, name):
     return {
         'type': obj_type,
