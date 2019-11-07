@@ -7,6 +7,48 @@
 state-dir: "/var/lib/sensu/sensu-backend"
 {% endif %}
 
+{% if not backend_config or "etcd-listen-client-urls" not in backend_config %}
+etcd-listen-client-urls: "https://localhost:2379"
+{% endif %}
+
+{% if not backend_config or "etcd-listen-peer-urls" not in backend_config %}
+etcd-listen-peer-urls: "https://localhost:2380"
+{% endif %}
+
+{% if not backend_config or "etcd-initial-advertise-peer-urls" not in backend_config %}
+etcd-initial-advertise-peer-urls: "https://localhost:2380"
+{% endif %}
+
+{% if not backend_config or "etcd-cert-file" not in backend_config %}
+etcd-cert-file: "/etc/sensu/etcd-client.crt"
+{% endif %}
+
+{% if not backend_config or "etcd-key-file" not in backend_config %}
+etcd-key-file: "/etc/sensu/etcd-client.key"
+{% endif %}
+
+{% if not backend_config or "etcd-trusted-ca-file" not in backend_config %}
+etcd-trusted-ca-file: "/etc/sensu/etcd-client-ca.crt"
+{% endif %}
+
+{% if not backend_config or "etcd-peer-cert-file" not in backend_config %}
+etcd-peer-cert-file: "/etc/sensu/etcd-peer.crt"
+{% endif %}
+
+{% if not backend_config or "etcd-peer-key-file" not in backend_config %}
+etcd-peer-key-file: "/etc/sensu/etcd-peer.key"
+{% endif %}
+
+{% if not backend_config or "etcd-peer-client-cert-auth" not in backend_config %}
+etcd-peer-client-cert-auth: "true"
+{% endif %}
+
+{% if not backend_config or "etcd-peer-trusted-ca-file" not in backend_config %}
+etcd-peer-trusted-ca-file: "/etc/sensu/etcd-peer-ca.crt"
+{% endif %}
+
+
+
 {% if backend_config %}
 {{ backend_config | to_nice_yaml }}
 {% endif %}

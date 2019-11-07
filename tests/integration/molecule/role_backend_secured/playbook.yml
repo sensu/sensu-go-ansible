@@ -1,0 +1,89 @@
+---
+- name: Converge
+  hosts: backends
+  vars:
+    etcd_cert_file: files/etcd-client.crt
+    etcd_key_file: files/etcd-client.key
+    etcd_trusted_ca_file: files/client-ca.crt
+    etcd_peer_cert_file: files/etcd-peer.crt
+    etcd_peer_key_file: files/etcd-peer.key
+    etcd_peer_trusted_ca_file: files/etcd-peer-ca.crt
+  roles:
+    - sensu.sensu_go.backend
+
+- name: Verify
+  hosts: backends
+  tags:
+    - configure_backend
+  tasks:
+    - name: The public keys must exist
+      stat:
+        path: "{{ item }}"
+      register: result
+      with_items:
+        - /etc/sensu/etcd-client.crt
+        - /etc/sensu/etcd-client-ca.crt
+        - /etc/sensu/etcd-peer.crt
+        - /etc/sensu/etcd-peer-ca.crt
+
+    - assert:
+        that:
+          - "{{ item.stat.exists }}"
+          - "{{ item.stat.pw_name == 'sensu' }}"
+          - "{{ item.stat.gr_name == 'sensu' }}"
+          - "{{ item.stat.mode == '0644' }}"
+      with_items: "{{ result.results }}"
+
+    - name: The private keys must exist and be protected
+      stat:
+        path: "{{ item }}"
+      register: result
+      with_items:
+        - /etc/sensu/etcd-client.key
+        - /etc/sensu/etcd-peer.key
+
+    - assert:
+        that:
+          - "{{ item.stat.exists }}"
+          - "{{ item.stat.pw_name == 'sensu' }}"
+          - "{{ item.stat.gr_name == 'sensu' }}"
+          - "{{ item.stat.mode == '0400' }}"
+      with_items: "{{ result.results }}"
+
+    - name: Confirm secured configuration settings
+      lineinfile:
+        path: &backend_yml /etc/sensu/backend.yml
+        line: '{{ item }}'
+      with_items:
+        - 'state-dir: "/var/lib/sensu/sensu-backend"'
+        - 'etcd-listen-client-urls: "https://localhost:2379"'
+        - 'etcd-listen-peer-urls: "https://localhost:2380"'
+        - 'etcd-initial-advertise-peer-urls: "https://localhost:2380"'
+        - 'etcd-cert-file: "/etc/sensu/etcd-client.crt"'
+        - 'etcd-key-file: "/etc/sensu/etcd-client.key"'
+        - 'etcd-trusted-ca-file: "/etc/sensu/etcd-client-ca.crt"'
+        - 'etcd-peer-cert-file: "/etc/sensu/etcd-peer.crt"'
+        - 'etcd-peer-key-file: "/etc/sensu/etcd-peer.key"'
+        - 'etcd-peer-client-cert-auth: "true"'
+        - 'etcd-peer-trusted-ca-file: "/etc/sensu/etcd-peer-ca.crt"'
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+- name: Configure a mix of managed and unmanaged vars
+  hosts: backends
+  vars:
+    etcd_cert_file: files/etcd-client.crt
+    etcd_key_file: files/etcd-client.key
+    etcd_trusted_ca_file: files/client-ca.crt
+    etcd_peer_cert_file: files/etcd-peer.crt
+    etcd_peer_key_file: files/etcd-peer.key
+    etcd_peer_trusted_ca_file: files/etcd-peer-ca.crt
+    backend_config:
+      debug: true
+      log-level: debug
+      state-dir: /tmp/different/state
+  roles:
+    - sensu.sensu_go.backend

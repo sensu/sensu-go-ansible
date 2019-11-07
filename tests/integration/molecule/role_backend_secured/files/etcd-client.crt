@@ -1,0 +1,87 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            70:e5:70:1d:0c:bb:93:ba:81:72:b6:5b:47:4f:9a:28
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN=Sensu-test CA
+        Validity
+            Not Before: Nov  6 17:22:40 2019 GMT
+            Not After : Oct 21 17:22:40 2022 GMT
+        Subject: CN=etcd-client
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+                Modulus:
+                    00:d3:ac:be:a4:45:22:ed:8f:0b:b2:19:0d:ab:60:
+                    db:0b:c4:fb:8a:73:22:9a:f8:54:16:a0:4c:12:00:
+                    a1:21:ef:03:ca:83:29:8e:90:12:87:03:78:12:0e:
+                    4f:b9:1c:f0:a2:57:06:51:fe:9c:6a:ef:45:9a:6b:
+                    d5:32:df:58:44:ea:9b:ed:4d:e1:19:df:ce:ed:ea:
+                    90:a4:b1:2e:55:a2:6c:87:53:13:38:de:db:cc:f6:
+                    cc:49:ba:85:aa:29:3d:0e:c9:6a:c0:b8:85:16:a7:
+                    34:1a:2a:d9:cc:f4:0e:1e:68:35:6d:4a:dd:5d:43:
+                    f6:70:da:0a:27:5e:77:ee:8c:d9:46:f8:70:2e:e3:
+                    3c:97:7d:55:c7:c6:0d:e7:20:61:df:9e:59:78:97:
+                    6c:0d:5c:ed:d3:c8:d7:d8:f3:7c:7b:58:2f:0a:f9:
+                    b3:a5:63:41:b6:6a:e6:b2:bc:48:eb:cb:4b:76:2b:
+                    2e:3e:9c:1a:db:c9:f1:2f:1a:7c:43:db:38:6b:9b:
+                    7f:d0:d7:25:7c:3f:50:1d:70:11:06:a8:d6:14:b5:
+                    c4:dd:ea:3d:28:d9:57:b7:aa:d2:26:01:cc:5e:f1:
+                    ae:48:28:a1:4a:ee:ac:ed:9c:7e:61:ef:37:12:67:
+                    7b:d9:05:0b:84:51:75:be:04:96:89:b7:d1:95:d6:
+                    ca:61
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints:
+                CA:FALSE
+            X509v3 Subject Key Identifier:
+                C5:76:B1:3A:CC:A2:6C:9B:DD:43:D2:59:E1:E2:51:65:A0:59:09:70
+            X509v3 Authority Key Identifier:
+                keyid:65:6F:35:7D:11:0B:0B:FD:3B:CF:E6:3B:95:FA:35:6B:80:0D:27:E9
+                DirName:/CN=Sensu-test CA
+                serial:2D:E8:6C:6F:A5:0E:7D:63:A8:B1:0B:3D:86:1D:2E:D0:62:5F:21:47
+
+            X509v3 Extended Key Usage:
+                TLS Web Client Authentication
+            X509v3 Key Usage:
+                Digital Signature
+            X509v3 Subject Alternative Name:
+                IP Address:176.16.117.105
+    Signature Algorithm: sha256WithRSAEncryption
+         22:8f:57:1e:79:d1:78:9f:d4:fa:c5:41:9d:b1:b0:90:99:d4:
+         85:4d:83:0e:ec:c6:0d:fa:a5:4b:7f:16:70:58:9f:5e:1a:f4:
+         15:cf:45:2f:cc:69:8e:56:bd:f9:d1:96:6a:34:b5:96:12:b4:
+         84:07:21:8a:6f:13:ac:a2:6e:e0:e3:63:17:f3:33:86:ed:c5:
+         ea:48:c1:b3:af:05:75:28:5f:4f:77:5f:6c:83:cc:50:09:e4:
+         56:59:e3:ec:b0:f1:56:01:ca:d0:69:90:b3:e3:a4:a5:c0:cd:
+         99:5e:65:ad:33:30:42:53:70:d7:47:c8:4c:47:fd:b6:b1:b1:
+         f6:cb:0d:8b:6c:ab:14:f5:75:1e:3b:20:f9:00:05:87:bf:e0:
+         a7:57:12:af:e9:67:9d:5a:96:c3:52:55:25:a8:ec:86:20:49:
+         74:e8:6a:19:c0:4a:27:5b:fc:8a:4d:a4:5e:6d:fa:9a:91:48:
+         c5:e4:84:e1:ed:f9:d5:6e:21:69:6e:20:4a:0e:cb:44:d7:4a:
+         38:10:23:12:9f:9b:48:d0:a3:9f:02:e4:84:6d:d9:be:17:eb:
+         60:d0:d3:39:60:60:13:7a:b1:a2:38:e4:75:5b:28:4e:5d:25:
+         35:04:52:a2:c1:ce:8b:94:9f:37:30:3c:a8:35:36:44:db:ed:
+         b2:6f:4a:b1
+-----BEGIN CERTIFICATE-----
+MIIDbjCCAlagAwIBAgIQcOVwHQy7k7qBcrZbR0+aKDANBgkqhkiG9w0BAQsFADAY
+MRYwFAYDVQQDDA1TZW5zdS10ZXN0IENBMB4XDTE5MTEwNjE3MjI0MFoXDTIyMTAy
+MTE3MjI0MFowFjEUMBIGA1UEAwwLZXRjZC1jbGllbnQwggEiMA0GCSqGSIb3DQEB
+AQUAA4IBDwAwggEKAoIBAQDTrL6kRSLtjwuyGQ2rYNsLxPuKcyKa+FQWoEwSAKEh
+7wPKgymOkBKHA3gSDk+5HPCiVwZR/pxq70Waa9Uy31hE6pvtTeEZ387t6pCksS5V
+omyHUxM43tvM9sxJuoWqKT0OyWrAuIUWpzQaKtnM9A4eaDVtSt1dQ/Zw2gonXnfu
+jNlG+HAu4zyXfVXHxg3nIGHfnll4l2wNXO3TyNfY83x7WC8K+bOlY0G2auayvEjr
+y0t2Ky4+nBrbyfEvGnxD2zhrm3/Q1yV8P1AdcBEGqNYUtcTd6j0o2Ve3qtImAcxe
+8a5IKKFK7qztnH5h7zcSZ3vZBQuEUXW+BJaJt9GV1sphAgMBAAGjgbUwgbIwCQYD
+VR0TBAIwADAdBgNVHQ4EFgQUxXaxOsyibJvdQ9JZ4eJRZaBZCXAwUwYDVR0jBEww
+SoAUZW81fRELC/07z+Y7lfo1a4ANJ+mhHKQaMBgxFjAUBgNVBAMMDVNlbnN1LXRl
+c3QgQ0GCFC3obG+lDn1jqLELPYYdLtBiXyFHMBMGA1UdJQQMMAoGCCsGAQUFBwMC
+MAsGA1UdDwQEAwIHgDAPBgNVHREECDAGhwSwEHVpMA0GCSqGSIb3DQEBCwUAA4IB
+AQAij1ceedF4n9T6xUGdsbCQmdSFTYMO7MYN+qVLfxZwWJ9eGvQVz0UvzGmOVr35
+0ZZqNLWWErSEByGKbxOsom7g42MX8zOG7cXqSMGzrwV1KF9Pd19sg8xQCeRWWePs
+sPFWAcrQaZCz46SlwM2ZXmWtMzBCU3DXR8hMR/22sbH2yw2LbKsU9XUeOyD5AAWH
+v+CnVxKv6WedWpbDUlUlqOyGIEl06GoZwEonW/yKTaRebfqakUjF5ITh7fnVbiFp
+biBKDstE10o4ECMSn5tI0KOfAuSEbdm+F+tg0NM5YGATerGiOOR1WyhOXSU1BFKi
+wc6LlJ83MDyoNTZE2+2yb0qx
+-----END CERTIFICATE-----
