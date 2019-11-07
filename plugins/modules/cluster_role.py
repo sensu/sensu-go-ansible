@@ -80,15 +80,6 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
-def validate_module_params(module):
-    params = module.params
-    if params['state'] == 'present':
-        if not params['rules']:
-            module.fail_json(
-                msg='state is present but all of the following are missing: rules'
-            )
-
-
 def main():
     module = AnsibleModule(
         supports_check_mode=True,
@@ -115,7 +106,10 @@ def main():
         )
     )
 
-    validate_module_params(module)
+    msg = role_utils.validate_module_params(module.params)
+    if msg:
+        module.fail_json(msg=msg)
+
     module.params['auth']['namespace'] = None  # Making sure we are not fallbacking to default
     client = arguments.get_sensu_client(module.params["auth"])
     path = "/clusterroles/{0}".format(module.params["name"])
