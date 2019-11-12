@@ -9,6 +9,10 @@
   template:
     src: agent.yml.j2
     dest: /etc/sensu/agent.yml
+    # Keep this in sync with what the agent service is running as from packager
+    owner: sensu
+    group: sensu
+    mode: '0600'
   notify: Restart agent
   tags: [configure_agent]
 
