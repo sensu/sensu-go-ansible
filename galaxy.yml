@@ -11,7 +11,7 @@ tags:
   - sensugo
   - monitoring
 
-readme: README.rst
+readme: README.md
 license_file: COPYING
 description: Roles and modules for installing and using Sensu Go
 
