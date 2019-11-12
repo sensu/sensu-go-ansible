@@ -8,6 +8,8 @@
   hosts: agents
   vars:
     agent_yml: /etc/sensu/agent.yml
+  tags:
+    - configure_agent
   tasks:
     - name: Agent configuration must exist
       stat:
@@ -39,8 +41,6 @@
     agent_config:
       backend-url:
         - "ws://0.0.0.0:4321"
-  tags:
-    - configure_agent
   become: yes
   roles:
     - role: sensu.sensu_go.agent
@@ -49,6 +49,8 @@
   hosts: agents
   vars:
     agent_yml: /etc/sensu/agent.yml
+  tags:
+    - configure_agent
   tasks:
     - name: Confirm overloaded variable sets
       lineinfile:
@@ -117,8 +119,6 @@
         - /dev/sda2
         - "-r"
       enable_env: false
-  tags:
-    - configure_agent
   become: yes
   roles:
     - role: sensu.sensu_go.agent
@@ -127,6 +127,8 @@
   hosts: agents
   vars:
     agent_yml: /etc/sensu/agent.yml
+  tags:
+    - configure_agent
   tasks:
     - name: Confirm full configuration settings
       lineinfile:
