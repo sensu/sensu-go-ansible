@@ -9,6 +9,10 @@
   template:
     src: backend.yml.j2
     dest: /etc/sensu/backend.yml
+    # Keep this in sync with what the backend service is running as from packager
+    owner: sensu
+    group: sensu
+    mode: '0600'
   notify: Restart backend
   tags: [configure_backend]
 
