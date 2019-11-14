@@ -72,15 +72,6 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
-def validate_module_params(module):
-    params = module.params
-    if params["state"] == "present":
-        if not (params["users"] or params["groups"]):
-            module.fail_json(
-                msg="missing required parameters: users or groups"
-            )
-
-
 def build_api_payload(params):
     payload = arguments.get_mutation_payload(params)
     payload["subjects"] = role_utils.build_subjects(params["groups"], params["users"])
@@ -108,7 +99,10 @@ def main():
         )
     )
 
-    validate_module_params(module)
+    msg = role_utils.validate_binding_module_params(module.params)
+    if msg:
+        module.fail_json(msg=msg)
+
     client = arguments.get_sensu_client(module.params["auth"])
     path = "/rolebindings/{0}".format(module.params["name"])
     payload = build_api_payload(module.params)
