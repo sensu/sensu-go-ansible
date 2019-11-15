@@ -16,7 +16,22 @@
     - assert:
         that:
           - result is failed
-          - "result.msg == 'state is present but all of the following are missing: role'"
+          - "result.msg == 'state is present but any of the following are missing: role, cluster_role'"
+
+    - name: Create a role binding with mutually exclusive role and cluster_role
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding
+        role: test_role
+        cluster_role: test_cluster_role
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'parameters are mutually exclusive: role|cluster_role'"
 
     - name: Create a role binding without providing users or groups
       role_binding:
@@ -127,7 +142,7 @@
         auth:
           url: http://localhost:8080
         name: test_role_binding
-        role: another_role
+        cluster_role: test_cluster_role
         users:
         groups:
           - group_1
@@ -137,10 +152,31 @@
         that:
           - result is changed
           - result.object.metadata.name == 'test_role_binding'
-          - result.object.role_ref.name == 'another_role'
+          - result.object.role_ref.name == 'test_cluster_role'
+          - result.object.role_ref.type == 'ClusterRole'
           - result.object.subjects | length == 1
           - result.object.subjects.0.name == 'group_1'
           - result.object.subjects.0.type == 'Group'
+
+    - name: Create a role binding with cluster role
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding_with_cluster_role
+        cluster_role: test_cluster_role
+        users:
+          - user_1
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'test_role_binding_with_cluster_role'
+          - result.object.role_ref.name == 'test_cluster_role'
+          - result.object.role_ref.type == 'ClusterRole'
+          - result.object.subjects | length == 1
+          - result.object.subjects.0.name == 'user_1'
+          - result.object.subjects.0.type == 'User'
 
     - name: Fetch all role bindings
       role_binding_info:
@@ -150,7 +186,7 @@
 
     - assert:
         that:
-          - result.objects | length == 3
+          - result.objects | length == 4
 
     - name: Fetch a specific role binding
       role_binding_info:
@@ -180,4 +216,4 @@
 
     - assert:
         that:
-          - result.objects | length == 2
+          - result.objects | length == 3
