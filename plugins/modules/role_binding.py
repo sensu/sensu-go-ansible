@@ -31,17 +31,25 @@ options:
   role:
     description:
       - Name of the role
+      - This parameter is mutually exclusive with C(cluster_role).
+    type: str
+  cluster_role:
+    description:
+      - Name of the cluster role. Note that the resulting role
+        binding grants the cluster role to the provided users and
+        groups in the context of C(auth.namespace) only.
+      - This parameter is mutually exclusive with C(role).
     type: str
   users:
     description:
-      - List of users to bind to the role
-      - Note that at least one of 'users' and 'groups' must be
+      - List of users to bind to the role or cluster role
+      - Note that at least one of C(users) and C(groups) must be
         specified when creating a role binding.
     type: list
   groups:
     description:
-      - List of groups to bind to the role
-      - Note that at least one of 'users' and 'groups' must be
+      - List of groups to bind to the role or cluster role
+      - Note that at least one of C(users) and C(groups) must be
         specified when creating a role binding.
     type: list
 '''
@@ -57,6 +65,14 @@ EXAMPLES = '''
         - ops
     users:
       - alice
+
+- name: Create a role binding for admins
+  role_binding:
+    name: org-admins
+    cluster_role: admin
+    groups:
+      - team1-admins
+      - team2-admins
 '''
 
 RETURN = '''
@@ -72,24 +88,35 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
+def infer_role(params):
+    if params["role"]:
+        return "Role", params["role"]
+    return "ClusterRole", params["cluster_role"]
+
+
 def build_api_payload(params):
     payload = arguments.get_mutation_payload(params)
     payload["subjects"] = role_utils.build_subjects(params["groups"], params["users"])
-    payload["role_ref"] = role_utils.type_name_dict("Role", params["role"])
+    payload["role_ref"] = role_utils.type_name_dict(*infer_role(params))
 
     return payload
 
 
 def main():
     required_if = [
-        ("state", "present", ["role"])
+        ("state", "present", ["role", "cluster_role"], True)  # True means any of role, cluster_role
+    ]
+    mutually_exclusive = [
+        ["role", "cluster_role"]
     ]
     module = AnsibleModule(
         required_if=required_if,
+        mutually_exclusive=mutually_exclusive,
         supports_check_mode=True,
         argument_spec=dict(
             arguments.get_spec("auth", "name", "state"),
             role=dict(),
+            cluster_role=dict(),
             users=dict(
                 type="list",
             ),
