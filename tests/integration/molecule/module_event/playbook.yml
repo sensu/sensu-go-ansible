@@ -1,0 +1,29 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Event info without entity
+      event_info:
+        auth:
+          url: http://localhost:8080
+        check: simple-check
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == \"missing parameter(s) required by 'check': entity\""
+
+    - name: Get all events
+      event_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 0
