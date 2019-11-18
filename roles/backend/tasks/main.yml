@@ -22,7 +22,36 @@
     - { source: "{{ etcd_peer_trusted_ca_file }}", filename: etcd-peer-ca.crt }
   tags: [configure_backend]
   when: etcd_trusted_ca_file is defined or etcd_cert_file is defined or
-        etcd_peer_cert_file is defined
+        etcd_key_file is defined or etcd_peer_cert_file is defined or
+        etcd_peer_key_file is defined
+
+- name: Install API communication PKI
+  copy:
+    src: "{{ item.source }}"
+    dest: "/etc/sensu/{{ item.filename }}"
+    owner: *sensu_user
+    group: *sensu_group
+    mode: "{{ item.mode | default('0644') }}"
+  with_items:
+    - { source: "{{ api_cert_file }}", filename: api.crt }
+    - { source: "{{ api_key_file }}", filename: api.key, mode: '0400' }
+    - { source: "{{ api_trusted_ca_file }}", filename: api-ca.crt }
+  tags: [configure_backend]
+  when: api_cert_file is defined or api_key_file is defined or
+        api_trusted_ca_file is defined
+
+- name: Install dashboard communication PKI
+  copy:
+    src: "{{ item.source }}"
+    dest: "/etc/sensu/{{ item.filename }}"
+    owner: *sensu_user
+    group: *sensu_group
+    mode: "{{ item.mode }}"
+  with_items:
+    - { source: "{{ dashboard_cert_file }}", filename: dashboard.crt, mode: '0644' }
+    - { source: "{{ dashboard_key_file }}", filename: dashboard.key, mode: '0400' }
+  tags: [configure_backend]
+  when: dashboard_cert_file is defined or dashboard_key_file is defined
 
 - name: Configure sensu-backend (/etc/sensu/backend.yml)
   template:

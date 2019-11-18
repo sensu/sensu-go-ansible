@@ -54,6 +54,55 @@ the role, the Sensu backend will use a version-specific default.
 [backend-conf]: https://docs.sensu.io/sensu-go/latest/reference/backend/#configuration-summary
 [Go TLS documentation]: https://golang.org/pkg/crypto/tls/#pkg-constants
 
+Securing Sensu Go backend
+-------------------------
+
+This role enables users to establish secure end-to-end communications of
+the components that comprise the Sensu Go backend. The user needs to supply the
+paths to the PKI files by placing the appropriate public and private key files
+somewhere within the Ansible playbook search path. They then need to reference
+these paths in the appropriate inventory variables, as described below.
+
+Note: all the files referenced in each of the following subsections need to be
+supplied. If even a single file is missing or not defined, the play will fail.
+If none of the variables within a subsection is defined, those services will
+be configured without the secure communication.
+
+## Etcd peer communication
+
+To secure the etcd communication, create the appropriate files for the PKI
+and define **all** of the following variables:
+
+| Variable    | Examples  | Description |
+|-------------|-----------|-------------|
+| etcd_cert_file | files/pki/etcd-client.crt | Path to the certificate used for SSL/TLS connections **to** etcd. This is a client certificate. |
+| etcd_key_file | files/pki/etcd-client.key | Path to the private key for the etcd client certificate file. Must be unencrypted. |
+| etcd_trusted_ca_file | files/pki/client-ca.crt | Path to the trusted certificate authority for the etcd client certificates. |
+| etcd_peer_cert_file | files/pki/etcd-peer.crt | Path to the certificate used for SSL/TLS connections between peers. This will be used both for listening on the peer address as well as sending requests to other peers. |
+| etcd_peer_key_file | files/pki/etcd-peer.key | Path to the peer certificate's key. Must be unencrypted. |
+| etcd_peer_trusted_ca_file | files/pki/etcd-peer-ca.crt | Pat to the trusted certificate authority for the peer certificates. |
+
+## Backend API
+
+To secure the Sensu Go backend API communication, create the appropriate files
+for the PKI and define **all** of the following variables:
+
+| api_cert_file | files/pki/sensu-api.crt | Path to the certificate used to secure the Sensu Go API. |
+| api_key_file | files/pki/sensu-api.key | Path to the private key corresponding to the Sensu Go API certificate. Must be unencrypted. |
+| api_trusted_ca_file | files/pki/sensu-api-ca.crt | Path to the trusted certificate authority for the Sensu Go API certificates. |
+
+## Dashboard
+
+To secure the dashboard communication, create the appropriate files for the PKI
+and define **all** of the following variables:
+
+| dashboard_cert_file | files/pki/sensu-dashboard.crt | Path to the certificate used for SSL/TLS connections to the dashboard. |
+| dashboard_key_file | files/pki/sensu-dashboard.key | Path to the private key corresponding to the dashboard certificate. Must be unencrypted. |
+
+The role will automatically configure the dashboard endpoint to use HTTPS,
+e.g.: `https://localhost:3000`.
+
+
 
 Supported Tags
 ---------
