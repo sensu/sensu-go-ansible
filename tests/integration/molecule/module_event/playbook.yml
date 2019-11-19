@@ -18,6 +18,83 @@
           - result is failed
           - "result.msg == \"missing parameter(s) required by 'check': entity\""
 
+    - name: Create event with missing objects on remote
+      event:
+        auth:
+          url: http://localhost:8080
+        timestamp: 134532453
+        entity: entity
+        check: check
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - result.msg == "Entity with name 'entity' does not exist on remote."
+
+    - name: Create simple entity
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: awesome_entity
+        entity_class: proxy
+
+    - name: Create event with missing check on remote
+      event:
+        auth:
+          url: http://localhost:8080
+        timestamp: 134532453
+        entity: awesome_entity
+        check: check
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - result.msg == "Check with name 'check' does not exist on remote."
+
+    - name: Create a simple check
+      check:
+        auth:
+          url: http://localhost:8080
+        name: awesome_check
+        command: /bin/true
+        subscriptions:
+          - checks
+          - also_checks
+        interval: 30
+
+    - name: Create event with minimal parameters
+      event:
+        auth:
+          url: http://localhost:8080
+        entity: awesome_entity
+        check: awesome_check
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.check.metadata.name == 'awesome_check'
+          - result.object.check.command == '/bin/true'
+          - result.object.entity.metadata.name == 'awesome_entity'
+
+    - name: Get last event
+      event_info:
+        auth:
+          url: http://localhost:8080
+        entity: awesome_entity
+        check: awesome_check
+      register: result
+
+    - assert:
+        that:
+          - result.objects.0.check.metadata.name == 'awesome_check'
+          - result.objects.0.check.command == '/bin/true'
+          - result.objects.0.entity.metadata.name == 'awesome_entity'
+
     - name: Get all events
       event_info:
         auth:
@@ -26,4 +103,103 @@
 
     - assert:
         that:
-          - result.objects | length == 0
+          - result.objects | length == 1
+
+    - name: Create second entity
+      entity:
+        auth:
+          url: http://localhost:8080
+        name: entity2
+        entity_class: proxy
+
+    - name: Create a second check
+      check:
+        auth:
+          url: http://localhost:8080
+        name: check2
+        command: /bin/false
+        subscriptions:
+          - checks
+          - also_checks
+        interval: 30
+
+    - name: Create event with all parameters
+      event:
+        auth:
+          url: http://localhost:8080
+        entity: entity2
+        check: check2
+        check_attributes:
+          duration: 1.945
+          executed: 1522100915
+          history:
+            - executed: 1552505193
+              status: 1
+            - executed: 1552505293
+              status: 0
+            - executed: 1552505393
+              status: 0
+            - executed: 1552505493
+              status: 0
+          issued: 1552506034
+          last_ok: 1552506033
+          output: '10'
+          state: 'passing'
+          status: 'ok'
+          total_state_change: 0
+        metric_attributes:
+          handlers:
+            - handler1
+            - handler2
+          points:
+            - name: "sensu-go-sandbox.curl_timings.time_total"
+              tags:  # Both value of the pairs must be strings
+                - name: "response_time_in_ms"
+                  value: "101"
+              timestamp: 1552506033
+              value: 0.005
+            - name: "sensu-go-sandbox.curl_timings.time_namelookup"
+              tags:
+                - name: "namelookup_time_in_ms"
+                  value: "57"
+              timestamp: 1552506033
+              value: 0.004
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.entity.metadata.name == 'entity2'
+          - result.object.check.metadata.name == 'check2'
+          - result.object.check.command == '/bin/false'
+          - result.object.check.duration == 1.945
+          - result.object.check.executed == 1522100915
+          - "result.object.check.history.0 == {'executed': 1552505193, 'status': 1}"
+          - result.object.check.issued == 1552506034
+          - result.object.check.last_ok == 1552506033
+          - result.object.check.output == '10'
+          - result.object.check.state == 'passing'
+          - result.object.check.status == 0
+          - result.object.check.total_state_change == 0
+
+    - name: Get events matching entity2
+      event_info:
+        auth:
+          url: http://localhost:8080
+        entity: entity2
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.check.metadata.name == 'check2'
+
+    - name: Get all events
+      event_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
