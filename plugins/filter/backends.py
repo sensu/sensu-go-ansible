@@ -12,7 +12,9 @@ def _format_backend(vars):
         protocol = "wss"
     else:
         protocol = "ws"
-    return "{0}://{1}:{2}".format(protocol, vars["inventory_hostname"], 8081)
+    return "{0}://{1}:{2}".format(protocol, vars["inventory_hostname"],
+                                  vars.get("backend_config", {}).get(
+                                  "agent-port", 8081))
 
 
 def backends(hostvars, host_names):

@@ -68,12 +68,12 @@ supplied. If even a single file is missing or not defined, the play will fail.
 If none of the variables within a subsection is defined, those services will
 be configured without the secure communication.
 
-## Etcd peer communication
+### Etcd peer communication
 
 To secure the etcd communication, create the appropriate files for the PKI
 and define **all** of the following variables:
 
-| Variable    | Examples  | Description |
+| Variable    | Examples  | Description |0
 |-------------|-----------|-------------|
 | etcd_cert_file | files/pki/etcd-client.crt | Path to the certificate used for SSL/TLS connections **to** etcd. This is a client certificate. |
 | etcd_key_file | files/pki/etcd-client.key | Path to the private key for the etcd client certificate file. Must be unencrypted. |
@@ -82,7 +82,7 @@ and define **all** of the following variables:
 | etcd_peer_key_file | files/pki/etcd-peer.key | Path to the peer certificate's key. Must be unencrypted. |
 | etcd_peer_trusted_ca_file | files/pki/etcd-peer-ca.crt | Pat to the trusted certificate authority for the peer certificates. |
 
-## Backend API
+### Backend API
 
 To secure the Sensu Go backend API communication, create the appropriate files
 for the PKI and define **all** of the following variables:
@@ -91,7 +91,7 @@ for the PKI and define **all** of the following variables:
 | api_key_file | files/pki/sensu-api.key | Path to the private key corresponding to the Sensu Go API certificate. Must be unencrypted. |
 | api_trusted_ca_file | files/pki/sensu-api-ca.crt | Path to the trusted certificate authority for the Sensu Go API certificates. |
 
-## Dashboard
+### Dashboard
 
 To secure the dashboard communication, create the appropriate files for the PKI
 and define **all** of the following variables:
@@ -101,7 +101,6 @@ and define **all** of the following variables:
 
 The role will automatically configure the dashboard endpoint to use HTTPS,
 e.g.: `https://localhost:3000`.
-
 
 
 Supported Tags

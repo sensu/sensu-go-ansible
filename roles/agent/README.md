@@ -56,6 +56,38 @@ variables can be used in the playbooks:
 
 [agent-conf]: https://docs.sensu.io/sensu-go/latest/reference/agent/#configuration-summary
 
+Securing Sensu Go agent
+-----------------------
+
+This role enables users to establish secure communication between the agent
+and the backend. The best way of using the role is in combination with the
+`backend` role, which in turn needs to be configured in the inventory variables
+to set up secured Sensu Go backend. It is possible to achieve the same results
+by using the `agent` role on its own as well.
+
+The following variable may be used for configuring secure agent communication:
+
+| Variable    | Examples  | Description |
+|-------------|-----------|-------------|
+| agent_trusted_ca_file | files/sensu-agent-trusted-ca.crt | Path to the trusted certificate authority file. |
+
+### Using `agent` role without the `backends` inventory group
+
+The `agent` role queries the inventory for entries in the `backends` group for
+variables regardles if the playbook uses the `backend` role or not. If your
+use case does not include this group in the inventory, then you must ensure that
+the agent will be using secured protocol `wss` instead of the default plain-text
+`ws`. This can be set with the `agent_config['backend-url']` variable, which
+accepts a list of URLs. For example:
+
+    - name: Install and configure agent
+      hosts: agents
+      vars:
+        agent_config:
+          backend-url:
+            - wss://127.0.0.1:8081
+      roles:
+        - sensu.sensu_go.agent
 
 Supported Tags
 ---------

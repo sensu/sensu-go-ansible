@@ -6,14 +6,13 @@
 
 - name: Verify configure_agent
   hosts: agents
-  vars:
-    agent_yml: /etc/sensu/agent.yml
   tags:
     - configure_agent
+  gather_facts: no
   tasks:
     - name: Agent configuration must exist
       stat:
-        path: '{{ agent_yml }}'
+        path: &agent_yml /etc/sensu/agent.yml
       register: result
 
     - assert:
@@ -25,7 +24,7 @@
 
     - name: Confirm default configuration settings
       lineinfile:
-        path: '{{ agent_yml }}'
+        path: *agent_yml
         line: '{{ item }}'
       with_items:
         - 'backend-url:'
@@ -50,14 +49,12 @@
 
 - name: Verify configure_agent for overloaded variable sets
   hosts: agents
-  vars:
-    agent_yml: /etc/sensu/agent.yml
   tags:
     - configure_agent
   tasks:
     - name: Confirm overloaded variable sets
       lineinfile:
-        path: '{{ agent_yml }}'
+        path: *agent_yml
         line: '{{ item.ln }}'
         state: '{{ item.state }}'
       with_items:
@@ -128,14 +125,12 @@
 
 - name: Verify configure_agent for full set of optional variables
   hosts: agents
-  vars:
-    agent_yml: /etc/sensu/agent.yml
   tags:
     - configure_agent
   tasks:
     - name: Confirm full configuration settings
       lineinfile:
-        path: '{{ agent_yml }}'
+        path: *agent_yml
         line: '{{ item }}'
       with_items:
         - 'annotations:'
@@ -189,3 +184,22 @@
     - assert:
         that:
           - result is not changed
+
+- name: Test the backends filter
+  hosts: backends
+  tags:
+    - configure_agent
+  gather_facts: no
+  tasks:
+    - name: Set backend agent endpoint variables
+      set_fact:
+        backend_config:
+          agent-port: 1234
+
+    - name: Capture the filter's output
+      set_fact:
+        alt_backend: "{{ hostvars | sensu.sensu_go.backends(groups.backends) | first }}"
+
+    - assert:
+        that:
+          - alt_backend == 'ws://upstream-backend:1234'

@@ -8,9 +8,6 @@
       set_fact:
         api_key_file: /tmp/dummy.key
 
-    - debug:
-        msg: "{{ hostvars['upstream-backend']['api_key_file'] }}"
-
 - name: Converge
   hosts: agents
   vars:
