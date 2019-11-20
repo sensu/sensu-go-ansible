@@ -16,6 +16,7 @@ molecule/module_silence 82.67
 molecule/module_socket_handler 76.99
 molecule/module_user 75.17
 molecule/role_agent_default 277.60
+molecule/role_agent_secured 220.00
 molecule/role_backend_default 215.50
 molecule/role_backend_secured 210.00
 molecule/role_install_custom_version 213.33

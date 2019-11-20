@@ -8,7 +8,11 @@ __metaclass__ = type
 
 
 def _format_backend(vars):
-    return "{0}://{1}:{2}".format("ws", vars["inventory_hostname"], 8081)
+    if "api_key_file" in vars:
+        protocol = "wss"
+    else:
+        protocol = "ws"
+    return "{0}://{1}:{2}".format(protocol, vars["inventory_hostname"], 8081)
 
 
 def backends(hostvars, host_names):
