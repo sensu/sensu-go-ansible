@@ -1,0 +1,19 @@
+---
+platforms:
+  - name: centos
+    image: centos:7
+    groups: [ agents ]
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+# Upstream container - just to populate the inventory
+provisioner:
+  inventory:
+    hosts:
+      all:
+        children:
+          backends:
+            hosts:
+              upstream-backend:
