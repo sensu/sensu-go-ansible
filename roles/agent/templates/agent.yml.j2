@@ -11,6 +11,17 @@ backend-url:
 {{ agent_backend_urls | to_nice_yaml }}
 {% endif %}
 
+{% if agent_trusted_ca_file is defined and
+      not (agent_config and "trusted-ca-file" in agent_config) %}
+trusted-ca-file: /etc/sensu/sensu-agent-trusted-ca.crt
+{% endif %}
+
+{% if agent_trusted_ca_file is defined or agent_config and
+      ("trusted-ca-file" in agent_config and
+       not "insecure-skip-tls-verify" in agent_config) %}
+insecure-skip-tls-verify: false
+{% endif %}
+
 {% if agent_config %}
 {{ agent_config | to_nice_yaml }}
 {% endif %}
