@@ -63,7 +63,7 @@ verifier:
     enabled: false
 platforms:
   - name: latest
-    image: sensu/sensu:latest
+    image: sensu/sensu:5.14.1
     command: &cmd >
       sensu-backend start
         --state-dir /var/lib/sensu/sensu-backend/etcd1
