@@ -19,6 +19,7 @@ module: asset
 author:
   - Cameron Hurst (@wakemaster39)
   - Aljaz Kosir (@aljazkosir)
+  - Manca Bizjak (@mancabizjak)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
 short_description: Manages Sensu assets
@@ -33,47 +34,59 @@ extends_documentation_fragment:
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
 options:
-  state:
+  builds:
     description:
-      - Target state of the Sensu object.
-    type: str
-    choices: [ "present", "absent" ]
-    default: present
-  url:
-    description:
-      - The URL location of the asset.
-    type: str
-  sha512:
-    description:
-      - The checksum of the asset.
-    type: str
-  filters:
-    description:
-      - A set of Sensu query expressions used to determine if the asset
-        should be installed.
+      - A list of asset builds used to define multiple artefacts which
+        provide the named asset.
     type: list
-  headers:
-    description:
-      - Additional headers to send when retrieving the asset, e.g. for
-        authorization.
-    type: dict
+    suboptions:
+      url:
+        description:
+          - The URL location of the asset.
+        type: str
+        required: yes
+      sha512:
+        description:
+          - The checksum of the asset.
+        type: str
+        required: yes
+      filters:
+        description:
+          - A set of Sensu query expressions used to determine if the asset
+            should be installed.
+        type: list
+      headers:
+        description:
+          - Additional headers to send when retrieving the asset, e.g. for
+            authorization.
+        type: dict
 """
 
 EXAMPLES = """
-- name: Create asset
+- name: Create a multiple-build asset
   asset:
-    name: asset
-    url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
-    sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
-    filters:
-      - "entity.system.os == 'linux'"
-      - "entity.system.arch == 'amd64'"
-      - "entity.system.platform == 'rhel'"
+    name: sensu-plugins-cpu-checks
+    builds:
+      - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+        sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+        filters:
+          - entity.system.os == 'linux'
+          - entity.system.arch == 'amd64'
+          - entity.system.platform == 'rhel'
+      - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_alpine_linux_amd64.tar.gz
+        sha512: b2da25ecd7642e6de41fde37d674fe19dcb6ee3d680e145e32289f7cfc352e6b5f9413ee9b701d61faeaa47b399aa30b25885dbc1ca432c4061c8823774c28f3
+        filters:
+          - entity.system.os == 'linux'
+          - entity.system.arch == 'amd64'
+          - entity.system.platform == 'alpine'
     annotations:
-      sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
-      sensio.io.bonsai.tier: Community
-      sensio.io.bonsai.version: 4.0.0
-      sensio.io.bonsai.tags: ruby-runtime-2.4.4
+      io.sensu.bonsai.url: https://bonsai.sensu.io/assets/sensu-plugins/sensu-plugins-cpu-checks
+      io.sensu.bonsai.api_url: https://bonsai.sensu.io/api/v1/assets/sensu-plugins/sensu-plugins-cpu-checks
+      io.sensu.bonsai.tier: Community
+      io.sensu.bonsai.version: 4.0.0
+      io.sensu.bonsai.namespace: sensu-plugins
+      io.sensu.bonsai.name: sensu-plugins-cpu-checks
+      io.sensu.bonsai.tags: ruby-runtime-2.4.4
 """
 
 RETURN = """
@@ -90,9 +103,54 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
+def validate_module_params(params):
+    if params["state"] == "present":
+        if not params['builds']:
+            return "builds must include at least one element"
+    return None
+
+
+def _build_set(builds):
+    return {(
+        b.get('sha512'),
+        b.get('url'),
+        frozenset((b.get('headers', {}) or {}).items()),
+        frozenset(b.get('filters', []) or []),
+    ) for b in builds}
+
+
+def _do_builds_differ(current, desired):
+    if len(current) != len(desired):
+        return True
+
+    return _build_set(current) != _build_set(desired)
+
+
+def do_differ(current, desired):
+    if current is None:
+        return True
+
+    for key, value in desired.items():
+        current_value = current.get(key)
+        if key == 'builds':
+            if _do_builds_differ(current_value, value):
+                return True
+        elif value != current_value:
+            return True
+    return False
+
+
+def build_api_payload(params):
+    payload = arguments.get_mutation_payload(params)
+    if params['state'] == 'present':
+        builds = [arguments.get_spec_payload(b, *b.keys()) for b in params['builds']]
+        payload["builds"] = builds
+    return payload
+
+
 def main():
     required_if = [
-        ("state", "present", ["url", "sha512"])
+        ("state", "present", ["builds"])
     ]
     module = AnsibleModule(
         required_if=required_if,
@@ -101,25 +159,38 @@ def main():
             arguments.get_spec(
                 "auth", "name", "state", "labels", "annotations",
             ),
-            url=dict(),
-            sha512=dict(),
-            filters=dict(
+            builds=dict(
                 type="list",
-            ),
-            headers=dict(
-                type="dict",
+                elements="dict",
+                options=dict(
+                    url=dict(
+                        required=True,
+                    ),
+                    sha512=dict(
+                        required=True,
+                    ),
+                    filters=dict(
+                        type="list",
+                    ),
+                    headers=dict(
+                        type="dict",
+                    ),
+                )
             ),
         ),
     )
 
+    msg = validate_module_params(module.params)
+    if msg:
+        module.fail_json(msg=msg)
+
     client = arguments.get_sensu_client(module.params["auth"])
     path = "/assets/{0}".format(module.params["name"])
-    payload = arguments.get_mutation_payload(
-        module.params, "url", "sha512", "filters", "headers",
-    )
+    payload = build_api_payload(module.params)
+
     try:
         changed, asset = utils.sync(
-            module.params["state"], client, path, payload, module.check_mode,
+            module.params["state"], client, path, payload, module.check_mode, do_differ
         )
         module.exit_json(changed=changed, object=asset)
     except errors.Error as e:
