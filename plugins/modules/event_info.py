@@ -80,8 +80,9 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
-    path_components = '/events', module.params['entity'], module.params['check']
-    path = '/'.join(c for c in path_components if c)
+    path = utils.build_url_path(
+        'events', module.params['entity'], module.params['check'],
+    )
 
     try:
         events = utils.get(client, path)

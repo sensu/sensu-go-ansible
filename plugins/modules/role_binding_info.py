@@ -59,10 +59,7 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params["auth"])
-    if module.params["name"]:
-        path = "/rolebindings/{0}".format(module.params["name"])
-    else:
-        path = "/rolebindings"
+    path = utils.build_url_path("rolebindings", module.params["name"])
 
     try:
         role_bindings = utils.get(client, path)

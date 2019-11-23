@@ -250,3 +250,15 @@ class TestDictToKeyValueString:
         result = utils.dict_to_key_value_strings({"a": 0, 1: "b"})
 
         assert {"a=0", "1=b"} == set(result)
+
+
+class TestBuildUrlPath:
+    @pytest.mark.parametrize("parts,expectation", [
+        ((), "/"),
+        ((None, None), "/"),
+        ((None, "a", "b", None, None, "c"), "/a/b/c"),
+        (("get/rid of+stuff",), "/get%2Frid%20of%2Bstuff"),
+        (("/", " ", "a"), "/%2F/%20/a"),
+    ])
+    def test_build_url_path(self, parts, expectation):
+        assert expectation == utils.build_url_path(*parts)

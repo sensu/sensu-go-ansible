@@ -157,7 +157,7 @@ STATUS_MAP = {
 
 
 def get_check(client, check):
-    check_path = '/checks/{0}'.format(check)
+    check_path = utils.build_url_path('checks', check)
     resp = client.get(check_path)
     if resp.status != 200:
         raise errors.SyncError("Check with name '{0}' does not exist on remote.".format(check))
@@ -165,7 +165,7 @@ def get_check(client, check):
 
 
 def get_entity(client, entity):
-    entity_path = '/entities/{0}'.format(entity)
+    entity_path = utils.build_url_path('entities', entity)
     resp = client.get(entity_path)
     if resp.status != 200:
         raise errors.SyncError("Entity with name '{0}' does not exist on remote.".format(entity))
@@ -265,7 +265,9 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
-    path = '/events/{0}/{1}'.format(module.params['entity'], module.params['check'])
+    path = utils.build_url_path(
+        'events', module.params['entity'], module.params['check'],
+    )
 
     try:
         payload = _build_api_payload(client, module.params)

@@ -105,7 +105,7 @@ def main():
 
     module.params['auth']['namespace'] = None  # Making sure we are not fallbacking to default
     client = arguments.get_sensu_client(module.params["auth"])
-    path = "/clusterrolebindings/{0}".format(module.params["name"])
+    path = utils.build_url_path("clusterrolebindings", module.params["name"])
     payload = build_api_payload(module.params)
 
     try:

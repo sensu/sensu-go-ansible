@@ -26,7 +26,7 @@ class TestSilence(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/silenced/*:check'
+        assert path == '/silenced/%2A%3Acheck'  # %2A = *, %3A = :
         assert payload == dict(
             check='check',
             metadata=dict(
@@ -48,7 +48,7 @@ class TestSilence(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/silenced/subscription:*'
+        assert path == '/silenced/subscription%3A%2A'  # %3A = :, %2A = *
         assert payload == dict(
             subscription='subscription',
             metadata=dict(
@@ -78,7 +78,7 @@ class TestSilence(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'absent'
-        assert path == '/silenced/entity:test-entity:check'
+        assert path == '/silenced/entity%3Atest-entity%3Acheck'  # %3A = :
         assert payload == dict(
             subscription='entity:test-entity',
             check='check',

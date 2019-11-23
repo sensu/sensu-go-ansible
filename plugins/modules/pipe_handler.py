@@ -111,7 +111,7 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
-    path = '/handlers/{0}'.format(module.params['name'])
+    path = utils.build_url_path('handlers', module.params['name'])
     payload = arguments.get_mutation_payload(
         module.params, 'command', 'filters', 'mutator', 'timeout', 'runtime_assets'
     )
