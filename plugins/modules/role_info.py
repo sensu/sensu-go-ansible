@@ -59,10 +59,7 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params["auth"])
-    if module.params["name"]:
-        path = "/roles/{0}".format(module.params["name"])
-    else:
-        path = "/roles"
+    path = utils.build_url_path("roles", module.params["name"])
 
     try:
         roles = utils.get(client, path)

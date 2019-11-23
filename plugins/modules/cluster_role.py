@@ -112,7 +112,7 @@ def main():
 
     module.params['auth']['namespace'] = None  # Making sure we are not fallbacking to default
     client = arguments.get_sensu_client(module.params["auth"])
-    path = "/clusterroles/{0}".format(module.params["name"])
+    path = utils.build_url_path("clusterroles", module.params["name"])
     payload = arguments.get_mutation_payload(
         module.params, "rules"
     )

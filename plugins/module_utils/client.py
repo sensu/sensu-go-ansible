@@ -10,6 +10,7 @@ import json
 
 from ansible.module_utils.urls import open_url
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
+from ansible.module_utils.six.moves.urllib.parse import quote
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
     errors, response, debug
@@ -28,7 +29,7 @@ class Client:
 
         if namespace:
             self.url_template = "{0}/api/core/v2/namespaces/{1}{{0}}".format(
-                self.address, namespace,
+                self.address, quote(namespace, safe=""),
             )
         else:
             self.url_template = "{0}/api/core/v2{{0}}".format(self.address)

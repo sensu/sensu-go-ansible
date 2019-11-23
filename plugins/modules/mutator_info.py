@@ -58,10 +58,7 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params["auth"])
-    if module.params["name"]:
-        path = "/mutators/{0}".format(module.params["name"])
-    else:
-        path = "/mutators"
+    path = utils.build_url_path("mutators", module.params["name"])
 
     try:
         mutators = utils.get(client, path)

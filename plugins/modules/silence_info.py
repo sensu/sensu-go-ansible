@@ -75,10 +75,7 @@ def main():
 
     name = '{0}:{1}'.format(module.params['subscription'] or '*', module.params['check'] or '*')
     client = arguments.get_sensu_client(module.params["auth"])
-    if name != '*:*':
-        path = "/silenced/{0}".format(name)
-    else:
-        path = "/silenced"
+    path = utils.build_url_path("silenced", None if name == "*:*" else name)
 
     try:
         silences = utils.get(client, path)
