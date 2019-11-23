@@ -6,6 +6,8 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
+from ansible.module_utils.six.moves.urllib.parse import quote
+
 from ansible_collections.sensu.sensu_go.plugins.module_utils import errors
 
 
@@ -83,3 +85,7 @@ def dict_to_single_item_dicts(data):
 
 def dict_to_key_value_strings(data):
     return ["{0}={1}".format(k, v) for k, v in data.items()]
+
+
+def build_url_path(*parts):
+    return "/" + "/".join(quote(p, safe="") for p in parts if p)

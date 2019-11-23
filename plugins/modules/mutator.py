@@ -101,7 +101,7 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
-    path = '/mutators/{0}'.format(module.params['name'])
+    path = utils.build_url_path('mutators', module.params['name'])
     payload = arguments.get_mutation_payload(
         module.params, 'command', 'timeout', 'runtime_assets'
     )

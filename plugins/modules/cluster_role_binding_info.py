@@ -61,10 +61,7 @@ def main():
 
     module.params['auth']['namespace'] = None  # Making sure we are not fallbacking to default
     client = arguments.get_sensu_client(module.params["auth"])
-    if module.params["name"]:
-        path = "/clusterrolebindings/{0}".format(module.params["name"])
-    else:
-        path = "/clusterrolebindings"
+    path = utils.build_url_path("clusterrolebindings", module.params["name"])
 
     try:
         cluster_role_bindings = utils.get(client, path)

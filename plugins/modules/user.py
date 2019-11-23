@@ -110,7 +110,7 @@ def main():
 
     module.params['auth']['namespace'] = None
     client = arguments.get_sensu_client(module.params['auth'])
-    path = '/users/{0}'.format(module.params['name'])
+    path = utils.build_url_path('users', module.params['name'])
     state = module.params['state']
 
     remote_object = utils.get(client, path)

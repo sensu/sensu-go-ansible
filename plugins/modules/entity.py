@@ -149,7 +149,7 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
-    path = '/entities/{0}'.format(module.params['name'])
+    path = utils.build_url_path('entities', module.params['name'])
     payload = arguments.get_mutation_payload(
         module.params, 'entity_class', 'subscriptions', 'system', 'last_seen', 'deregister',
         'redact', 'user'

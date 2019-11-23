@@ -57,10 +57,7 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params["auth"])
-    if module.params["name"]:
-        path = "/entities/{0}".format(module.params["name"])
-    else:
-        path = "/entities"
+    path = utils.build_url_path("entities", module.params["name"])
 
     try:
         entities = utils.get(client, path)

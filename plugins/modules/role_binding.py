@@ -131,7 +131,7 @@ def main():
         module.fail_json(msg=msg)
 
     client = arguments.get_sensu_client(module.params["auth"])
-    path = "/rolebindings/{0}".format(module.params["name"])
+    path = utils.build_url_path("rolebindings", module.params["name"])
     payload = build_api_payload(module.params)
 
     try:

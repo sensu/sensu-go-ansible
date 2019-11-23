@@ -108,7 +108,7 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
-    path = '/hooks/{0}'.format(module.params['name'])
+    path = utils.build_url_path('hooks', module.params['name'])
     payload = arguments.get_mutation_payload(
         module.params, 'command', 'timeout', 'stdin', 'runtime_assets'
     )

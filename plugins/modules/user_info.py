@@ -59,10 +59,7 @@ def main():
     )
     module.params['auth']['namespace'] = None
     client = arguments.get_sensu_client(module.params["auth"])
-    if module.params["name"]:
-        path = "/users/{0}".format(module.params["name"])
-    else:
-        path = "/users"
+    path = utils.build_url_path("users", module.params["name"])
 
     try:
         users = utils.get(client, path)

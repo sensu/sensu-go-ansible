@@ -311,7 +311,7 @@ def main():
     )
     validate_module_params(module)
     client = arguments.get_sensu_client(module.params['auth'])
-    path = '/checks/{0}'.format(module.params['name'])
+    path = utils.build_url_path('checks', module.params['name'])
     payload = build_api_payload(module.params)
 
     try:

@@ -57,10 +57,7 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params["auth"])
-    if module.params["name"]:
-        path = "/filters/{0}".format(module.params["name"])
-    else:
-        path = "/filters"
+    path = utils.build_url_path("filters", module.params["name"])
 
     try:
         sensu_filters = utils.get(client, path)

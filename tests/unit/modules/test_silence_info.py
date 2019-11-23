@@ -35,7 +35,8 @@ class TestSilenceInfo(ModuleTestCase):
             silence_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/silenced/subscription:*"
+        print(path)
+        assert path == "/silenced/subscription%3A%2A"  # %3A = :, %2A = *
         assert context.value.args[0]["objects"] == [4]
 
     def test_failure(self, mocker):
