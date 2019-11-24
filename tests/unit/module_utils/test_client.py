@@ -8,137 +8,116 @@ __metaclass__ = type
 
 import pytest
 
-from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
-
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    client, errors,
+    client, errors, http
 )
 
 
 class TestToken:
     def test_get_valid_token(self, mocker):
-        open_url = mocker.patch.object(client, "open_url")
-        open_url.return_value.read.return_value = '{"access_token": "token"}'
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(200, '{"access_token": "token"}')
 
         c = client.Client("http://example.com/", "user", "pass")
 
         assert "token" == c.token
-        assert 1 == open_url.call_count
-        print(open_url.call_args)
-        assert ("http://example.com/auth",) == open_url.call_args[0]
-        assert "user" == open_url.call_args[1]["url_username"]
-        assert "pass" == open_url.call_args[1]["url_password"]
+        assert 1 == request.call_count
+        assert ("GET", "http://example.com/auth") == request.call_args[0]
+        assert "user" == request.call_args[1]["url_username"]
+        assert "pass" == request.call_args[1]["url_password"]
 
     def test_cache_token(self, mocker):
-        open_url = mocker.patch.object(client, "open_url")
-        open_url.return_value.read.return_value = '{"access_token": "token"}'
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(200, '{"access_token": "token"}')
 
         c = client.Client("http://example.com/", "user", "pass")
         for i in range(5):
             c.token
 
-        assert 1 == open_url.call_count
+        assert 1 == request.call_count
 
-    def test_login_failure(self, mocker):
-        open_url = mocker.patch.object(client, "open_url")
-        open_url.side_effect = URLError("Invalid")
+    def test_login_failure_bad_status(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(500, '{"access_token": "token"}')
 
-        with pytest.raises(errors.ClientError):
+        with pytest.raises(errors.SensuError, match="500"):
+            client.Client("http://example.com/", "user", "pass").token
+
+    def test_login_failure_bad_json(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(200, "{ not a json }")
+
+        with pytest.raises(errors.SensuError, match="JSON"):
+            client.Client("http://example.com/", "user", "pass").token
+
+    def test_login_failure_missing_token(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(200, '{"access_bla": "token"}')
+
+        with pytest.raises(errors.SensuError, match="token"):
             client.Client("http://example.com/", "user", "pass").token
 
 
 class TestRequest:
-    def test_valid_json(self, mocker):
-        auth_resp = mocker.Mock()
-        auth_resp.read.return_value = '{"access_token": "token"}'
-        data_resp = mocker.Mock()
-        data_resp.read.return_value = '{"some": "json"}'
-        data_resp.getcode.return_value = 200
-        open_url = mocker.patch.object(client, "open_url")
-        open_url.side_effect = auth_resp, data_resp
-
-        resp = client.Client("http://ex.com/", "user", "pass").request(
-            "GET", "/path",
+    def test_request_payload(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.side_effect = (
+            http.Response(200, '{"access_token": "token"}'),
+            http.Response(200, "data"),
         )
 
-        assert 200 == resp.status
-        assert '{"some": "json"}' == resp.data
-        assert {"some": "json"} == resp.json
+        client.Client("http://example.com/", "user", "pass").request(
+            "PUT", "/path", dict(some="payload"),
+        )
 
-        url = open_url.call_args[1]["url"]
-        assert "http://ex.com/api/core/v2/path" == url
+        request.assert_called_with(
+            "PUT", "http://example.com/api/core/v2/path",
+            payload=dict(some="payload"),
+            headers=dict(Authorization="Bearer token"),
+        )
 
-        auth = open_url.call_args[1]["headers"]["Authorization"]
-        assert "Bearer token" == auth
+    def test_request_no_payload(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.side_effect = (
+            http.Response(200, '{"access_token": "token"}'),
+            http.Response(200, "data"),
+        )
 
-    def test_invalid_json(self, mocker):
-        auth_resp = mocker.Mock()
-        auth_resp.read.return_value = '{"access_token": "token"}'
-        data_resp = mocker.Mock()
-        data_resp.read.return_value = "Bad json {}"
-        data_resp.getcode.return_value = 200
-        open_url = mocker.patch.object(client, "open_url")
-        open_url.side_effect = auth_resp, data_resp
+        client.Client("http://example.com/", "user", "pass").request(
+            "PUT", "/path",
+        )
 
-        resp = client.Client("http://ex.com/", "user", "pass").get("/path")
+        request.assert_called_with(
+            "PUT", "http://example.com/api/core/v2/path", payload=None,
+            headers=dict(Authorization="Bearer token"),
+        )
 
-        assert 200 == resp.status
-        assert "Bad json {}" == resp.data
-        assert resp.json is None
 
-    def test_non_200(self, mocker):
-        auth_resp = mocker.Mock()
-        auth_resp.read.return_value = '{"access_token": "token"}'
-        data_resp = HTTPError("url", 404, '{"msg": "missing item"}', {}, None)
-        open_url = mocker.patch.object(client, "open_url")
-        open_url.side_effect = auth_resp, data_resp
+class TestGet:
+    def test_get(self, mocker):
+        c = client.Client("http://example.com/", "user", "pass")
+        c.request = mocker.Mock()
 
-        resp = client.Client("http://ex.com/", "user", "pass").get("/path")
+        c.get("/path")
 
-        assert 404 == resp.status
-        assert '{"msg": "missing item"}' == resp.data
-        assert {"msg": "missing item"} == resp.json
+        c.request.assert_called_with("GET", "/path")
 
-    def test_set_json_content_type(self, mocker):
-        auth_resp = mocker.Mock()
-        auth_resp.read.return_value = '{"access_token": "token"}'
-        data_resp = mocker.Mock()
-        data_resp.read.return_value = '{"some": "json"}'
-        data_resp.getcode.return_value = 201
-        open_url = mocker.patch.object(client, "open_url")
-        open_url.side_effect = auth_resp, data_resp
 
-        resp = client.Client("http://ex.com/", "user", "pass").put("/path", {})
+class TestPut:
+    def test_put(self, mocker):
+        c = client.Client("http://example.com/", "user", "pass")
+        c.request = mocker.Mock()
 
-        data = open_url.call_args[1]["data"]
-        print(data)
-        assert "{}" == data
+        c.put("/path", {})
 
-        content_type = open_url.call_args[1]["headers"]["content-type"]
-        assert "application/json" == content_type
+        c.request.assert_called_with("PUT", "/path", {})
 
-    def test_url_error(self, mocker):
-        auth_resp = mocker.Mock()
-        auth_resp.read.return_value = '{"access_token": "token"}'
-        open_url = mocker.patch.object(client, "open_url")
-        open_url.side_effect = auth_resp, URLError("Invalid")
 
-        with pytest.raises(errors.ClientError):
-            client.Client("http://ex.com/", "user", "pass").get("/path")
+class TestDelete:
+    def test_delete(self, mocker):
+        c = client.Client("http://example.com/", "user", "pass")
+        c.request = mocker.Mock()
 
-    def test_namespace_url_construction(self, mocker):
-        auth_resp = mocker.Mock()
-        auth_resp.read.return_value = '{"access_token": "token"}'
-        data_resp = mocker.Mock()
-        data_resp.read.return_value = ""
-        data_resp.getcode.return_value = 204
-        open_url = mocker.patch.object(client, "open_url")
-        open_url.side_effect = auth_resp, data_resp
+        c.delete("/path")
 
-        resp = client.Client(
-            "http://ex.com/", "user", "pass", "ns",
-        ).delete("/path")
-
-        url = open_url.call_args[1]["url"]
-        assert "http://ex.com/api/core/v2/namespaces/ns/path" == url
-        assert 204 == resp.status
+        c.request.assert_called_with("DELETE", "/path")

@@ -4,7 +4,7 @@ __metaclass__ = type
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, response, utils
+    errors, http, utils
 )
 from ansible_collections.sensu.sensu_go.plugins.modules import user
 
@@ -16,8 +16,8 @@ from .common.utils import (
 class TestSync:
     def test_no_current_object(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"new": "data"}')
-        client.put.return_value = response.Response(201, '')
+        client.get.return_value = http.Response(200, '{"new": "data"}')
+        client.put.return_value = http.Response(201, '')
 
         changed, object = user.sync(
             None, 'disabled', client, '/path', {'my': 'data'}, False
@@ -29,7 +29,7 @@ class TestSync:
 
     def test_no_current_object_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"new": "data"}')
+        client.get.return_value = http.Response(200, '{"new": "data"}')
 
         changed, object = user.sync(
             None, 'disabled', client, '/path', {'my': 'data'}, True
@@ -41,8 +41,8 @@ class TestSync:
 
     def test_disabled_current_object_present(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"current": "data"}')
-        client.delete.return_value = response.Response(204, '')
+        client.get.return_value = http.Response(200, '{"current": "data"}')
+        client.delete.return_value = http.Response(204, '')
 
         changed, object = user.sync(
             {}, 'disabled', client, '/path', {}, False
@@ -53,8 +53,8 @@ class TestSync:
 
     def test_disabled_current_object_present_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"current": "data"}')
-        client.delete.return_value = response.Response(204, '')
+        client.get.return_value = http.Response(200, '{"current": "data"}')
+        client.delete.return_value = http.Response(204, '')
 
         changed, object = user.sync(
             {}, 'disabled', client, '/path', {}, True

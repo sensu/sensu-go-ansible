@@ -34,10 +34,9 @@ def log(message, *args, **kwargs):
             f.write("[{0}]: {1}\n".format(datetime.utcnow(), message.format(*args, **kwargs)))
 
 
-def log_request(arguments, resp=None, comment=None):
+def log_request(method, url, payload, resp=None, comment=None):
     """Log API request and response"""
     if DEBUG:
-        method, url, payload = arguments["method"], arguments["url"], arguments["data"]
         if resp:
             code, data = resp.status, resp.data
         else:
