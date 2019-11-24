@@ -4,7 +4,7 @@ __metaclass__ = type
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, response, utils
+    errors, http, utils
 )
 from ansible_collections.sensu.sensu_go.plugins.modules import tessen
 
@@ -16,7 +16,7 @@ from .common.utils import (
 class TestSync:
     def test_remote_and_desired_equal(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{}')
+        client.get.return_value = http.Response(200, '{}')
         changed, object = tessen.sync(client, "/path", {}, False)
 
         assert changed is False
@@ -25,10 +25,10 @@ class TestSync:
     def test_remote_and_desired_not_equal(self, mocker):
         client = mocker.Mock()
         client.get.side_effect = (
-            response.Response(200, '{"opt_out": "false"}'),
-            response.Response(200, '{"opt_out": "true"}'),
+            http.Response(200, '{"opt_out": "false"}'),
+            http.Response(200, '{"opt_out": "true"}'),
         )
-        client.put.return_value = response.Response(200, "")
+        client.put.return_value = http.Response(200, "")
         changed, object = tessen.sync(client, "/path", {'opt_out': True}, False)
 
         assert changed is True
@@ -37,7 +37,7 @@ class TestSync:
 
     def test_remote_and_desired_equal_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{}')
+        client.get.return_value = http.Response(200, '{}')
         changed, object = tessen.sync(client, "/path", {}, True)
 
         assert changed is False
@@ -45,7 +45,7 @@ class TestSync:
 
     def test_remote_and_desired_not_equal_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"opt_out": "false"}')
+        client.get.return_value = http.Response(200, '{"opt_out": "false"}')
         changed, object = tessen.sync(client, "/path", {'opt_out': True}, True)
 
         assert changed is True

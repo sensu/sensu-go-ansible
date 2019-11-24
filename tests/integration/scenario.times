@@ -1,5 +1,6 @@
 molecule/module_tessen 48.77
 molecule/module_asset 76.96
+molecule/module_bonsai_asset 76.96
 molecule/module_check 76.34
 molecule/module_cluster_role 80.00
 molecule/module_cluster_role_binding 78.40
