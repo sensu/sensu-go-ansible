@@ -9,14 +9,14 @@ __metaclass__ = type
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, response, utils,
+    errors, http, utils,
 )
 
 
 class TestSync:
     def test_absent_no_current_object(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(404, "")
+        client.get.return_value = http.Response(404, "")
 
         changed, object = utils.sync("absent", client, "/path", {}, False)
 
@@ -25,7 +25,7 @@ class TestSync:
 
     def test_absent_no_current_object_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(404, "")
+        client.get.return_value = http.Response(404, "")
 
         changed, object = utils.sync("absent", client, "/path", {}, True)
 
@@ -34,8 +34,8 @@ class TestSync:
 
     def test_absent_current_object_present(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{}')
-        client.delete.return_value = response.Response(204, "")
+        client.get.return_value = http.Response(200, '{}')
+        client.delete.return_value = http.Response(204, "")
 
         changed, object = utils.sync("absent", client, "/path", {}, False)
 
@@ -45,8 +45,8 @@ class TestSync:
 
     def test_absent_current_object_present_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{}')
-        client.delete.return_value = response.Response(204, "")
+        client.get.return_value = http.Response(200, '{}')
+        client.delete.return_value = http.Response(204, "")
 
         changed, object = utils.sync("absent", client, "/path", {}, True)
 
@@ -57,10 +57,10 @@ class TestSync:
     def test_present_no_current_object(self, mocker):
         client = mocker.Mock()
         client.get.side_effect = (
-            response.Response(404, ""),
-            response.Response(200, '{"new": "data"}'),
+            http.Response(404, ""),
+            http.Response(200, '{"new": "data"}'),
         )
-        client.put.return_value = response.Response(201, "")
+        client.put.return_value = http.Response(201, "")
 
         changed, object = utils.sync(
             "present", client, "/path", {"my": "data"}, False,
@@ -72,7 +72,7 @@ class TestSync:
 
     def test_present_no_current_object_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(404, "")
+        client.get.return_value = http.Response(404, "")
 
         changed, object = utils.sync(
             "present", client, "/path", {"my": "data"}, True,
@@ -85,10 +85,10 @@ class TestSync:
     def test_present_current_object_differ(self, mocker):
         client = mocker.Mock()
         client.get.side_effect = (
-            response.Response(200, '{"current": "data"}'),
-            response.Response(200, '{"new": "data"}'),
+            http.Response(200, '{"current": "data"}'),
+            http.Response(200, '{"new": "data"}'),
         )
-        client.put.return_value = response.Response(201, "")
+        client.put.return_value = http.Response(201, "")
 
         changed, object = utils.sync(
             "present", client, "/path", {"my": "data"}, False,
@@ -100,7 +100,7 @@ class TestSync:
 
     def test_present_current_object_differ_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"current": "data"}')
+        client.get.return_value = http.Response(200, '{"current": "data"}')
 
         changed, object = utils.sync(
             "present", client, "/path", {"my": "data"}, True,
@@ -112,7 +112,7 @@ class TestSync:
 
     def test_present_current_object_does_not_differ(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"my": "data"}')
+        client.get.return_value = http.Response(200, '{"my": "data"}')
 
         changed, object = utils.sync(
             "present", client, "/path", {"my": "data"}, False,
@@ -124,7 +124,7 @@ class TestSync:
 
     def test_present_current_object_does_not_differ_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"my": "data"}')
+        client.get.return_value = http.Response(200, '{"my": "data"}')
 
         changed, object = utils.sync(
             "present", client, "/path", {"my": "data"}, True,
@@ -159,7 +159,7 @@ class TestGet:
     )
     def test_abort_on_invalid_status(self, mocker, status):
         client = mocker.Mock()
-        client.get.return_value = response.Response(status, "")
+        client.get.return_value = http.Response(status, "")
 
         with pytest.raises(errors.SyncError, match=str(status)):
             utils.get(client, "/get")
@@ -167,7 +167,7 @@ class TestGet:
 
     def test_abort_on_invalid_json(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, "")
+        client.get.return_value = http.Response(200, "")
 
         with pytest.raises(errors.SyncError, match="JSON"):
             utils.get(client, "/get")
@@ -175,7 +175,7 @@ class TestGet:
 
     def test_ignore_invalid_json_on_404(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(404, "")
+        client.get.return_value = http.Response(404, "")
 
         object = utils.get(client, "/get")
 
@@ -184,7 +184,7 @@ class TestGet:
 
     def test_valid_json(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"get": "data"}')
+        client.get.return_value = http.Response(200, '{"get": "data"}')
 
         object = utils.get(client, "/get")
 
@@ -198,7 +198,7 @@ class TestDelete:
     )
     def test_abort_on_invalid_status(self, mocker, status):
         client = mocker.Mock()
-        client.delete.return_value = response.Response(status, "")
+        client.delete.return_value = http.Response(status, "")
 
         with pytest.raises(errors.SyncError, match=str(status)):
             utils.delete(client, "/delete")
@@ -206,7 +206,7 @@ class TestDelete:
 
     def test_valid_delete(self, mocker):
         client = mocker.Mock()
-        client.delete.return_value = response.Response(204, "{}")
+        client.delete.return_value = http.Response(204, "{}")
 
         object = utils.delete(client, "/delete")
 
@@ -220,7 +220,7 @@ class TestPut:
     )
     def test_abort_on_invalid_status(self, mocker, status):
         client = mocker.Mock()
-        client.put.return_value = response.Response(status, "")
+        client.put.return_value = http.Response(status, "")
 
         with pytest.raises(errors.SyncError, match=str(status)):
             utils.put(client, "/put", {"payload": "data"})
@@ -228,7 +228,7 @@ class TestPut:
 
     def test_valid_put(self, mocker):
         client = mocker.Mock()
-        client.put.return_value = response.Response(201, '{"put": "data"}')
+        client.put.return_value = http.Response(201, '{"put": "data"}')
 
         object = utils.put(client, "/put", {"payload": "data"})
 

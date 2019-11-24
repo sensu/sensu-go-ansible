@@ -6,19 +6,11 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-import json
-
-from ansible.module_utils.urls import open_url
-from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 from ansible.module_utils.six.moves.urllib.parse import quote
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, response, debug
+    errors, http,
 )
-
-
-def _abort(msg, *args, **kwargs):
-    raise errors.ClientError(msg.format(*args, **kwargs))
 
 
 class Client:
@@ -43,43 +35,33 @@ class Client:
         return self._token
 
     def _login(self):
-        try:
-            resp = open_url(
-                "{0}/auth".format(self.address), force_basic_auth=True,
-                url_username=self.username, url_password=self.password,
+        resp = http.request(
+            "GET", "{0}/auth".format(self.address), force_basic_auth=True,
+            url_username=self.username, url_password=self.password,
+        )
+
+        if resp.status != 200:
+            raise errors.SensuError(
+                "Authentication call returned status {0}".format(resp.status),
             )
-            token = json.loads(resp.read())["access_token"]
-            debug.log("Login token: [{0}/auth] {1}***", self.address, token[:5])
-            return token
-        except URLError as e:
-            debug.log("Login failed: [{0}/auth] {1}", self.address, e.reason)
-            _abort("Login failed: {}", e.reason)
+
+        if resp.json is None:
+            raise errors.SensuError(
+                "Authentication call did not return a valid JSON",
+            )
+
+        if "access_token" not in resp.json:
+            raise errors.SensuError(
+                "Authentication call did not return access token",
+            )
+
+        return resp.json["access_token"]
 
     def request(self, method, path, payload=None):
-        arguments = dict(
-            url=self.url_template.format(path),
-            method=method,
-            headers={"Authorization": "Bearer {0}".format(self.token)},
-            data=None,
-        )
-        if payload is not None:
-            arguments["headers"]["content-type"] = "application/json"
-            arguments["data"] = json.dumps(payload)
+        url = self.url_template.format(path)
+        headers = {"Authorization": "Bearer {0}".format(self.token)}
 
-        try:
-            resp = open_url(**arguments)
-            resp = response.Response(resp.getcode(), resp.read())
-            debug.log_request(arguments, resp)
-            return resp
-        except HTTPError as e:
-            # This is not an error, since client consumers might be able to
-            # work around/expect non 20x codes.
-            resp = response.Response(e.code, e.reason)
-            debug.log_request(arguments, resp)
-            return resp
-        except URLError as e:
-            debug.log_request(arguments, comment=e.reason)
-            _abort("{} request failed: {}", method, e.reason)
+        return http.request(method, url, payload=payload, headers=headers)
 
     def get(self, path):
         return self.request("GET", path)

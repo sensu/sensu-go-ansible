@@ -4,7 +4,7 @@ __metaclass__ = type
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, response, utils,
+    errors, http, utils,
 )
 from ansible_collections.sensu.sensu_go.plugins.modules import event
 
@@ -16,14 +16,14 @@ from .common.utils import (
 class TestGetObjects:
     def test_get_entity(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"entity": "entity"}')
+        client.get.return_value = http.Response(200, '{"entity": "entity"}')
         resp = event.get_entity(client, 'entity')
 
         assert resp == {'entity': 'entity'}
 
     def test_get_entity_404(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(404, '')
+        client.get.return_value = http.Response(404, '')
 
         with pytest.raises(errors.SyncError,
                            match="Entity with name 'entity' does not exist on remote."):
@@ -31,14 +31,14 @@ class TestGetObjects:
 
     def test_get_check(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(200, '{"check": "check"}')
+        client.get.return_value = http.Response(200, '{"check": "check"}')
         resp = event.get_check(client, 'check')
 
         assert resp == {'check': 'check'}
 
     def test_get_check_404(self, mocker):
         client = mocker.Mock()
-        client.get.return_value = response.Response(404, '')
+        client.get.return_value = http.Response(404, '')
 
         with pytest.raises(errors.SyncError,
                            match="Check with name 'check' does not exist on remote."):

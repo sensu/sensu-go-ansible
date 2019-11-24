@@ -11,9 +11,13 @@ class Error(Exception):
     """ Base error that serves as a parent for all other errors. """
 
 
-class ClientError(Error):
+class HttpError(Error):
     """ Error that signals failure in HTTP connection. """
 
 
 class SyncError(Error):
     """ Error that signals failure when syncing state with remote. """
+
+
+class SensuError(Error):
+    """ Error that signals problems with Sensu Go web API. """
