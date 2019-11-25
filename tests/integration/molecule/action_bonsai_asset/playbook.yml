@@ -1,0 +1,101 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create a Bonsai asset
+      bonsai_asset: &idempotence
+        auth:
+          url: http://localhost:8080
+        name: sensu/monitoring-plugins
+        version: 2.2.0-1
+      register: result
+
+    - assert:
+        that:
+          # https://bonsai.sensu.io/api/v1/assets/sensu/monitoring-plugins/2.2.0-1/release_asset_builds
+          - result is changed
+          - result.object.metadata.name == 'sensu/monitoring-plugins'
+          - result.object.builds | length == 3
+          - result.object.metadata.annotations | dict2items | length == 7
+
+    - name: Test asset creation idempotence
+      bonsai_asset: *idempotence
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify an asset
+      bonsai_asset:
+        auth:
+          url: http://localhost:8080
+        name: sensu/monitoring-plugins
+        version: 2.2.0-2
+        labels:
+          my: label
+        annotations:
+          anot: here
+      register: result
+
+    - assert:
+        that:
+          # https://bonsai.sensu.io/api/v1/assets/sensu/monitoring-plugins/2.2.0-2/release_asset_builds
+          - result is changed
+          - result.object.metadata.name == 'sensu/monitoring-plugins'
+          - result.object.builds | length == 4
+          - result.object.metadata.annotations | dict2items | length == 8
+          - result.object.metadata.annotations.anot == 'here'
+          - result.object.metadata.labels.my == 'label'
+          - result is changed
+
+    - name: Fetch a specific asset
+      asset_info:
+        auth:
+          url: http://localhost:8080
+        name: sensu/monitoring-plugins
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'sensu/monitoring-plugins'
+
+    - name: Add same asset under different name
+      bonsai_asset:
+        auth:
+          url: http://localhost:8080
+        name: sensu/monitoring-plugins
+        version: 2.2.0-2
+        rename: renamed-asset
+
+    - name: Fetch renamed asset
+      asset_info:
+        auth:
+          url: http://localhost:8080
+        name: renamed-asset
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'renamed-asset'
+
+    - name: Delete an asset
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: sensu/monitoring-plugins
+        state: absent
+
+    - name: Fetch all assets again after deletion
+      asset_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1

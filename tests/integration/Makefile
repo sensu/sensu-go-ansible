@@ -1,6 +1,7 @@
 modules   := $(wildcard molecule/module_*)
 roles     := $(wildcard molecule/role_*)
-scenarios := $(modules) $(roles)
+actions   := $(wildcard molecule/action_*)
+scenarios := $(modules) $(roles) $(actions)
 
 
 .PHONY: all
@@ -12,8 +13,11 @@ modules: $(modules)
 .PHONY: roles
 roles: $(roles)
 
-.PHONY: $(modules) $(roles)
-$(modules) $(roles):
+.PHONY: actions
+actions: $(actions)
+
+.PHONY: $(modules) $(roles) $(actions)
+$(modules) $(roles) $(actions):
 	molecule -c base.yml test --parallel -s $(notdir $@)
 
 # CI stuff - partitioning logic ("true" is the value of the $CI variable)
