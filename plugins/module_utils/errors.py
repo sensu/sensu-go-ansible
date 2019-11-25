@@ -21,3 +21,7 @@ class SyncError(Error):
 
 class SensuError(Error):
     """ Error that signals problems with Sensu Go web API. """
+
+
+class BonsaiError(Error):
+    """ Error that signals problems with Bonsai assets. """
