@@ -62,15 +62,36 @@ verifier:
   lint:
     enabled: false
 platforms:
-  - name: latest
-    image: sensu/sensu:5.14.1
+  - name: v5.14.2
+    image: xlabsi/sensu:5.14.2
+    pre_build_image: true
+    pull: true
     command: &cmd >
       sensu-backend start
         --state-dir /var/lib/sensu/sensu-backend/etcd1
         --log-level debug
-  - name: v5.13.1
-    image: sensu/sensu:5.13.1
+  - name: v5.14.1
+    image: xlabsi/sensu:5.14.1
+    pre_build_image: true
+    pull: true
     command: *cmd
-  - name: v5.12.0
-    image: sensu/sensu:5.12.0
+  - name: v5.14.0
+    image: xlabsi/sensu:5.14.0
+    pre_build_image: true
+    pull: true
+    command: *cmd
+  - name: v5.13.2
+    image: xlabsi/sensu:5.13.2
+    pre_build_image: true
+    pull: true
+    command: *cmd
+  - name: v5.13.1
+    image: xlabsi/sensu:5.13.1
+    pre_build_image: true
+    pull: true
+    command: *cmd
+  - name: v5.13.0
+    image: xlabsi/sensu:5.13.0
+    pre_build_image: true
+    pull: true
     command: *cmd
