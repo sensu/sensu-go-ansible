@@ -1,7 +1,9 @@
 ---
 platforms:
   - name: centos
-    image: centos:7
+    image: xlabsi/centos:7
+    pre_build_image: true
+    pull: true
     groups: [ agents ]
     capabilities:
       - SYS_ADMIN

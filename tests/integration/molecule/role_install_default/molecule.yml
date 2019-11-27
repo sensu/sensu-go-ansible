@@ -1,49 +1,63 @@
 ---
 platforms:
   - name: centos-6
-    image: centos:6
+    image: xlabsi/centos:6
+    pre_build_image: true
+    pull: true
     capabilities:
       - SYS_ADMIN
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: centos-7
-    image: centos:7
+    image: xlabsi/centos:7
+    pre_build_image: true
+    pull: true
     capabilities:
       - SYS_ADMIN
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: ubuntu-14.04
-    image: ubuntu:14.04
+    image: xlabsi/ubuntu:14.04
+    pre_build_image: true
+    pull: true
     capabilities:
       - SYS_ADMIN
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: ubuntu-16.04
-    image: ubuntu:16.04
+    image: xlabsi/ubuntu:16.04
+    pre_build_image: true
+    pull: true
     capabilities:
       - SYS_ADMIN
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: ubuntu-18.04
-    image: ubuntu:18.04
+    image: xlabsi/ubuntu:18.04
+    pre_build_image: true
+    pull: true
     capabilities:
       - SYS_ADMIN
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: ubuntu-18.10
-    image: ubuntu:18.10
+    image: xlabsi/ubuntu:18.10
+    pre_build_image: true
+    pull: true
     capabilities:
       - SYS_ADMIN
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: ubuntu-19.04
-    image: ubuntu:19.04
+    image: xlabsi/ubuntu:19.04
+    pre_build_image: true
+    pull: true
     capabilities:
       - SYS_ADMIN
     volumes:
