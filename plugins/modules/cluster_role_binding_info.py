@@ -27,7 +27,7 @@ description:
 notes:
   - Parameter C(auth.namespace) is ignored in this module.
 extends_documentation_fragment:
-  - sensu.sensu_go.base
+  - sensu.sensu_go.auth
   - sensu.sensu_go.info
 '''
 
