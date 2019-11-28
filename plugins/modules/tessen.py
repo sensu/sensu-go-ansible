@@ -25,7 +25,7 @@ description:
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/tessen/)
 extends_documentation_fragment:
-  - sensu.sensu_go.base
+  - sensu.sensu_go.auth
 notes:
   - Parameter C(auth.namespace) is ignored in this module, because tessen is configured globally.
 options:
