@@ -18,6 +18,7 @@ molecule/module_socket_handler 103.61
 molecule/module_tessen 73.29
 molecule/module_user 97.89
 molecule/role_agent_default 228.46
+molecule/role_agent_explicit_backend 130.34
 molecule/role_agent_secured 120.17
 molecule/role_backend_default 176.20
 molecule/role_backend_secured 314.82

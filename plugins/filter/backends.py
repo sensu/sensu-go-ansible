@@ -15,8 +15,10 @@ def _format_backend(vars):
     return "{0}://{1}:{2}".format(protocol, vars["inventory_hostname"], 8081)
 
 
-def backends(hostvars, host_names):
-    return [_format_backend(hostvars[name]) for name in host_names]
+def backends(hostvars, groups):
+    return [
+        _format_backend(hostvars[name]) for name in groups.get("backends", [])
+    ]
 
 
 class FilterModule(object):
