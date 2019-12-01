@@ -17,10 +17,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu pipe handler
+short_description: Manage Sensu pipe handler
 description:
+  - Create, update or delete Sensu pip handler.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/#pipe-handlers).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name

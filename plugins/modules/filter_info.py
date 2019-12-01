@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu info
+short_description: List Sensu info
 description:
+  - Retrieve information about Sensu filters.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/filters/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/filters/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info

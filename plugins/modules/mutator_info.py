@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu mutators
+short_description: List Sensu mutators
 description:
+  - Retrieve information about Sensu mutators.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/mutators/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/mutators/).
 version_added: 0.1.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth

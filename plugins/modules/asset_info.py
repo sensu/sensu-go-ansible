@@ -21,10 +21,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu assets
+short_description: List Sensu assets
 description:
+  - Retrieve information about Sensu Go assets.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/assets/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/assets/).
 version_added: 0.0.1
 extends_documentation_fragment:
   - sensu.sensu_go.auth

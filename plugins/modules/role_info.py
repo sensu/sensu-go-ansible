@@ -20,10 +20,11 @@ author:
   - Manca Bizjak (@mancabizjak)
   - Aljaz Kosir (@aljazkosir)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu roles
+short_description: List Sensu roles
 description:
+  - Retrieve information about Sensu roles.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles).
 version_added: 0.1.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth

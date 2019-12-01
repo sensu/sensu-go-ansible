@@ -19,15 +19,15 @@ author:
  - Manca Bizjak (@mancabizjak)
  - Aljaz Kosir (@aljazkosir)
  - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu's tessen configuration.
+short_description: Manage Sensu's Tessen configuration.
 description:
-  - Sensu Tessen is enabled by default on Sensu backends
+  - Enable or disable Tessen service.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/tessen/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/tessen/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
 notes:
-  - Parameter C(auth.namespace) is ignored in this module, because tessen is configured globally.
+  - Parameter C(auth.namespace) is ignored in this module, because Tessen is configured globally.
 options:
   state:
     description:

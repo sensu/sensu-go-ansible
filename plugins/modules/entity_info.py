@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu entities
+short_description: List Sensu entities
 description:
+  - Retrieve information about Sensu entities.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/entities/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/entities/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info

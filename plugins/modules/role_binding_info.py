@@ -20,10 +20,11 @@ author:
   - Manca Bizjak (@mancabizjak)
   - Aljaz Kosir (@aljazkosir)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu role bindings
+short_description: List Sensu role bindings
 description:
+  - Retrieve information about Sensu role bindings.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings).
 version_added: 0.1.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth

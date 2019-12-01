@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu filters
+short_description: Manage Sensu filters
 description:
+  - Create, update or delete Sensu filter.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/filters/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/filters/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name

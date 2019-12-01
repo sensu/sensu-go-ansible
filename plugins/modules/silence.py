@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Manca Bizjak (@mancabizjak)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu silences
+short_description: Manage Sensu silences
 description:
+  - Create, update or delete Sensu silence.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/silencing/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/silencing/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.state

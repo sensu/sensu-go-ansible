@@ -18,10 +18,11 @@ author:
   - Paul Arthur (@flowerysong)
   - Aljaz Kosir (@aljazkosir)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu users
+short_description: Manage Sensu users
 description:
+  - Create, update, activate or deactivate Sensu user.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/users/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#users).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name

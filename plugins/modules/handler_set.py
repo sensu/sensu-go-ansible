@@ -17,10 +17,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu handler set
+short_description: Manage Sensu handler set
 description:
+  - Create, update or delete Sensu handler set.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/#handler-sets).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name

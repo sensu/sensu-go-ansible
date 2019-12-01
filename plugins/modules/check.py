@@ -20,10 +20,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu checks
+short_description: Manage Sensu checks
 description:
-  - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/checks/)
+  - Create, update or delete Sensu Go check.
+  - For more information, refer to the Sensu Go documentation at
+    U(https://docs.sensu.io/sensu-go/latest/reference/checks/).
 version_added: 0.1.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth

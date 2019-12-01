@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu mutators
+short_description: Manage Sensu mutators
 description:
+  - Create, update or delete Sensu mutator.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/mutators/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/mutators/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
