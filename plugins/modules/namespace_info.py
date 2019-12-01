@@ -18,10 +18,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu namespaces
+short_description: List Sensu namespaces
 description:
+  - Retrieve information about Sensu namespaces.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
 notes:

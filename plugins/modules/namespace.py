@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu namespaces
+short_description: Manage Sensu namespaces
 description:
+  - Create, update or delete Sensu namespace.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name

@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu hooks
+short_description: Manage Sensu hooks
 description:
+  - Create, update or delete Sensu hook.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/hooks/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/hooks/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name

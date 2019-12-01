@@ -20,10 +20,11 @@ author:
   - Manca Bizjak (@mancabizjak)
   - Aljaz Kosir (@aljazkosir)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu cluster role bindings
+short_description: List Sensu cluster role bindings
 description:
+  - Retrieve information about Sensu cluster role bindings.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings).
 notes:
   - Parameter C(auth.namespace) is ignored in this module.
 extends_documentation_fragment:

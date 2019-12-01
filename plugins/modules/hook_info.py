@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu hooks
+short_description: List Sensu hooks
 description:
+  - Retrieve information about Sensu hooks.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/hooks/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/hooks/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info

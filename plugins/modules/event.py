@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Manca Bizjak (@mancabizjak)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu events
+short_description: Manage Sensu events
 description:
+  - Send a synthetic event to Sensu.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/events/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/events/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
 notes:

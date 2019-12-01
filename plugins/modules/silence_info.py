@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Manca Bizjak (@mancabizjak)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu silence entries
+short_description: List Sensu silence entries
 description:
+  - Retrieve information about Sensu silences.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/silences/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/silencing/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
 options:

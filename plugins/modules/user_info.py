@@ -19,10 +19,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu users
+short_description: List Sensu users
 description:
+  - Retrieve information about Sensu users.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/users/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#users).
 notes:
   - Parameter C(auth.namespace) is ignored in this module.
 extends_documentation_fragment:

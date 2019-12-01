@@ -19,10 +19,11 @@ author:
  - Manca Bizjak (@mancabizjak)
  - Aljaz Kosir (@aljazkosir)
  - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu cluster roles
+short_description: Manage Sensu cluster roles
 description:
+  - Create, update or delete Sensu role.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name

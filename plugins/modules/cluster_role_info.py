@@ -20,10 +20,11 @@ author:
   - Manca Bizjak (@mancabizjak)
   - Aljaz Kosir (@aljazkosir)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu cluster roles
+short_description: List Sensu cluster roles
 description:
+  - Retrieve information about Sensu roles.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles).
 notes:
   - Parameter C(auth.namespace) is ignored in this module.
 extends_documentation_fragment:

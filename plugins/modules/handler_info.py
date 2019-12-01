@@ -17,10 +17,11 @@ author:
   - Aljaz Kosir (@aljazkosir)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Lists Sensu hanlders
+short_description: List Sensu handlers
 description:
+  - Retrieve information about Sensu handlers.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info

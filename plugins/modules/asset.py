@@ -22,10 +22,11 @@ author:
   - Manca Bizjak (@mancabizjak)
   - Miha Plesko (@miha-plesko)
   - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu assets
+short_description: Manage Sensu assets
 description:
+  - Create, update or delete Sensu Go asset.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/assets/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/assets/).
 version_added: 0.1.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth

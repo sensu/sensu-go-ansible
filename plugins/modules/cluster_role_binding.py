@@ -19,10 +19,11 @@ author:
  - Manca Bizjak (@mancabizjak)
  - Aljaz Kosir (@aljazkosir)
  - Tadej Borovsak (@tadeboro)
-short_description: Manages Sensu cluster role bindings
+short_description: Manage Sensu cluster role bindings
 description:
+  - Create, update or delete Sensu cluster role binding.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/)
+    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings).
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
