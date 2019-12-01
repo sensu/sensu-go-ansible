@@ -9,9 +9,11 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'XLAB Steampunk'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["stableinterface"],
+    "supported_by": "certified",
+}
 
 DOCUMENTATION = '''
 module: role_info
@@ -25,7 +27,7 @@ description:
   - Retrieve information about Sensu roles.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles).
-version_added: 0.1.0
+version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
