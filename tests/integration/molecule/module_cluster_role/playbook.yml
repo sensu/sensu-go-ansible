@@ -206,3 +206,14 @@
     - assert:
         that:
           - result.objects | length == 7 # There are 6 default cluster roles
+
+    - name: Try to fetch non-existing role
+      cluster_role_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-role
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

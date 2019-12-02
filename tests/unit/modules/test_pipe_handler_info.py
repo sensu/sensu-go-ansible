@@ -38,6 +38,16 @@ class TestHandlerInfo(ModuleTestCase):
         assert path == "/handlers/sample-handler"
         assert context.value.args[0]["objects"] == [4]
 
+    def test_missing_single_handler(self, mocker):
+        get_mock = mocker.patch.object(utils, "get")
+        get_mock.return_value = None
+        set_module_args(name="sample-handler")
+
+        with pytest.raises(AnsibleExitJson) as context:
+            handler_info.main()
+
+        assert context.value.args[0]["objects"] == []
+
     def test_failure(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.side_effect = errors.Error("Bad error")

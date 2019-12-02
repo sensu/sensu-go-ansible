@@ -68,12 +68,12 @@ def main():
     path = utils.build_url_path("clusterrolebindings", module.params["name"])
 
     try:
-        cluster_role_bindings = utils.get(client, path)
+        cluster_role_bindings = utils.prepare_result_list(
+            utils.get(client, path)
+        )
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if module.params["name"]:
-        cluster_role_bindings = [cluster_role_bindings]
     module.exit_json(changed=False, objects=cluster_role_bindings)
 
 

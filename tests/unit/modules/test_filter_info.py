@@ -38,6 +38,16 @@ class TestFilterInfo(ModuleTestCase):
         assert path == "/filters/sample-filter"
         assert context.value.args[0]["objects"] == [4]
 
+    def test_missing_single_filter(self, mocker):
+        get_mock = mocker.patch.object(utils, "get")
+        get_mock.return_value = None
+        set_module_args(name="sample-filter")
+
+        with pytest.raises(AnsibleExitJson) as context:
+            filter_info.main()
+
+        assert context.value.args[0]["objects"] == []
+
     def test_failure(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.side_effect = errors.Error("Bad error")

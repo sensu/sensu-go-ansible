@@ -198,3 +198,14 @@
         that:
           - result.objects | length == 2
           - result.objects.0.metadata.name == 'asset'
+
+    - name: Try to fetch non-existing asset
+      asset_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-asset
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

@@ -123,3 +123,14 @@
     - assert:
         that:
           - result is failed
+
+    - name: Try to fetch non-existing user
+      user_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-user
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

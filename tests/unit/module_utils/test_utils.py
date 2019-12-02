@@ -262,3 +262,15 @@ class TestBuildUrlPath:
     ])
     def test_build_url_path(self, parts, expectation):
         assert expectation == utils.build_url_path(*parts)
+
+
+class TestPrepareResultList:
+    @pytest.mark.parametrize("input,output", [
+        (None, []),  # this is mosti likely result of a 404 status
+        ("a", ["a"]),
+        ([], []),
+        ([1, 2, 3], [1, 2, 3]),
+        ([None], [None]),  # we leave lists intact, even if they contain None
+    ])
+    def test_list_construction(self, input, output):
+        assert output == utils.prepare_result_list(input)

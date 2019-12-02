@@ -66,6 +66,19 @@ class TestEventInfo(ModuleTestCase):
         assert path == '/events/simple-entity/simple-check'
         assert context.value.args[0]['objects'] == [4]
 
+    def test_no_event_by_entity_and_check(self, mocker):
+        get_mock = mocker.patch.object(utils, "get")
+        get_mock.return_value = None
+        set_module_args(
+            entity='simple-entity',
+            check='simple-check'
+        )
+
+        with pytest.raises(AnsibleExitJson) as context:
+            event_info.main()
+
+        assert context.value.args[0]["objects"] == []
+
     def test_failure(self, mocker):
         get_mock = mocker.patch.object(utils, 'get')
         get_mock.side_effect = errors.Error('Bad error')

@@ -137,3 +137,14 @@
         that:
           - result.objects | length == 2
           - result.objects.0.metadata.name == 'filter2'
+
+    - name: Try to fetch non-existing filter
+      filter_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-filter
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

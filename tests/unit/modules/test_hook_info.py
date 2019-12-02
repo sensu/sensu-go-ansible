@@ -38,6 +38,16 @@ class TestHookInfo(ModuleTestCase):
         assert path == "/hooks/sample-hook"
         assert context.value.args[0]["objects"] == [4]
 
+    def test_missing_single_hook(self, mocker):
+        get_mock = mocker.patch.object(utils, "get")
+        get_mock.return_value = None
+        set_module_args(name="sample-hook")
+
+        with pytest.raises(AnsibleExitJson) as context:
+            hook_info.main()
+
+        assert context.value.args[0]["objects"] == []
+
     def test_failure(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.side_effect = errors.Error("Bad error")

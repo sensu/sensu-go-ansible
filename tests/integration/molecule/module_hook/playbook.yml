@@ -126,3 +126,14 @@
         that:
           - result.objects | length == 2
           - result.objects.0.metadata.name == 'hook2'
+
+    - name: Try to fetch non-existing hook
+      hook_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-hook
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

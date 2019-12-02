@@ -89,3 +89,9 @@ def dict_to_key_value_strings(data):
 
 def build_url_path(*parts):
     return "/" + "/".join(quote(p, safe="") for p in parts if p)
+
+
+def prepare_result_list(result):
+    if isinstance(result, list):
+        return result
+    return [] if result is None else [result]

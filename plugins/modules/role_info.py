@@ -65,12 +65,10 @@ def main():
     path = utils.build_url_path("roles", module.params["name"])
 
     try:
-        roles = utils.get(client, path)
+        roles = utils.prepare_result_list(utils.get(client, path))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if module.params["name"]:
-        roles = [roles]
     module.exit_json(changed=False, objects=roles)
 
 

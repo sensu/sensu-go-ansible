@@ -66,12 +66,10 @@ def main():
     path = utils.build_url_path("users", module.params["name"])
 
     try:
-        users = utils.get(client, path)
+        users = utils.prepare_result_list(utils.get(client, path))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if module.params["name"]:
-        users = [users]
     module.exit_json(changed=False, objects=users)
 
 

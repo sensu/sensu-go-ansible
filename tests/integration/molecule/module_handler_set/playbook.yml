@@ -86,3 +86,14 @@
     - assert:
         that:
           - result.objects | length == 0
+
+    - name: Try to fetch non-existing handler
+      handler_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-handler
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

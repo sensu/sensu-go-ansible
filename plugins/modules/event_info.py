@@ -89,12 +89,10 @@ def main():
     )
 
     try:
-        events = utils.get(client, path)
+        events = utils.prepare_result_list(utils.get(client, path))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if module.params['check']:
-        events = [events]
     module.exit_json(changed=False, objects=events)
 
 
