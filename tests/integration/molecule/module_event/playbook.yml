@@ -66,6 +66,18 @@
           - also_checks
         interval: 30
 
+    - name: Get non-existing last event for entity and check combo
+      event_info:
+        auth:
+          url: http://localhost:8080
+        entity: awesome_entity
+        check: awesome_check
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []
+
     - name: Create event with minimal parameters
       event:
         auth:

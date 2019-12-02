@@ -82,12 +82,10 @@ def main():
     path = utils.build_url_path("silenced", None if name == "*:*" else name)
 
     try:
-        silences = utils.get(client, path)
+        silences = utils.prepare_result_list(utils.get(client, path))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if name != '*:*':
-        silences = [silences]
     module.exit_json(changed=False, objects=silences)
 
 

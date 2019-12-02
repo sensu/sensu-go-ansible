@@ -64,12 +64,10 @@ def main():
     path = utils.build_url_path("entities", module.params["name"])
 
     try:
-        entities = utils.get(client, path)
+        entities = utils.prepare_result_list(utils.get(client, path))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if module.params["name"]:
-        entities = [entities]
     module.exit_json(changed=False, objects=entities)
 
 

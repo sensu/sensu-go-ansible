@@ -62,12 +62,10 @@ def main():
     path = utils.build_url_path("handlers", module.params["name"])
 
     try:
-        handlers = utils.get(client, path)
+        handlers = utils.prepare_result_list(utils.get(client, path))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if module.params["name"]:
-        handlers = [handlers]
     module.exit_json(changed=False, objects=handlers)
 
 

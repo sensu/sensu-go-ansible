@@ -173,3 +173,15 @@
           - result.objects | length == 3
           - result.objects.0.subscription == 'agent'
           - "'check' not in result.objects.0"
+
+    - name: Try to fetch non-existing silence
+      silence_info:
+        auth:
+          url: http://localhost:8080
+        subscription: bad
+        check: bad
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

@@ -127,3 +127,14 @@
         that:
           - result.objects | length == 2
           - result.objects.0.metadata.name == 'minimal_mutator'
+
+    - name: Try to fetch non-existing mutator
+      mutator_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-mutator
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

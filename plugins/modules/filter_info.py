@@ -64,12 +64,10 @@ def main():
     path = utils.build_url_path("filters", module.params["name"])
 
     try:
-        sensu_filters = utils.get(client, path)
+        sensu_filters = utils.prepare_result_list(utils.get(client, path))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if module.params["name"]:
-        sensu_filters = [sensu_filters]
     module.exit_json(changed=False, objects=sensu_filters)
 
 

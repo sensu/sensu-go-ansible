@@ -64,12 +64,10 @@ def main():
     path = utils.build_url_path("checks", module.params["name"])
 
     try:
-        checks = utils.get(client, path)
+        checks = utils.prepare_result_list(utils.get(client, path))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if module.params["name"]:
-        checks = [checks]
     module.exit_json(changed=False, objects=checks)
 
 

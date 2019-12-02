@@ -38,6 +38,16 @@ class TestClusterRoleBindingInfo(ModuleTestCase):
         assert path == "/clusterrolebindings/test-cluster-role-binding"
         assert context.value.args[0]["objects"] == [1]
 
+    def test_missing_single_cluster_role_binding(self, mocker):
+        get_mock = mocker.patch.object(utils, "get")
+        get_mock.return_value = None
+        set_module_args(name="sample-cluster-role-binding")
+
+        with pytest.raises(AnsibleExitJson) as context:
+            cluster_role_binding_info.main()
+
+        assert context.value.args[0]["objects"] == []
+
     def test_failure(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.side_effect = errors.Error("Bad error")

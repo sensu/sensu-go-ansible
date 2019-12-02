@@ -69,12 +69,10 @@ def main():
     path = utils.build_url_path("hooks", module.params["name"])
 
     try:
-        hooks = utils.get(client, path)
+        hooks = utils.prepare_result_list(utils.get(client, path))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if module.params["name"]:
-        hooks = [hooks]
     module.exit_json(changed=False, objects=hooks)
 
 

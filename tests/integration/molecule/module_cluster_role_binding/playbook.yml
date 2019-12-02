@@ -181,3 +181,14 @@
     - assert:
         that:
           - result.objects | length == 5 # There are 3 pre-existing cluster role bindings by default
+
+    - name: Try to fetch non-existing binding
+      cluster_role_binding_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-binding
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

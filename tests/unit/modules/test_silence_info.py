@@ -38,6 +38,19 @@ class TestSilenceInfo(ModuleTestCase):
         assert path == "/silenced/subscription%3A%2A"  # %3A = :, %2A = *
         assert context.value.args[0]["objects"] == [4]
 
+    def test_missing_single_silence(self, mocker):
+        get_mock = mocker.patch.object(utils, "get")
+        get_mock.return_value = None
+        set_module_args(
+            subscription="missing",
+            check="missing",
+        )
+
+        with pytest.raises(AnsibleExitJson) as context:
+            silence_info.main()
+
+        assert context.value.args[0]["objects"] == []
+
     def test_failure(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.side_effect = errors.Error("Bad error")

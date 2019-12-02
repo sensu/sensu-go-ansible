@@ -206,3 +206,14 @@
     - assert:
         that:
           - result.objects | length == 1
+
+    - name: Try to fetch non-existing role
+      role_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-role
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

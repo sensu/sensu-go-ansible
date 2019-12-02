@@ -217,3 +217,14 @@
     - assert:
         that:
           - result.objects | length == 3
+
+    - name: Try to fetch non-existing binding
+      role_binding_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-binding
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []
