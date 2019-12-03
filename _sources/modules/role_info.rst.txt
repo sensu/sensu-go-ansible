@@ -1,0 +1,89 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/role_info.py
+
+.. _role_info_module:
+
+role_info -- List Sensu roles
+=============================
+
+Retrieve information about Sensu roles.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: List all Sensu roles
+     role_info:
+     register: result
+
+   - name: Retrieve a specific Sensu role
+     role_info:
+       name: my-role
+     register: result
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`role_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+name (optional)
+  Retrieve information about this specific object instead of listing all objects.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+
+
+
+
+Return Values
+-------------
+
+roles (always), list, )
+  list of Sensu roles
+
+

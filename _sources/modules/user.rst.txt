@@ -1,0 +1,110 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/user.py
+
+.. _user_module:
+
+user -- Manage Sensu users
+==========================
+
+Create, update, activate or deactivate Sensu user.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#users.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Create a user
+     user:
+       auth:
+         url: http://localhost:8080
+       name: awesome_username
+       password: hidden_password?
+       groups:
+         - dev
+         - prod
+
+   - name: Deactivate a user
+     user:
+       name: awesome_username
+       state: disabled
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`user_info_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+groups (optional)
+  List of groups user belongs to.
+
+  | **type**: list
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+password (optional)
+  Password for the user.
+
+  Required if *state* is ``enabled``.
+
+  | **type**: str
+
+state (optional)
+  Desired state of the user.
+
+  Users cannot actually be deleted, only deactivated.
+
+  | **type**: str
+  | **default**: enabled
+  | **choices**: enabled, disabled
+
+
+
+
+
+Return Values
+-------------
+
+object (success), dict, )
+  object representing Sensu user
+
+

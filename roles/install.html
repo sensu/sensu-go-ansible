@@ -1,0 +1,323 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sensu Go install role &mdash; Sensu Go Ansible Collection  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modules" href="../modules.html" />
+    <link rel="prev" title="Sensu Go backend role" href="backend.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Sensu Go Ansible Collection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../roles.html">Roles</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="agent.html">Sensu Go agent role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend.html">Sensu Go backend role</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sensu Go install role</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-playbook">Example playbook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#role-variables">Role Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tested-platforms-ci-cd">Tested Platforms (CI/CD)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sensu Go Ansible Collection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../roles.html">Roles</a> &raquo;</li>
+        
+      <li>Sensu Go install role</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/roles/install.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sensu-go-install-role">
+<h1>Sensu Go install role<a class="headerlink" href="#sensu-go-install-role" title="Permalink to this headline">¶</a></h1>
+<p>This role installs selected Sensu Go components from the official precompiled
+packages.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This role only configures your package manager (like yum or apt) and
+installs the binaries. It does <strong>not</strong> configure anything and it does
+<strong>not</strong> run any services.</p>
+</div>
+<div class="section" id="example-playbook">
+<h2>Example playbook<a class="headerlink" href="#example-playbook" title="Permalink to this headline">¶</a></h2>
+<p>The next <a class="reference download internal" download="" href="../_downloads/9632b1aeb5b5c13ed23fcb7aad9d3d0d/install.yaml"><code class="xref download docutils literal notranslate"><span class="pre">playbook</span></code></a> demonstrates
+how to install latest versions of <em>sensu-agent</em> and <em>sensu-backend</em>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install sensu-backend binary</span>
+  <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">backends</span>
+  <span class="nt">roles</span><span class="p">:</span>
+     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.install</span>
+  <span class="nt">vars</span><span class="p">:</span>
+    <span class="nt">components</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">sensu-go-backend</span> <span class="p p-Indicator">]</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install sensu-agent binary from testing repository</span>
+  <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agents</span>
+  <span class="nt">roles</span><span class="p">:</span>
+     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.install</span>
+  <span class="nt">vars</span><span class="p">:</span>
+    <span class="nt">components</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">sensu-go-agent</span> <span class="p p-Indicator">]</span>
+    <span class="nt">channel</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">testing</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install sensuctl binary</span>
+  <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+  <span class="nt">roles</span><span class="p">:</span>
+     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.install</span>
+  <span class="nt">vars</span><span class="p">:</span>
+    <span class="nt">components</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">sensu-go-cli</span> <span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="role-variables">
+<h2>Role Variables<a class="headerlink" href="#role-variables" title="Permalink to this headline">¶</a></h2>
+<p>This role consults two variables to determine what packages to install:</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 30%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Default value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>components</p></td>
+<td><ul class="simple">
+<li><p>sensu-go-backend</p></li>
+<li><p>sensu-go-agent</p></li>
+<li><p>sensu-go-cli</p></li>
+</ul>
+</td>
+<td><p>List of components to install. Valid values are <code class="docutils literal notranslate"><span class="pre">sensu-go-backend</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sensu-go-agent</span></code> and <code class="docutils literal notranslate"><span class="pre">sensu-go-cli</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>channel</p></td>
+<td><p>stable</p></td>
+<td><p>Repository channel that serves as a source of packages. We can see all the
+available channels on <a class="reference external" href="https://packagecloud.io/sensu">packagecloud</a> site.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tested-platforms-ci-cd">
+<h2>Tested Platforms (CI/CD)<a class="headerlink" href="#tested-platforms-ci-cd" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 25%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>OS</p></th>
+<th class="head"><p>distribution</p></th>
+<th class="head"><p>versions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="2"><p>Linux</p></td>
+<td><p>CentOS</p></td>
+<td><p>6, 7</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ubuntu</p></td>
+<td><p>14.04, 16.04, 18.04, 18.10, 19.04</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../modules.html" class="btn btn-neutral float-right" title="Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="backend.html" class="btn btn-neutral float-left" title="Sensu Go backend role" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, XLAB Steampunk
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

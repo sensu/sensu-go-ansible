@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>filter_info – Lists Sensu info &mdash; Sensu Go Ansible Collection  documentation</title>
+  <title>filter_info – List Sensu info &mdash; Sensu Go Ansible Collection  documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="handler_info – Lists Sensu hanlders" href="handler_info.html" />
-    <link rel="prev" title="filter – Manages Sensu filters" href="filter.html" /> 
+    <link rel="next" title="handler_info – List Sensu handlers" href="handler_info.html" />
+    <link rel="prev" title="filter – Manage Sensu filters" href="filter.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -80,39 +80,61 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents</span></p>
+              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../installing_collection.html">Installing Sensu Go Ansible Collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../using_collection.html">Using Sensu Go Ansible Collection</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../module_index.html">Module index</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="asset.html">asset – Manages Sensu assets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="asset_info.html">asset_info – Lists Sensu assets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="check.html">check – Manages Sensu checks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="check_info.html">check_info – Lists Sensu checks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="entity.html">entity – Manages Sensu entities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="entity_info.html">entity_info – Lists Sensu entities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="filter.html">filter – Manages Sensu filters</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">filter_info – Lists Sensu info</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#synopsis">Synopsis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roles.html">Roles</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="asset.html">asset – Manage Sensu assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asset_info.html">asset_info – List Sensu assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bonsai_asset.html">bonsai_asset – Add Sensu assets from Bonsai</a></li>
+<li class="toctree-l2"><a class="reference internal" href="check.html">check – Manage Sensu checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="check_info.html">check_info – List Sensu checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_role.html">cluster_role – Manage Sensu cluster roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_role_binding.html">cluster_role_binding – Manage Sensu cluster role bindings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_role_binding_info.html">cluster_role_binding_info – List Sensu cluster role bindings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_role_info.html">cluster_role_info – List Sensu cluster roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="entity.html">entity – Manage Sensu entities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="entity_info.html">entity_info – List Sensu entities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">event – Manage Sensu events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_info.html">event_info – List Sensu events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html">filter – Manage Sensu filters</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">filter_info – List Sensu info</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#see-also">See Also</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#return-values">Return Values</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#status">Status</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#authors">Authors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handler_info.html">handler_info – List Sensu handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler_set.html">handler_set – Manage Sensu handler set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hook.html">hook – Manage Sensu hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hook_info.html">hook_info – List Sensu hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mutator.html">mutator – Manage Sensu mutators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mutator_info.html">mutator_info – List Sensu mutators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace.html">namespace – Manage Sensu namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_info.html">namespace_info – List Sensu namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipe_handler.html">pipe_handler – Manage Sensu pipe handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">role – Manage Sensu roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role_binding.html">role_binding – Manage Sensu role bindings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role_binding_info.html">role_binding_info – List Sensu role bindings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role_info.html">role_info – List Sensu roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
 </li>
 </ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="handler_info.html">handler_info – Lists Sensu hanlders</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler_set.html">handler_set – Manages Sensu handler set</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hook.html">hook – Manages Sensu hooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hook_info.html">hook_info – Lists Sensu hooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mutator.html">mutator – Manages Sensu mutators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mutator_info.html">mutator_info – Lists Sensu mutators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pipe_handler.html">pipe_handler – Manages Sensu pipe handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="socket_handler.html">socket_handler – Manages Sensu TCP/UDP handler</a></li>
-</ul>
-</li>
+<p class="caption"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
 </ul>
 
             
@@ -152,21 +174,26 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../module_index.html">Module index</a> &raquo;</li>
+          <li><a href="../modules.html">Modules</a> &raquo;</li>
         
-      <li>filter_info – Lists Sensu info</li>
+      <li>filter_info – List Sensu info</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/modules/filter_info.rst.txt" rel="nofollow"> View page source</a>
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/filter_info.py" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -179,58 +206,79 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="filter-info-lists-sensu-info">
-<h1>filter_info – Lists Sensu info<a class="headerlink" href="#filter-info-lists-sensu-info" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="contents">
-<ul class="simple">
-<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
-<li><p><a class="reference internal" href="#parameters" id="id2">Parameters</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id3">Examples</a></p></li>
-<li><p><a class="reference internal" href="#return-values" id="id4">Return Values</a></p></li>
-<li><p><a class="reference internal" href="#status" id="id5">Status</a></p></li>
-</ul>
-</div>
-<div class="section" id="synopsis">
-<h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/filters/">https://docs.sensu.io/sensu-go/latest/reference/filters/</a></p></li>
-</ul>
-</div>
-<div class="section" id="parameters">
-<h2><a class="toc-backref" href="#id2">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>auth ({‘description’: ‘Authentication parameters. Can define each of them with ENV as well’, ‘type’: ‘dict’, ‘suboptions’: {‘user’: {‘description’: [‘The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.’], ‘type’: ‘str’, ‘default’: ‘admin’}, ‘password’: {‘description’: [“The Sensu user’s password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.”], ‘type’: ‘str’, ‘default’: <a class="reference external" href="mailto:'P&#37;&#52;&#48;ssw0rd">‘P<span>&#64;</span>ssw0rd</a>!’}, ‘url’: {‘description’: [‘Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.’], ‘type’: ‘str’, ‘default’: ‘<a class="reference external" href="http://localhost:8080">http://localhost:8080</a>’}, ‘namespace’: {‘description’: [‘RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.’], ‘type’: ‘str’, ‘default’: ‘default’}}})</p></li>
-<li><p>name ({‘description’: [‘Retrieve information about this specific object instead of listing all objects.’], ‘type’: ‘str’})</p></li>
-</ul>
-</div>
+  <div class="section" id="filter-info-list-sensu-info">
+<span id="filter-info-module"></span><h1>filter_info – List Sensu info<a class="headerlink" href="#filter-info-list-sensu-info" title="Permalink to this headline">¶</a></h1>
+<p>Retrieve information about Sensu filters.</p>
+<p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/filters/">https://docs.sensu.io/sensu-go/latest/reference/filters/</a>.</p>
 <div class="section" id="examples">
-<h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">List Sensu filter</span>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">List all Sensu filters</span>
   <span class="nt">filter_info</span><span class="p">:</span>
+  <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Retrieve a specific Sensu filter</span>
+  <span class="nt">filter_info</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-filter</span>
   <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="return-values">
-<h2><a class="toc-backref" href="#id4">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">objects</span><span class="p">:</span>
-  <span class="n">description</span><span class="p">:</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">Sensu</span> <span class="n">filters</span>
-  <span class="n">returned</span><span class="p">:</span> <span class="n">always</span>
-  <span class="nb">type</span><span class="p">:</span> <span class="nb">list</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="status">
-<h2><a class="toc-backref" href="#id5">Status</a><a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="authors">
-<h3>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p>Paul Arthur (&#64;flowerysong)</p></li>
-<li><p>Aljaz Kosir (&#64;aljazkosir)</p></li>
-<li><p>Miha Plesko (&#64;miha-plesko)</p></li>
-<li><p>Tadej Borovsak (&#64;tadeboro)</p></li>
+<li><p><a class="reference internal" href="filter.html#filter-module"><span class="std std-ref">filter – Manage Sensu filters</span></a></p></li>
 </ul>
 </div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>auth (optional)</dt><dd><p>Authentication parameters. Can define each of them with ENV as well.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: dict</div>
+</div>
+<dl>
+<dt>password (optional)</dt><dd><p>The Sensu user’s password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: <a class="reference external" href="mailto:P&#37;&#52;&#48;ssw0rd">P<span>&#64;</span>ssw0rd</a>!</div>
+</div>
+</dd>
+<dt>url (optional)</dt><dd><p>Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: <a class="reference external" href="http://localhost:8080">http://localhost:8080</a></div>
+</div>
+</dd>
+<dt>user (optional)</dt><dd><p>The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: admin</div>
+</div>
+</dd>
+</dl>
+</dd>
+<dt>name (optional)</dt><dd><p>Retrieve information about this specific object instead of listing all objects.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>namespace (optional)</dt><dd><p>RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: default</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="return-values">
+<h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>objects (always), list, )</dt><dd><p>list of Sensu filters</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -242,10 +290,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="handler_info.html" class="btn btn-neutral float-right" title="handler_info – Lists Sensu hanlders" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="handler_info.html" class="btn btn-neutral float-right" title="handler_info – List Sensu handlers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="filter.html" class="btn btn-neutral float-left" title="filter – Manages Sensu filters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="filter.html" class="btn btn-neutral float-left" title="filter – Manage Sensu filters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

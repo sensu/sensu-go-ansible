@@ -1,0 +1,146 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/silence.py
+
+.. _silence_module:
+
+silence -- Manage Sensu silences
+================================
+
+Create, update or delete Sensu silence.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/silencing/.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Silence a specific check
+     silence:
+       subscription: proxy
+       check: check-disk
+
+   - name: Silence specific check regardless of the originating entities subscription
+     silence:
+       check: check-cpu
+
+   - name: Silence all checks on a specific entity
+     silence:
+       subscription: entity:important-entity
+       expire: 120
+       reason: rebooting the world
+
+   - name: Delete a silencing entry
+     silence:
+       subscription: entity:important-entity
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`silence_info_module`
+
+
+
+Parameters
+----------
+
+annotations (optional)
+  Custom metadata fields with fewer restrictions, as key/value pairs.
+
+  These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.
+
+  | **type**: dict
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+begin (optional)
+  UNIX time at which silence entry goes into effect.
+
+  | **type**: int
+
+check (optional)
+  The name of the check the entry should match. If left empty a silencing entry will contain an asterisk in the check position. This indicates that any event where the originating entities subscriptions match the subscription specified in the entry will be marked as silenced, regardless of the check name. - This parameter is required if the *subscription* parameter is absent.
+
+  | **type**: str
+
+expire (optional)
+  Number of seconds until the silence expires.
+
+  | **type**: int
+
+expire_on_resolve (optional)
+  If the entry should be deleted when a check begins return OK status (resolves).
+
+  | **type**: bool
+
+labels (optional)
+  Custom metadata fields that can be accessed within Sensu, as key/value pairs.
+
+  | **type**: dict
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+reason (optional)
+  Reason for silencing.
+
+  | **type**: str
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+subscription (optional)
+  The name of the subscription the entry should match. If left empty a silencing entry will contain an asterisk in the subscription position. This indicates that any event with a matching check name will be marked as silenced, regardless of the originating entities subscriptions. Specific entity can also be targeted by taking advantage of per-entity subscription (entity:<entity_name>)
+
+  This parameter is required if the *check* parameter is absent.
+
+  | **type**: str
+
+
+
+
+
+Return Values
+-------------
+
+object (success), dict, )
+  object representing Sensu silence
+
+

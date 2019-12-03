@@ -1,0 +1,133 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/bonsai_asset.py
+
+.. _bonsai_asset_module:
+
+bonsai_asset -- Add Sensu assets from Bonsai
+============================================
+
+Create or update a Sensu Go asset whose definition is available in the Bonsai, the Sensu asset index.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/assets/ and https://bonsai.sensu.io/
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Make sure specific version of asset is installed
+     bonsai_asset:
+       name: sensu/monitoring-plugins
+       version: 2.2.0-1
+
+   - name: Remove previously added asset
+     asset:
+       name: sensu/monitoring-plugins
+       state: absent
+
+   - name: Store Bonsai asset under a different name
+     bonsai_asset:
+       name: sensu/monitoring-plugins
+       version: 2.2.0-1
+       rename: sensu-monitoring-2.2.0-1
+
+   - name: Display asset info
+     asset_info:
+       name: sensu-monitoring-2.2.0-1  # value from rename field
+
+
+
+Notes
+-----
+
+.. note::
+   *labels* and *annotations* values are merged with the values obtained from Bonsai. Values passed-in as parameters take precedence over the values obtained from Bonsai.
+
+   To delete an asset, use regular :ref:`asset <asset_module>` module.
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`asset_module`
+   - :ref:`asset_info_module`
+
+
+
+Parameters
+----------
+
+annotations (optional)
+  Custom metadata fields with fewer restrictions, as key/value pairs.
+
+  These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.
+
+  | **type**: dict
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+labels (optional)
+  Custom metadata fields that can be accessed within Sensu, as key/value pairs.
+
+  | **type**: dict
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+rename (optional)
+  The name that will be used when adding the asset to Sensu.
+
+  If not present, value of the *name* parameter will be used.
+
+  | **type**: str
+
+version (required)
+  Version number of the asset to install.
+
+  | **type**: str
+
+
+
+
+
+Return Values
+-------------
+
+object (success), dict, )
+  object representing Sensu asset
+
+

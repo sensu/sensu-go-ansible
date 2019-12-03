@@ -1,31 +1,13 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/hook.py
 
-hook -- Manages Sensu hooks
-===========================
+.. _hook_module:
 
-.. contents::
-   :local:
-   :depth: 1
+hook -- Manage Sensu hooks
+==========================
 
-Synopsis
---------
-- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/hooks/
+Create, update or delete Sensu hook.
 
-
-
-Parameters
-----------
-
-- annotations ({'description': ['Custom metadata fields with fewer restrictions, as key/value pairs.', 'These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.'], 'type': 'dict'})
-- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
-- command ({'description': ['Command to run when the hook is triggered.'], 'type': 'str'})
-- labels ({'description': ['Custom metadata fields that can be accessed within Sensu, as key/value pairs.'], 'type': 'dict'})
-- name ({'description': ["The Sensu object's name."], 'type': 'str', 'required': True})
-- runtime_assets ({'description': ['List of runtime assets required to run the check'], 'type': 'list'})
-- state ({'description': ['Target state of the Sensu object.'], 'type': 'str', 'choices': ['present', 'absent'], 'default': 'present'})
-- stdin ({'description': ["Controls whether Sensu writes serialized JSON data to the process's stdin."], 'type': 'bool'})
-- timeout ({'description': ['The hook execution duration timeout in seconds (hard stop).'], 'type': 'int'})
-
-
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/hooks/.
 
 
 Examples
@@ -33,25 +15,124 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
-    - name: Rudimentary auto-remediation hook
-      hook:
-        auth:
-          url: http://localhost:8080
-        name: restart_nginx
-        command: sudo systemctl start nginx
-        timeout: 60
-        stdin: false
+   
+   - name: Rudimentary auto-remediation hook
+     hook:
+       auth:
+         url: http://localhost:8080
+       name: restart_nginx
+       command: sudo systemctl start nginx
+       timeout: 60
+       stdin: false
 
-    - name: Capture the process tree
+   - name: Capture the process tree
+     hook:
+       auth:
+         url: http://localhost:8080
+       name: process_tree
+       command: ps aux
+       timeout: 60
+       stdin: false
 
-      hook:
-        auth:
-          url: http://localhost:8080
-        name: process_tree
-        command: ps aux
-        timeout: 60
-        stdin: false
+   - name: Delete a hook
+     hook:
+       name: process_tree
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`hook_info_module`
+
+
+
+Parameters
+----------
+
+annotations (optional)
+  Custom metadata fields with fewer restrictions, as key/value pairs.
+
+  These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.
+
+  | **type**: dict
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+command (optional)
+  Command to run when the hook is triggered.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+labels (optional)
+  Custom metadata fields that can be accessed within Sensu, as key/value pairs.
+
+  | **type**: dict
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+runtime_assets (optional)
+  List of runtime assets required to run the check.
+
+  | **type**: list
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+stdin (optional)
+  Controls whether Sensu writes serialized JSON data to the process's stdin.
+
+  | **type**: bool
+
+timeout (optional)
+  The hook execution duration timeout in seconds (hard stop).
+
+  Required if *state* is ``present``.
+
+  | **type**: int
+
 
 
 
@@ -59,26 +140,7 @@ Examples
 Return Values
 -------------
 
-::
-    
-    object:
-        description: object representing Sensu hook
-        returned: success
-        type: dict
+object (success), dict, )
+  object representing Sensu hook
 
-
-Status
-------
-
-
-
-
-
-Authors
-~~~~~~~
-
-- Paul Arthur (@flowerysong)
-- Aljaz Kosir (@aljazkosir)
-- Miha Plesko (@miha-plesko)
-- Tadej Borovsak (@tadeboro)
 

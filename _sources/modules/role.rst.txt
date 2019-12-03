@@ -1,0 +1,131 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/role.py
+
+.. _role_module:
+
+role -- Manage Sensu roles
+==========================
+
+Create, update or delete Sensu role.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Create a role
+     role:
+       name: readonly
+       rules:
+         - verbs:
+             - get
+             - list
+           resources:
+             - checks
+             - entities
+
+   - name: Delete a role
+     role:
+       name: readonly
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`role_info_module`
+   - :ref:`cluster_role_module`
+   - :ref:`role_binding_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+rules (optional)
+  Rules that the role applies.
+
+  Must be non-empty if *state* is ``present``.
+
+  | **type**: list
+
+  resource_names (optional)
+    Names of specific resources the rule has permission to access.
+
+    Note that for the ``create`` verb, this argument will not be taken into account when enforcing RBAC, even if it is provided.
+
+    | **type**: list
+
+  resources (required)
+    Types of resources the rule has permission to access.
+
+    | **type**: list
+
+  verbs (required)
+    Permissions to be applied by the rule.
+
+    | **type**: list
+    | **choices**: get, list, create, update, delete
+
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+
+
+
+
+Return Values
+-------------
+
+object (success), dict, )
+  object representing Sensu role
+
+

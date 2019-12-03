@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installing Sensu Go Ansible Collection" href="installing_collection.html" /> 
+    <link rel="next" title="Quickstart" href="quickstart.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -79,11 +79,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents</span></p>
+              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="installing_collection.html">Installing Sensu Go Ansible Collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using_collection.html">Using Sensu Go Ansible Collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_index.html">Module index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roles.html">Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
 </ul>
 
             
@@ -135,7 +143,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/index.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -150,34 +160,35 @@
             
   <div class="section" id="sensu-go-ansible-collection">
 <h1>Sensu Go Ansible Collection<a class="headerlink" href="#sensu-go-ansible-collection" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>Add intro documentation.</p>
-</div>
+<p>Sensu Go Ansible Collection is a bundle of Ansible content that we can use to
+manage all aspects of Sensu Go. It contains Ansible roles for installing and
+configuring backends and agents. Collection also contains a wide selection of
+modules for runtime management of Sensu Go backend.</p>
+<p>Collection is freely available on <a class="reference external" href="https://galaxy.ansible.com/sensu/sensu_go">Ansible Galaxy</a>. For Red Hat subscribers,
+this collection is also available on <a class="reference external" href="https://cloud.redhat.com/ansible/automation-hub/sensu/sensu_go">Automation Hub</a>.</p>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents</span></p>
+<p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="installing_collection.html">Installing Sensu Go Ansible Collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using_collection.html">Using Sensu Go Ansible Collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_index.html">Module index</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/asset.html">asset – Manages Sensu assets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/asset_info.html">asset_info – Lists Sensu assets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/check.html">check – Manages Sensu checks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/check_info.html">check_info – Lists Sensu checks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/entity.html">entity – Manages Sensu entities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/entity_info.html">entity_info – Lists Sensu entities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/filter.html">filter – Manages Sensu filters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/filter_info.html">filter_info – Lists Sensu info</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/handler_info.html">handler_info – Lists Sensu hanlders</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/handler_set.html">handler_set – Manages Sensu handler set</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hook.html">hook – Manages Sensu hooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hook_info.html">hook_info – Lists Sensu hooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mutator.html">mutator – Manages Sensu mutators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mutator_info.html">mutator_info – Lists Sensu mutators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/pipe_handler.html">pipe_handler – Manages Sensu pipe handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/socket_handler.html">socket_handler – Manages Sensu TCP/UDP handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-ansible-galaxy">Installing from Ansible Galaxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-automation-hub">Installing from Automation Hub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-a-local-file">Installing from a local file</a></li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roles.html">Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
 </ul>
 </div>
 </div>
@@ -190,7 +201,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="installing_collection.html" class="btn btn-neutral float-right" title="Installing Sensu Go Ansible Collection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="quickstart.html" class="btn btn-neutral float-right" title="Quickstart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

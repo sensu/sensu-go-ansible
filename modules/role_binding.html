@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>role_binding – Manage Sensu role bindings &mdash; Sensu Go Ansible Collection  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="role_binding_info – List Sensu role bindings" href="role_binding_info.html" />
+    <link rel="prev" title="role – Manage Sensu roles" href="role.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Sensu Go Ansible Collection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../roles.html">Roles</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="asset.html">asset – Manage Sensu assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asset_info.html">asset_info – List Sensu assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bonsai_asset.html">bonsai_asset – Add Sensu assets from Bonsai</a></li>
+<li class="toctree-l2"><a class="reference internal" href="check.html">check – Manage Sensu checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="check_info.html">check_info – List Sensu checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_role.html">cluster_role – Manage Sensu cluster roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_role_binding.html">cluster_role_binding – Manage Sensu cluster role bindings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_role_binding_info.html">cluster_role_binding_info – List Sensu cluster role bindings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster_role_info.html">cluster_role_info – List Sensu cluster roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="entity.html">entity – Manage Sensu entities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="entity_info.html">entity_info – List Sensu entities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.html">event – Manage Sensu events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_info.html">event_info – List Sensu events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html">filter – Manage Sensu filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter_info.html">filter_info – List Sensu info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler_info.html">handler_info – List Sensu handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler_set.html">handler_set – Manage Sensu handler set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hook.html">hook – Manage Sensu hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hook_info.html">hook_info – List Sensu hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mutator.html">mutator – Manage Sensu mutators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mutator_info.html">mutator_info – List Sensu mutators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace.html">namespace – Manage Sensu namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_info.html">namespace_info – List Sensu namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipe_handler.html">pipe_handler – Manage Sensu pipe handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">role – Manage Sensu roles</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">role_binding – Manage Sensu role bindings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#see-also">See Also</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#return-values">Return Values</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="role_binding_info.html">role_binding_info – List Sensu role bindings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role_info.html">role_info – List Sensu roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sensu Go Ansible Collection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../modules.html">Modules</a> &raquo;</li>
+        
+      <li>role_binding – Manage Sensu role bindings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/role_binding.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="role-binding-manage-sensu-role-bindings">
+<span id="role-binding-module"></span><h1>role_binding – Manage Sensu role bindings<a class="headerlink" href="#role-binding-manage-sensu-role-bindings" title="Permalink to this headline">¶</a></h1>
+<p>Create, update or delete Sensu role binding.</p>
+<p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings">https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings</a>.</p>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a role binding</span>
+  <span class="nt">role_binding</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dev_and_testing</span>
+    <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">testers_permissive</span>
+    <span class="nt">groups</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">testers</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">dev</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ops</span>
+    <span class="nt">users</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">alice</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a role binding for admins</span>
+  <span class="nt">role_binding</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org-admins</span>
+    <span class="nt">cluster_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">admin</span>
+    <span class="nt">groups</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">team1-admins</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">team2-admins</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Delete a role binding</span>
+  <span class="nt">role_binding</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org-admins</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="role_binding_info.html#role-binding-info-module"><span class="std std-ref">role_binding_info – List Sensu role bindings</span></a></p></li>
+<li><p><a class="reference internal" href="role.html#role-module"><span class="std std-ref">role – Manage Sensu roles</span></a></p></li>
+<li><p><a class="reference internal" href="cluster_role.html#cluster-role-module"><span class="std std-ref">cluster_role – Manage Sensu cluster roles</span></a></p></li>
+<li><p><a class="reference internal" href="cluster_role_binding.html#cluster-role-binding-module"><span class="std std-ref">cluster_role_binding – Manage Sensu cluster role bindings</span></a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>auth (optional)</dt><dd><p>Authentication parameters. Can define each of them with ENV as well.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: dict</div>
+</div>
+<dl>
+<dt>password (optional)</dt><dd><p>The Sensu user’s password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: <a class="reference external" href="mailto:P&#37;&#52;&#48;ssw0rd">P<span>&#64;</span>ssw0rd</a>!</div>
+</div>
+</dd>
+<dt>url (optional)</dt><dd><p>Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: <a class="reference external" href="http://localhost:8080">http://localhost:8080</a></div>
+</div>
+</dd>
+<dt>user (optional)</dt><dd><p>The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: admin</div>
+</div>
+</dd>
+</dl>
+</dd>
+<dt>cluster_role (optional)</dt><dd><p>Name of the cluster role. Note that the resulting role binding grants the cluster role to the provided users and groups in the context of <em>auth.namespace</em> only.</p>
+<p>This parameter is mutually exclusive with <em>role</em>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>groups (optional)</dt><dd><p>List of groups to bind to the role or cluster role</p>
+<p>Note that at least one of <em>users</em> and <em>groups</em> must be specified when creating a role binding.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: list</div>
+</div>
+</dd>
+<dt>name (required)</dt><dd><p>The Sensu object’s name.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>namespace (optional)</dt><dd><p>RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: default</div>
+</div>
+</dd>
+<dt>role (optional)</dt><dd><p>Name of the role.</p>
+<p>This parameter is mutually exclusive with <em>cluster_role</em>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>state (optional)</dt><dd><p>Target state of the Sensu object.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: present</div>
+<div class="line"><strong>choices</strong>: present, absent</div>
+</div>
+</dd>
+<dt>users (optional)</dt><dd><p>List of users to bind to the role or cluster role</p>
+<p>Note that at least one of <em>users</em> and <em>groups</em> must be specified when creating a role binding.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: list</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="return-values">
+<h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>object (success), dict, )</dt><dd><p>object representing Sensu role binding</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="role_binding_info.html" class="btn btn-neutral float-right" title="role_binding_info – List Sensu role bindings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="role.html" class="btn btn-neutral float-left" title="role – Manage Sensu roles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, XLAB Steampunk
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

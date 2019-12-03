@@ -1,0 +1,11 @@
+Common scenarios
+================
+
+TODO: Short description of scenarios.
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Use cases
+    :glob:
+
+    scenarios/*

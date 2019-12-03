@@ -1,0 +1,91 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/namespace.py
+
+.. _namespace_module:
+
+namespace -- Manage Sensu namespaces
+====================================
+
+Create, update or delete a Sensu namespace.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Create a new namespace
+     namespace:
+       name: production
+       state: present
+
+   - name: Delete a namespace
+     namespace:
+       name: staging
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`namespace_info_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+
+
+
+
+Return Values
+-------------
+
+object (success), dict, )
+  object representing Sensu namespace
+
+

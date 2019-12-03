@@ -1,33 +1,13 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/pipe_handler.py
 
-pipe_handler -- Manages Sensu pipe handler
-==========================================
+.. _pipe_handler_module:
 
-.. contents::
-   :local:
-   :depth: 1
+pipe_handler -- Manage Sensu pipe handler
+=========================================
 
-Synopsis
---------
-- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/handlers/
+Create, update or delete a Sensu pipe handler.
 
-
-
-Parameters
-----------
-
-- annotations ({'description': ['Custom metadata fields with fewer restrictions, as key/value pairs.', 'These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.'], 'type': 'dict'})
-- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
-- command ({'description': ['The handler command to be executed. The event data is passed to the process via STDIN.'], 'type': 'str', 'required': True})
-- env_vars ({'description': ['A mapping of environment variable names and values to use with command execution.'], 'type': 'dict'})
-- filters ({'description': ['List of filters to use when determining whether to pass the check result to this handler.'], 'type': 'list'})
-- labels ({'description': ['Custom metadata fields that can be accessed within Sensu, as key/value pairs.'], 'type': 'dict'})
-- mutator ({'description': ['Mutator to call for transforming the check result before passing it to this handler.'], 'type': 'str'})
-- name ({'description': ["The Sensu object's name."], 'type': 'str', 'required': True})
-- runtime_assets ({'description': ['List of runtime assets to required to run the handler C(command)'], 'type': 'list'})
-- state ({'description': ['Target state of the Sensu object.'], 'type': 'str', 'choices': ['present', 'absent'], 'default': 'present'})
-- timeout ({'description': ['Timeout for handler execution'], 'type': 'int'})
-
-
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/handlers/#pipe-handlers.
 
 
 Examples
@@ -35,17 +15,127 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
-    - name: Setup InfluxDB handler
-      pipe_handler:
-        name: influx-db
-        command: sensu-influxdb-handler -d sensu
-        env_vars:
-          INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
-          INFLUXDB_USER: sensu
-          INFLUXDB_PASS: password
-        runtime_assets:
-          - sensu-influxdb-handler
+   
+   - name: Setup InfluxDB handler
+     pipe_handler:
+       name: influx-db
+       command: sensu-influxdb-handler -d sensu
+       env_vars:
+         INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
+         INFLUXDB_USER: sensu
+         INFLUXDB_PASS: password
+       runtime_assets:
+         - sensu-influxdb-handler
+
+   - name: Delete  handler
+     pipe_handler:
+       name: influx-db
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`socket_handler_module`
+   - :ref:`handler_info_module`
+   - :ref:`handler_set_module`
+
+
+
+Parameters
+----------
+
+annotations (optional)
+  Custom metadata fields with fewer restrictions, as key/value pairs.
+
+  These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.
+
+  | **type**: dict
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+command (optional)
+  The handler command to be executed. The event data is passed to the process via STDIN.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+env_vars (optional)
+  A mapping of environment variable names and values to use with command execution.
+
+  | **type**: dict
+
+filters (optional)
+  List of filters to use when determining whether to pass the check result to this handler.
+
+  | **type**: list
+
+labels (optional)
+  Custom metadata fields that can be accessed within Sensu, as key/value pairs.
+
+  | **type**: dict
+
+mutator (optional)
+  Mutator to call for transforming the check result before passing it to this handler.
+
+  | **type**: str
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+runtime_assets (optional)
+  List of runtime assets to required to run the handler ``command``
+
+  | **type**: list
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+timeout (optional)
+  Timeout for handler execution.
+
+  | **type**: int
+
 
 
 
@@ -53,25 +143,7 @@ Examples
 Return Values
 -------------
 
-::
-    
-    object:
-        description: object representing Sensu pipe handler
-        returned: success
-        type: dict
+object (success), dict, )
+  object representing Sensu pipe handler
 
-
-Status
-------
-
-
-
-
-
-Authors
-~~~~~~~
-
-- Aljaz Kosir (@aljazkosir)
-- Miha Plesko (@miha-plesko)
-- Tadej Borovsak (@tadeboro)
 

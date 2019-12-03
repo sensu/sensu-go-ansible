@@ -1,6 +1,0 @@
-Using Sensu Go Ansible Collection
-=================================
-
-.. todo::
-
-   Add some content here about usage (playbooks, etc.)

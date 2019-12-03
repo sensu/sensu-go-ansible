@@ -1,31 +1,13 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/mutator.py
 
-mutator -- Manages Sensu mutators
-=================================
+.. _mutator_module:
 
-.. contents::
-   :local:
-   :depth: 1
+mutator -- Manage Sensu mutators
+================================
 
-Synopsis
---------
-- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/mutators/
+Create, update or delete Sensu mutator.
 
-
-
-Parameters
-----------
-
-- annotations ({'description': ['Custom metadata fields with fewer restrictions, as key/value pairs.', 'These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.'], 'type': 'dict'})
-- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
-- command ({'description': ['The mutator command to be executed by the Sensu backend.'], 'type': 'str'})
-- env_vars ({'description': ['A mapping of environment variable names and values to use with command execution.'], 'type': 'dict'})
-- labels ({'description': ['Custom metadata fields that can be accessed within Sensu, as key/value pairs.'], 'type': 'dict'})
-- name ({'description': ["The Sensu object's name."], 'type': 'str', 'required': True})
-- runtime_assets ({'description': ['List of runtime assets to required to run the mutator C(command)'], 'type': 'list'})
-- state ({'description': ['Target state of the Sensu object.'], 'type': 'str', 'choices': ['present', 'absent'], 'default': 'present'})
-- timeout ({'description': ['The mutator execution duration timeout in seconds (hard stop).'], 'type': 'int'})
-
-
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/mutators/.
 
 
 Examples
@@ -33,17 +15,115 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
-    - name: Create a mutator
-      mutator:
-        name: mutator
-        command: sensu-influxdb-mutator
-        timeout: 30
-        env_vars:
-          INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
-          INFLUXDB_USER: sensu
-        runtime_assets:
-          - sensu-influxdb-mutator
+   
+   - name: Create a mutator
+     mutator:
+       name: mutator
+       command: sensu-influxdb-mutator
+       timeout: 30
+       env_vars:
+         INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
+         INFLUXDB_USER: sensu
+       runtime_assets:
+         - sensu-influxdb-mutator
+
+   - name: Delete a mutator
+     mutator:
+       name: mutator
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`mutator_info_module`
+
+
+
+Parameters
+----------
+
+annotations (optional)
+  Custom metadata fields with fewer restrictions, as key/value pairs.
+
+  These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.
+
+  | **type**: dict
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+command (optional)
+  The mutator command to be executed by the Sensu backend.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+env_vars (optional)
+  A mapping of environment variable names and values to use with command execution.
+
+  | **type**: dict
+
+labels (optional)
+  Custom metadata fields that can be accessed within Sensu, as key/value pairs.
+
+  | **type**: dict
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+runtime_assets (optional)
+  List of runtime assets, required to run the mutator *command*.
+
+  | **type**: list
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+timeout (optional)
+  The mutator execution duration timeout in seconds (hard stop).
+
+  | **type**: int
+
 
 
 
@@ -51,26 +131,7 @@ Examples
 Return Values
 -------------
 
-::
-    
-    object:
-        description: object representing Sensu mutator
-        returned: success
-        type: dict
+object (success), dict, )
+  object representing Sensu mutator
 
-
-Status
-------
-
-
-
-
-
-Authors
-~~~~~~~
-
-- Paul Arthur (@flowerysong)
-- Aljaz Kosir (@aljazkosir)
-- Miha Plesko (@miha-plesko)
-- Tadej Borovsak (@tadeboro)
 

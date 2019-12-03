@@ -1,0 +1,142 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/role_binding.py
+
+.. _role_binding_module:
+
+role_binding -- Manage Sensu role bindings
+==========================================
+
+Create, update or delete Sensu role binding.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Create a role binding
+     role_binding:
+       name: dev_and_testing
+       role: testers_permissive
+       groups:
+           - testers
+           - dev
+           - ops
+       users:
+         - alice
+
+   - name: Create a role binding for admins
+     role_binding:
+       name: org-admins
+       cluster_role: admin
+       groups:
+         - team1-admins
+         - team2-admins
+
+   - name: Delete a role binding
+     role_binding:
+       name: org-admins
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`role_binding_info_module`
+   - :ref:`role_module`
+   - :ref:`cluster_role_module`
+   - :ref:`cluster_role_binding_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+cluster_role (optional)
+  Name of the cluster role. Note that the resulting role binding grants the cluster role to the provided users and groups in the context of *auth.namespace* only.
+
+  This parameter is mutually exclusive with *role*.
+
+  | **type**: str
+
+groups (optional)
+  List of groups to bind to the role or cluster role
+
+  Note that at least one of *users* and *groups* must be specified when creating a role binding.
+
+  | **type**: list
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+role (optional)
+  Name of the role.
+
+  This parameter is mutually exclusive with *cluster_role*.
+
+  | **type**: str
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+users (optional)
+  List of users to bind to the role or cluster role
+
+  Note that at least one of *users* and *groups* must be specified when creating a role binding.
+
+  | **type**: list
+
+
+
+
+
+Return Values
+-------------
+
+object (success), dict, )
+  object representing Sensu role binding
+
+

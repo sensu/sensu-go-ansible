@@ -1,0 +1,4 @@
+Sensu Go agent
+==============
+
+TODO: How to install agent and how to connect to backend.

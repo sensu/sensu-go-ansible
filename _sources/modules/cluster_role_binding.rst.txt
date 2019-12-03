@@ -1,0 +1,118 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/cluster_role_binding.py
+
+.. _cluster_role_binding_module:
+
+cluster_role_binding -- Manage Sensu cluster role bindings
+==========================================================
+
+Create, update or delete Sensu cluster role binding.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Create a cluster role binding
+     cluster_role_binding:
+       name: all-cluster-admins
+       cluster_role: cluster-admin
+       groups:
+         - cluster-admins
+       users:
+         - alice
+
+   - name: Delete a cluster role binding
+     cluster_role_binding:
+       name: all-cluster-admins
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`cluster_role_binding_info_module`
+   - :ref:`cluster_role_module`
+   - :ref:`role_binding_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+cluster_role (optional)
+  Name of the cluster role.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+groups (optional)
+  List of groups to bind to the cluster role.
+
+  Note that at least one of *users* and *groups* must be specified when creating a cluster role binding.
+
+  | **type**: list
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+users (optional)
+  List of users to bind to the cluster role
+
+  Note that at least one of *users* and *groups* must be specified when creating a cluster role binding.
+
+  | **type**: list
+
+
+
+
+
+Return Values
+-------------
+
+object (success), dict, )
+  object representing Sensu cluster role binding
+
+

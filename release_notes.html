@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installing Sensu Go Ansible Collection &mdash; Sensu Go Ansible Collection  documentation</title>
+  <title>Release notes &mdash; Sensu Go Ansible Collection  documentation</title>
   
 
   
@@ -35,8 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Using Sensu Go Ansible Collection" href="using_collection.html" />
-    <link rel="prev" title="Sensu Go Ansible Collection" href="index.html" /> 
+    <link rel="prev" title="user_info – List Sensu users" href="modules/user_info.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -80,11 +79,22 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents</span></p>
+              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roles.html">Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Appendices</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing Sensu Go Ansible Collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using_collection.html">Using Sensu Go Ansible Collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_index.html">Module index</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0-rising-from-the-ashes">Version 1.0 – Rising From The Ashes</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -130,13 +140,15 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Installing Sensu Go Ansible Collection</li>
+      <li>Release notes</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/installing_collection.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/release_notes.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -149,19 +161,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installing-sensu-go-ansible-collection">
-<h1>Installing Sensu Go Ansible Collection<a class="headerlink" href="#installing-sensu-go-ansible-collection" title="Permalink to this headline">¶</a></h1>
-<p>Installing Sensu Go collection is as easy as running:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ansible</span><span class="o">-</span><span class="n">galaxy</span> <span class="n">collection</span> <span class="n">install</span> <span class="o">-</span><span class="n">p</span> <span class="o">~/.</span><span class="n">ansible</span><span class="o">/</span><span class="n">collections</span> <span class="n">sensu</span><span class="o">.</span><span class="n">sensu_go</span>
-</pre></div>
-</div>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>Describe how to install collection from git.</p>
-</div>
-<div class="admonition-todo admonition" id="id2">
-<p class="admonition-title">Todo</p>
-<p>Describe how to uninstall collection.</p>
+  <div class="section" id="release-notes">
+<h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-0-rising-from-the-ashes">
+<h2>Version 1.0 – Rising From The Ashes<a class="headerlink" href="#version-1-0-rising-from-the-ashes" title="Permalink to this headline">¶</a></h2>
+<p>This is the initial stable release of the Sensu Go Ansible Collection. It
+contains roles for installing and configuring Sensu Go backends and agents and
+a set of modules for managing Sensu Go resources.</p>
+<p>Where does the release name comes from? We took an existing Ansible Collection
+that <a class="reference external" href="https://github.com/flowerysong/ansible-sensu-go">&#64;flowerysong</a> wrote, gave it a thorough tune-up and added a
+comprehensive test suite. And now, it is ready to face the world!</p>
 </div>
 </div>
 
@@ -173,10 +182,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="using_collection.html" class="btn btn-neutral float-right" title="Using Sensu Go Ansible Collection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="Sensu Go Ansible Collection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="modules/user_info.html" class="btn btn-neutral float-left" title="user_info – List Sensu users" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

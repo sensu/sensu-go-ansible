@@ -1,0 +1,201 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/event.py
+
+.. _event_module:
+
+event -- Manage Sensu events
+============================
+
+Send a synthetic event to Sensu.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/events/.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Create an event
+     event:
+       auth:
+         url: http://localhost:8080
+       entity: awesome_entity
+       check: awesome_check
+       check_attributes:
+         duration: 1.945
+         executed: 1522100915
+         history:
+           - executed: 1552505193
+             status: 1
+         issued: 1552506034
+         last_ok: 1552506033
+         output: '10'
+         state: 'passing'
+         status: 'ok'
+         total_state_change: 0
+       metric_attributes:
+         handlers:
+           - handler1
+           - handler2
+         points:
+           - name: "sensu-go-sandbox.curl_timings.time_total"
+             tags:
+               - name: "response_time_in_ms"
+                 value: 101
+             timestamp: 1552506033
+             value: 0.005
+           - name: "sensu-go-sandbox.curl_timings.time_namelookup"
+             tags:
+               - name: "namelookup_time_in_ms"
+                 value: 57
+             timestamp: 1552506033
+             value: 0.004
+
+
+
+Notes
+-----
+
+.. note::
+   Metric events bypass the store and are sent off to the event pipeline and corresponding event handlers. Read more about this at https://docs.sensu.io/sensu-go/latest/reference/events/#metric-only-events
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`event_info_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+check (required)
+  Name of the check associated with this event. It must exist before event creation.
+
+  | **type**: str
+
+check_attributes (optional)
+  Additional check parameters. Find out more at https://docs.sensu.io/sensu-go/latest/reference/events/#check-attributes
+
+  | **type**: dict
+
+  duration (optional)
+    Command execution time in seconds.
+
+    | **type**: float
+
+  executed (optional)
+    Time that the check request was executed.
+
+    | **type**: int
+
+  history (optional)
+    Check status history for the last 21 check executions.
+
+    | **type**: list
+
+  issued (optional)
+    Time that the check request was issued in seconds since the Unix epoch.
+
+    | **type**: int
+
+  last_ok (optional)
+    The last time that the check returned an OK status (0) in seconds since the Unix epoch.
+
+    | **type**: int
+
+  output (optional)
+    The output from the execution of the check command.
+
+    | **type**: str
+
+  state (optional)
+    The state of the check.
+
+    | **type**: str
+    | **choices**: passing, failing, flapping
+
+  status (optional)
+    Exit status code produced by the check.
+
+    | **type**: str
+    | **choices**: ok, warning, critical, unknown
+
+  total_state_change (optional)
+    The total state change percentage for the check's history.
+
+    | **type**: int
+
+
+entity (required)
+  Name of the entity associated with this event. It must exist before event creation.
+
+  | **type**: str
+
+metric_attributes (optional)
+  Metric attributes. Find out more at https://docs.sensu.io/sensu-go/latest/reference/events/#metric-attributes
+
+  | **type**: dict
+
+  handlers (optional)
+    An array of Sensu handlers to use for events created by the check. Each array item must be a string.
+
+    | **type**: list
+
+  points (optional)
+    Metric data points including a name, timestamp, value, and tags.
+
+    | **type**: list
+
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+timestamp (optional)
+  UNIX time at which the event occurred.
+
+  | **type**: int
+
+
+
+
+
+Return Values
+-------------
+
+object (always), dict, )
+  object representing Sensu event
+
+

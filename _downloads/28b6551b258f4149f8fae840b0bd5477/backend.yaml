@@ -1,0 +1,7 @@
+- name: Install, configure and run Sensu backend
+  hosts: backends
+  roles:
+    - sensu.sensu_go.backend
+  vars:
+    backend_config:
+      log-level: debug

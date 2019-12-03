@@ -1,30 +1,13 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/filter.py
 
-filter -- Manages Sensu filters
-===============================
+.. _filter_module:
 
-.. contents::
-   :local:
-   :depth: 1
+filter -- Manage Sensu filters
+==============================
 
-Synopsis
---------
-- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/filters/
+Create, update or delete Sensu filter.
 
-
-
-Parameters
-----------
-
-- action ({'description': ['Action to take with the event if the filter expressions match.'], 'type': 'str', 'choices': ['allow', 'deny']})
-- annotations ({'description': ['Custom metadata fields with fewer restrictions, as key/value pairs.', 'These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.'], 'type': 'dict'})
-- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
-- expressions ({'description': ['Filter expressions to be compared with event data.'], 'type': 'list'})
-- labels ({'description': ['Custom metadata fields that can be accessed within Sensu, as key/value pairs.'], 'type': 'dict'})
-- name ({'description': ["The Sensu object's name."], 'type': 'str', 'required': True})
-- runtime_assets ({'description': ["Assets to be applied to the filter's execution context. JavaScript files in the lib directory of the asset will be evaluated."], 'type': 'list'})
-- state ({'description': ['Target state of the Sensu object.'], 'type': 'str', 'choices': ['present', 'absent'], 'default': 'present'})
-
-
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/filters/.
 
 
 Examples
@@ -32,39 +15,135 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
-    - name: Create a filter
-      filter:
-        name: filter
-        action: deny
-        expressions:
-          - event.check.interval == 10
-          - event.check.occurrences == 1
-        runtime_assets: awesomeness
+   
+   - name: Create a filter
+     filter:
+       name: filter
+       action: deny
+       expressions:
+         - event.check.interval == 10
+         - event.check.occurrences == 1
+       runtime_assets: awesomeness
 
-    - name: Create a production filter
-      filter:
-        name: filter
-        action: allow
-        expressions:
-          - event.entity.labels['environment'] == 'production'
+   - name: Create a production filter
+     filter:
+       name: filter
+       action: allow
+       expressions:
+         - event.entity.labels['environment'] == 'production'
 
-    - name: Create a filter with JS expression
-      filter:
-        name: filter
-        action: deny
-        expressions:
-          - "_.reduce(event.check.history, function(memo, h) { return (memo || h.status != 0); })"
-        runtime_assets:
-          - underscore
+   - name: Create a filter with JS expression
+     filter:
+       name: filter
+       action: deny
+       expressions:
+         - "_.reduce(event.check.history, function(memo, h) { return (memo || h.status != 0); })"
+       runtime_assets:
+         - underscore
 
-    - name: Handling repeated events
-      filter:
-        name: filter_interval_60_hourly
-        action: allow
-        expressions:
-          - event.check.interval == 60
-          - event.check.occurrences == 1 || event.check.occurrences % 60 == 0
+   - name: Handling repeated events
+     filter:
+       name: filter_interval_60_hourly
+       action: allow
+       expressions:
+         - event.check.interval == 60
+         - event.check.occurrences == 1 || event.check.occurrences % 60 == 0
+
+   - name: Delete a filter
+     filter:
+       name: filter_interval_60_hourly
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`filter_info_module`
+
+
+
+Parameters
+----------
+
+action (optional)
+  Action to take with the event if the filter expressions match.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+  | **choices**: allow, deny
+
+annotations (optional)
+  Custom metadata fields with fewer restrictions, as key/value pairs.
+
+  These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.
+
+  | **type**: dict
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+expressions (optional)
+  Filter expressions to be compared with event data.
+
+  Required if *state* is ``present``.
+
+  | **type**: list
+
+labels (optional)
+  Custom metadata fields that can be accessed within Sensu, as key/value pairs.
+
+  | **type**: dict
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+runtime_assets (optional)
+  Assets to be applied to the filter's execution context. JavaScript files in the lib directory of the asset will be evaluated.
+
+  | **type**: list
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
 
 
 
@@ -72,26 +151,7 @@ Examples
 Return Values
 -------------
 
-::
-    
-    object:
-        description: object representing Sensu filter
-        returned: success
-        type: dict
+object (success), dict, )
+  object representing Sensu filter
 
-
-Status
-------
-
-
-
-
-
-Authors
-~~~~~~~
-
-- Paul Arthur (@flowerysong)
-- Aljaz Kosir (@aljazkosir)
-- Miha Plesko (@miha-plesko)
-- Tadej Borovsak (@tadeboro)
 

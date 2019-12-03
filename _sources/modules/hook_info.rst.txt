@@ -1,24 +1,13 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/hook_info.py
 
-hook_info -- Lists Sensu hooks
-==============================
+.. _hook_info_module:
 
-.. contents::
-   :local:
-   :depth: 1
+hook_info -- List Sensu hooks
+=============================
 
-Synopsis
---------
-- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/hooks/
+Retrieve information about Sensu hooks.
 
-
-
-Parameters
-----------
-
-- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
-- name ({'description': ['Retrieve information about this specific object instead of listing all objects.'], 'type': 'str'})
-
-
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/hooks/.
 
 
 Examples
@@ -26,15 +15,67 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
-    - name: List Sensu hooks
-      hook_info:
-      register: result
+   
+   - name: List all Sensu hooks
+     hook_info:
+     register: result
 
-    - name: Fetch Sensu hook
-      hook_info:
-        name: awesome-hook
-      register: result
+   - name: Fetch a specific Sensu hook
+     hook_info:
+       name: awesome-hook
+     register: result
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`hook_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+name (optional)
+  Retrieve information about this specific object instead of listing all objects.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
 
 
 
@@ -42,26 +83,7 @@ Examples
 Return Values
 -------------
 
-::
-    
-    objects:
-      description: list of Sensu hooks
-      returned: always
-      type: list
+objects (always), list, )
+  list of Sensu hooks
 
-
-Status
-------
-
-
-
-
-
-Authors
-~~~~~~~
-
-- Paul Arthur (@flowerysong)
-- Aljaz Kosir (@aljazkosir)
-- Miha Plesko (@miha-plesko)
-- Tadej Borovsak (@tadeboro)
 

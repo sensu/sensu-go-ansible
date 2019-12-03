@@ -1,0 +1,4 @@
+Installing Sensu Go backend
+===========================
+
+TODO: Show what variables we can set and how playbook should look like.

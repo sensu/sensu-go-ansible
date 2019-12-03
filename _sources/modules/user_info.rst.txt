@@ -1,0 +1,83 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/user_info.py
+
+.. _user_info_module:
+
+user_info -- List Sensu users
+=============================
+
+Retrieve information about Sensu users.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#users.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: List Sensu users
+     user_info:
+     register: result
+
+   - name: Retrieve a single Sensu user
+     user_info:
+       name: my-user
+     register: result
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`user_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+name (optional)
+  Retrieve information about this specific object instead of listing all objects.
+
+  | **type**: str
+
+
+
+
+
+Return Values
+-------------
+
+objects (always), list, )
+  list of Sensu users
+
+

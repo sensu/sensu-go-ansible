@@ -1,24 +1,13 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/asset_info.py
 
-asset_info -- Lists Sensu assets
-================================
+.. _asset_info_module:
 
-.. contents::
-   :local:
-   :depth: 1
+asset_info -- List Sensu assets
+===============================
 
-Synopsis
---------
-- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/assets/
+Retrieve information about Sensu Go assets.
 
-
-
-Parameters
-----------
-
-- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
-- name ({'description': ['Retrieve information about this specific object instead of listing all objects.'], 'type': 'str'})
-
-
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/assets/.
 
 
 Examples
@@ -26,10 +15,73 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
-    - name: List Sensu assets
-      asset_info:
-      register: result
+   
+   - name: List all Sensu assets
+     asset_info:
+     register: result
+
+   - name: List the selected Sensu asset
+     asset_info:
+       name: my_asset
+     register: result
+
+   - name: Do something with result
+     debug:
+       msg: "{{ result.objects.0.metadata.name }}"
+
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`asset_module`
+   - :ref:`bonsai_asset_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+name (optional)
+  Retrieve information about this specific object instead of listing all objects.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
 
 
 
@@ -37,26 +89,7 @@ Examples
 Return Values
 -------------
 
-::
-    
-    objects:
-      description: list of Sensu assets
-      returned: always
-      type: list
+objects (always), list, )
+  list of Sensu assets
 
-
-Status
-------
-
-
-
-
-
-Authors
-~~~~~~~
-
-- Paul Arthur (@flowerysong)
-- Aljaz Kosir (@aljazkosir)
-- Miha Plesko (@miha-plesko)
-- Tadej Borovsak (@tadeboro)
 

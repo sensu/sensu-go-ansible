@@ -1,0 +1,83 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/cluster_role_binding_info.py
+
+.. _cluster_role_binding_info_module:
+
+cluster_role_binding_info -- List Sensu cluster role bindings
+=============================================================
+
+Retrieve information about Sensu cluster role bindings.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: List all Sensu cluster role bindings
+     cluster_role_binding_info:
+     register: result
+
+   - name: Retrieve a specific Sensu cluster role binding
+     cluster_role_binding_info:
+       name: my-binding
+     register: result
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`cluster_role_binding_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+name (optional)
+  Retrieve information about this specific object instead of listing all objects.
+
+  | **type**: str
+
+
+
+
+
+Return Values
+-------------
+
+cluster_role_bindings (always), list, )
+  list of Sensu cluster role bindings
+
+

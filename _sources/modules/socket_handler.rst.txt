@@ -1,33 +1,13 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/socket_handler.py
 
-socket_handler -- Manages Sensu TCP/UDP handler
-===============================================
+.. _socket_handler_module:
 
-.. contents::
-   :local:
-   :depth: 1
+socket_handler -- Manage Sensu TCP/UDP handler
+==============================================
 
-Synopsis
---------
-- For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/handlers/
+Create, update or delete Sensu socket handler.
 
-
-
-Parameters
-----------
-
-- annotations ({'description': ['Custom metadata fields with fewer restrictions, as key/value pairs.', 'These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.'], 'type': 'dict'})
-- auth ({'description': 'Authentication parameters. Can define each of them with ENV as well', 'type': 'dict', 'suboptions': {'user': {'description': ['The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.'], 'type': 'str', 'default': 'admin'}, 'password': {'description': ["The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked."], 'type': 'str', 'default': 'P@ssw0rd!'}, 'url': {'description': ['Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.'], 'type': 'str', 'default': 'http://localhost:8080'}, 'namespace': {'description': ['RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be checked.'], 'type': 'str', 'default': 'default'}}})
-- filters ({'description': ['List of filters to use when determining whether to pass the check result to this handler.'], 'type': 'list'})
-- host ({'description': ['The socket host address (IP or hostname) to connect to.'], 'required': True, 'type': 'str'})
-- labels ({'description': ['Custom metadata fields that can be accessed within Sensu, as key/value pairs.'], 'type': 'dict'})
-- mutator ({'description': ['Mutator to call for transforming the check result before passing it to this handler.'], 'type': 'str'})
-- name ({'description': ["The Sensu object's name."], 'type': 'str', 'required': True})
-- port ({'description': ['The socket port to connect to.'], 'type': 'int', 'required': True})
-- state ({'description': ['Target state of the Sensu object.'], 'type': 'str', 'choices': ['present', 'absent'], 'default': 'present'})
-- timeout ({'description': ['Timeout for handler execution'], 'type': 'int'})
-- type ({'description': ['The handler type.'], 'choices': ['tcp', 'udp'], 'type': 'str', 'required': True})
-
-
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/handlers/#tcp-udp-handlers.
 
 
 Examples
@@ -35,20 +15,135 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
-    - name: TCP handler
-      socket_handler:
-        name: tcp_handler
-        type: tcp
-        host: 10.0.1.99
-        port: 4444
+   
+   - name: TCP handler
+     socket_handler:
+       name: tcp_handler
+       type: tcp
+       host: 10.0.1.99
+       port: 4444
 
-    - name: UDP handler
-      socket_handler:
-        name: udp_handler
-        type: udp
-        host: 10.0.1.99
-        port: 4444
+   - name: UDP handler
+     socket_handler:
+       name: udp_handler
+       type: udp
+       host: 10.0.1.99
+       port: 4444
+
+   - name: Delete a handler
+     socket_handler:
+       name: udp_handler
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`handler_info_module`
+   - :ref:`pipe_handler_module`
+   - :ref:`handler_set_module`
+
+
+
+Parameters
+----------
+
+annotations (optional)
+  Custom metadata fields with fewer restrictions, as key/value pairs.
+
+  These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.
+
+  | **type**: dict
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+filters (optional)
+  List of filters to use when determining whether to pass the check result to this handler.
+
+  | **type**: list
+
+host (optional)
+  The socket host address (IP or hostname) to connect to.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+labels (optional)
+  Custom metadata fields that can be accessed within Sensu, as key/value pairs.
+
+  | **type**: dict
+
+mutator (optional)
+  Mutator to call for transforming the check result before passing it to this handler.
+
+  | **type**: str
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+namespace (optional)
+  RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.
+
+  | **type**: str
+  | **default**: default
+
+port (optional)
+  The socket port to connect to.
+
+  Required if *state* is ``present``.
+
+  | **type**: int
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+timeout (optional)
+  Timeout for handler execution
+
+  | **type**: int
+
+type (optional)
+  The handler type.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+  | **choices**: tcp, udp
+
 
 
 
@@ -56,25 +151,7 @@ Examples
 Return Values
 -------------
 
-::
-    
-    object:
-        description: object representing Sensu socket handler
-        returned: success
-        type: dict
+object (success), dict, )
+  object representing Sensu socket handler
 
-
-Status
-------
-
-
-
-
-
-Authors
-~~~~~~~
-
-- Aljaz Kosir (@aljazkosir)
-- Miha Plesko (@miha-plesko)
-- Tadej Borovsak (@tadeboro)
 

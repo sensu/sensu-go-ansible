@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; Sensu Go Ansible Collection  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Roles" href="roles.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sensu Go Ansible Collection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-from-ansible-galaxy">Installing from Ansible Galaxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-from-automation-hub">Installing from Automation Hub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-from-a-local-file">Installing from a local file</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="roles.html">Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sensu Go Ansible Collection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/installation.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>We can install Sensu Go Ansible collection using the <code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span></code> tool
+that comes bundled with Ansible. This tool can install Ansible collections
+from different sources.</p>
+<div class="section" id="installing-from-ansible-galaxy">
+<h2>Installing from Ansible Galaxy<a class="headerlink" href="#installing-from-ansible-galaxy" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://galaxy.ansible.com">Ansible Galaxy</a> is the default source of Ansible collections for the
+<code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span></code> tool. We can install Sensu Go Ansible collection by
+running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-galaxy collection install sensu.sensu_go
+</pre></div>
+</div>
+<p>After the command finishes, we will have the latest version of the Sensu Go
+Ansible collection installed and ready to be used.</p>
+<p>We can also install a specific version of the collection by appending a
+version after the name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-galaxy collection install sensu.sensu_go:1.0.0
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span></code> command will not overwrite the existing collection if it
+is already installed. We can change this default behavior by adding a
+<code class="docutils literal notranslate"><span class="pre">--force</span></code> command line switch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-galaxy collection install --force sensu.sensu_go:1.0.0
+</pre></div>
+</div>
+</div>
+<p>The official Ansible documentation contains more information about the
+installation options in the <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/collections_using.html#installing-collections">Using collections</a> document.</p>
+</div>
+<div class="section" id="installing-from-automation-hub">
+<h2>Installing from Automation Hub<a class="headerlink" href="#installing-from-automation-hub" title="Permalink to this headline">¶</a></h2>
+<p>If we have a valid Red Hat subscription, we can also install Sensu Go Ansible
+collection from Red Hat Ansible Automation Hub. But before we can do that, we
+need to tell Ansible about the second source of collections. We do this by
+placing the following content into the
+<a class="reference download internal" download="" href="_downloads/26da197eee799226236fac79655ccb9b/ansible.cfg"><code class="xref download docutils literal notranslate"><span class="pre">ansible.cfg</span></code></a> configuration
+file:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[galaxy]</span>
+<span class="na">server_list</span> <span class="o">=</span> <span class="s">automation_hub, galaxy</span>
+
+<span class="k">[galaxy_server.automation_hub]</span>
+<span class="na">url</span><span class="o">=</span><span class="s">https://cloud.redhat.com/api/automation-hub/</span>
+<span class="na">auth_url</span><span class="o">=</span><span class="s">https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token</span>
+<span class="na">token</span><span class="o">=</span><span class="s">AABBccddeeff112233gghh...</span>
+
+<span class="k">[galaxy_server.galaxy]</span>
+<span class="na">url</span><span class="o">=</span><span class="s">https://galaxy.ansible.com/</span>
+</pre></div>
+</div>
+<p>Make sure you replace the <code class="docutils literal notranslate"><span class="pre">token</span></code> value in the above configuration with the
+value obtained from the <a class="reference external" href="https://cloud.redhat.com/ansible/automation-hub/token">token Automation Hub UI</a>.</p>
+<p>From here on, we can follow the steps from the previous section.</p>
+</div>
+<div class="section" id="installing-from-a-local-file">
+<h2>Installing from a local file<a class="headerlink" href="#installing-from-a-local-file" title="Permalink to this headline">¶</a></h2>
+<p>This last method of installation might come in handy in situations where our
+Ansible control node cannot access Ansible Galaxy or Automation Hub.</p>
+<p>First, we need to download the Sensu Go Ansible collection archive from the
+GitHub <a class="reference external" href="https://github.com/sensu/sensu-go-ansible/releases">releases page</a> and then transfer that archive to the Ansible control
+node. Once we have that archive on our control node, we can install the Sensu
+Go collection by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-galaxy collection install path/to/sensu-sensu_go-1.0.0.tar.gz
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="roles.html" class="btn btn-neutral float-right" title="Roles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, XLAB Steampunk
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
