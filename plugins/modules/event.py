@@ -29,6 +29,8 @@ description:
 version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
+seealso:
+  - module: event_info
 notes:
   - Metric events bypass the store and are sent off to the event pipeline and corresponding event
     handlers. Read more about this at
@@ -55,33 +57,42 @@ options:
         U(https://docs.sensu.io/sensu-go/latest/reference/events/#check-attributes)
     suboptions:
       duration:
-        description: Command execution time in seconds.
+        description:
+          - Command execution time in seconds.
         type: float
       executed:
-        description: Time that the check request was executed.
+        description:
+          - Time that the check request was executed.
         type: int
       history:
-        description: Check status history for the last 21 check executions.
+        description:
+          - Check status history for the last 21 check executions.
         type: list
       issued:
-        description: Time that the check request was issued in seconds since the Unix epoch.
+        description:
+          - Time that the check request was issued in seconds since the Unix epoch.
         type: int
       last_ok:
-        description: The last time that the check returned an OK status (0) in seconds since the Unix epoch.
+        description:
+          - The last time that the check returned an OK status (0) in seconds since the Unix epoch.
         type: int
       output:
-        description: The output from the execution of the check command.
+        description:
+          - The output from the execution of the check command.
         type: str
       state:
-        description: The state of the check.
+        description:
+          - The state of the check.
         choices: [ "passing", "failing", "flapping" ]
         type: str
       status:
-        description: Exit status code produced by the check.
+        description:
+          - Exit status code produced by the check.
         choices: [ "ok", "warning", "critical", "unknown" ]
         type: str
       total_state_change:
-        description: The total state change percentage for the check's history.
+        description:
+          - The total state change percentage for the check's history.
         type: int
   metric_attributes:
     type: dict
@@ -96,13 +107,14 @@ options:
         type: list
         elements: str
       points:
-        description: Metric data points including a name, timestamp, value, and tags.
+        description:
+          - Metric data points including a name, timestamp, value, and tags.
         type: list
         elements: dict
 '''
 
 EXAMPLES = '''
-- name: Create event
+- name: Create an event
   event:
     auth:
       url: http://localhost:8080

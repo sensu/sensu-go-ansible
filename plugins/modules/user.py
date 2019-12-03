@@ -29,8 +29,10 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
+seealso:
+  - module: user_info
 notes:
-  - Parameter C(auth.namespace) is ignored in this module.
+  - Parameter I(auth.namespace) is ignored in this module.
 options:
   state:
     description:
@@ -42,6 +44,7 @@ options:
   password:
     description:
       - Password for the user.
+      - Required if I(state) is C(enabled).
     type: str
   groups:
     description:
@@ -59,6 +62,11 @@ EXAMPLES = '''
     groups:
       - dev
       - prod
+
+- name: Deactivate a user
+  user:
+    name: awesome_username
+    state: disabled
 '''
 
 RETURN = '''

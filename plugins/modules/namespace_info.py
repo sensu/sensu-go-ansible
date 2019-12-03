@@ -29,7 +29,11 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
 notes:
-  - Parameters C(auth.namespace) is ignored in this module.
+  - Parameters I(auth.namespace) is ignored in this module.
+  - Currently, it is not possible to retrieve information about a single
+    namespace because namespace is not much more than a name itself.
+seealso:
+  - module: namespace
 '''
 
 EXAMPLES = '''

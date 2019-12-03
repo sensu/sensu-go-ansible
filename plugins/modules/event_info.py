@@ -29,11 +29,13 @@ description:
 version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
+seealso:
+  - module: event
 options:
   check:
     description:
       - Limit results to a specific check.
-      - C(entity) must also be specified.
+      - I(entity) must also be specified if this parameter is used.
     type: str
   entity:
     description:

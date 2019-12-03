@@ -29,15 +29,22 @@ description:
     U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings).
 version_added: "1.0"
 notes:
-  - Parameter C(auth.namespace) is ignored in this module.
+  - Parameter I(auth.namespace) is ignored in this module.
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: cluster_role_binding
 '''
 
 EXAMPLES = '''
 - name: List all Sensu cluster role bindings
   cluster_role_binding_info:
+  register: result
+
+- name: Retrieve a specific Sensu cluster role binding
+  cluster_role_binding_info:
+    name: my-binding
   register: result
 '''
 

@@ -33,15 +33,19 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: filter_info
 options:
   action:
     description:
       - Action to take with the event if the filter expressions match.
+      - Required if I(state) is C(present).
     type: str
     choices: [ 'allow', 'deny' ]
   expressions:
     description:
       - Filter expressions to be compared with event data.
+      - Required if I(state) is C(present).
     type: list
   runtime_assets:
     description:
@@ -83,6 +87,11 @@ EXAMPLES = '''
     expressions:
       - event.check.interval == 60
       - event.check.occurrences == 1 || event.check.occurrences % 60 == 0
+
+- name: Delete a filter
+  filter:
+    name: filter_interval_60_hourly
+    state: absent
 '''
 
 RETURN = '''

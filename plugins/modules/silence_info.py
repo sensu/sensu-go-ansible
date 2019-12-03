@@ -29,6 +29,8 @@ description:
 version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
+seealso:
+  - module: silence
 options:
   subscription:
     description:
@@ -43,11 +45,11 @@ options:
 '''
 
 EXAMPLES = '''
-- name: List Sensu silence entries
+- name: List all Sensu silence entries
   silence_info:
   register: result
 
-- name: Fetch specific silence with name proxy:awesome_check
+- name: Fetch a specific silence with name proxy:awesome_check
   silence_info:
     subscription: proxy
     check: awesome_check

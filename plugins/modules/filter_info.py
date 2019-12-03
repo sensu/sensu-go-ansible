@@ -30,11 +30,18 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: filter
 '''
 
 EXAMPLES = '''
-- name: List Sensu filter
+- name: List all Sensu filters
   filter_info:
+  register: result
+
+- name: Retrieve a specific Sensu filter
+  filter_info:
+    name: my-filter
   register: result
 '''
 

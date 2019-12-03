@@ -31,29 +31,34 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
   - sensu.sensu_go.state
+seealso:
+  - module: role_binding_info
+  - module: role
+  - module: cluster_role
+  - module: cluster_role_binding
 options:
   role:
     description:
-      - Name of the role
-      - This parameter is mutually exclusive with C(cluster_role).
+      - Name of the role.
+      - This parameter is mutually exclusive with I(cluster_role).
     type: str
   cluster_role:
     description:
       - Name of the cluster role. Note that the resulting role
         binding grants the cluster role to the provided users and
-        groups in the context of C(auth.namespace) only.
-      - This parameter is mutually exclusive with C(role).
+        groups in the context of I(auth.namespace) only.
+      - This parameter is mutually exclusive with I(role).
     type: str
   users:
     description:
       - List of users to bind to the role or cluster role
-      - Note that at least one of C(users) and C(groups) must be
+      - Note that at least one of I(users) and I(groups) must be
         specified when creating a role binding.
     type: list
   groups:
     description:
       - List of groups to bind to the role or cluster role
-      - Note that at least one of C(users) and C(groups) must be
+      - Note that at least one of I(users) and I(groups) must be
         specified when creating a role binding.
     type: list
 '''
@@ -77,6 +82,11 @@ EXAMPLES = '''
     groups:
       - team1-admins
       - team2-admins
+
+- name: Delete a role binding
+  role_binding:
+    name: org-admins
+    state: absent
 '''
 
 RETURN = '''

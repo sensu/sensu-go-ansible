@@ -30,11 +30,18 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: mutator
 '''
 
 EXAMPLES = '''
-- name: List Sensu mutators
+- name: List all Sensu mutators
   mutator_info:
+  register: result
+
+- name: Retrieve a single Sensu mutator
+  mutator_info:
+    name: my-mutator
   register: result
 '''
 

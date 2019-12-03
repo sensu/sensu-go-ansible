@@ -21,7 +21,7 @@ author:
   - Tadej Borovsak (@tadeboro)
 short_description: Manage Sensu pipe handler
 description:
-  - Create, update or delete Sensu pip handler.
+  - Create, update or delete a Sensu pipe handler.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/handlers/#pipe-handlers).
 version_added: "1.0"
@@ -31,12 +31,16 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: socket_handler
+  - module: handler_info
+  - module: handler_set
 options:
   command:
     description:
       - The handler command to be executed. The event data is passed to the process via STDIN.
+      - Required if I(state) is C(present).
     type: str
-    required: true
   filters:
     description:
       - List of filters to use when determining whether to pass the check result to this handler.
@@ -47,7 +51,7 @@ options:
     type: str
   timeout:
     description:
-      - Timeout for handler execution
+      - Timeout for handler execution.
     type: int
   env_vars:
     description:
@@ -70,6 +74,11 @@ EXAMPLES = '''
       INFLUXDB_PASS: password
     runtime_assets:
       - sensu-influxdb-handler
+
+- name: Delete  handler
+  pipe_handler:
+    name: influx-db
+    state: absent
 '''
 
 RETURN = '''

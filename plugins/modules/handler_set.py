@@ -31,21 +31,31 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: socket_handler
+  - module: pipe_handler
+  - module: handler_info
 options:
   handlers:
     description:
       - List of Sensu event handlers (names) to use for events using the handler set.
+      - Required if I(state) is C(present).
     type: list
 '''
 
 EXAMPLES = '''
-- name: Create set handler
+- name: Create a handler set
   handler_set:
     name: notify_all_the_things
     handlers:
       - slack
       - tcp_handler
       - udp_handler
+
+- name: Delete a handler set
+  handler_set:
+    name: notify_all_the_things
+    state: absent
 '''
 
 RETURN = '''

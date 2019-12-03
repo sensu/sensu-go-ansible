@@ -29,15 +29,22 @@ description:
     U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles).
 version_added: "1.0"
 notes:
-  - Parameter C(auth.namespace) is ignored in this module.
+  - Parameter I(auth.namespace) is ignored in this module.
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: cluster_role
 '''
 
 EXAMPLES = '''
 - name: List all Sensu cluster roles
   role_info:
+  register: result
+
+- name: Retrieve Sensu cluster role by name
+  role_info:
+    name: my-custer-role
   register: result
 '''
 

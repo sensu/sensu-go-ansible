@@ -41,13 +41,16 @@ options:
   rename:
     description:
       - The name that will be used when adding the asset to Sensu.
-      - If not present, C(name) parameter will be used.
+      - If not present, value of the I(name) parameter will be used.
     type: str
 notes:
-  - C(labels) and C(annotations) are merged with the values, obtained from the
-    Bonsai. Values passed-in as parameters take precedence over the values
-    obtained from Bonsai.
+  - I(labels) and I(annotations) values are merged with the values obtained
+    from Bonsai. Values passed-in as parameters take precedence over the
+    values obtained from Bonsai.
   - To delete an asset, use regular M(asset) module.
+seealso:
+  - module: asset
+  - module: asset_info
 """
 
 EXAMPLES = """

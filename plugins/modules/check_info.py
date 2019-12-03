@@ -30,11 +30,18 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: check
 '''
 
 EXAMPLES = '''
-- name: List Sensu checks
+- name: List all Sensu checks
   check_info:
+  register: result
+
+- name: Obtain a specific check
+  check_info:
+    name: my-check
   register: result
 '''
 

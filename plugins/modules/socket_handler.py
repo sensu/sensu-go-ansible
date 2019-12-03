@@ -31,15 +31,19 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: handler_info
+  - module: pipe_handler
+  - module: handler_set
 options:
   type:
     description:
       - The handler type.
+      - Required if I(state) is C(present).
     choices:
       - tcp
       - udp
     type: str
-    required: true
   filters:
     description:
       - List of filters to use when determining whether to pass the check result to this handler.
@@ -55,13 +59,13 @@ options:
   host:
     description:
       - The socket host address (IP or hostname) to connect to.
-    required: true
+      - Required if I(state) is C(present).
     type: str
   port:
     description:
       - The socket port to connect to.
+      - Required if I(state) is C(present).
     type: int
-    required: true
 '''
 
 EXAMPLES = '''
@@ -78,6 +82,11 @@ EXAMPLES = '''
     type: udp
     host: 10.0.1.99
     port: 4444
+
+- name: Delete a handler
+  socket_handler:
+    name: udp_handler
+    state: absent
 '''
 
 RETURN = '''

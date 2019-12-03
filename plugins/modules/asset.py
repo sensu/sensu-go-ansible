@@ -34,11 +34,15 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: asset_info
+  - module: bonsai_asset
 options:
   builds:
     description:
       - A list of asset builds used to define multiple artefacts which
         provide the named asset.
+      - Required if I(state) is C(present).
     type: list
     suboptions:
       url:
@@ -80,14 +84,11 @@ EXAMPLES = """
           - entity.system.os == 'linux'
           - entity.system.arch == 'amd64'
           - entity.system.platform == 'alpine'
-    annotations:
-      io.sensu.bonsai.url: https://bonsai.sensu.io/assets/sensu-plugins/sensu-plugins-cpu-checks
-      io.sensu.bonsai.api_url: https://bonsai.sensu.io/api/v1/assets/sensu-plugins/sensu-plugins-cpu-checks
-      io.sensu.bonsai.tier: Community
-      io.sensu.bonsai.version: 4.0.0
-      io.sensu.bonsai.namespace: sensu-plugins
-      io.sensu.bonsai.name: sensu-plugins-cpu-checks
-      io.sensu.bonsai.tags: ruby-runtime-2.4.4
+
+- name: Delete an asset
+  asset:
+    name: sensu-plugins-cpu-check
+    state: absent
 """
 
 RETURN = """

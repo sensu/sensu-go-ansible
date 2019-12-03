@@ -32,11 +32,18 @@ notes:
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: user
 '''
 
 EXAMPLES = '''
 - name: List Sensu users
   user_info:
+  register: result
+
+- name: Retrieve a single Sensu user
+  user_info:
+    name: my-user
   register: result
 '''
 

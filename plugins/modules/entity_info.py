@@ -30,11 +30,18 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: entity
 '''
 
 EXAMPLES = '''
 - name: List all Sensu entities
   entity_info:
+  register: result
+
+- name: Retrieve a specific Sensu entity
+  entity_info:
+    name: my-entity
   register: result
 '''
 

@@ -30,14 +30,16 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: hook
 '''
 
 EXAMPLES = '''
-- name: List Sensu hooks
+- name: List all Sensu hooks
   hook_info:
   register: result
 
-- name: Fetch Sensu hook
+- name: Fetch a specific Sensu hook
   hook_info:
     name: awesome-hook
   register: result

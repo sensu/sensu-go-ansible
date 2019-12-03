@@ -33,14 +33,18 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: hook_info
 options:
   command:
     description:
       - Command to run when the hook is triggered.
+      - Required if I(state) is C(present).
     type: str
   timeout:
     description:
       - The hook execution duration timeout in seconds (hard stop).
+      - Required if I(state) is C(present).
     type: int
   stdin:
     description:
@@ -48,7 +52,7 @@ options:
     type: bool
   runtime_assets:
     description:
-      - List of runtime assets required to run the check
+      - List of runtime assets required to run the check.
     type: list
 '''
 
@@ -63,7 +67,6 @@ EXAMPLES = '''
     stdin: false
 
 - name: Capture the process tree
-
   hook:
     auth:
       url: http://localhost:8080
@@ -71,6 +74,11 @@ EXAMPLES = '''
     command: ps aux
     timeout: 60
     stdin: false
+
+- name: Delete a hook
+  hook:
+    name: process_tree
+    state: absent
 '''
 
 RETURN = '''

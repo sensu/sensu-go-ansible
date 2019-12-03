@@ -31,11 +31,18 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: role_binding
 '''
 
 EXAMPLES = '''
 - name: List all Sensu role bindings
   role_binding_info:
+  register: result
+
+- name: Retrieve a single Sensu role binding
+  role_binding_info:
+      name: my-role-binding
   register: result
 '''
 
