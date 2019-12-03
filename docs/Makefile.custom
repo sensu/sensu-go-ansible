@@ -1,5 +1,7 @@
 modules := $(wildcard ../plugins/modules/*.py)
 module_docs := $(modules:../plugins/modules/%.py=source/modules/%.rst)
+doc_fragments := $(wildcard ../plugins/doc_fragments/*.py)
+template := templates/module.rst.j2
 
 .PHONY: all
 docs: $(module_docs)
@@ -9,6 +11,6 @@ docs: $(module_docs)
 clean:
 	rm -rf build source/modules
 
-source/modules/%.rst: ../plugins/modules/%.py ../plugins/doc_fragments/*.py
+source/modules/%.rst: ../plugins/modules/%.py $(doc_fragments) $(template)
 	mkdir -p source/modules
-	ansible-doc-extractor source/modules $<
+	ansible-doc-extractor --template $(template) source/modules $<

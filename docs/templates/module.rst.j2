@@ -1,0 +1,94 @@
+.. _{{ module }}_module:
+
+{% set title = module + ' -- ' + short_description | rst_ify %}
+{{ title }}
+{{ '=' * title | length }}
+
+{%   for desc in description %}
+{{ desc | rst_ify }}
+
+{%   endfor %}
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+{{ examples | indent(3, True) }}
+
+
+{% if notes -%}
+Notes
+-----
+
+.. note::
+{%   for note in notes %}
+   {{ note | rst_ify }}
+
+{%   endfor %}
+{% endif %}
+
+
+{% if seealso -%}
+See Also
+--------
+
+.. seealso::
+
+{% for item in seealso %}
+   - :ref:`{{ item.module }}_module`
+{% endfor %}
+{% endif %}
+
+
+{% macro option_desc(opts, level) %}
+{%   for name, spec in opts | dictsort recursive %}
+{%     set req = "required" if spec.required else "optional" %}
+{%     set default = ", default: " + spec.default if spec.default else "" %}
+{{ "  " * level }}{{ name }} ({{ req }})
+{%     for para in spec.description %}
+  {{ "  " * level }}{{ para | rst_ify }}
+
+{%     endfor %}
+  {{ "  " * level }}| **type**: {{ spec.type | default("str") }}
+{%     if spec.default %}
+  {{ "  " * level }}| **default**: {{ spec.default }}
+{%     endif %}
+{%     if spec.choices %}
+  {{ "  " * level }}| **choices**: {{ ", ".join(spec.choices) }}
+{%     endif %}
+
+{%     if spec.suboptions %}
+{{ option_desc(spec.suboptions, level + 1) }}
+{%     endif %}
+{%   endfor %}
+{% endmacro %}
+
+{% if options -%}
+Parameters
+----------
+
+{{ option_desc(options, 0) }}
+{% endif %}
+
+
+{% macro result_desc(results, level) %}
+{%   for name, spec in results.items() %}
+{%     set ret = spec.returned %}
+{%     set typ = spec.type | default("any") %}
+{%     set sample = spec.sample %}
+{{ "  " * level }}{{ name }} ({{ spec.returned }}), {{ typ }}, {{ sample }})
+  {{ "  " * level }}{{ spec.description | rst_ify }}
+
+{%     if spec.contains %}
+{{ result_desc(spec.contains, level + 1) }}
+{%     endif %}
+{%   endfor %}
+{% endmacro %}
+
+{% if returndocs -%}
+Return Values
+-------------
+
+{{ result_desc(returndocs, 0) }}
+{% endif %}
