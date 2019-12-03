@@ -31,10 +31,15 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
   - sensu.sensu_go.state
+seealso:
+  - module: role_info
+  - module: cluster_role
+  - module: role_binding
 options:
   rules:
     description:
       - Rules that the role applies.
+      - Must be non-empty if I(state) is C(present).
     type: list
     suboptions:
       verbs:
@@ -51,7 +56,7 @@ options:
       resource_names:
         description:
           - Names of specific resources the rule has permission to access.
-          - Note that for the 'create' verb, this argument will not be
+          - Note that for the C(create) verb, this argument will not be
             taken into account when enforcing RBAC, even if it is provided.
         type: list
 '''
@@ -67,6 +72,11 @@ EXAMPLES = '''
         resources:
           - checks
           - entities
+
+- name: Delete a role
+  role:
+    name: readonly
+    state: absent
 '''
 
 RETURN = '''

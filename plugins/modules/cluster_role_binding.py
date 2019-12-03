@@ -32,24 +32,29 @@ extends_documentation_fragment:
   - sensu.sensu_go.name
   - sensu.sensu_go.state
 notes:
-  - Parameter C(auth.namespace) is ignored in this module.
+  - Parameter I(auth.namespace) is ignored in this module.
 options:
   cluster_role:
     description:
-      - Name of the cluster role
+      - Name of the cluster role.
+      - Required if I(state) is C(present).
     type: str
   users:
     description:
       - List of users to bind to the cluster role
-      - Note that at least one of 'users' and 'groups' must be
+      - Note that at least one of I(users) and I(groups) must be
         specified when creating a cluster role binding.
     type: list
   groups:
     description:
-      - List of groups to bind to the cluster role
-      - Note that at least one of 'users' and 'groups' must be
+      - List of groups to bind to the cluster role.
+      - Note that at least one of I(users) and I(groups) must be
         specified when creating a cluster role binding.
     type: list
+seealso:
+  - module: cluster_role_binding_info
+  - module: cluster_role
+  - module: role_binding
 '''
 
 EXAMPLES = '''
@@ -58,9 +63,14 @@ EXAMPLES = '''
     name: all-cluster-admins
     cluster_role: cluster-admin
     groups:
-        - cluster-admins
+      - cluster-admins
     users:
       - alice
+
+- name: Delete a cluster role binding
+  cluster_role_binding:
+    name: all-cluster-admins
+    state: absent
 '''
 
 RETURN = '''

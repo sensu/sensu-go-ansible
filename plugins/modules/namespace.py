@@ -23,7 +23,7 @@ author:
   - Tadej Borovsak (@tadeboro)
 short_description: Manage Sensu namespaces
 description:
-  - Create, update or delete Sensu namespace.
+  - Create, update or delete a Sensu namespace.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces).
 version_added: "1.0"
@@ -32,7 +32,9 @@ extends_documentation_fragment:
   - sensu.sensu_go.name
   - sensu.sensu_go.state
 notes:
-  - Parameter C(auth.namespace) is ignored in this module.
+  - Parameter I(auth.namespace) is ignored in this module.
+seealso:
+  - module: namespace_info
 '''
 
 EXAMPLES = '''

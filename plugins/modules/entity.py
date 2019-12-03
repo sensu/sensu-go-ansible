@@ -33,11 +33,14 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: entity_info
 options:
   entity_class:
     description:
-      - Entity class. Standard classes are 'proxy' and 'agent', but you can use
-        whatever you want.
+      - Entity class. Standard classes are C(proxy) and C(agent), but you can
+        use whatever you want.
+      - Required if I(state) is C(present).
     type: str
   subscriptions:
     description:
@@ -73,7 +76,7 @@ options:
 '''
 
 EXAMPLES = '''
-- name: Create entity
+- name: Create an entity
   entity:
     auth:
       url: http://localhost:8080
@@ -104,6 +107,11 @@ EXAMPLES = '''
       - pass
       - api_key
     user: agent
+
+- name: Delete an entity
+  entity:
+    name: entity
+    state: absent
 '''
 
 RETURN = '''

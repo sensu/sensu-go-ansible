@@ -34,15 +34,19 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: check_info
 options:
   command:
     description:
       - Check command to run.
+      - Required if I(state) is C(present).
     type: str
     required: true
   subscriptions:
     description:
       - List of subscriptions which receive check requests.
+      - Required if I(state) is C(present).
     type: list
   handlers:
     description:
@@ -50,11 +54,13 @@ options:
     type: list
   interval:
     description:
-      - Check request interval
+      - Check request interval.
+      - Cannot be used when I(cron) option is used.
     type: int
   cron:
     description:
-      - Schedule check requests using crontab syntax
+      - Schedule check requests using crontab syntax.
+      - Cannot be used when I(interval) option is used.
     type: str
   publish:
     description:
@@ -62,7 +68,7 @@ options:
     type: bool
   timeout:
     description:
-      - Check execution timeout
+      - Check execution timeout.
     type: int
   ttl:
     description:
@@ -83,7 +89,7 @@ options:
     type: int
   runtime_assets:
     description:
-      - List of runtime assets required to run the check
+      - List of runtime assets required to run the check.
     type: list
   check_hooks:
     description:
@@ -94,7 +100,9 @@ options:
       - Entity name to associate this check with instead of the agent it ran on.
     type: str
   proxy_requests:
-    description: Allows you to assign the check to run for multiple entities according to their entity_attributes
+    description:
+      - Allows you to assign the check to run for multiple entities according
+        to their entity_attributes.
     type: dict
     suboptions:
       entity_attributes:
@@ -177,6 +185,11 @@ EXAMPLES = '''
     proxy_entity_name: sensu-site
     round_robin: yes
     publish: yes
+
+- name: Remove check
+  check:
+    name: my-check
+    state: absent
 '''
 
 RETURN = '''

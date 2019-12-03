@@ -31,11 +31,18 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: role
 '''
 
 EXAMPLES = '''
 - name: List all Sensu roles
   role_info:
+  register: result
+
+- name: Retrieve a specific Sensu role
+  role_info:
+    name: my-role
   register: result
 '''
 

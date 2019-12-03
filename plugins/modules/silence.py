@@ -32,6 +32,8 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: silence_info
 options:
   subscription:
     description:
@@ -40,6 +42,7 @@ options:
         matching check name will be marked as silenced, regardless of the originating entities
         subscriptions. Specific entity can also be targeted by taking advantage of per-entity
         subscription (entity:<entity_name>)
+      - This parameter is required if the I(check) parameter is absent.
     type: str
   check:
     description:
@@ -47,6 +50,7 @@ options:
        asterisk in the check position. This indicates that any event where the originating entities
        subscriptions match the subscription specified in the entry will be marked as silenced,
        regardless of the check name.
+      - This parameter is required if the I(subscription) parameter is absent.
     type: str
   begin:
     description:
@@ -81,6 +85,11 @@ EXAMPLES = '''
     subscription: entity:important-entity
     expire: 120
     reason: rebooting the world
+
+- name: Delete a silencing entry
+  silence:
+    subscription: entity:important-entity
+    state: absent
 '''
 
 RETURN = '''

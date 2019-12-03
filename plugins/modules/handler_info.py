@@ -28,11 +28,20 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: socket_handler
+  - module: pipe_handler
+  - module: handler_set
 '''
 
 EXAMPLES = '''
-- name: List Sensu handlers
+- name: List all Sensu handlers
   handler_info:
+  register: result
+
+- name: Retrieve info for a specific Sensu handler
+  handler_info:
+      name: my-handler
   register: result
 '''
 

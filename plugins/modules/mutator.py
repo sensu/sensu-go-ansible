@@ -33,10 +33,13 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+seealso:
+  - module: mutator_info
 options:
   command:
     description:
       - The mutator command to be executed by the Sensu backend.
+      - Required if I(state) is C(present).
     type: str
   timeout:
     description:
@@ -48,7 +51,7 @@ options:
     type: dict
   runtime_assets:
     description:
-      - List of runtime assets to required to run the mutator C(command)
+      - List of runtime assets, required to run the mutator I(command).
     type: list
 '''
 
@@ -63,6 +66,11 @@ EXAMPLES = '''
       INFLUXDB_USER: sensu
     runtime_assets:
       - sensu-influxdb-mutator
+
+- name: Delete a mutator
+  mutator:
+    name: mutator
+    state: absent
 '''
 
 RETURN = '''

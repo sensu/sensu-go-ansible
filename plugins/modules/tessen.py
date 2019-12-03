@@ -30,7 +30,7 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
 notes:
-  - Parameter C(auth.namespace) is ignored in this module, because Tessen is configured globally.
+  - Parameter I(auth.namespace) is ignored in this module, because Tessen is configured globally.
 options:
   state:
     description:

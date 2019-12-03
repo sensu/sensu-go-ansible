@@ -30,12 +30,25 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+seealso:
+  - module: asset
+  - module: bonsai_asset
 """
 
 EXAMPLES = """
-- name: List Sensu assets
+- name: List all Sensu assets
   asset_info:
   register: result
+
+- name: List the selected Sensu asset
+  asset_info:
+    name: my_asset
+  register: result
+
+- name: Do something with result
+  debug:
+    msg: "{{ result.objects.0.metadata.name }}"
+
 """
 
 RETURN = """
