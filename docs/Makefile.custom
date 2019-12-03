@@ -1,8 +1,4 @@
-# TODO(@tadeboro): Replace the shell function with the wildcard function once
-# we remove sensu_go_ prefix from all the modules (which will also mean that
-# we have all modules properly documented).
-
-modules := $(shell find ../plugins/modules/ -name '*.py' | grep -v sensu_go_)
+modules := $(wildcard ../plugins/modules/*.py)
 module_docs := $(modules:../plugins/modules/%.py=source/modules/%.rst)
 
 .PHONY: all
