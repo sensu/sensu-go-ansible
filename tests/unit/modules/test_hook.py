@@ -28,7 +28,7 @@ class TestHook(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/hooks/test_hook'
+        assert path == '/api/core/v2/namespaces/default/hooks/test_hook'
         assert payload == dict(
             command='/bin/true',
             timeout=10,
@@ -44,6 +44,7 @@ class TestHook(ModuleTestCase):
         sync_mock.return_value = True, {}
         set_module_args(
             name='test_hook',
+            namespace='my',
             state='absent',
             command='/bin/true',
             timeout=30,
@@ -58,7 +59,7 @@ class TestHook(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'absent'
-        assert path == '/hooks/test_hook'
+        assert path == '/api/core/v2/namespaces/my/hooks/test_hook'
         assert payload == dict(
             command='/bin/true',
             timeout=30,
@@ -66,7 +67,7 @@ class TestHook(ModuleTestCase):
             runtime_assets=['awesomeness'],
             metadata=dict(
                 name='test_hook',
-                namespace='default',
+                namespace='my',
                 labels={'region': 'us-west-1'},
                 annotations={'playbook': '12345'},
             ),

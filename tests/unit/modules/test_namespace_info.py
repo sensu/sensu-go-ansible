@@ -23,7 +23,7 @@ class TestNamespaceInfo(ModuleTestCase):
             namespace_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/namespaces"
+        assert path == "/api/core/v2/namespaces"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
     def test_failure(self, mocker):

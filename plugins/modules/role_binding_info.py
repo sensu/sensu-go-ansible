@@ -31,6 +31,7 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+  - sensu.sensu_go.namespace
 seealso:
   - module: role_binding
 '''
@@ -63,13 +64,15 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=dict(
-            arguments.get_spec("auth"),
+            arguments.get_spec("auth", "namespace"),
             name=dict()
         )
     )
 
     client = arguments.get_sensu_client(module.params["auth"])
-    path = utils.build_url_path("rolebindings", module.params["name"])
+    path = utils.build_core_v2_path(
+        module.params["namespace"], "rolebindings", module.params["name"],
+    )
 
     try:
         role_bindings = utils.prepare_result_list(utils.get(client, path))

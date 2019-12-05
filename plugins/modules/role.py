@@ -30,6 +30,7 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
+  - sensu.sensu_go.namespace
   - sensu.sensu_go.state
 seealso:
   - module: role_info
@@ -96,7 +97,7 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=dict(
-            arguments.get_spec("auth", "name", "state"),
+            arguments.get_spec("auth", "name", "state", "namespace"),
             rules=dict(
                 type="list",
                 elements="dict",
@@ -123,7 +124,9 @@ def main():
         module.fail_json(msg=msg)
 
     client = arguments.get_sensu_client(module.params["auth"])
-    path = utils.build_url_path("roles", module.params["name"])
+    path = utils.build_core_v2_path(
+        module.params["namespace"], "roles", module.params["name"],
+    )
     payload = arguments.get_mutation_payload(
         module.params, "rules"
     )

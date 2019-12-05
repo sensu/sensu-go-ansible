@@ -26,7 +26,7 @@ class TestNamespace(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/namespaces/dev'
+        assert path == '/api/core/v2/namespaces/dev'
         assert payload == dict(
             name='dev'
         )

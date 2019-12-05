@@ -30,6 +30,7 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
+  - sensu.sensu_go.namespace
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
 options:

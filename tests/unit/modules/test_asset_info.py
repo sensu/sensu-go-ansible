@@ -17,13 +17,13 @@ class TestAssetInfo(ModuleTestCase):
     def test_get_all_assets(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.return_value = [1, 2, 3]
-        set_module_args()
+        set_module_args(namespace="my")
 
         with pytest.raises(AnsibleExitJson) as context:
             asset_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/assets"
+        assert path == "/api/core/v2/namespaces/my/assets"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
     def test_get_single_asset(self, mocker):
@@ -35,7 +35,7 @@ class TestAssetInfo(ModuleTestCase):
             asset_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/assets/sample-asset"
+        assert path == "/api/core/v2/namespaces/default/assets/sample-asset"
         assert context.value.args[0]["objects"] == [4]
 
     def test_missing_single_asset(self, mocker):

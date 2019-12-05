@@ -29,7 +29,7 @@ class TestSocketHandler(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == "present"
-        assert path == "/handlers/test_handler"
+        assert path == "/api/core/v2/namespaces/default/handlers/test_handler"
         assert payload == dict(
             type='tcp',
             socket=dict(
@@ -48,6 +48,7 @@ class TestSocketHandler(ModuleTestCase):
         sync_mock.return_value = True, {}
         set_module_args(
             name='test_handler',
+            namespace='my',
             state='absent',
             type='udp',
             filters=['occurrences', 'production'],
@@ -62,7 +63,7 @@ class TestSocketHandler(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == "absent"
-        assert path == "/handlers/test_handler"
+        assert path == "/api/core/v2/namespaces/my/handlers/test_handler"
         assert payload == dict(
             type='udp',
             filters=['occurrences', 'production'],
@@ -74,7 +75,7 @@ class TestSocketHandler(ModuleTestCase):
             ),
             metadata=dict(
                 name="test_handler",
-                namespace="default",
+                namespace="my",
             ),
         )
         assert check_mode is False

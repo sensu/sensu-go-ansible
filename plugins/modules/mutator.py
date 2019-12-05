@@ -30,6 +30,7 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
+  - sensu.sensu_go.namespace
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
@@ -97,7 +98,7 @@ def main():
         supports_check_mode=True,
         argument_spec=dict(
             arguments.get_spec(
-                "auth", "name", "state", "labels", "annotations",
+                "auth", "name", "state", "labels", "annotations", "namespace",
             ),
             command=dict(),
             timeout=dict(
@@ -113,7 +114,9 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
-    path = utils.build_url_path('mutators', module.params['name'])
+    path = utils.build_core_v2_path(
+        module.params['namespace'], 'mutators', module.params['name'],
+    )
     payload = arguments.get_mutation_payload(
         module.params, 'command', 'timeout', 'runtime_assets'
     )

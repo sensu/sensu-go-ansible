@@ -29,8 +29,6 @@ description:
 version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
-notes:
-  - Parameter I(auth.namespace) is ignored in this module, because Tessen is configured globally.
 options:
   state:
     description:
@@ -99,16 +97,14 @@ def main():
             )
         )
     )
-    module.params['auth']['namespace'] = None  # Making sure we are not fallbacking to default
     client = arguments.get_sensu_client(module.params['auth'])
+    path = utils.build_core_v2_path(None, 'tessen')
     payload = dict(
         opt_out=module.params['state'] == 'disabled'
     )
 
     try:
-        changed, tessen = sync(
-            client, '/tessen', payload, module.check_mode,
-        )
+        changed, tessen = sync(client, path, payload, module.check_mode)
         module.exit_json(changed=changed, object=tessen)
     except errors.Error as e:
         module.fail_json(msg=str(e))

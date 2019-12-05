@@ -29,6 +29,7 @@ description:
 version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
+  - sensu.sensu_go.namespace
 seealso:
   - module: silence
 options:
@@ -73,7 +74,7 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=dict(
-            arguments.get_spec('auth'),
+            arguments.get_spec('auth', 'namespace'),
             subscription=dict(),
             check=dict(),
         ),
@@ -81,7 +82,9 @@ def main():
 
     name = '{0}:{1}'.format(module.params['subscription'] or '*', module.params['check'] or '*')
     client = arguments.get_sensu_client(module.params["auth"])
-    path = utils.build_url_path("silenced", None if name == "*:*" else name)
+    path = utils.build_core_v2_path(
+        module.params["namespace"], "silenced", None if name == "*:*" else name,
+    )
 
     try:
         silences = utils.prepare_result_list(utils.get(client, path))

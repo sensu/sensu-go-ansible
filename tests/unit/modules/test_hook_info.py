@@ -17,13 +17,13 @@ class TestHookInfo(ModuleTestCase):
     def test_get_all_hooks(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.return_value = [1, 2, 3]
-        set_module_args()
+        set_module_args(namespace="my")
 
         with pytest.raises(AnsibleExitJson) as context:
             hook_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/hooks"
+        assert path == "/api/core/v2/namespaces/my/hooks"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
     def test_get_single_hook(self, mocker):
@@ -35,7 +35,7 @@ class TestHookInfo(ModuleTestCase):
             hook_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/hooks/sample-hook"
+        assert path == "/api/core/v2/namespaces/default/hooks/sample-hook"
         assert context.value.args[0]["objects"] == [4]
 
     def test_missing_single_hook(self, mocker):

@@ -17,13 +17,13 @@ class TestRoleBindingInfo(ModuleTestCase):
     def test_get_all_role_bindings(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.return_value = [1, 2, 3]
-        set_module_args()
+        set_module_args(namespace="my")
 
         with pytest.raises(AnsibleExitJson) as context:
             role_binding_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/rolebindings"
+        assert path == "/api/core/v2/namespaces/my/rolebindings"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
     def test_get_single_role_binding(self, mocker):
@@ -35,7 +35,7 @@ class TestRoleBindingInfo(ModuleTestCase):
             role_binding_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/rolebindings/test-role-binding"
+        assert path == "/api/core/v2/namespaces/default/rolebindings/test-role-binding"
         assert context.value.args[0]["objects"] == [1]
 
     def test_missing_single_role_binding(self, mocker):

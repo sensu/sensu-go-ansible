@@ -17,7 +17,7 @@ class TestGetObjects:
     def test_get_entity(self, mocker):
         client = mocker.Mock()
         client.get.return_value = http.Response(200, '{"entity": "entity"}')
-        resp = event.get_entity(client, 'entity')
+        resp = event.get_entity(client, 'default', 'entity')
 
         assert resp == {'entity': 'entity'}
 
@@ -27,12 +27,12 @@ class TestGetObjects:
 
         with pytest.raises(errors.SyncError,
                            match="Entity with name 'entity' does not exist on remote."):
-            event.get_entity(client, 'entity')
+            event.get_entity(client, 'default', 'entity')
 
     def test_get_check(self, mocker):
         client = mocker.Mock()
         client.get.return_value = http.Response(200, '{"check": "check"}')
-        resp = event.get_check(client, 'check')
+        resp = event.get_check(client, 'default', 'check')
 
         assert resp == {'check': 'check'}
 
@@ -42,7 +42,7 @@ class TestGetObjects:
 
         with pytest.raises(errors.SyncError,
                            match="Check with name 'check' does not exist on remote."):
-            event.get_check(client, 'check')
+            event.get_check(client, 'default', 'check')
 
 
 class TestEvent(ModuleTestCase):
@@ -99,7 +99,7 @@ class TestEvent(ModuleTestCase):
             event.main()
 
         _client, path, payload, check_mode = send_event_mock.call_args[0]
-        assert path == '/events/awesome_entity/awesome_check'
+        assert path == '/api/core/v2/namespaces/default/events/awesome_entity/awesome_check'
         assert payload == dict(
             metadata=dict(
                 namespace='default'
@@ -147,6 +147,7 @@ class TestEvent(ModuleTestCase):
         get_check_mock.return_value = check_object
 
         set_module_args(
+            namespace='my',
             timestamp=1234567,
             entity='awesome_entity',
             check='awesome_check',
@@ -198,10 +199,10 @@ class TestEvent(ModuleTestCase):
             event.main()
 
         _client, path, payload, check_mode = send_event_mock.call_args[0]
-        assert path == '/events/awesome_entity/awesome_check'
+        assert path == '/api/core/v2/namespaces/my/events/awesome_entity/awesome_check'
         assert payload == dict(
             metadata=dict(
-                namespace='default'
+                namespace='my'
             ),
             timestamp=1234567,
             entity=dict(

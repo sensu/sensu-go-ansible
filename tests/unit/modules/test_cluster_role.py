@@ -32,7 +32,7 @@ class TestClusterRole(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/clusterroles/test_cluster_role'
+        assert path == '/api/core/v2/clusterroles/test_cluster_role'
         assert payload == dict(
             rules=[
                 dict(
@@ -71,7 +71,7 @@ class TestClusterRole(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/clusterroles/test_cluster_role'
+        assert path == '/api/core/v2/clusterroles/test_cluster_role'
         assert payload == dict(
             metadata=dict(
                 name='test_cluster_role',

@@ -17,13 +17,13 @@ class TestRoleInfo(ModuleTestCase):
     def test_get_all_roles(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.return_value = [1, 2, 3]
-        set_module_args()
+        set_module_args(namespace="my")
 
         with pytest.raises(AnsibleExitJson) as context:
             role_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/roles"
+        assert path == "/api/core/v2/namespaces/my/roles"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
     def test_get_single_role(self, mocker):
@@ -35,7 +35,7 @@ class TestRoleInfo(ModuleTestCase):
             role_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/roles/test-role"
+        assert path == "/api/core/v2/namespaces/default/roles/test-role"
         assert context.value.args[0]["objects"] == [1]
 
     def test_missing_single_role(self, mocker):

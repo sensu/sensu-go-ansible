@@ -23,7 +23,7 @@ class TestClusterRoleBindingInfo(ModuleTestCase):
             cluster_role_binding_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/clusterrolebindings"
+        assert path == "/api/core/v2/clusterrolebindings"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
     def test_get_single_cluster_role_binding(self, mocker):
@@ -35,7 +35,7 @@ class TestClusterRoleBindingInfo(ModuleTestCase):
             cluster_role_binding_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/clusterrolebindings/test-cluster-role-binding"
+        assert path == "/api/core/v2/clusterrolebindings/test-cluster-role-binding"
         assert context.value.args[0]["objects"] == [1]
 
     def test_missing_single_cluster_role_binding(self, mocker):

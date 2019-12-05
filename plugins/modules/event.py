@@ -29,6 +29,7 @@ description:
 version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
+  - sensu.sensu_go.namespace
 seealso:
   - module: event_info
 notes:
@@ -172,16 +173,16 @@ STATUS_MAP = {
 }
 
 
-def get_check(client, check):
-    check_path = utils.build_url_path('checks', check)
+def get_check(client, namespace, check):
+    check_path = utils.build_core_v2_path(namespace, 'checks', check)
     resp = client.get(check_path)
     if resp.status != 200:
         raise errors.SyncError("Check with name '{0}' does not exist on remote.".format(check))
     return resp.json
 
 
-def get_entity(client, entity):
-    entity_path = utils.build_url_path('entities', entity)
+def get_entity(client, namespace, entity):
+    entity_path = utils.build_core_v2_path(namespace, 'entities', entity)
     resp = client.get(entity_path)
     if resp.status != 200:
         raise errors.SyncError("Entity with name '{0}' does not exist on remote.".format(entity))
@@ -209,10 +210,10 @@ def _update_payload_with_check_attributes(payload, check_attributes):
 def _build_api_payload(client, params):
     payload = arguments.get_spec_payload(params, 'timestamp')
     payload['metadata'] = dict(
-        namespace=params['auth']['namespace']
+        namespace=params['namespace']
     )
-    payload['entity'] = get_entity(client, params['entity'])
-    payload['check'] = get_check(client, params['check'])
+    payload['entity'] = get_entity(client, params['namespace'], params['entity'])
+    payload['check'] = get_check(client, params['namespace'], params['check'])
 
     _update_payload_with_check_attributes(payload, params['check_attributes'])
     _update_payload_with_metric_attributes(payload, params['metric_attributes'])
@@ -230,7 +231,7 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=dict(
-            arguments.get_spec("auth"),
+            arguments.get_spec("auth", "namespace"),
             timestamp=dict(type='int'),
             entity=dict(required=True),
             check=dict(required=True),
@@ -281,8 +282,9 @@ def main():
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
-    path = utils.build_url_path(
-        'events', module.params['entity'], module.params['check'],
+    path = utils.build_core_v2_path(
+        module.params['namespace'], 'events', module.params['entity'],
+        module.params['check'],
     )
 
     try:
