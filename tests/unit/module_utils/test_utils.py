@@ -260,8 +260,36 @@ class TestBuildUrlPath:
         (("get/rid of+stuff",), "/get%2Frid%20of%2Bstuff"),
         (("/", " ", "a"), "/%2F/%20/a"),
     ])
-    def test_build_url_path(self, parts, expectation):
-        assert expectation == utils.build_url_path(*parts)
+    def test_build_url_path_no_namespace(self, parts, expectation):
+        path = "/api/enterprise/store/v1" + expectation
+        assert path == utils.build_url_path(
+            "enterprise/store", "v1", None, *parts
+        )
+
+    @pytest.mark.parametrize("parts,expectation", [
+        ((), "/"),
+        ((None, None), "/"),
+        ((None, "a", "b", None, None, "c"), "/a/b/c"),
+        (("get/rid of+stuff",), "/get%2Frid%20of%2Bstuff"),
+        (("/", " ", "a"), "/%2F/%20/a"),
+    ])
+    def test_build_url_path_with_namespace(self, parts, expectation):
+        path = "/api/core/v2/namespaces/default" + expectation
+        assert path == utils.build_url_path(
+            "core", "v2", "default", *parts
+        )
+
+
+class TestBuildCoreV2Path:
+    def test_build_path_no_namespace(self):
+        assert utils.build_core_v2_path(None, "a").startswith(
+            "/api/core/v2/",
+        )
+
+    def test_build_url_with_namespace(self):
+        assert utils.build_core_v2_path("default", "a").startswith(
+            "/api/core/v2/namespaces/default/",
+        )
 
 
 class TestPrepareResultList:

@@ -46,12 +46,21 @@ class TestGetSpecPayload:
 
 
 class TestGetMutationPayload:
-    def test_no_key(self):
+    def test_name_only(self):
         params = dict(
-            auth=dict(
-                namespace="space"
-            ),
             name="name",
+        )
+
+        assert arguments.get_mutation_payload(params) == dict(
+            metadata=dict(
+                name="name",
+            ),
+        )
+
+    def test_name_and_namespace(self):
+        params = dict(
+            name="name",
+            namespace="space",
         )
 
         assert arguments.get_mutation_payload(params) == dict(
@@ -63,9 +72,6 @@ class TestGetMutationPayload:
 
     def test_wanted_key(self):
         params = dict(
-            auth=dict(
-                namespace="space"
-            ),
             name="name",
             key="value",
         )
@@ -74,29 +80,20 @@ class TestGetMutationPayload:
             key="value",
             metadata=dict(
                 name="name",
-                namespace="space",
             ),
         )
 
     def test_namespace_is_none(self):
         params = dict(
-            auth=dict(
-                namespace=None
-            ),
             name="name",
+            namespace=None,
         )
 
-        assert arguments.get_mutation_payload(params) == dict(
-            metadata=dict(
-                name="name"
-            ),
-        )
+        with pytest.raises(AssertionError, match="BUG"):
+            arguments.get_mutation_payload(params)
 
     def test_labels(self):
         params = dict(
-            auth=dict(
-                namespace="space"
-            ),
             name="name",
             labels=dict(
                 some="label",
@@ -107,7 +104,6 @@ class TestGetMutationPayload:
         assert arguments.get_mutation_payload(params) == dict(
             metadata=dict(
                 name="name",
-                namespace="space",
                 labels=dict(
                     some="label",
                     numeric="3",
@@ -117,9 +113,6 @@ class TestGetMutationPayload:
 
     def test_annotations(self):
         params = dict(
-            auth=dict(
-                namespace="space"
-            ),
             name="name",
             annotations=dict(
                 my="Annotation",
@@ -130,7 +123,6 @@ class TestGetMutationPayload:
         assert arguments.get_mutation_payload(params) == dict(
             metadata=dict(
                 name="name",
-                namespace="space",
                 annotations=dict(
                     my="Annotation",
                     number="45",

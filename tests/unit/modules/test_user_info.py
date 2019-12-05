@@ -23,10 +23,10 @@ class TestUserInfo(ModuleTestCase):
             user_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/users"
+        assert path == "/api/core/v2/users"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
-    def test_get_single_mutator(self, mocker):
+    def test_get_single_user(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.return_value = 4
         set_module_args(name="sample-user")
@@ -35,7 +35,7 @@ class TestUserInfo(ModuleTestCase):
             user_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/users/sample-user"
+        assert path == "/api/core/v2/users/sample-user"
         assert context.value.args[0]["objects"] == [4]
 
     def test_missing_single_user(self, mocker):

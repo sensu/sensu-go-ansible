@@ -27,7 +27,7 @@ class TestEntity(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/entities/test_entity'
+        assert path == '/api/core/v2/namespaces/default/entities/test_entity'
         assert payload == dict(
             entity_class='proxy',
             metadata=dict(
@@ -42,6 +42,7 @@ class TestEntity(ModuleTestCase):
         sync_mock.return_value = True, {}
         set_module_args(
             name='test_entity',
+            namespace='my',
             state='absent',
             entity_class='proxy',
             subscriptions=['web', 'prod'],
@@ -74,7 +75,7 @@ class TestEntity(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'absent'
-        assert path == '/entities/test_entity'
+        assert path == '/api/core/v2/namespaces/my/entities/test_entity'
         assert payload == dict(
             entity_class='proxy',
             subscriptions=['web', 'prod'],
@@ -102,7 +103,7 @@ class TestEntity(ModuleTestCase):
             user='agent',
             metadata=dict(
                 name='test_entity',
-                namespace='default'
+                namespace='my'
             ),
         )
         assert check_mode is False

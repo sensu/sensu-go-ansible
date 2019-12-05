@@ -32,7 +32,7 @@ class TestRole(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/roles/test_role'
+        assert path == '/api/core/v2/namespaces/default/roles/test_role'
         assert payload == dict(
             rules=[
                 dict(
@@ -53,6 +53,7 @@ class TestRole(ModuleTestCase):
         sync_mock.return_value = True, {}
         set_module_args(
             name='test_role',
+            namespace='my',
             state='present',
             rules=[
                 dict(
@@ -72,11 +73,11 @@ class TestRole(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/roles/test_role'
+        assert path == '/api/core/v2/namespaces/my/roles/test_role'
         assert payload == dict(
             metadata=dict(
                 name='test_role',
-                namespace='default',
+                namespace='my',
             ),
             rules=[
                 dict(

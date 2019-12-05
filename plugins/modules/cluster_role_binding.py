@@ -31,8 +31,6 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
   - sensu.sensu_go.state
-notes:
-  - Parameter I(auth.namespace) is ignored in this module.
 options:
   cluster_role:
     description:
@@ -117,9 +115,10 @@ def main():
     if msg:
         module.fail_json(msg=msg)
 
-    module.params['auth']['namespace'] = None  # Making sure we are not fallbacking to default
     client = arguments.get_sensu_client(module.params["auth"])
-    path = utils.build_url_path("clusterrolebindings", module.params["name"])
+    path = utils.build_core_v2_path(
+        None, "clusterrolebindings", module.params["name"],
+    )
     payload = build_api_payload(module.params)
 
     try:

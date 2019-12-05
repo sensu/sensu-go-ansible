@@ -28,7 +28,7 @@ class TestRoleBinding(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/rolebindings/test_role_binding'
+        assert path == '/api/core/v2/namespaces/default/rolebindings/test_role_binding'
         assert payload == dict(
             role_ref=dict(
                 name='test_role',
@@ -61,7 +61,7 @@ class TestRoleBinding(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/rolebindings/test_role_binding'
+        assert path == '/api/core/v2/namespaces/default/rolebindings/test_role_binding'
         assert payload == dict(
             role_ref=dict(
                 name='test_role',
@@ -85,6 +85,7 @@ class TestRoleBinding(ModuleTestCase):
         sync_mock.return_value = True, {}
         set_module_args(
             name='test_role_binding',
+            namespace='my',
             role='test_role',
             users=['user_1', 'user_2'],
             groups=['group_1', 'group_2'],
@@ -95,11 +96,11 @@ class TestRoleBinding(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/rolebindings/test_role_binding'
+        assert path == '/api/core/v2/namespaces/my/rolebindings/test_role_binding'
         assert payload == dict(
             metadata=dict(
                 name='test_role_binding',
-                namespace='default',
+                namespace='my',
             ),
             role_ref=dict(
                 name='test_role',
@@ -140,7 +141,7 @@ class TestRoleBinding(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _compare = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/rolebindings/test_role_binding'
+        assert path == '/api/core/v2/namespaces/default/rolebindings/test_role_binding'
         assert payload == dict(
             role_ref=dict(
                 name='test_cluster_role',

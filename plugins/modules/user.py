@@ -31,8 +31,6 @@ extends_documentation_fragment:
   - sensu.sensu_go.name
 seealso:
   - module: user_info
-notes:
-  - Parameter I(auth.namespace) is ignored in this module.
 options:
   state:
     description:
@@ -120,9 +118,8 @@ def main():
         ),
     )
 
-    module.params['auth']['namespace'] = None
     client = arguments.get_sensu_client(module.params['auth'])
-    path = utils.build_url_path('users', module.params['name'])
+    path = utils.build_core_v2_path(None, 'users', module.params['name'])
     state = module.params['state']
 
     remote_object = utils.get(client, path)

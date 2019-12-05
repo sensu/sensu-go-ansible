@@ -29,7 +29,7 @@ class TestSensuGoCheck(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == "present"
-        assert path == "/checks/test_check"
+        assert path == "/api/core/v2/namespaces/default/checks/test_check"
         assert payload == dict(
             command='echo "test"',
             subscriptions=['switches'],
@@ -46,6 +46,7 @@ class TestSensuGoCheck(ModuleTestCase):
         sync_mock.return_value = True, {}
         set_module_args(
             name='test_check',
+            namespace='my',
             state='absent',
             command='/bin/true',
             subscriptions=['checks', 'also_checks'],
@@ -75,7 +76,7 @@ class TestSensuGoCheck(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == "absent"
-        assert path == "/checks/test_check"
+        assert path == "/api/core/v2/namespaces/my/checks/test_check"
         assert payload == dict(
             command='/bin/true',
             subscriptions=['checks', 'also_checks'],
@@ -98,7 +99,7 @@ class TestSensuGoCheck(ModuleTestCase):
             runtime_assets=['awesomeness'],
             metadata=dict(
                 name="test_check",
-                namespace="default",
+                namespace="my",
             ),
         )
         assert check_mode is False

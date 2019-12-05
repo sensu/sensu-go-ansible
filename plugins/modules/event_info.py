@@ -29,6 +29,7 @@ description:
 version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
+  - sensu.sensu_go.namespace
 seealso:
   - module: event
 options:
@@ -79,15 +80,16 @@ def main():
         supports_check_mode=True,
         required_by=required_by,
         argument_spec=dict(
-            arguments.get_spec("auth"),
+            arguments.get_spec("auth", "namespace"),
             check=dict(),
             entity=dict(),
         ),
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
-    path = utils.build_url_path(
-        'events', module.params['entity'], module.params['check'],
+    path = utils.build_core_v2_path(
+        module.params['namespace'], 'events', module.params['entity'],
+        module.params['check'],
     )
 
     try:

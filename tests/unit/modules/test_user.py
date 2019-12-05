@@ -102,7 +102,7 @@ class TestUser(ModuleTestCase):
 
         object, state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'enabled'
-        assert path == '/users/alice'
+        assert path == '/api/core/v2/users/alice'
         assert payload == dict(
             username='alice',
             password='alice!?pass',
@@ -127,7 +127,7 @@ class TestUser(ModuleTestCase):
 
         object, state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'disabled'
-        assert path == '/users/test_user'
+        assert path == '/api/core/v2/users/test_user'
         assert payload == dict(
             username='test_user',
             password='password',

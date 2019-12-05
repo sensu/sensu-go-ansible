@@ -26,7 +26,7 @@ class TestSilence(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/silenced/%2A%3Acheck'  # %2A = *, %3A = :
+        assert path == '/api/core/v2/namespaces/default/silenced/%2A%3Acheck'  # %2A = *, %3A = :
         assert payload == dict(
             check='check',
             metadata=dict(
@@ -48,7 +48,7 @@ class TestSilence(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/silenced/subscription%3A%2A'  # %3A = :, %2A = *
+        assert path == '/api/core/v2/namespaces/default/silenced/subscription%3A%2A'  # %3A = :, %2A = *
         assert payload == dict(
             subscription='subscription',
             metadata=dict(
@@ -62,6 +62,7 @@ class TestSilence(ModuleTestCase):
         sync_mock = mocker.patch.object(utils, 'sync')
         sync_mock.return_value = True, {}
         set_module_args(
+            namespace='my',
             subscription='entity:test-entity',
             check='check',
             state='absent',
@@ -78,7 +79,7 @@ class TestSilence(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'absent'
-        assert path == '/silenced/entity%3Atest-entity%3Acheck'  # %3A = :
+        assert path == '/api/core/v2/namespaces/my/silenced/entity%3Atest-entity%3Acheck'  # %3A = :
         assert payload == dict(
             subscription='entity:test-entity',
             check='check',
@@ -88,7 +89,7 @@ class TestSilence(ModuleTestCase):
             reason='because',
             metadata=dict(
                 name='entity:test-entity:check',
-                namespace='default',
+                namespace='my',
                 labels={'region': 'us-west-1'},
                 annotations={'playbook': '12345'},
             ),

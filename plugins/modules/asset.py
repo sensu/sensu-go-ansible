@@ -31,6 +31,7 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
+  - sensu.sensu_go.namespace
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
@@ -159,7 +160,7 @@ def main():
         supports_check_mode=True,
         argument_spec=dict(
             arguments.get_spec(
-                "auth", "name", "state", "labels", "annotations",
+                "auth", "name", "namespace", "state", "labels", "annotations",
             ),
             builds=dict(
                 type="list",
@@ -187,7 +188,9 @@ def main():
         module.fail_json(msg=msg)
 
     client = arguments.get_sensu_client(module.params["auth"])
-    path = utils.build_url_path("assets", module.params["name"])
+    path = utils.build_core_v2_path(
+        module.params["namespace"], "assets", module.params["name"],
+    )
     payload = build_api_payload(module.params)
 
     try:

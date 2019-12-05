@@ -30,6 +30,7 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
+  - sensu.sensu_go.namespace
 seealso:
   - module: entity
 '''
@@ -62,13 +63,15 @@ def main():
     module = AnsibleModule(
         supports_check_mode=True,
         argument_spec=dict(
-            arguments.get_spec("auth"),
+            arguments.get_spec("auth", "namespace"),
             name=dict(),  # Name is not required in info modules.
         ),
     )
 
     client = arguments.get_sensu_client(module.params["auth"])
-    path = utils.build_url_path("entities", module.params["name"])
+    path = utils.build_core_v2_path(
+        module.params["namespace"], "entities", module.params["name"],
+    )
 
     try:
         entities = utils.prepare_result_list(utils.get(client, path))

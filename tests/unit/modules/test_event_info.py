@@ -17,13 +17,13 @@ class TestEventInfo(ModuleTestCase):
     def test_get_all_events(self, mocker):
         get_mock = mocker.patch.object(utils, 'get')
         get_mock.return_value = [1, 2, 3]
-        set_module_args()
+        set_module_args(namespace="my")
 
         with pytest.raises(AnsibleExitJson) as context:
             event_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == '/events'
+        assert path == '/api/core/v2/namespaces/my/events'
         assert context.value.args[0]['objects'] == [1, 2, 3]
 
     def test_get_events_by_entity(self, mocker):
@@ -37,7 +37,7 @@ class TestEventInfo(ModuleTestCase):
             event_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == '/events/simple-entity'
+        assert path == '/api/core/v2/namespaces/default/events/simple-entity'
         assert context.value.args[0]['objects'] == [1, 2]
 
     def test_get_events_by_check(self, mocker):
@@ -63,7 +63,7 @@ class TestEventInfo(ModuleTestCase):
             event_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == '/events/simple-entity/simple-check'
+        assert path == '/api/core/v2/namespaces/default/events/simple-entity/simple-check'
         assert context.value.args[0]['objects'] == [4]
 
     def test_no_event_by_entity_and_check(self, mocker):

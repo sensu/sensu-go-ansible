@@ -23,7 +23,7 @@ class TestClusterRoleInfo(ModuleTestCase):
             cluster_role_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/clusterroles"
+        assert path == "/api/core/v2/clusterroles"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
     def test_get_single_cluster_role(self, mocker):
@@ -35,7 +35,7 @@ class TestClusterRoleInfo(ModuleTestCase):
             cluster_role_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/clusterroles/test-cluster-role"
+        assert path == "/api/core/v2/clusterroles/test-cluster-role"
         assert context.value.args[0]["objects"] == [1]
 
     def test_missing_single_cluster_role(self, mocker):

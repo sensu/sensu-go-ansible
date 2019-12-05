@@ -29,7 +29,6 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
 notes:
-  - Parameters I(auth.namespace) is ignored in this module.
   - Currently, it is not possible to retrieve information about a single
     namespace because namespace is not much more than a name itself.
 seealso:
@@ -62,9 +61,8 @@ def main():
             arguments.get_spec("auth"),
         ),
     )
-    module.params['auth']['namespace'] = None
     client = arguments.get_sensu_client(module.params['auth'])
-    path = '/namespaces'
+    path = utils.build_core_v2_path(None, 'namespaces')
 
     try:
         namespaces = utils.get(client, path)

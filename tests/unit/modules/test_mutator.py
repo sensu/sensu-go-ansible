@@ -27,7 +27,7 @@ class TestMutator(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/mutators/test_mutator'
+        assert path == '/api/core/v2/namespaces/default/mutators/test_mutator'
         assert payload == dict(
             command='/bin/true',
             metadata=dict(
@@ -42,6 +42,7 @@ class TestMutator(ModuleTestCase):
         sync_mock.return_value = True, {}
         set_module_args(
             name='test_mutator',
+            namespace='my',
             state='absent',
             command='/bin/true',
             timeout=30,
@@ -55,14 +56,14 @@ class TestMutator(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'absent'
-        assert path == '/mutators/test_mutator'
+        assert path == '/api/core/v2/namespaces/my/mutators/test_mutator'
         assert payload == dict(
             command='/bin/true',
             timeout=30,
             runtime_assets=['awesomeness'],
             metadata=dict(
                 name='test_mutator',
-                namespace='default',
+                namespace='my',
                 labels={'region': 'us-west-1'},
                 annotations={'playbook': '12345'},
             ),

@@ -31,8 +31,6 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
   - sensu.sensu_go.state
-notes:
-  - Parameter I(auth.namespace) is ignored in this module.
 seealso:
   - module: namespace_info
 '''
@@ -70,9 +68,10 @@ def main():
         supports_check_mode=True,
         argument_spec=arguments.get_spec("auth", "name", "state"),
     )
-    module.params['auth']['namespace'] = None
     client = arguments.get_sensu_client(module.params['auth'])
-    path = utils.build_url_path('namespaces', module.params['name'])
+    path = utils.build_core_v2_path(
+        None, 'namespaces', module.params['name'],
+    )
     payload = arguments.get_spec_payload(
         module.params, 'name'
     )

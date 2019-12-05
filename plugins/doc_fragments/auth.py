@@ -36,11 +36,4 @@ options:
             will be checked.
         type: str
         default: http://localhost:8080
-      namespace:
-        description:
-          - RBAC namespace to operate in.
-            If this is not set the value of the SENSU_NAMESPACE environment
-            variable will be checked.
-        type: str
-        default: default
 """

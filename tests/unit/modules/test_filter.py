@@ -28,7 +28,7 @@ class TestFilter(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/filters/test_filter'
+        assert path == '/api/core/v2/namespaces/default/filters/test_filter'
         assert payload == dict(
             action='allow',
             expressions=['event.check.occurences == 1'],
@@ -44,6 +44,7 @@ class TestFilter(ModuleTestCase):
         sync_mock.return_value = True, {}
         set_module_args(
             name='test_filter',
+            namespace='my',
             state='absent',
             action='allow',
             expressions='event.check.occurences == 1',
@@ -57,14 +58,14 @@ class TestFilter(ModuleTestCase):
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
         assert state == 'absent'
-        assert path == '/filters/test_filter'
+        assert path == '/api/core/v2/namespaces/my/filters/test_filter'
         assert payload == dict(
             action='allow',
             expressions=['event.check.occurences == 1'],
             runtime_assets=['awesomeness'],
             metadata=dict(
                 name='test_filter',
-                namespace='default',
+                namespace='my',
                 labels={'region': 'us-west-1'},
                 annotations={'playbook': '12345'},
             ),

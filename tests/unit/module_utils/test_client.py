@@ -71,7 +71,7 @@ class TestRequest:
         )
 
         request.assert_called_with(
-            "PUT", "http://example.com/api/core/v2/path",
+            "PUT", "http://example.com/path",
             payload=dict(some="payload"),
             headers=dict(Authorization="Bearer token"),
         )
@@ -88,7 +88,7 @@ class TestRequest:
         )
 
         request.assert_called_with(
-            "PUT", "http://example.com/api/core/v2/path", payload=None,
+            "PUT", "http://example.com/path", payload=None,
             headers=dict(Authorization="Bearer token"),
         )
 

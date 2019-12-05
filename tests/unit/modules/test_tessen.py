@@ -65,7 +65,7 @@ class TestTessen(ModuleTestCase):
             tessen.main()
 
         _client, path, payload, check_mode = sync_mock.call_args[0]
-        assert path == '/tessen'
+        assert path == '/api/core/v2/tessen'
         assert payload == dict(
             opt_out=False
         )
@@ -82,7 +82,7 @@ class TestTessen(ModuleTestCase):
             tessen.main()
 
         _client, path, payload, check_mode = sync_mock.call_args[0]
-        assert path == '/tessen'
+        assert path == '/api/core/v2/tessen'
         assert payload == dict(
             opt_out=True
         )

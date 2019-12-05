@@ -17,13 +17,13 @@ class TestHandlerInfo(ModuleTestCase):
     def test_get_all_handlers(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.return_value = [1, 2, 3]
-        set_module_args()
+        set_module_args(namespace="my")
 
         with pytest.raises(AnsibleExitJson) as context:
             handler_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/handlers"
+        assert path == "/api/core/v2/namespaces/my/handlers"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
     def test_get_single_handler(self, mocker):
@@ -35,7 +35,7 @@ class TestHandlerInfo(ModuleTestCase):
             handler_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/handlers/sample-handler"
+        assert path == "/api/core/v2/namespaces/default/handlers/sample-handler"
         assert context.value.args[0]["objects"] == [4]
 
     def test_missing_single_handler(self, mocker):

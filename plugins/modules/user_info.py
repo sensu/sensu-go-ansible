@@ -27,8 +27,6 @@ description:
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#users).
 version_added: "1.0"
-notes:
-  - Parameter C(auth.namespace) is ignored in this module.
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
@@ -68,9 +66,8 @@ def main():
             name=dict(),  # Name is not required in info modules.
         ),
     )
-    module.params['auth']['namespace'] = None
     client = arguments.get_sensu_client(module.params["auth"])
-    path = utils.build_url_path("users", module.params["name"])
+    path = utils.build_core_v2_path(None, "users", module.params["name"])
 
     try:
         users = utils.prepare_result_list(utils.get(client, path))

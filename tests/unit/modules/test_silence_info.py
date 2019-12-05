@@ -17,13 +17,13 @@ class TestSilenceInfo(ModuleTestCase):
     def test_get_all_silences(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
         get_mock.return_value = [1, 2, 3]
-        set_module_args()
+        set_module_args(namespace="my")
 
         with pytest.raises(AnsibleExitJson) as context:
             silence_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/silenced"
+        assert path == "/api/core/v2/namespaces/my/silenced"
         assert context.value.args[0]["objects"] == [1, 2, 3]
 
     def test_get_single_silence(self, mocker):
@@ -35,7 +35,7 @@ class TestSilenceInfo(ModuleTestCase):
             silence_info.main()
 
         _client, path = get_mock.call_args[0]
-        assert path == "/silenced/subscription%3A%2A"  # %3A = :, %2A = *
+        assert path == "/api/core/v2/namespaces/default/silenced/subscription%3A%2A"  # %3A = :, %2A = *
         assert context.value.args[0]["objects"] == [4]
 
     def test_missing_single_silence(self, mocker):
