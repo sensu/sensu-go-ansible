@@ -1,6 +1,6 @@
 namespace: sensu
 name: sensu_go
-version: 0.9.0
+version: 1.0.0
 
 authors:
   - Paul Arthur <paul.arthur@flowerysong.com> (@flowerysong)
@@ -17,3 +17,5 @@ description: Roles and modules for installing and using Sensu Go
 
 repository: https://github.com/sensu/sensu-go-ansible
 issues: https://github.com/sensu/sensu-go-ansible/issues
+documentation: https://sensu.github.io/sensu-go-ansible/
+homepage: https://sensu.github.io/sensu-go-ansible/
