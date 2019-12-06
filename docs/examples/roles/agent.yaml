@@ -1,0 +1,8 @@
+---
+- name: Install, configure and run Sensu agent
+  hosts: agents
+  roles:
+    - sensu.sensu_go.agent
+  vars:
+    agent_config:
+      backend-url: [ ws://upstream-backend:4321 ]

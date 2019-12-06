@@ -1,0 +1,9 @@
+all:
+  children:
+    backends:
+      hosts:
+        192.168.50.4:
+
+    agents:
+      hosts:
+        192.168.50.5:
