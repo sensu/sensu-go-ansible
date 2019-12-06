@@ -1,81 +1,36 @@
 Sensu Go Ansible Collection
 ===========================
 
-Sensu Go `Ansible Collection`_ contains:
+Sensu Go Ansible Collection is a bundle of Ansible content that we can use to
+manage all aspects of Sensu Go. It contains Ansible roles for installing and
+configuring backends and agents. Collection also contains a wide selection of
+modules for runtime management of Sensu Go backend.
 
-* Ansible roles to install `Sensu Go`_ on your nodes.
-* Ansible modules for interacting with `Sensu Go`_ REST API.
+Collection is freely available on `Ansible Galaxy`_. For Red Hat subscribers,
+this collection is also available on `Automation Hub`_.
 
-.. _Ansible Collection:
-   https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
-.. _Sensu Go: https://docs.sensu.io/sensu-go/latest
-
-
-Installation
-------------
-
-If we would like to install the Sensu Go collection, we need to have Ansible
-2.9 or later installed. Once we have taken care of this, we can install the
-Sensu Go collection from `Ansible Galaxy`_ by running::
-
-   $ ansible-galaxy collection install sensu.sensu_go
-
-.. _Ansible Galaxy: https://galaxy.ansible.com
-
-
-Usage
------
-
-We can use the namespaced modules::
-
-   - hosts: localhost
-     roles:
-       - sensu.sensu_go.backend
-     tasks:
-       - name: List Assets
-         sensu.sensu_go.asset_info:
-         register: assets
-
-       - name: List Filters
-         sensu.sensu_go.filter_info:
-         register: filters
-
-Or use the `collections` keyword to create the search path, then use bare
-names::
-
-   - hosts: localhost
-     collections: [sensu.sensu_go]
-     roles:
-       - backend
-     tasks:
-       - name: List Assets
-         asset_info:
-         register: assets
-
-       - name: List Filters
-         filter_info:
-         register: filters
-
-
-Support
--------
-
-Sensu will offer support for the contents of the collection. Details about the
-support will be made available as soon as the collection is certified.
-
-
-Acknowledgement
----------------
-
-We would like to thank `@flowerysong`_ for initial implementation of the
-Ansible modules provided in this collection.
-
-.. _@flowerysong: https://github.com/flowerysong/ansible-sensu-go
+.. _Ansible Galaxy:
+   https://galaxy.ansible.com/sensu/sensu_go
+.. _Automation Hub:
+   https://cloud.redhat.com/ansible/automation-hub/sensu/sensu_go
 
 
 .. toctree::
-   :maxdepth: 1
-   :hidden:
+   :maxdepth: 2
+   :caption: Using Sensu Go Ansible Collection
 
-   sandbox
-   module_index
+   quickstart
+   installation
+
+.. toctree::
+   :maxdepth: 1
+   :caption: References
+
+   roles
+   modules
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Appendices
+
+   release_notes
