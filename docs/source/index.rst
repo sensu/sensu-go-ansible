@@ -31,6 +31,12 @@ this collection is also available on `Automation Hub`_.
 
 .. toctree::
    :maxdepth: 1
+   :caption: Hacker's guides
+
+   hacking
+
+.. toctree::
+   :maxdepth: 1
    :caption: Appendices
 
    release_notes
