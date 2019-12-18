@@ -1,4 +1,15 @@
 ---
-- name: Install components
-  include_tasks: install_one.yml
-  loop: '{{ _components }}'
+- name: Install latest component version
+  apt:
+    name: "{{ item }}"
+    state: latest
+  when: version == "latest"
+  loop: "{{ components }}"
+
+- name: Install specific component version ({{ version }})
+  apt:
+    name: "{{ item }}={{ version }}-*"
+    state: present
+    force: true
+  when: version != "latest"
+  loop: "{{ components }}"
