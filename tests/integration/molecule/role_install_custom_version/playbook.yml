@@ -3,11 +3,9 @@
   hosts: all
   vars:
     components:
-      - name: sensu-go-backend
-        version: 5.12.0
-      - name: sensu-go-agent
-        version: 5.12.0
-      - name: sensu-go-cli
-        version: 5.12.0
+      - sensu-go-backend
+      - sensu-go-agent
+      - sensu-go-cli
+    version: 5.12.0
   roles:
     - sensu.sensu_go.install

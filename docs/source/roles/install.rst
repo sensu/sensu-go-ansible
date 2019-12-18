@@ -15,7 +15,7 @@ Example playbook
 ----------------
 
 The next :download:`playbook <../../examples/roles/install.yaml>` demonstrates
-how to install latest versions of *sensu-agent* and *sensu-backend*.
+how to install different versions of Sensu components from specific channels.
 
 .. literalinclude:: ../../examples/roles/install.yaml
    :language: yaml
@@ -24,7 +24,7 @@ how to install latest versions of *sensu-agent* and *sensu-backend*.
 Role Variables
 --------------
 
-This role consults two variables to determine what packages to install:
+This role consults three variables to determine what packages to install:
 
 .. list-table::
    :header-rows: 1
@@ -45,6 +45,11 @@ This role consults two variables to determine what packages to install:
      - stable
      - Repository channel that serves as a source of packages. We can see all the
        available channels on packagecloud_ site.
+
+   * - version
+     - latest
+     - Package version to install. Can be any valid version string such as
+       ``5.14.2`` or special value ``latest``.
 
 .. _packagecloud: https://packagecloud.io/sensu
 

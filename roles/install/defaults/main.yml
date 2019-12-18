@@ -1,8 +1,9 @@
 ---
 os: unknown
 dist: unknown
-channel: stable
 
+channel: stable
+version: latest
 components:
   - sensu-go-backend
   - sensu-go-agent

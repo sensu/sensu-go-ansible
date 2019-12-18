@@ -1,12 +1,12 @@
 ---
-- name: Install sensu-backend binary
+- name: Install latest sensu-backend binary from stable channel
   hosts: backends
   roles:
      - sensu.sensu_go.install
   vars:
     components: [ sensu-go-backend ]
 
-- name: Install sensu-agent binary from testing repository
+- name: Install latest sensu-agent binary from testing channel
   hosts: agents
   roles:
      - sensu.sensu_go.install
@@ -14,9 +14,10 @@
     components: [ sensu-go-agent ]
     channel: testing
 
-- name: Install sensuctl binary
+- name: Install a specific version of sensuctl binary from stable channel
   hosts: localhost
   roles:
      - sensu.sensu_go.install
   vars:
     components: [ sensu-go-cli ]
+    version: 5.14.2
