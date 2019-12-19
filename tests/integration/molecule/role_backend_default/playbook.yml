@@ -31,6 +31,13 @@
                   "state-dir": "/var/lib/sensu/sensu-backend",
               }
 
+    - name: Make sure login works
+      uri:
+        url: http://localhost:8080/auth
+        url_username: admin
+        url_password: P@ssw0rd!
+        force_basic_auth: yes
+
     - name: Configure select set of optional variables
       include_role:
         name: sensu.sensu_go.backend
