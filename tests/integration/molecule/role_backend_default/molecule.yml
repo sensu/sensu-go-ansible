@@ -4,7 +4,6 @@ platforms:
     image: xlabsi/centos:7
     pre_build_image: true
     pull: true
-    groups: [ backends ]
     capabilities:
       - SYS_ADMIN
     volumes:
