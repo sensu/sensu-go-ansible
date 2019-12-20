@@ -71,7 +71,7 @@ def delete(client, path):
 
 def put(client, path, payload):
     resp = client.put(path, payload)
-    if resp.status != 201:
+    if resp.status not in (200, 201):
         _abort(
             "PUT {0} failed with status {1}: {2}",
             path, resp.status, resp.data,
