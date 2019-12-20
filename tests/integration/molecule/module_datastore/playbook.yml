@@ -1,0 +1,133 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Retrieve empty list of external datastores
+      datastore_info:
+        auth: &auth
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []
+
+    - name: Make sure we fail creation if dsn parameter is missing
+      datastore:
+        auth: *auth
+        name: my-incomplete-datastore
+      register: result
+      ignore_errors: true
+
+    - assert:
+        that:
+          - result is failed
+
+    - name: Enable external datastore with minimal parameters
+      datastore: &idempotence
+        auth: *auth
+        name: my-datastore
+        dsn: postgresql://user:secret@host:port/dbname
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == "my-datastore"
+          - result.object.dsn == "postgresql://user:secret@host:port/dbname"
+
+    - name: Check for idempotence
+      datastore: *idempotence
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Try to add another external storage
+      datastore:
+        auth: *auth
+        name: my-second-datastore
+        dsn: postgresql://user:secret@host:port/db
+        pool_size: 123
+      register: result
+      ignore_errors: true
+
+    - assert:
+        that:
+          - result is failed
+
+    - name: Update external datastore
+      datastore:
+        auth: *auth
+        name: my-datastore
+        dsn: postgresql://user:secret@host:port/new
+        pool_size: 321
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == "my-datastore"
+          - result.object.dsn == "postgresql://user:secret@host:port/new"
+          - result.object.pool_size == 321
+
+    - name: Fetch all datastores
+      datastore_info:
+        auth: *auth
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+
+    - name: Fetch a specific datastore
+      datastore_info:
+        auth: *auth
+        name: my-datastore
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "my-datastore"
+          - result.objects.0.dsn == "postgresql://user:secret@host:port/new"
+          - result.objects.0.pool_size == 321
+
+    - name: Remove external datastore
+      datastore:
+        auth: *auth
+        name: my-datastore
+        state: absent
+
+    - name: Re-fetch all datastores
+      datastore_info:
+        auth: *auth
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Try to fetch non-existing datastore
+      datastore_info:
+        auth: *auth
+        name: my-fictional-datastore
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []
+
+    - name: Try to remove non-existing external datastore
+      datastore:
+        auth: *auth
+        name: my-fictional-datastore
+        state: absent
+
+    - assert:
+        that:
+          - result is not changed

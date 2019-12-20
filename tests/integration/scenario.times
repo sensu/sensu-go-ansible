@@ -3,6 +3,7 @@ molecule/module_asset 131.65
 molecule/module_check 127.36
 molecule/module_cluster_role 137.09
 molecule/module_cluster_role_binding 135.98
+molecule/module_datastore 110.00
 molecule/module_entity 119.02
 molecule/module_event 139.63
 molecule/module_filter 125.77
