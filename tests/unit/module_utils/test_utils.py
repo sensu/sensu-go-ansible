@@ -216,7 +216,7 @@ class TestDelete:
 
 class TestPut:
     @pytest.mark.parametrize(
-        "status", [100, 200, 202, 203, 204, 400, 401, 403, 500, 501],
+        "status", [100, 202, 203, 204, 400, 401, 403, 500, 501],
     )
     def test_abort_on_invalid_status(self, mocker, status):
         client = mocker.Mock()
@@ -226,9 +226,10 @@ class TestPut:
             utils.put(client, "/put", {"payload": "data"})
         client.put.assert_called_once_with("/put", {"payload": "data"})
 
-    def test_valid_put(self, mocker):
+    @pytest.mark.parametrize("status", [200, 201])
+    def test_valid_put(self, mocker, status):
         client = mocker.Mock()
-        client.put.return_value = http.Response(201, '{"put": "data"}')
+        client.put.return_value = http.Response(status, '{"put": "data"}')
 
         object = utils.put(client, "/put", {"payload": "data"})
 

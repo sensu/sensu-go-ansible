@@ -66,21 +66,13 @@ def get(client, path):
     return resp.json
 
 
-def put(client, path, payload):
-    resp = client.put(path, payload)
-    if resp.status != 200:
-        raise errors.SyncError(
-            "PUT {0} failed with status {1}: {2}".format(path, resp.status, resp.data))
-    return None
-
-
 def sync(client, path, payload, check_mode):
     remote_object = get(client, path)
 
     if utils.do_differ(remote_object, payload):
         if check_mode:
             return True, payload
-        put(client, path, payload)
+        utils.put(client, path, payload)
         return True, get(client, path)
 
     return False, remote_object
