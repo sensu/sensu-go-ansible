@@ -1,0 +1,6 @@
+platforms:
+  - name: v5.15.0
+    image: xlabsi/sensu:5.15.0
+    pre_build_image: true
+    pull: true
+    override_command: false
