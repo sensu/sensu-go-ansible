@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Documenting Sensu Go Ansible collection &mdash; Sensu Go Ansible Collection  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Releasing the Sensu Go Ansible Collection" href="releases.html" />
+    <link rel="prev" title="Testing Sensu Go Ansible Collection" href="testing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Sensu Go Ansible Collection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../roles.html">Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Hacker's guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../hacking.html">Developing Sensu Go Ansible Collection</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Preparing a development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">Testing Sensu Go Ansible Collection</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Documenting Sensu Go Ansible collection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#authoring-the-documentation">Authoring the documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#publishing-the-documentation">Publishing the documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html">Releasing the Sensu Go Ansible Collection</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sensu Go Ansible Collection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../hacking.html">Developing Sensu Go Ansible Collection</a> &raquo;</li>
+        
+      <li>Documenting Sensu Go Ansible collection</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/hacking/documentation.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="documenting-sensu-go-ansible-collection">
+<h1>Documenting Sensu Go Ansible collection<a class="headerlink" href="#documenting-sensu-go-ansible-collection" title="Permalink to this headline">¶</a></h1>
+<p>Documentation for the Sensu Go Ansible collection consists of two distinct
+kinds: the general guides and the API documentation. The general guides live
+in the <code class="docutils literal notranslate"><span class="pre">docs/source</span></code> directory while the API documentation is part of the
+modules’ source code.</p>
+<div class="section" id="authoring-the-documentation">
+<h2>Authoring the documentation<a class="headerlink" href="#authoring-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Adding a new piece of general documentation is reasonably straightforward. We
+need to create a new file somewhere inside the <code class="docutils literal notranslate"><span class="pre">docs/source</span></code> directory and
+fill it with reStructuredText-formatted content.</p>
+<p>As a general rule, we use two levels of headings: a document title and as many
+section titles as needed. If you feel you need something more complex, try
+simplifying the documentation first. The end-users will thank you for this.</p>
+<p>First few lines of the document you are just reading look like this:</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="gh">Documenting Sensu Go Ansible collection</span>
+<span class="gh">=======================================</span>
+
+Documentation for the Sensu Go Ansible collection consists of two distinct
+kinds: the general guides and the API documentation. The general guides live
+in the <span class="s">``docs/source``</span> directory while the API documentation is part of the
+modules&#39; source code.
+
+
+<span class="gh">Authoring the documentation</span>
+<span class="gh">---------------------------</span>
+
+Adding a new piece of general documentation is reasonably straightforward. We
+need to create a new file somewhere inside the <span class="s">``docs/source``</span> directory and
+fill it with reStructuredText-formatted content.
+
+As a general rule, we use two levels of headings: a document title and as many
+section titles as needed. If you feel you need something more complex, try
+simplifying the documentation first. The end-users will thank you for this.
+</pre></div>
+</div>
+<p>Once we have the content ready, we need to bind it with the rest of the
+documentation. We do this by adding our document to one of the <code class="docutils literal notranslate"><span class="pre">toctree</span></code>
+directives. We can find the important ones in the <code class="docutils literal notranslate"><span class="pre">index.rst</span></code> file.</p>
+<p>We follow the <a class="reference external" href="https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_documenting.html">upstream guides</a> when it comes to documenting the modules,
+with one exception: <code class="docutils literal notranslate"><span class="pre">version_added</span></code> field holds the Sensu Go collection
+version instead of Ansible version. Typical module starts with the next few
+lines:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright: (c) 2019, XLAB Steampunk &lt;steampunk@xlab.si&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>
+<span class="n">__metaclass__</span> <span class="o">=</span> <span class="nb">type</span>
+
+<span class="n">ANSIBLE_METADATA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;metadata_version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;stableinterface&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;supported_by&quot;</span><span class="p">:</span> <span class="s2">&quot;certified&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">DOCUMENTATION</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">module: handler_set</span>
+<span class="s1">author:</span>
+<span class="s1">  - Aljaz Kosir (@aljazkosir)</span>
+<span class="s1">  - Miha Plesko (@miha-plesko)</span>
+<span class="s1">  - Tadej Borovsak (@tadeboro)</span>
+<span class="s1">short_description: Manage Sensu handler set</span>
+<span class="s1">description:</span>
+<span class="s1">  - Create, update or delete Sensu handler set.</span>
+<span class="s1">  - For more information, refer to the Sensu documentation at</span>
+<span class="s1">    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/#handler-sets).</span>
+<span class="s1">version_added: &quot;1.0&quot;</span>
+<span class="s1">extends_documentation_fragment:</span>
+<span class="s1">  - sensu.sensu_go.auth</span>
+<span class="s1">  - sensu.sensu_go.name</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="publishing-the-documentation">
+<h2>Publishing the documentation<a class="headerlink" href="#publishing-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>We use the <a class="reference external" href="https://github.com/xlab-si/ansible-doc-extractor">ansible-doc-extractor</a> tool to convert the embedded module
+documentation into a set of reStructuredText documents. Once we have those
+documents ready, we bind the various parts of the documentation together using
+<a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a>. In practice, we just run the <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code> command in the root of the
+repository and open the <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> file in our browser of
+choice.</p>
+<p>We use <a class="reference external" href="https://pages.github.com/">GitHub Pages</a> for hosting the online version of our documentation. To
+update the content of our <a class="reference external" href="https://sensu.github.io/sensu-go-ansible/">documentation site</a>, we must copy the rendered
+documentation into the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch, commit the changes, and push them
+to GitHub. The described procedure translates into the following series of
+steps:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(venv) $ make docs
+(venv) $ git worktree add gh-pages gh-pages
+(venv) $ rm -rf gh-pages/*
+(venv) $ cp -r docs/build/html/* gh-pages
+(venv) $ cd gh-pages
+(venv) $ git add . &amp;&amp; git commit
+(venv) $ git push origin gh-pages
+(venv) $ cd ..
+(venv) $ git worktree remove gh-pages
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="releases.html" class="btn btn-neutral float-right" title="Releasing the Sensu Go Ansible Collection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="testing.html" class="btn btn-neutral float-left" title="Testing Sensu Go Ansible Collection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, XLAB Steampunk
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

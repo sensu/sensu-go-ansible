@@ -100,6 +100,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Hacker's guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../hacking.html">Developing Sensu Go Ansible Collection</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Appendices</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
@@ -184,16 +188,16 @@ installs the binaries. It does <strong>not</strong> configure anything and it do
 <div class="section" id="example-playbook">
 <h2>Example playbook<a class="headerlink" href="#example-playbook" title="Permalink to this headline">¶</a></h2>
 <p>The next <a class="reference download internal" download="" href="../_downloads/9632b1aeb5b5c13ed23fcb7aad9d3d0d/install.yaml"><code class="xref download docutils literal notranslate"><span class="pre">playbook</span></code></a> demonstrates
-how to install latest versions of <em>sensu-agent</em> and <em>sensu-backend</em>.</p>
+how to install different versions of Sensu components from specific channels.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install sensu-backend binary</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install latest sensu-backend binary from stable channel</span>
   <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">backends</span>
   <span class="nt">roles</span><span class="p">:</span>
      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.install</span>
   <span class="nt">vars</span><span class="p">:</span>
     <span class="nt">components</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">sensu-go-backend</span> <span class="p p-Indicator">]</span>
 
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install sensu-agent binary from testing repository</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install latest sensu-agent binary from testing channel</span>
   <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agents</span>
   <span class="nt">roles</span><span class="p">:</span>
      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.install</span>
@@ -201,18 +205,19 @@ how to install latest versions of <em>sensu-agent</em> and <em>sensu-backend</em
     <span class="nt">components</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">sensu-go-agent</span> <span class="p p-Indicator">]</span>
     <span class="nt">channel</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">testing</span>
 
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install sensuctl binary</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install a specific version of sensuctl binary from stable channel</span>
   <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
   <span class="nt">roles</span><span class="p">:</span>
      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.install</span>
   <span class="nt">vars</span><span class="p">:</span>
     <span class="nt">components</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">sensu-go-cli</span> <span class="p p-Indicator">]</span>
+    <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.14.2</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="role-variables">
 <h2>Role Variables<a class="headerlink" href="#role-variables" title="Permalink to this headline">¶</a></h2>
-<p>This role consults two variables to determine what packages to install:</p>
+<p>This role consults three variables to determine what packages to install:</p>
 <table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 25%" />
@@ -240,6 +245,11 @@ how to install latest versions of <em>sensu-agent</em> and <em>sensu-backend</em
 <td><p>stable</p></td>
 <td><p>Repository channel that serves as a source of packages. We can see all the
 available channels on <a class="reference external" href="https://packagecloud.io/sensu">packagecloud</a> site.</p></td>
+</tr>
+<tr class="row-even"><td><p>version</p></td>
+<td><p>latest</p></td>
+<td><p>Package version to install. Can be any valid version string such as
+<code class="docutils literal notranslate"><span class="pre">5.14.2</span></code> or special value <code class="docutils literal notranslate"><span class="pre">latest</span></code>.</p></td>
 </tr>
 </tbody>
 </table>

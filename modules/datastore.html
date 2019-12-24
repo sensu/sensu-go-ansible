@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>asset_info – List Sensu assets &mdash; Sensu Go Ansible Collection  documentation</title>
+  <title>datastore – Manage Sensu external datastore providers &mdash; Sensu Go Ansible Collection  documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="bonsai_asset – Add Sensu assets from Bonsai" href="bonsai_asset.html" />
-    <link rel="prev" title="asset – Manage Sensu assets" href="asset.html" /> 
+    <link rel="next" title="datastore_info – List external Sensu datastore providers" href="datastore_info.html" />
+    <link rel="prev" title="cluster_role_info – List Sensu cluster roles" href="cluster_role_info.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,13 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../roles.html">Roles</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Modules</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="asset.html">asset – Manage Sensu assets</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">asset_info – List Sensu assets</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#see-also">See Also</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#return-values">Return Values</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="asset_info.html">asset_info – List Sensu assets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bonsai_asset.html">bonsai_asset – Add Sensu assets from Bonsai</a></li>
 <li class="toctree-l2"><a class="reference internal" href="check.html">check – Manage Sensu checks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="check_info.html">check_info – List Sensu checks</a></li>
@@ -104,7 +98,14 @@
 <li class="toctree-l2"><a class="reference internal" href="cluster_role_binding.html">cluster_role_binding – Manage Sensu cluster role bindings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cluster_role_binding_info.html">cluster_role_binding_info – List Sensu cluster role bindings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cluster_role_info.html">cluster_role_info – List Sensu cluster roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datastore.html">datastore – Manage Sensu external datastore providers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">datastore – Manage Sensu external datastore providers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#see-also">See Also</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#return-values">Return Values</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="datastore_info.html">datastore_info – List external Sensu datastore providers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="entity.html">entity – Manage Sensu entities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="entity_info.html">entity_info – List Sensu entities</a></li>
@@ -190,7 +191,7 @@
         
           <li><a href="../modules.html">Modules</a> &raquo;</li>
         
-      <li>asset_info – List Sensu assets</li>
+      <li>datastore – Manage Sensu external datastore providers</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -198,7 +199,7 @@
             
             
               <!-- User defined GitHub URL -->
-              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/asset_info.py" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/datastore.py" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -212,25 +213,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="asset-info-list-sensu-assets">
-<span id="asset-info-module"></span><h1>asset_info – List Sensu assets<a class="headerlink" href="#asset-info-list-sensu-assets" title="Permalink to this headline">¶</a></h1>
-<p>Retrieve information about Sensu Go assets.</p>
-<p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/assets/">https://docs.sensu.io/sensu-go/latest/reference/assets/</a>.</p>
+  <div class="section" id="datastore-manage-sensu-external-datastore-providers">
+<span id="datastore-module"></span><h1>datastore – Manage Sensu external datastore providers<a class="headerlink" href="#datastore-manage-sensu-external-datastore-providers" title="Permalink to this headline">¶</a></h1>
+<p>Add or remove external datastore provider.</p>
+<p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/datastore/">https://docs.sensu.io/sensu-go/latest/reference/datastore/</a>.</p>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">List all Sensu assets</span>
-  <span class="nt">asset_info</span><span class="p">:</span>
-  <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Add external datastore</span>
+  <span class="nt">datastore</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-postgres</span>
+    <span class="nt">dsn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgresql://user:secret@host:port/dbname</span>
 
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">List the selected Sensu asset</span>
-  <span class="nt">asset_info</span><span class="p">:</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_asset</span>
-  <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
-
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Do something with result</span>
-  <span class="nt">debug</span><span class="p">:</span>
-    <span class="nt">msg</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">result.objects.0.metadata.name</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Remove external datastore</span>
+  <span class="nt">datastore</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-postgres</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, only one external datastore can be active at a time. The module will fail to perform its operation if this would break that invariant.</p>
 </div>
 </div>
 <div class="section" id="see-also">
@@ -238,8 +243,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="asset.html#asset-module"><span class="std std-ref">asset – Manage Sensu assets</span></a></p></li>
-<li><p><a class="reference internal" href="bonsai_asset.html#bonsai-asset-module"><span class="std std-ref">bonsai_asset – Add Sensu assets from Bonsai</span></a></p></li>
+<li><p><a class="reference internal" href="datastore_info.html#datastore-info-module"><span class="std std-ref">datastore_info – List external Sensu datastore providers</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -271,15 +275,26 @@
 </dd>
 </dl>
 </dd>
-<dt>name (optional)</dt><dd><p>Retrieve information about this specific object instead of listing all objects.</p>
+<dt>dsn (optional)</dt><dd><p>Attribute that specifies the data source names as a URL or PostgreSQL connection string. See the PostgreSQL docs for more information about connection strings.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
-<dt>namespace (optional)</dt><dd><p>RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.</p>
+<dt>name (required)</dt><dd><p>The Sensu object’s name.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
-<div class="line"><strong>default</strong>: default</div>
+</div>
+</dd>
+<dt>pool_size (optional)</dt><dd><p>The maximum number of connections to hold in the PostgreSQL connection pool.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: int</div>
+</div>
+</dd>
+<dt>state (optional)</dt><dd><p>Target state of the Sensu object.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: present</div>
+<div class="line"><strong>choices</strong>: present, absent</div>
 </div>
 </dd>
 </dl>
@@ -287,7 +302,7 @@
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
-<dt>objects (always), list, )</dt><dd><p>list of Sensu assets</p>
+<dt>object (success), dict, )</dt><dd><p>object representing external datastore provider</p>
 </dd>
 </dl>
 </div>
@@ -301,10 +316,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="bonsai_asset.html" class="btn btn-neutral float-right" title="bonsai_asset – Add Sensu assets from Bonsai" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="datastore_info.html" class="btn btn-neutral float-right" title="datastore_info – List external Sensu datastore providers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="asset.html" class="btn btn-neutral float-left" title="asset – Manage Sensu assets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cluster_role_info.html" class="btn btn-neutral float-left" title="cluster_role_info – List Sensu cluster roles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

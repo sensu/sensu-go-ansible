@@ -1,0 +1,107 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/datastore.py
+
+.. _datastore_module:
+
+datastore -- Manage Sensu external datastore providers
+======================================================
+
+Add or remove external datastore provider.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/datastore/.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Add external datastore
+     datastore:
+       name: my-postgres
+       dsn: postgresql://user:secret@host:port/dbname
+
+   - name: Remove external datastore
+     datastore:
+       name: my-postgres
+       state: absent
+
+
+
+Notes
+-----
+
+.. note::
+   Currently, only one external datastore can be active at a time. The module will fail to perform its operation if this would break that invariant.
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`datastore_info_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+dsn (optional)
+  Attribute that specifies the data source names as a URL or PostgreSQL connection string. See the PostgreSQL docs for more information about connection strings.
+
+  | **type**: str
+
+name (required)
+  The Sensu object's name.
+
+  | **type**: str
+
+pool_size (optional)
+  The maximum number of connections to hold in the PostgreSQL connection pool.
+
+  | **type**: int
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+
+
+
+
+Return Values
+-------------
+
+object (success), dict, )
+  object representing external datastore provider
+
+

@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="user_info – List Sensu users" href="modules/user_info.html" /> 
+    <link rel="prev" title="Releasing the Sensu Go Ansible Collection" href="hacking/releases.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,9 +89,14 @@
 <li class="toctree-l1"><a class="reference internal" href="roles.html">Roles</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Hacker's guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hacking.html">Developing Sensu Go Ansible Collection</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Appendices</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-1-hello-sensu-go-5-16">Version 1.1 – Hello Sensu Go 5.16</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-0-rising-from-the-ashes">Version 1.0 – Rising From The Ashes</a></li>
 </ul>
 </li>
@@ -163,6 +168,20 @@
             
   <div class="section" id="release-notes">
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-1-hello-sensu-go-5-16">
+<h2>Version 1.1 – Hello Sensu Go 5.16<a class="headerlink" href="#version-1-1-hello-sensu-go-5-16" title="Permalink to this headline">¶</a></h2>
+<p>This is the first release that supports installing Sensu Go 5.16.</p>
+<p><strong>New features:</strong></p>
+<ul class="simple">
+<li><p>Support for Sensu Go 5.16 initialization in backend role.</p></li>
+<li><p>Support for external datastore management using <em>datastore</em> and
+<em>datastore_info</em> modules.</p></li>
+</ul>
+<p><strong>Bug fixes:</strong></p>
+<ul class="simple">
+<li><p>Reintroduce namespace support to <em>bonsai_asset</em> module (thanks, &#64;jakeo)</p></li>
+</ul>
+</div>
 <div class="section" id="version-1-0-rising-from-the-ashes">
 <h2>Version 1.0 – Rising From The Ashes<a class="headerlink" href="#version-1-0-rising-from-the-ashes" title="Permalink to this headline">¶</a></h2>
 <p>This is the initial stable release of the Sensu Go Ansible Collection. It
@@ -183,7 +202,7 @@ comprehensive test suite. And now, it is ready to face the world!</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="modules/user_info.html" class="btn btn-neutral float-left" title="user_info – List Sensu users" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="hacking/releases.html" class="btn btn-neutral float-left" title="Releasing the Sensu Go Ansible Collection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

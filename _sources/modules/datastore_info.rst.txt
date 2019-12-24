@@ -1,0 +1,87 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/datastore_info.py
+
+.. _datastore_info_module:
+
+datastore_info -- List external Sensu datastore providers
+=========================================================
+
+Retrieve information about external Sensu datastores.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/datastore/.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: List all external Sensu datastores
+     datastore_info:
+     register: result
+
+   - name: Retrieve the selected external Sensu datastore
+     datastore_info:
+       name: my-datastore
+     register: result
+
+   - name: Do something with result
+     debug:
+       msg: "{{ result.objects.0.dsn }}"
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`datastore_module`
+
+
+
+Parameters
+----------
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    | **type**: str
+    | **default**: admin
+
+
+name (optional)
+  Retrieve information about this specific object instead of listing all objects.
+
+  | **type**: str
+
+
+
+
+
+Return Values
+-------------
+
+objects (always), list, )
+  list of external Sensu datastore providers
+
+

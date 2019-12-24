@@ -37,6 +37,30 @@ the `official Sensu documentation`_.
    *backend_config* variable should contain a properly indented copy of the
    ``/etc/sensu/backend.yml`` file.
 
+Users of Sensu Go >= 5.16 have two additional variables at their disposal that
+control the first-time backend initialization:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 30 45
+
+   * - Variable
+     - Default
+     - Description
+
+   * - cluster_admin_username
+     - admin
+     - Initial admin user to create when initializing backend for the first
+       time.
+
+   * - cluster_admin_password
+     - P@ssw0rd!
+     - Initial admin password to create when initializing backend for the
+       first time.
+
+On Sensu Go version below 5.16, these two variables have no effect since
+default admin credentials are baked into the Sensu Go backend.
+
 
 Securing Sensu Go backend
 -------------------------
