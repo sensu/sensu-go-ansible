@@ -31,7 +31,7 @@ def validate(name, args, required, typ):
 class ActionModule(ActionBase):
 
     _VALID_ARGS = frozenset(
-        ("auth", "name", "version", "rename", "labels", "annotations")
+        ("auth", "name", "version", "namespace", "rename", "labels", "annotations")
     )
 
     def run(self, _tmp=None, task_vars=None):
@@ -84,6 +84,9 @@ class ActionModule(ActionBase):
 
         if "auth" in args:
             asset_args["auth"] = args["auth"]
+
+        if "namespace" in args:
+            asset_args["namespace"] = args["namespace"]
 
         # Only add optional parameter if it is present in at least one source.
         for meta in ("labels", "annotations"):
