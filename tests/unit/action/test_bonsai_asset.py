@@ -215,6 +215,25 @@ class TestBuildAssetArgs:
             builds=[],
         )
 
+    def test_namespace_passthrough(self, mocker):
+        bonsai_params = mocker.patch.object(bonsai, "get_asset_parameters")
+        bonsai_params.return_value = dict(
+            builds=[], labels=None, annotations=None,
+        )
+
+        result = bonsai_asset.ActionModule.build_asset_args(dict(
+            namespace='default',
+            name="test/asset",
+            version="1.2.3",
+        ))
+
+        assert result == dict(
+            name="test/asset",
+            namespace='default',
+            state="present",
+            builds=[],
+        )
+
     def test_fail_bonsai(self, mocker):
         bonsai_params = mocker.patch.object(bonsai, "get_asset_parameters")
         bonsai_params.side_effect = errors.BonsaiError("Bonsai bad")
