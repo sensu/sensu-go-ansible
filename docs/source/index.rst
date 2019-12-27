@@ -49,4 +49,5 @@ this collection is also available on `Automation Hub`_.
    :maxdepth: 1
    :caption: Appendices
 
+   release_policy
    release_notes
