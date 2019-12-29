@@ -55,7 +55,7 @@ object:
 '''
 
 
-from ansible.module_utils.basic import AnsibleModule, env_fallback
+from ansible.module_utils.basic import AnsibleModule
 
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (

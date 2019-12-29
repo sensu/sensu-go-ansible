@@ -6,8 +6,6 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-import json
-
 from ansible.module_utils.six import text_type
 from ansible.plugins.action import ActionBase
 from ansible.utils.vars import merge_hash

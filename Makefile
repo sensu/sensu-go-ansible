@@ -37,6 +37,7 @@ requirements:  ## Install development requirements
 
 .PHONY: sanity
 sanity:  ## Run sanity tests
+	flake8
 	ansible-test sanity --python $(python_version)
 
 .PHONY: units

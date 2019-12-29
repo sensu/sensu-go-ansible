@@ -53,7 +53,7 @@ class TestFilter(ModuleTestCase):
             annotations={'playbook': 12345},
         )
 
-        with pytest.raises(AnsibleExitJson) as context:
+        with pytest.raises(AnsibleExitJson):
             filter.main()
 
         state, _client, path, payload, check_mode = sync_mock.call_args[0]
