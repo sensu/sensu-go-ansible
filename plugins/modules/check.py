@@ -214,7 +214,7 @@ def validate_module_params(module):
             proxy_requests.get('splay_coverage') is None):
         module.fail_json(msg='splay is true but all of the following are missing: splay_coverage')
 
-    if params['state'] is 'present' and not (params['interval'] or params['cron']):
+    if params['state'] == 'present' and not (params['interval'] or params['cron']):
         module.fail_json(msg='one of the following is required: interval, cron')
 
 

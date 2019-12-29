@@ -1,0 +1,22 @@
+# This configuration mirrors the configuration that is used when linting
+# collections on import into Ansible Galaxy.
+
+# TODO(@tadeboro): Some of our lines are almost twice the optimal reading
+# length of 60-80 chars. It would be great to get line lengths down to 79, but
+# this is not feasible at the moment since we have cca. 300 lines that are
+# longer. What we need is a way of preventing new long lines of getting into
+# the codebase, which means running flake8 with stricter rules on changed
+# lines only.
+
+[flake8]
+max-line-length = 144
+max-doc-length = 92
+
+exclude =
+    # ansible-test creates all sorts of temporary stuff that we do not care
+    # about.
+    tests/output
+
+per-file-ignores =
+    # Modules have their imports listed after the metadata.
+    plugins/modules/*.py:E402

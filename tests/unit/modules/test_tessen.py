@@ -4,7 +4,7 @@ __metaclass__ = type
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, http, utils
+    errors, http,
 )
 from ansible_collections.sensu.sensu_go.plugins.modules import tessen
 
