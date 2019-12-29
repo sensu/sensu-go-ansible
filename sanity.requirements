@@ -1,3 +1,4 @@
+ansible-lint
 flake8
 pycodestyle
 pylint

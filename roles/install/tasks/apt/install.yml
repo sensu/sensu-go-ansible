@@ -1,8 +1,11 @@
 ---
+# Why did we kill the 403 (package installs should not use latest) check?
+# Because we really do want to be able to upgrade the packages to the latest
+# stable version.
 - name: Install latest component version
   apt:
     name: "{{ item }}"
-    state: latest
+    state: latest  # noqa 403
   when: version == "latest"
   loop: "{{ components }}"
 
