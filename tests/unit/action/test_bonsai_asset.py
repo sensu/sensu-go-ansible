@@ -56,6 +56,12 @@ class TestValidateArguments:
             labels={}, annotations={},
         ))
 
+    def test_valid_unicode_strings_python2(self):
+        bonsai_asset.ActionModule.validate_arguments(dict(
+            name=u"abc", version=u"1.2.3", rename=u"def",
+            labels={}, annotations={},
+        ))
+
     def test_invalid_name(self):
         with pytest.raises(errors.Error, match="name"):
             bonsai_asset.ActionModule.validate_arguments(dict(

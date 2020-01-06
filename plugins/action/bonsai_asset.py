@@ -8,6 +8,7 @@ __metaclass__ = type
 
 import json
 
+from ansible.module_utils.six import text_type
 from ansible.plugins.action import ActionBase
 from ansible.utils.vars import merge_hash
 
@@ -65,9 +66,15 @@ class ActionModule(ActionBase):
         # We only validate arguments that we use. We let the asset module
         # validate the rest (like auth data).
 
-        validate("name", args, required=True, typ=str)
-        validate("version", args, required=True, typ=str)
-        validate("rename", args, required=False, typ=str)
+        # Next three string validations might seem strange at first, but there
+        # is a reason for this strangenes. On python 2, we should consider
+        # string to be instance of str or unicode. On python 3, strings are
+        # always instances of str. In order to avoid having a separate
+        # validate calls for python 2 and python 3, we always pass a pair of
+        # types that just happen to be the same on python 3.
+        validate("name", args, required=True, typ=(str, text_type))
+        validate("version", args, required=True, typ=(str, text_type))
+        validate("rename", args, required=False, typ=(str, text_type))
         validate("labels", args, required=False, typ=dict)
         validate("annotations", args, required=False, typ=dict)
 
