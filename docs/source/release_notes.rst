@@ -1,6 +1,18 @@
 Release notes
 =============
 
+Version 1.1.1 -- Python 2 is Still a Thing
+------------------------------------------
+
+This is a bugfix release that makes sure the Sensu collection is working when
+Ansible control node uses Python 2.
+
+**Bug fixes:**
+
+* Accept *str* and *unicode* instance as a valid string in *bonsai_asset*
+  action plugin.
+
+
 Version 1.1 -- Hello Sensu Go 5.16
 ----------------------------------
 
