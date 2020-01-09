@@ -2,17 +2,8 @@
 # Why did we kill the 403 (package installs should not use latest) check?
 # Because we really do want to be able to upgrade the packages to the latest
 # stable version.
-- name: Install latest component version
+- name: Install component
   yum:
-    name: "{{ item }}"
+    name: "{{ 'yum' | sensu.sensu_go.package_name(item, version, build) }}"
     state: latest  # noqa 403
-  when: version == "latest"
-  loop: "{{ components }}"
-
-- name: Install specific component version ({{ version }})
-  yum:
-    name: "{{ item }}-{{ version }}"
-    state: present
-    allow_downgrade: true
-  when: version != "latest"
   loop: "{{ components }}"

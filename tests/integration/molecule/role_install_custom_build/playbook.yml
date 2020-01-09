@@ -1,0 +1,71 @@
+---
+- name: Test different version builds
+  hosts: all
+  tasks:
+    - name: Install a specific build
+      include_role:
+        name: sensu.sensu_go.install
+      vars:
+        components: [sensu-go-backend]
+        channel: testing
+        version: 5.16.0
+        build: 8290
+
+    - package_facts:
+        manager: auto
+
+    - assert:
+        that:
+          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0-8290"
+      when: ansible_facts.packages["sensu-go-backend"][0].source == "apt"
+
+    - assert:
+        that:
+          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0"
+          - ansible_facts.packages["sensu-go-backend"][0].release == "8290"
+      when: ansible_facts.packages["sensu-go-backend"][0].source == "rpm"
+
+    - name: Update to a specific build
+      include_role:
+        name: sensu.sensu_go.install
+      vars:
+        components: [sensu-go-backend]
+        channel: testing
+        version: 5.16.0
+        build: 8320
+
+    - package_facts:
+        manager: auto
+
+    - assert:
+        that:
+          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0-8320"
+      when: ansible_facts.packages["sensu-go-backend"][0].source == "apt"
+
+    - assert:
+        that:
+          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0"
+          - ansible_facts.packages["sensu-go-backend"][0].release == "8320"
+      when: ansible_facts.packages["sensu-go-backend"][0].source == "rpm"
+
+    - name: Update to the latest build for a specific version
+      include_role:
+        name: sensu.sensu_go.install
+      vars:
+        components: [sensu-go-backend]
+        channel: testing
+        version: 5.16.0
+
+    - package_facts:
+        manager: auto
+
+    - assert:
+        that:
+          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0-8363"
+      when: ansible_facts.packages["sensu-go-backend"][0].source == "apt"
+
+    - assert:
+        that:
+          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0"
+          - ansible_facts.packages["sensu-go-backend"][0].release == "8363"
+      when: ansible_facts.packages["sensu-go-backend"][0].source == "rpm"

@@ -1,0 +1,19 @@
+---
+platforms:
+  - name: ubuntu
+    image: xlabsi/ubuntu:16.04
+    pre_build_image: true
+    pull: true
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name: centos
+    image: xlabsi/centos:7
+    pre_build_image: true
+    pull: true
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
