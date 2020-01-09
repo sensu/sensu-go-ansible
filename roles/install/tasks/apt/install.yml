@@ -1,18 +1,7 @@
 ---
-# Why did we kill the 403 (package installs should not use latest) check?
-# Because we really do want to be able to upgrade the packages to the latest
-# stable version.
-- name: Install latest component version
+- name: Install component
   apt:
-    name: "{{ item }}"
-    state: latest  # noqa 403
-  when: version == "latest"
-  loop: "{{ components }}"
-
-- name: Install specific component version ({{ version }})
-  apt:
-    name: "{{ item }}={{ version }}-*"
-    state: present
-    force: true
-  when: version != "latest"
+    name: "{{ 'apt' | sensu.sensu_go.package_name(item, version, build) }}"
+    # Apt only supports latest state on names with no version suffix.
+    state: "{{ (version == 'latest') | ternary('latest', 'present') }}"
   loop: "{{ components }}"
