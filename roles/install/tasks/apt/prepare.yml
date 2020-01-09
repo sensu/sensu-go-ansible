@@ -13,7 +13,6 @@
 - name: Add apt key
   apt_key:
     url: https://packagecloud.io/sensu/{{ channel }}/gpgkey
-    id: 0A3F7426
 
 - name: Add apt repository
   apt_repository:
