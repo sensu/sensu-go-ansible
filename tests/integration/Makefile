@@ -26,4 +26,7 @@ $(modules) $(roles) $(actions):
 # CI stuff - partitioning logic ("true" is the value of the $CI variable)
 .PHONY: true
 true:
+	cut -d" " -f1 scenario.times | sort > times.tmp
+	find molecule/ -mindepth 1 -maxdepth 1 -type d | sort > dirs.tmp
+	diff times.tmp dirs.tmp
 	$(MAKE) $$(python partition.py scenario.times)
