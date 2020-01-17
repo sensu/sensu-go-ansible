@@ -1,6 +1,18 @@
 Release notes
 =============
 
+Version 1.2.0 -- Building support for builds
+--------------------------------------------
+
+This release adds support for specifying builds when installing various Sensu
+Go components.
+
+**New features:**
+
+* Add *build* variable to the *install* role that further pins down the
+  package version that gets installed.
+
+
 Version 1.1.1 -- Python 2 is Still a Thing
 ------------------------------------------
 
