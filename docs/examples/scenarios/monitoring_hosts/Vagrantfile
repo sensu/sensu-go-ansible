@@ -1,0 +1,20 @@
+Vagrant.configure("2") do |config|
+  # Common config
+  config.vm.provision(
+    "shell",
+    inline: "cat /vagrant/demo.pub >> /home/vagrant/.ssh/authorized_keys"
+  )
+
+  # VM-specific config
+  2.times do |i|
+    config.vm.define("agent#{i}") do |agent|
+      agent.vm.box = i % 2 == 0 ? "centos/7" : "debian/stretch64"
+      agent.vm.hostname = "agent#{i}"
+      agent.vm.network "private_network", ip: "192.168.50.1#{i}"
+      agent.vm.provider("virtualbox") do |v|
+        v.memory = 1024
+        v.cpus = 1
+      end
+    end
+  end
+end

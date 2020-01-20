@@ -1,0 +1,28 @@
+---
+- name: Manage Sensu Go resources
+  hosts: localhost
+  gather_facts: false
+  collections: [ sensu.sensu_go ]
+
+  tasks:
+    - name: Create monitoring asset
+      bonsai_asset:
+        auth: &auth
+          user: tadej
+          password: my.password  # DO NOT DO THIS IN REAL SCENARIOS!!!
+          url: http://192.168.50.4:8080
+        name: sensu/monitoring-plugins
+        version: 2.3.0-1
+
+    - name: Create ntp check
+      check:
+        auth: *auth
+        name: ntp
+        runtime_assets: sensu/monitoring-plugins
+        command: check_ntp_time -H time.nist.gov --warn 0.5 --critical 1.0
+        output_metric_format: nagios_perfdata
+        publish: true 
+        interval: 30
+        timeout: 10
+        subscriptions: 
+          - linux

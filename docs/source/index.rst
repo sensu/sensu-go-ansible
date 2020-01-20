@@ -23,6 +23,12 @@ this collection is also available on `Automation Hub`_.
    installation
 
 .. toctree::
+   :maxdepth: 2
+   :caption: Scenario guides
+
+   scenarios
+
+.. toctree::
    :maxdepth: 1
    :caption: References
 
