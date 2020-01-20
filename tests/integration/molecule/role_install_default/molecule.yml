@@ -27,6 +27,24 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
+  - name: debian-9
+    image: xlabsi/debian:9
+    pre_build_image: true
+    pull: true
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name: debian-10
+    image: xlabsi/debian:10
+    pre_build_image: true
+    pull: true
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
   - name: ubuntu-14.04
     image: xlabsi/ubuntu:14.04
     pre_build_image: true
