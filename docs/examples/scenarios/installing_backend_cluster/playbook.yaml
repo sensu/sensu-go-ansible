@@ -1,0 +1,26 @@
+---
+- name: Install, configure and run Sensu backend
+  hosts: backends
+  become: true
+
+  tasks:
+    - debug: var=inventory_hostname
+    - debug: var=ansible_hostname
+    - name: Install backend
+      include_role:
+        name: sensu.sensu_go.backend
+      vars:
+        version: 5.16.1
+        cluster_admin_username: tadej
+        cluster_admin_password: my.password  # USE VAULT IN REAL SCENARIOS!!!
+        backend_config:
+          log-level: info
+          etcd-name: "{{ etcd_name }}"
+          etcd-initial-advertise-peer-urls: "http://{{ inventory_hostname }}:2380"
+          etcd-advertise-client-urls: "http://{{ inventory_hostname }}:2379"
+          etcd-listen-peer-urls: "http://0.0.0.0:2380"
+          etcd-listen-client-urls: "http://0.0.0.0:2379"
+          etcd-initial-cluster-token: ""
+          etcd-initial-cluster-state: "new"
+          etcd-initial-cluster: "sensu-cluster0=http://192.168.50.20:2380,sensu-cluster1=http://192.168.50.21:2380,sensu-cluster2=http://192.168.50.22:2380"
+

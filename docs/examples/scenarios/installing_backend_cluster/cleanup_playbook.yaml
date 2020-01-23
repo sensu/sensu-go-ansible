@@ -1,0 +1,17 @@
+---
+- name: Stop Sensu-backend and purge configuration
+  hosts: backends
+  become: true
+
+  tasks:
+    - debug: var=inventory_hostname
+    - debug: var=ansible_hostname
+    - name: Stop backend
+      systemd:
+        name: sensu-backend
+        state: stopped
+    - name : Remove sensu embedded etcd store
+      file:
+        path: /var/lib/sensu/sensu-backend/etcd
+        state: absent
+

@@ -1,0 +1,14 @@
+---
+all:
+  children:
+    backends:
+      hosts:
+        192.168.50.20:
+          etcd_name: sensu-cluster0      
+          ansible_user: vagrant
+        192.168.50.21:
+          etcd_name: sensu-cluster1      
+          ansible_user: vagrant
+        192.168.50.22:
+          etcd_name: sensu-cluster2     
+          ansible_user: vagrant
