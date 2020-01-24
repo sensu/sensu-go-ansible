@@ -1,5 +1,9 @@
 ---
 all:
+  hosts: 
+    localhost:
+      cert: "hey"
+      key: "master"
   children:
     backends:
       hosts:

@@ -1,4 +1,27 @@
 ---
+- name: Generate Cert Authority on localhost
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - debug: var=cert
+    - debug: var=key     
+
+    - name: Creates keys directory
+      file:
+        path: ./.keys
+        state: directory
+
+    - name: check if CA exists 
+      stat: 
+        path: ./.keys/ca-config.json
+      register: ca_authority
+
+    - name: Generate local CA authority
+      shell: scripts/ca_generation.sh
+      when: ca_authority.stat.exists==false
+
 - name: Install, configure and run Sensu backend
   hosts: backends
   become: true
