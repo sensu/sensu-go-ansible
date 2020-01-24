@@ -2,17 +2,15 @@
 all:
   hosts: 
     localhost:
-      cert: "hey"
-      key: "master"
   children:
     backends:
       hosts:
-        192.168.50.20:
-          etcd_name: sensu-cluster0      
+        sensu-cluster0:
+          ansible_host: 192.168.50.20
           ansible_user: vagrant
-        192.168.50.21:
-          etcd_name: sensu-cluster1      
+        sensu-cluster1:
+          ansible_host: 192.168.50.21
           ansible_user: vagrant
-        192.168.50.22:
-          etcd_name: sensu-cluster2     
+        sensu-cluster2:
+          ansible_host: 192.168.50.22
           ansible_user: vagrant

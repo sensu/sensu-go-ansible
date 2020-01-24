@@ -86,17 +86,21 @@
   become: true
 
   tasks:
-    - debug: var=inventory_hostname
-    - debug: var=ansible_hostname
-    - debug: var=etcd_name
+    - name : Set ipaddr
+      set_fact: 
+        ipaddr: "{{ ansible_host }}"
+      when: ipaddr is undefined
+    - name : Set etcd_name 
+      set_fact: 
+        etcd_name: "{{ inventory_hostname_short }}"
+      when: etcd_name is undefined
 
     - name: Generate backend cert
       delegate_to: localhost
       become: false
       environment:
-        ADDRESS: "{{inventory_hostname}},{{etcd_name}}"
+        ADDRESS: "{{ipaddr}},{{inventory_hostname}}"
         NAME: "{{ etcd_name }}"
-        #shell: echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}'    
       shell: cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="$ADDRESS" -profile=peer - | cfssljson -bare $NAME
 
     - name : Generate etcd client cert
@@ -116,8 +120,8 @@
         backend_config:
           log-level: info
           etcd-name: "{{ etcd_name }}"
-          etcd-initial-advertise-peer-urls: "http://{{ inventory_hostname }}:2380"
-          etcd-advertise-client-urls: "http://{{ inventory_hostname }}:2379"
+          etcd-initial-advertise-peer-urls: "http://{{ ipaddr }}:2380"
+          etcd-advertise-client-urls: "http://{{ ipaddr }}:2379"
           etcd-listen-peer-urls: "http://0.0.0.0:2380"
           etcd-listen-client-urls: "http://0.0.0.0:2379"
           etcd-initial-cluster-token: ""
