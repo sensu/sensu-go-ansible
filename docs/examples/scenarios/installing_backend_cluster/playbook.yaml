@@ -22,6 +22,12 @@
       shell: cd .keys ; echo '{"CN":"CA","key":{"algo":"rsa","size":2048}}' | cfssl gencert -initca - | cfssljson -bare ca - ; echo '{"signing":{"default":{"expiry":"43800h","usages":["signing","key encipherment","server auth","client auth"]}}}' > ca-config.json
       when: ca_authority.stat.exists==false
 
+    - name : Generate etcd client cert
+      environment:
+        NAME: "client"
+      shell:  cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
+
+
 - name: Install CA 
   hosts:  backends,agents
   become: true
@@ -36,6 +42,11 @@
         8: '{{ ca_path_debian }}'
 
   tasks:
+  - name: Make /etc/sensu/certs directory
+    file:
+      path: /etc/sensu/certs
+      state: directory
+
   - name: install ca package on rhel systems
     yum:
       name: ca-certificates
@@ -70,6 +81,7 @@
     command: "openssl verify {{ ca_path[ansible_os_family][ansible_distribution_major_version|int] }}/ca.pem"
     changed_when: false
 
+
   handlers:
   - name: update trusted ca debian
     shell: /usr/sbin/update-ca-certificates
@@ -78,7 +90,6 @@
   - name: update trusted ca redhat
     shell: /bin/update-ca-trust
     when: ansible_os_family == "RedHat"
-
 
 
 - name: Install, configure and run Sensu backend
@@ -99,16 +110,47 @@
       delegate_to: localhost
       become: false
       environment:
-        ADDRESS: "{{ipaddr}},{{inventory_hostname}}"
+        ADDRESS: "{{ ipaddr }},{{ etcd_name }}"
         NAME: "{{ etcd_name }}"
       shell: cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="$ADDRESS" -profile=peer - | cfssljson -bare $NAME
 
-    - name : Generate etcd client cert
-      delegate_to: localhost
-      become: false
-      environment:
-        NAME: "client"
-      shell:  cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
+    - name: Install backend cert
+      copy:
+        src: ".keys/{{ etcd_name }}.pem"
+        dest: /etc/sensu/certs/
+        owner: sensu 
+        group: sensu
+        mode: 0644
+    - name: Install backend cert key
+      copy:
+        src: ".keys/{{ etcd_name }}-key.pem"
+        dest: /etc/sensu/certs/
+        owner: sensu 
+        group: sensu
+        mode: 0644
+    - name: verify backend cert
+      command: "openssl verify -CAfile /etc/pki/ca-trust/source/anchors/ca.pem /etc/sensu/certs/{{ etcd_name }}.pem"
+      changed_when: false
+
+    - name: Install etcd client cert
+      copy:
+        src: ".keys/client.pem"
+        dest: /etc/sensu/certs/
+        owner: sensu 
+        group: sensu
+        mode: 0644
+    - name: Install etcd cert key
+      copy:
+        src: ".keys/client-key.pem"
+        dest: /etc/sensu/certs/
+        owner: sensu 
+        group: sensu
+        mode: 0644
+    - name: verify etcd client cert
+      command: "openssl verify -CAfile /etc/pki/ca-trust/source/anchors/ca.pem /etc/sensu/certs/client.pem"
+      changed_when: false
+
+    #- namie: Install etcd client cert
 
     - name: Install backend
       include_role:
@@ -120,13 +162,21 @@
         backend_config:
           log-level: info
           etcd-name: "{{ etcd_name }}"
-          etcd-initial-advertise-peer-urls: "http://{{ ipaddr }}:2380"
+          etcd-initial-advertise-peer-urls: "https://{{ ipaddr }}:2380"
           etcd-advertise-client-urls: "http://{{ ipaddr }}:2379"
-          etcd-listen-peer-urls: "http://0.0.0.0:2380"
+          etcd-listen-peer-urls: "https://0.0.0.0:2380"
           etcd-listen-client-urls: "http://0.0.0.0:2379"
           etcd-initial-cluster-token: ""
           etcd-initial-cluster-state: "new"
-          etcd-initial-cluster: "sensu-cluster0=http://192.168.50.20:2380,sensu-cluster1=http://192.168.50.21:2380,sensu-cluster2=http://192.168.50.22:2380"
+          #etcd-cert-file: "/etc/sensu/certs/client.pem"
+          #etcd-key-file: "/etc/sensu/certs/client-key.pem"
+          #etcd-client-cert-auth: "true"
+          #etcd-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/ca.pem"
+          etcd-peer-cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
+          etcd-peer-key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
+          etcd-peer-client-cert-auth: "true"
+          etcd-peer-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/ca.pem"
+          etcd-initial-cluster: "sensu-cluster0=https://192.168.50.20:2380,sensu-cluster1=https://192.168.50.21:2380,sensu-cluster2=https://192.168.50.22:2380"
 
 - name: Install, configure and run Sensu agent 
   hosts: agents
