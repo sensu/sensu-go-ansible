@@ -160,3 +160,14 @@ class TestUser(ModuleTestCase):
 
         with pytest.raises(AnsibleFailJson):
             user.main()
+
+    def test_failure_on_initial_get(self, mocker):
+        get_mock = mocker.patch.object(utils, 'get')
+        get_mock.side_effect = errors.Error('Bad error')
+        set_module_args(
+            name='test_user',
+            password='password'
+        )
+
+        with pytest.raises(AnsibleFailJson):
+            user.main()

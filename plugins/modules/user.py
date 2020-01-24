@@ -122,7 +122,11 @@ def main():
     path = utils.build_core_v2_path(None, 'users', module.params['name'])
     state = module.params['state']
 
-    remote_object = utils.get(client, path)
+    try:
+        remote_object = utils.get(client, path)
+    except errors.Error as e:
+        module.fail_json(msg=str(e))
+
     if remote_object is None and state == 'disabled' and module.params['password'] is None:
         module.fail_json(msg='Cannot disable a non existent user')
 
