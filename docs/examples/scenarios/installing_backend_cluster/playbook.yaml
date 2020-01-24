@@ -129,15 +129,11 @@
       copy:
         src: ".keys/{{ etcd_name }}.pem"
         dest: /etc/sensu/certs/
-        owner: sensu 
-        group: sensu
         mode: 0644
     - name: Install backend cert key
       copy:
         src: ".keys/{{ etcd_name }}-key.pem"
         dest: /etc/sensu/certs/
-        owner: sensu 
-        group: sensu
         mode: 0644
     - name: verify backend cert
       command: "openssl verify -CAfile /etc/pki/ca-trust/source/anchors/ca.pem /etc/sensu/certs/{{ etcd_name }}.pem"
@@ -147,15 +143,11 @@
       copy:
         src: ".keys/client.pem"
         dest: /etc/sensu/certs/
-        owner: sensu 
-        group: sensu
         mode: 0644
     - name: Install etcd cert key
       copy:
         src: ".keys/client-key.pem"
         dest: /etc/sensu/certs/
-        owner: sensu 
-        group: sensu
         mode: 0644
     - name: verify etcd client cert
       command: "openssl verify -CAfile /etc/pki/ca-trust/source/anchors/ca.pem /etc/sensu/certs/client.pem"
@@ -172,22 +164,49 @@
         cluster_admin_password: my.password  # USE VAULT IN REAL SCENARIOS!!!
         backend_config:
           log-level: info
+          ##
+          # Embedded Ectd Cluster Configuration: Install-time settings  
+          ##
           etcd-name: "{{ etcd_name }}"
           etcd-initial-advertise-peer-urls: "https://{{ ipaddr }}:2380"
-          etcd-advertise-client-urls: "https://{{ ipaddr }}:2379"
           etcd-listen-peer-urls: "https://0.0.0.0:2380"
-          etcd-listen-client-urls: "https://0.0.0.0:2379"
+          etcd-initial-cluster: "sensu-cluster0=https://192.168.50.20:2380,sensu-cluster1=https://192.168.50.21:2380,sensu-cluster2=https://192.168.50.22:2380"
           etcd-initial-cluster-token: ""
           etcd-initial-cluster-state: "new"
-          etcd-cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
-          etcd-key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
-          etcd-client-cert-auth: "true"
-          etcd-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/ca.pem"
           etcd-peer-cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
           etcd-peer-key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
-          etcd-peer-client-cert-auth: "true"
           etcd-peer-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/ca.pem"
-          etcd-initial-cluster: "sensu-cluster0=https://192.168.50.20:2380,sensu-cluster1=https://192.168.50.21:2380,sensu-cluster2=https://192.168.50.22:2380"
+
+          ##
+          # Etcd Client Connection Settings: Can be changed after install
+          ##
+          etcd-cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
+          etcd-key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
+          etcd-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/ca.pem"
+          etcd-advertise-client-urls: "https://{{ ipaddr }}:2379"
+          etcd-listen-client-urls: "https://0.0.0.0:2379"
+
+          ##
+          # Etcd client Cert Auth Settings: Can be changed after install
+          ##
+          etcd-peer-client-cert-auth: "true"
+          etcd-client-cert-auth: "true"
+
+          ##
+          # API Security Settings: Can be changed after install
+          # 
+          # Note: impacts sensuctl and agent configuration
+          # api port will now use https://
+          # agent websocket port will use wss://
+          ##
+          cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
+          key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
+          trusted-ca-file: "/etc/pki/ca-trust/source/anchors/ca.pem"
+          ##
+          # Require certs to be verified: Can be changed after install
+          #   Note: If using self signed certs must make sure your clients use custom CA when true
+          ## 
+          insecure-skip-tls-verify: false
 
 - name: Install, configure and run Sensu agent 
   hosts: agents
