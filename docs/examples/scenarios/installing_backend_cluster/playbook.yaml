@@ -26,7 +26,10 @@
       environment:
         NAME: "client"
       shell:  cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
-
+    - name : Generate etcd agent cert
+      environment:
+        NAME: "agent"
+      shell:  cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
 
 - name: Install CA 
   hosts:  backends,agents
