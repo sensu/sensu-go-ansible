@@ -29,6 +29,9 @@ SHARED_SPECS = dict(
                 default="http://localhost:8080",
                 fallback=(env_fallback, ["SENSU_URL"]),
             ),
+            api_key=dict(
+                fallback=(env_fallback, ["SENSU_API_KEY"]),
+            ),
         ),
     ),
     state=dict(
@@ -85,4 +88,6 @@ def get_mutation_payload(source, *wanted_params):
 
 
 def get_sensu_client(auth):
-    return client.Client(auth["url"], auth["user"], auth["password"])
+    return client.Client(
+        auth["url"], auth["user"], auth["password"], auth["api_key"],
+    )
