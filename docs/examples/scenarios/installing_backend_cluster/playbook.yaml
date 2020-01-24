@@ -22,6 +22,64 @@
       shell: cd .keys ; echo '{"CN":"CA","key":{"algo":"rsa","size":2048}}' | cfssl gencert -initca - | cfssljson -bare ca - ; echo '{"signing":{"default":{"expiry":"43800h","usages":["signing","key encipherment","server auth","client auth"]}}}' > ca-config.json
       when: ca_authority.stat.exists==false
 
+- name: Install CA 
+  hosts:  backends,agents
+  become: true
+  vars:
+    ca_path_debian: /usr/local/share/ca-certificates
+    ca_path:
+      RedHat:
+        6: /usr/local/share/ca-certificates
+        7: /etc/pki/ca-trust/source/anchors
+      Debian:
+        7: '{{ ca_path_debian }}'
+        8: '{{ ca_path_debian }}'
+
+  tasks:
+  - name: install ca package on rhel systems
+    yum:
+      name: ca-certificates
+      state: present
+    when: ansible_os_family == "RedHat"
+
+  - name: install ca package on debian systems
+    apt:
+      name: ca-certificates
+      state: present
+      update_cache: yes
+    when: ansible_os_family == "Debian"
+
+  - name: enable dynamic ca configuration on rhel6
+    shell: /bin/update-ca-trust enable
+    when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
+
+  - name: copy certificate authority to trusted ca path of the os
+    copy:
+      src: '{{ item }}'
+      dest: '{{ ca_path[ansible_os_family][ansible_distribution_major_version|int] }}/'
+      owner: root
+      group: root
+      mode: 0644
+    with_fileglob:
+      - .keys/ca.pem
+    notify:
+      - update trusted ca debian
+      - update trusted ca redhat
+  
+  - name: verify certificate authority
+    command: "openssl verify {{ ca_path[ansible_os_family][ansible_distribution_major_version|int] }}/ca.pem"
+    changed_when: false
+
+  handlers:
+  - name: update trusted ca debian
+    shell: /usr/sbin/update-ca-certificates
+    when: ansible_os_family == "Debian"
+
+  - name: update trusted ca redhat
+    shell: /bin/update-ca-trust
+    when: ansible_os_family == "RedHat"
+
+
 
 - name: Install, configure and run Sensu backend
   hosts: backends
@@ -77,4 +135,5 @@
         NAME: "{{ etcd_name }}"
       shell: echo "here"
         #echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
+
 
