@@ -13,60 +13,98 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
-class TestToken:
-    def test_get_valid_token(self, mocker):
+class TestAuthHeader:
+    def test_using_valid_token(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, '{"access_token": "token"}')
 
-        c = client.Client("http://example.com/", "user", "pass")
+        c = client.Client("http://example.com/", "user", "pass", None)
 
-        assert "token" == c.token
+        assert dict(Authorization="Bearer token") == c.auth_header
         assert 1 == request.call_count
         assert ("GET", "http://example.com/auth") == request.call_args[0]
         assert "user" == request.call_args[1]["url_username"]
         assert "pass" == request.call_args[1]["url_password"]
 
-    def test_cache_token(self, mocker):
+    def test_valid_valid_api_key(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(200, "{}")
+
+        c = client.Client("http://example.com/", "user", "pass", "key")
+
+        assert dict(Authorization="Key key") == c.auth_header
+        assert 1 == request.call_count
+        request.assert_called_with(
+            "GET", "http://example.com/api/core/v2/apikeys/key",
+            headers=dict(Authorization="Key key"),
+        )
+
+    def test_cache_auth_headers_with_token(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, '{"access_token": "token"}')
 
-        c = client.Client("http://example.com/", "user", "pass")
+        c = client.Client("http://example.com/", "user", "pass", None)
         for i in range(5):
-            c.token
+            c.auth_header
 
         assert 1 == request.call_count
 
-    def test_login_failure_bad_status(self, mocker):
+    def test_cache_auth_headers_with_api_key(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(200, "{}")
+
+        c = client.Client("http://example.com/", "user", "pass", "key")
+        for i in range(6):
+            c.auth_header
+
+        assert 1 == request.call_count
+
+    def test_login_failure_token_bad_status(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(500, '{"access_token": "token"}')
 
         with pytest.raises(errors.SensuError, match="500"):
-            client.Client("http://example.com/", "user", "pass").token
+            client.Client(
+                "http://example.com/", "user", "pass", None,
+            ).auth_header
 
-    def test_login_failure_bad_json(self, mocker):
+    def test_login_failure_token_bad_json(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, "{ not a json }")
 
         with pytest.raises(errors.SensuError, match="JSON"):
-            client.Client("http://example.com/", "user", "pass").token
+            client.Client(
+                "http://example.com/", "user", "pass", None,
+            ).auth_header
 
-    def test_login_failure_missing_token(self, mocker):
+    def test_login_failure_token_missing_token(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, '{"access_bla": "token"}')
 
         with pytest.raises(errors.SensuError, match="token"):
-            client.Client("http://example.com/", "user", "pass").token
+            client.Client(
+                "http://example.com/", "user", "pass", None,
+            ).auth_header
+
+    def test_login_failure_api_key_bad_status(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(401, "{}")
+
+        with pytest.raises(errors.SensuError, match="API key .+ invalid"):
+            client.Client(
+                "http://example.com/", "user", "pass", "12345-xxxx-abcde",
+            ).auth_header
 
 
 class TestRequest:
-    def test_request_payload(self, mocker):
+    def test_request_payload_token(self, mocker):
         request = mocker.patch.object(http, "request")
         request.side_effect = (
             http.Response(200, '{"access_token": "token"}'),
             http.Response(200, "data"),
         )
 
-        client.Client("http://example.com/", "user", "pass").request(
+        client.Client("http://example.com/", "user", "pass", None).request(
             "PUT", "/path", dict(some="payload"),
         )
 
@@ -76,14 +114,31 @@ class TestRequest:
             headers=dict(Authorization="Bearer token"),
         )
 
-    def test_request_no_payload(self, mocker):
+    def test_request_payload_api_key(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.side_effect = (
+            http.Response(200, "{}"),
+            http.Response(200, "data"),
+        )
+
+        client.Client("http://example.com/", None, None, "key").request(
+            "PUT", "/path", dict(some="payload"),
+        )
+
+        request.assert_called_with(
+            "PUT", "http://example.com/path",
+            payload=dict(some="payload"),
+            headers=dict(Authorization="Key key"),
+        )
+
+    def test_request_no_payload_token(self, mocker):
         request = mocker.patch.object(http, "request")
         request.side_effect = (
             http.Response(200, '{"access_token": "token"}'),
             http.Response(200, "data"),
         )
 
-        client.Client("http://example.com/", "user", "pass").request(
+        client.Client("http://example.com/", "user", "pass", None).request(
             "PUT", "/path",
         )
 
@@ -92,10 +147,26 @@ class TestRequest:
             headers=dict(Authorization="Bearer token"),
         )
 
+    def test_request_no_payload_api_key(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.side_effect = (
+            http.Response(200, "{}"),
+            http.Response(200, "data"),
+        )
+
+        client.Client("http://example.com/", "u", "p", "key").request(
+            "PUT", "/path",
+        )
+
+        request.assert_called_with(
+            "PUT", "http://example.com/path", payload=None,
+            headers=dict(Authorization="Key key"),
+        )
+
 
 class TestGet:
     def test_get(self, mocker):
-        c = client.Client("http://example.com/", "user", "pass")
+        c = client.Client("http://example.com/", "user", "pass", None)
         c.request = mocker.Mock()
 
         c.get("/path")
@@ -105,7 +176,7 @@ class TestGet:
 
 class TestPut:
     def test_put(self, mocker):
-        c = client.Client("http://example.com/", "user", "pass")
+        c = client.Client("http://example.com/", "user", "pass", None)
         c.request = mocker.Mock()
 
         c.put("/path", {})
@@ -115,7 +186,7 @@ class TestPut:
 
 class TestDelete:
     def test_delete(self, mocker):
-        c = client.Client("http://example.com/", "user", "pass")
+        c = client.Client("http://example.com/", "user", "pass", None)
         c.request = mocker.Mock()
 
         c.delete("/path")

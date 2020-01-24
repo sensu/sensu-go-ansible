@@ -1,7 +1,8 @@
 modules   := $(wildcard molecule/module_*)
 roles     := $(wildcard molecule/role_*)
 actions   := $(wildcard molecule/action_*)
-scenarios := $(modules) $(roles) $(actions)
+misc      := $(wildcard molecule/misc_*)
+scenarios := $(modules) $(roles) $(actions) $(misc)
 
 # Make sure ansible can find our collection without having to install it.
 export ANSIBLE_COLLECTIONS_PATHS ?= $(realpath $(CURDIR)/../../../../..)
@@ -19,8 +20,11 @@ roles: $(roles)
 .PHONY: actions
 actions: $(actions)
 
-.PHONY: $(modules) $(roles) $(actions)
-$(modules) $(roles) $(actions):
+.PHONY: misc
+misc: $(misc)
+
+.PHONY: $(scenarios)
+$(scenarios):
 	molecule -c base.yml test --parallel -s $(notdir $@)
 
 # CI stuff - partitioning logic ("true" is the value of the $CI variable)
