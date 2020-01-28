@@ -1,4 +1,9 @@
 ---
+- hosts: backends,agents
+  become: true
+  roles:
+    - geerlingguy.ntp
+
 - name: Stop Sensu-backend and purge configuration
   hosts: backends
   become: true

@@ -5,9 +5,6 @@
   gather_facts: false
 
   tasks:
-    - debug: var=cert
-    - debug: var=key     
-
     - name: Creates keys directory
       file:
         path: ./.keys
@@ -19,17 +16,23 @@
       register: ca_authority
 
     - name: Generate local CA authority
-      shell: cd .keys ; echo '{"CN":"CA","key":{"algo":"rsa","size":2048}}' | cfssl gencert -initca - | cfssljson -bare ca - ; echo '{"signing":{"default":{"expiry":"43800h","usages":["signing","key encipherment","server auth","client auth"]}}}' > ca-config.json
+      shell: cd .keys ; echo '{"CN":"SENSU-CA","key":{"algo":"rsa","size":2048}}' | cfssl gencert -initca - | cfssljson -bare sensu-ca - ; echo '{"signing":{"default":{"expiry":"43800h","usages":["signing","key encipherment","server auth","client auth"]}}}' > ca-config.json
       when: ca_authority.stat.exists==false
 
     - name : Generate etcd client cert
       environment:
         NAME: "client"
-      shell:  cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
+      shell:  cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=sensu-ca.pem -ca-key=sensu-ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
     - name : Generate etcd agent cert
       environment:
         NAME: "agent"
-      shell:  cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
+      shell:  cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=sensu-ca.pem -ca-key=sensu-ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
+
+- hosts: backends,agents
+  become: true
+  roles:
+    - geerlingguy.ntp
+      
 
 - name: Install CA 
   hosts:  backends,agents
@@ -83,13 +86,13 @@
       group: root
       mode: 0644
     with_fileglob:
-      - .keys/ca.pem
+      - .keys/sensu-ca.pem
     notify:
       - update trusted ca debian
       - update trusted ca redhat
   
   - name: verify certificate authority
-    command: "openssl verify {{ ca_path[ansible_os_family][ansible_distribution_major_version|int] }}/ca.pem"
+    command: "openssl verify {{ ca_path[ansible_os_family][ansible_distribution_major_version|int] }}/sensu-ca.pem"
     changed_when: false
 
 
@@ -117,13 +120,19 @@
         etcd_name: "{{ inventory_hostname_short }}"
       when: etcd_name is undefined
 
+    - name: Stop backend
+      systemd:
+        name: sensu-backend
+        state: stopped
+
+
     - name: Generate backend cert
       delegate_to: localhost
       become: false
       environment:
         ADDRESS: "{{ ipaddr }},{{ etcd_name }}"
         NAME: "{{ etcd_name }}"
-      shell: cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="$ADDRESS" -profile=peer - | cfssljson -bare $NAME
+      shell: cd .keys; echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=sensu-ca.pem -ca-key=sensu-ca-key.pem -hostname="$ADDRESS" -profile=peer - | cfssljson -bare $NAME
 
     - name: Install backend cert
       copy:
@@ -136,7 +145,7 @@
         dest: /etc/sensu/certs/
         mode: 0644
     - name: verify backend cert
-      command: "openssl verify -CAfile /etc/pki/ca-trust/source/anchors/ca.pem /etc/sensu/certs/{{ etcd_name }}.pem"
+      command: "openssl verify -CAfile /etc/pki/ca-trust/source/anchors/sensu-ca.pem /etc/sensu/certs/{{ etcd_name }}.pem"
       changed_when: false
 
     - name: Install etcd client cert
@@ -150,7 +159,7 @@
         dest: /etc/sensu/certs/
         mode: 0644
     - name: verify etcd client cert
-      command: "openssl verify -CAfile /etc/pki/ca-trust/source/anchors/ca.pem /etc/sensu/certs/client.pem"
+      command: "openssl verify -CAfile /etc/pki/ca-trust/source/anchors/sensu-ca.pem /etc/sensu/certs/client.pem"
       changed_when: false
 
     #- namie: Install etcd client cert
@@ -160,7 +169,7 @@
         name: sensu.sensu_go.backend
       vars:
         version: 5.16.1
-        cluster_admin_username: tadej
+        cluster_admin_username: webinar
         cluster_admin_password: my.password  # USE VAULT IN REAL SCENARIOS!!!
         backend_config:
           log-level: info
@@ -173,16 +182,20 @@
           etcd-initial-cluster: "sensu-cluster0=https://192.168.50.20:2380,sensu-cluster1=https://192.168.50.21:2380,sensu-cluster2=https://192.168.50.22:2380"
           etcd-initial-cluster-token: ""
           etcd-initial-cluster-state: "new"
+
+          ##
+          # Etcd Peer Connection Settings: Cane be changed after install
+          ##
           etcd-peer-cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
           etcd-peer-key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
-          etcd-peer-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/ca.pem"
+          etcd-peer-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/sensu-ca.pem"
 
           ##
           # Etcd Client Connection Settings: Can be changed after install
           ##
           etcd-cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
           etcd-key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
-          etcd-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/ca.pem"
+          etcd-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/sensu-ca.pem"
           etcd-advertise-client-urls: "https://{{ ipaddr }}:2379"
           etcd-listen-client-urls: "https://0.0.0.0:2379"
 
@@ -201,12 +214,22 @@
           ##
           cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
           key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
-          trusted-ca-file: "/etc/pki/ca-trust/source/anchors/ca.pem"
+          trusted-ca-file: "/etc/pki/ca-trust/source/anchors/sensu-ca.pem"
           ##
-          # Require certs to be verified: Can be changed after install
+          # Require client certs to be verified: Can be changed after install
           #   Note: If using self signed certs must make sure your clients use custom CA when true
           ## 
           insecure-skip-tls-verify: false
+
+          ##
+          # Agent Security Settings: Can be changed after install
+          # If set use for agent websocket communication
+          # if not set, uses cert-file,key-file,trusted-ca-file as fallback
+          ##
+          agent-auth-cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
+          agent-auth-key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
+          agent-auth-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/sensu-ca.pem"
+
 
 - name: Install, configure and run Sensu agent 
   hosts: agents
@@ -218,6 +241,6 @@
       environment:
         NAME: "{{ etcd_name }}"
       shell: echo "here"
-        #echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
+        #echo '{"CN":"'$NAME'","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -config=ca-config.json -ca=ca.pem -ca-key=sensu-ca-key.pem -hostname="" -profile=client - | cfssljson -bare $NAME
 
 
