@@ -24,7 +24,8 @@ how to install different versions of Sensu components from specific channels.
 Role Variables
 --------------
 
-This role consults three variables to determine what packages to install:
+This role consults the following variables to determine what packages to
+install:
 
 .. list-table::
    :header-rows: 1
@@ -51,6 +52,13 @@ This role consults three variables to determine what packages to install:
      - Package version to install. Can be any valid version string such as
        ``5.14.2`` or special value ``latest``.
 
+   * - build
+     - latest
+     - Package build to install. Can be any valid build string such as
+       ``8290`` or a special value ``latest``. If the *version* variable is
+       set to ``latest``, this variable is ignored and the latest available
+       build is installed.
+
 .. _packagecloud: https://packagecloud.io/sensu
 
 
@@ -61,6 +69,8 @@ Tested Platforms (CI/CD)
 | OS    | distribution | versions                          |
 +=======+==============+===================================+
 | Linux | CentOS       | 6, 7                              |
+|       +--------------+-----------------------------------+
+|       | RedHat       | 7                                 |
 |       +--------------+-----------------------------------+
 |       | Ubuntu       | 14.04, 16.04, 18.04, 18.10, 19.04 |
 +-------+--------------+-----------------------------------+

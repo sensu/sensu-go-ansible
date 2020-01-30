@@ -96,6 +96,8 @@
 <p class="caption"><span class="caption-text">Appendices</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-2-0-building-support-for-builds">Version 1.2.0 – Building support for builds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-1-1-python-2-is-still-a-thing">Version 1.1.1 – Python 2 is Still a Thing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-1-hello-sensu-go-5-16">Version 1.1 – Hello Sensu Go 5.16</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-0-rising-from-the-ashes">Version 1.0 – Rising From The Ashes</a></li>
 </ul>
@@ -168,6 +170,30 @@
             
   <div class="section" id="release-notes">
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-2-0-building-support-for-builds">
+<h2>Version 1.2.0 – Building support for builds<a class="headerlink" href="#version-1-2-0-building-support-for-builds" title="Permalink to this headline">¶</a></h2>
+<p>This release adds support for specifying builds when installing various Sensu
+Go components.</p>
+<p><strong>New features:</strong></p>
+<ul class="simple">
+<li><p>Add <em>build</em> variable to the <em>install</em> role that further pins down the
+package version that gets installed.</p></li>
+</ul>
+</div>
+<div class="section" id="version-1-1-1-python-2-is-still-a-thing">
+<h2>Version 1.1.1 – Python 2 is Still a Thing<a class="headerlink" href="#version-1-1-1-python-2-is-still-a-thing" title="Permalink to this headline">¶</a></h2>
+<p>This is a bugfix release that makes sure the Sensu collection is working when
+Ansible control node uses Python 2.</p>
+<p><strong>New features:</strong></p>
+<ul class="simple">
+<li><p>Add support for RHEL 7 to the install role (thanks, &#64;danragnar).</p></li>
+</ul>
+<p><strong>Bug fixes:</strong></p>
+<ul class="simple">
+<li><p>Accept <em>str</em> and <em>unicode</em> instance as a valid string in <em>bonsai_asset</em>
+action plugin.</p></li>
+</ul>
+</div>
 <div class="section" id="version-1-1-hello-sensu-go-5-16">
 <h2>Version 1.1 – Hello Sensu Go 5.16<a class="headerlink" href="#version-1-1-hello-sensu-go-5-16" title="Permalink to this headline">¶</a></h2>
 <p>This is the first release that supports installing Sensu Go 5.16.</p>

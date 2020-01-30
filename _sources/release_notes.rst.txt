@@ -1,6 +1,34 @@
 Release notes
 =============
 
+Version 1.2.0 -- Building support for builds
+--------------------------------------------
+
+This release adds support for specifying builds when installing various Sensu
+Go components.
+
+**New features:**
+
+* Add *build* variable to the *install* role that further pins down the
+  package version that gets installed.
+
+
+Version 1.1.1 -- Python 2 is Still a Thing
+------------------------------------------
+
+This is a bugfix release that makes sure the Sensu collection is working when
+Ansible control node uses Python 2.
+
+**New features:**
+
+* Add support for RHEL 7 to the install role (thanks, @danragnar).
+
+**Bug fixes:**
+
+* Accept *str* and *unicode* instance as a valid string in *bonsai_asset*
+  action plugin.
+
+
 Version 1.1 -- Hello Sensu Go 5.16
 ----------------------------------
 
