@@ -1,6 +1,22 @@
 Release notes
 =============
 
+Version 1.3.0 -- Authenticating with style on Debian
+----------------------------------------------------
+
+Sensu Go 5.15.0 gained an API key authentication method and the Ansible
+collection finally caught up. This means that we can now replace *user* and
+*password* authentication parameters with a single *api_key* value.
+
+And the other big news is the addition of Debian support to the `install`
+role.
+
+**New features:**
+
+* Add API key authentication support.
+* Add support for Debian installation.
+
+
 Version 1.2.0 -- Building support for builds
 --------------------------------------------
 

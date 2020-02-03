@@ -89,42 +89,47 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="roles.html">Roles</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/asset.html">asset – Manage Sensu assets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/asset_info.html">asset_info – List Sensu assets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/bonsai_asset.html">bonsai_asset – Add Sensu assets from Bonsai</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/check.html">check – Manage Sensu checks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/check_info.html">check_info – List Sensu checks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/cluster_role.html">cluster_role – Manage Sensu cluster roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/cluster_role_binding.html">cluster_role_binding – Manage Sensu cluster role bindings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/cluster_role_binding_info.html">cluster_role_binding_info – List Sensu cluster role bindings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/cluster_role_info.html">cluster_role_info – List Sensu cluster roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/datastore.html">datastore – Manage Sensu external datastore providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/datastore_info.html">datastore_info – List external Sensu datastore providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/entity.html">entity – Manage Sensu entities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/entity_info.html">entity_info – List Sensu entities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/event.html">event – Manage Sensu events</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/event_info.html">event_info – List Sensu events</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/filter.html">filter – Manage Sensu filters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/filter_info.html">filter_info – List Sensu info</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/handler_info.html">handler_info – List Sensu handlers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/handler_set.html">handler_set – Manage Sensu handler set</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hook.html">hook – Manage Sensu hooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hook_info.html">hook_info – List Sensu hooks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mutator.html">mutator – Manage Sensu mutators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mutator_info.html">mutator_info – List Sensu mutators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/namespace.html">namespace – Manage Sensu namespaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/namespace_info.html">namespace_info – List Sensu namespaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/pipe_handler.html">pipe_handler – Manage Sensu pipe handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/role.html">role – Manage Sensu roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/role_binding.html">role_binding – Manage Sensu role bindings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/role_binding_info.html">role_binding_info – List Sensu role bindings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/role_info.html">role_info – List Sensu roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/silence.html">silence – Manage Sensu silences</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/silence_info.html">silence_info – List Sensu silence entries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/user.html">user – Manage Sensu users</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/user_info.html">user_info – List Sensu users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-parameters">Authentication parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#managing-sensu-go-resources">Managing Sensu Go resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-reference">Module reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/asset.html">asset – Manage Sensu assets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/asset_info.html">asset_info – List Sensu assets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/bonsai_asset.html">bonsai_asset – Add Sensu assets from Bonsai</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/check.html">check – Manage Sensu checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/check_info.html">check_info – List Sensu checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/cluster_role.html">cluster_role – Manage Sensu cluster roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/cluster_role_binding.html">cluster_role_binding – Manage Sensu cluster role bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/cluster_role_binding_info.html">cluster_role_binding_info – List Sensu cluster role bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/cluster_role_info.html">cluster_role_info – List Sensu cluster roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/datastore.html">datastore – Manage Sensu external datastore providers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/datastore_info.html">datastore_info – List external Sensu datastore providers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/entity.html">entity – Manage Sensu entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/entity_info.html">entity_info – List Sensu entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/event.html">event – Manage Sensu events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/event_info.html">event_info – List Sensu events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/filter.html">filter – Manage Sensu filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/filter_info.html">filter_info – List Sensu info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/handler_info.html">handler_info – List Sensu handlers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/handler_set.html">handler_set – Manage Sensu handler set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/hook.html">hook – Manage Sensu hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/hook_info.html">hook_info – List Sensu hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/mutator.html">mutator – Manage Sensu mutators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/mutator_info.html">mutator_info – List Sensu mutators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/namespace.html">namespace – Manage Sensu namespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/namespace_info.html">namespace_info – List Sensu namespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/pipe_handler.html">pipe_handler – Manage Sensu pipe handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/role.html">role – Manage Sensu roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/role_binding.html">role_binding – Manage Sensu role bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/role_binding_info.html">role_binding_info – List Sensu role bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/role_info.html">role_info – List Sensu roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/silence.html">silence – Manage Sensu silences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/silence_info.html">silence_info – List Sensu silence entries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/user.html">user – Manage Sensu users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/user_info.html">user_info – List Sensu users</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -208,26 +213,97 @@ the same pattern as much as possible.</p>
 <p>The API of each module is composed of two parts. The <em>auth</em> parameter contains
 the pieces of information that are related to the Sensu Go backend that the
 module is connecting to. All other parameters hold the information related to
-the resource that we are operating on. A typical task would look like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Make sure asset is present</span>
+the resource that we are operating on.</p>
+<div class="section" id="authentication-parameters">
+<h2>Authentication parameters<a class="headerlink" href="#authentication-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Each module has an <em>auth</em> parameter that holds the following information about
+the Sensu Go backend:</p>
+<ol class="arabic simple">
+<li><p>The <strong>url</strong> key holds the address of the Sensu Go backend. If this key is
+not present in the task’s definition, Ansible will consult the <em>SENSU_URL</em>
+environment variable and, if the variable is not set, use the default value
+of <code class="docutils literal notranslate"><span class="pre">http://localhost:8080</span></code>.</p></li>
+<li><p>The <strong>user</strong> and <strong>password</strong> keys contain the credentials that the module
+will use when connecting to the backend. It not present, Ansible will try
+to look up the <em>SENSU_USER</em> and <em>SENSU_PASSWORD</em> environment variables,
+falling back to the default values of <code class="docutils literal notranslate"><span class="pre">admin</span></code> and <code class="docutils literal notranslate"><span class="pre">P&#64;ssw0rd!</span></code>.</p></li>
+<li><p>The <strong>api_key</strong> field should contain an <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/guides/use-apikey-feature/">API key</a> that module will use to
+authenticate with the backend. If not present, Ansible will try to use the
+value stored in the <em>SENSU_API_KEY</em>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The API key authentication is only available in Sensu Go 5.15 or newer.</p>
+</div>
+<p>When Ansible tries to connect to the Sensu Go backend, it will try to
+authenticate using the API key. If the <em>api_key</em> is not set, Ansible will
+fallback to using the <em>user</em> and <em>password</em> values for authentication. What
+this basically means is that there are two valid sets of <em>auth</em> parameters:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Use API key authentication</span>
   <span class="nt">asset</span><span class="p">:</span>
     <span class="nt">auth</span><span class="p">:</span>
-      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://sensu.host.com:8080</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://my.sensu.host:8765</span>
+      <span class="nt">api_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7f63b5bc-41f4-4b3e-b59b-5431afd7e6a2</span>
+    <span class="c1"># Other asset parameters here</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Use user and password authentication</span>
+  <span class="nt">asset</span><span class="p">:</span>
+    <span class="nt">auth</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://my.sensu.host:8765</span>
       <span class="nt">user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-user</span>
-      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pass</span>
-    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-namespace</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-asset-name</span>
-    <span class="nt">builds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
+      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-password</span>
+    <span class="c1"># Other asset parameters here</span>
 </pre></div>
 </div>
-<p>If we would like to remove a certain resource from the Sensu backend, we can
-write a task and set its <em>state</em> parameter to <code class="docutils literal notranslate"><span class="pre">absent</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Make sure asset is absent</span>
+<p>It is not an error to specify all four parameters when writing an Ansible
+task, but the <em>user</em> and <em>password</em> fields are ignored in this case:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Use API key authentication and ignore user and password values</span>
   <span class="nt">asset</span><span class="p">:</span>
     <span class="nt">auth</span><span class="p">:</span>
-      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://sensu.host.com:8080</span>
-      <span class="nt">user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-user</span>
-      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pass</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://my.sensu.host:8765</span>
+      <span class="nt">user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-user</span>          <span class="c1"># IGNORED</span>
+      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-password</span>  <span class="c1"># IGNORED</span>
+      <span class="nt">api_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7f63b5bc-41f4-4b3e-b59b-5431afd7e6a2</span>
+    <span class="c1"># Other asset parameters here</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the <em>api_key</em> parameter is set to an invalid value, Ansible will <strong>NOT</strong>
+fallback to the second method of authentication. Instead, it will report
+an error and abort the run.</p>
+</div>
+</div>
+<div class="section" id="managing-sensu-go-resources">
+<h2>Managing Sensu Go resources<a class="headerlink" href="#managing-sensu-go-resources" title="Permalink to this headline">¶</a></h2>
+<p>There are three things we can do using the Sensu Go Ansible modules:</p>
+<ol class="arabic simple">
+<li><p>Make sure that the specified resource is present on the backend.</p></li>
+<li><p>Make sure that the named resource is not present on the backend.</p></li>
+<li><p>List all currently available resources on the backend.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We left out the <em>auth</em> parameter from the following examples in order to
+keep them short and readable.</p>
+</div>
+<p>A typical task for creating (and by <em>creating</em> we mean <em>making sure it
+exists</em>) a resource on the backend would look like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Make sure asset is present</span>
+  <span class="nt">asset</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-namespace</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-asset-name</span>
+    <span class="c1"># Other asset parameters go here</span>
+</pre></div>
+</div>
+<p>We need to specify the resource’s name and decide into what namespace to place
+it if the resource is not a cluster-wide resource. There are a few exceptions
+to this rule, but not many.</p>
+<p>If we would like to remove a certain resource from the Sensu backend (and by
+<em>remove</em> we mean <em>make sure it is not present</em>), we can write a task and set
+its <em>state</em> parameter to <code class="docutils literal notranslate"><span class="pre">absent</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Make sure asset is absent</span>
+  <span class="nt">asset</span><span class="p">:</span>
     <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-namespace</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-asset-name</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
@@ -238,10 +314,6 @@ can be used to retrieve information about the corresponding resources, for
 instance <em>asset</em> and <em>asset_info</em> modules.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Fetch a list of all assets</span>
   <span class="nt">asset_info</span><span class="p">:</span>
-    <span class="nt">auth</span><span class="p">:</span>
-      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://sensu.host.com:8080</span>
-      <span class="nt">user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-user</span>
-      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pass</span>
     <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-namespace</span>
   <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
 </pre></div>
@@ -251,10 +323,6 @@ retrieve information about a single asset by adding a <em>name</em> parameter to
 previous task:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Fetch a specific asset</span>
   <span class="nt">asset_info</span><span class="p">:</span>
-    <span class="nt">auth</span><span class="p">:</span>
-      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://sensu.host.com:8080</span>
-      <span class="nt">user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-user</span>
-      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pass</span>
     <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-namespace</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-asset-name</span>
   <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
@@ -265,10 +333,6 @@ we try to fetch a non-existing resource, the result will hold an empty list.
 This makes it easy to write conditional tasks using next pattern:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Fetch a specific asset</span>
   <span class="nt">asset_info</span><span class="p">:</span>
-    <span class="nt">auth</span><span class="p">:</span>
-      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://sensu.host.com:8080</span>
-      <span class="nt">user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-user</span>
-      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pass</span>
     <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-namespace</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-asset-name</span>
   <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
@@ -282,10 +346,6 @@ This makes it easy to write conditional tasks using next pattern:</p>
 <p>Of course, you can also loop over the result using a <em>loop</em> construct:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Fetch a list of all assets</span>
   <span class="nt">asset_info</span><span class="p">:</span>
-    <span class="nt">auth</span><span class="p">:</span>
-      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://sensu.host.com:8080</span>
-      <span class="nt">user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-user</span>
-      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pass</span>
     <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-namespace</span>
   <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
 
@@ -295,36 +355,12 @@ This makes it easy to write conditional tasks using next pattern:</p>
   <span class="nt">loop</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result.objects</span>
 </pre></div>
 </div>
-<p>For convenience, modules also consult some environment variables when getting
-parameter values. This allows us to remove the <em>auth</em> and <em>namespace</em>
-parameters from task definitions and define them only once:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
-<span class="p p-Indicator">-</span> <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">all</span>
-  <span class="nt">collections</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">sensu.sensu_go</span> <span class="p p-Indicator">]</span>
-  <span class="nt">environment</span><span class="p">:</span>
-    <span class="nt">SENSU_URL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://sensu.host.com:8080</span>
-    <span class="nt">SENSU_USER</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-user</span>
-    <span class="nt">SENSU_PASSWORD</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pass</span>
-    <span class="nt">SENSU_NAMESPACE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-namespace</span>
-
-  <span class="nt">tasks</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Asset task</span>
-      <span class="nt">asset</span><span class="p">:</span>
-        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-asset</span>
-        <span class="c1"># More parameters here</span>
-
-    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Check task</span>
-      <span class="nt">check</span><span class="p">:</span>
-        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-check</span>
-        <span class="c1"># More parameters here</span>
-
-    <span class="c1"># More tasks here</span>
-</pre></div>
-</div>
 <p>Reference material for each module contains documentation on what parameters
 certain modules accept and what values they expect those parameters to be.</p>
+</div>
+<div class="section" id="module-reference">
+<h2>Module reference<a class="headerlink" href="#module-reference" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Available modules</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules/asset.html">asset – Manage Sensu assets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/asset_info.html">asset_info – List Sensu assets</a></li>
@@ -363,6 +399,7 @@ certain modules accept and what values they expect those parameters to be.</p>
 <li class="toctree-l1"><a class="reference internal" href="modules/user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/user_info.html">user_info – List Sensu users</a></li>
 </ul>
+</div>
 </div>
 </div>
 
