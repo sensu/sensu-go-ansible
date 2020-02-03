@@ -1,0 +1,39 @@
+Vagrant.configure("2") do |config|
+  # Common config
+  config.vm.box = "centos/7"
+  config.vm.provision(
+    "shell",
+    inline: "cat /vagrant/demo.pub >> /home/vagrant/.ssh/authorized_keys"
+  )
+  config.vm.provider("virtualbox") do |v|
+    v.memory = 1024
+    v.cpus = 1
+  end
+
+  # Load balancer
+  config.vm.define("load_balancer") do |loadbalance|
+    loadbalance.vm.hostname = "loadbalancer"
+    loadbalance.vm.network "private_network", ip: "192.168.51.10"
+    loadbalance.vm.network "forwarded_port", guest: 3000, host: 23000
+  end
+
+  # Asset server
+  config.vm.define("asset_server") do |loadbalance|
+    loadbalance.vm.hostname = "assetserver"
+    loadbalance.vm.network "private_network", ip: "192.168.51.11"
+  end
+
+  # Backend
+  3.times do |i|
+    config.vm.define("sensu-cluster#{i}") do |backend|
+      backend.vm.hostname = "sensu-cluster#{i}"
+      backend.vm.network "private_network", ip: "192.168.51.2#{i}"
+    end
+  end
+
+  # Monitored VMs
+  config.vm.define("agent") do |agent|
+    agent.vm.hostname = "agent"
+    agent.vm.network "private_network", ip: "192.168.51.30"
+  end
+end

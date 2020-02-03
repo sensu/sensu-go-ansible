@@ -1,0 +1,28 @@
+---
+all:
+  children:
+    load_balancers:
+      hosts:
+        192.168.51.10:
+          ansible_user: vagrant
+    asset_servers:
+      hosts:
+        192.168.51.11:
+          ansible_user: vagrant
+    backends:
+      hosts:
+        192.168.51.20:
+          ansible_user: vagrant
+          etcd_name: sensu-cluster0
+        192.168.51.21:
+          ansible_user: vagrant
+          etcd_name: sensu-cluster1
+        192.168.51.22:
+          ansible_user: vagrant
+          etcd_name: sensu-cluster2
+    agents:
+      hosts:
+        192.168.51.30:
+          ansible_user: vagrant
+          subscriptions:
+            - linux

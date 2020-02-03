@@ -1,0 +1,166 @@
+---
+- name: Install load balancer
+  hosts: load_balancers
+  become: true
+
+  tasks:
+    - name: Add EPEL repo
+      yum:
+        name: epel-release
+
+    - name: Install nginx
+      yum:
+        name: nginx
+
+    - name: Configure load balancer
+      template:
+        src: templates/load-balancer.conf.j2
+        dest: /etc/nginx/conf.d/load-balancer.conf
+      notify:
+        - Reload nginx
+
+    - name: Install SELinux helpers
+      yum:
+        name: [ libselinux-python, policycoreutils-python ]
+
+    - name: Allow nginx to listen on 3000, 8080, and 8081
+      seport:
+        ports: [ "3000", 8080-8081 ]
+        proto: tcp
+        setype: http_port_t
+
+    - name: Start nginx
+      service:
+        name: nginx
+        enabled: true
+        state: started
+
+  handlers:
+    - name: Reload nginx
+      service:
+        name: nginx
+        state: reloaded
+
+
+- name: Install asset server
+  hosts: asset_servers
+  become: true
+
+  tasks:
+    - name: Add EPEL repo
+      yum:
+        name: epel-release
+
+    - name: Install nginx
+      yum:
+        name: nginx
+
+    - name: Configure nginx
+      template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      notify:
+        - Reload nginx
+
+    - name: Configure asset site
+      template:
+        src: templates/assets.conf.j2
+        dest: /etc/nginx/conf.d/assets.conf
+      notify:
+        - Reload nginx
+
+    - name: Start nginx
+      service:
+        name: nginx
+        enabled: true
+        state: started
+
+    - name: Upload custom asset
+      copy:
+        src: assets/custom-asset-0.0.1.tar.gz
+        dest: /usr/share/nginx/html/custom-asset-0.0.1.tar.gz
+        checksum: 313b7de41818758f11c035db53cfc57477cbfa61
+
+  handlers:
+    - name: Reload nginx
+      service:
+        name: nginx
+        state: reloaded
+
+
+- name: Install, configure and run Sensu backend
+  hosts: backends
+  become: true
+
+  tasks:
+    - name: Install backend
+      include_role:
+        name: sensu.sensu_go.backend
+      vars:
+        version: 5.16.1
+        cluster_admin_username: tadej
+        cluster_admin_password: my.password  # USE VAULT IN REAL SCENARIOS!!!
+        backend_config:
+          log-level: info
+          etcd-name: "{{ etcd_name }}"
+          etcd-initial-advertise-peer-urls: http://{{ inventory_hostname }}:2380
+          etcd-listen-peer-urls: http://0.0.0.0:2380
+          etcd-initial-cluster: "\
+            sensu-cluster0=http://192.168.51.20:2380,\
+            sensu-cluster1=http://192.168.51.21:2380,\
+            sensu-cluster2=http://192.168.51.22:2380\
+          "
+          etcd-initial-cluster-token: ""
+          etcd-initial-cluster-state: new
+          etcd-advertise-client-urls: http://{{ inventory_hostname }}:2379
+          etcd-listen-client-urls: http://0.0.0.0:2379
+
+
+- name: Install, configure and run Sensu agent
+  hosts: agents
+  become: true
+
+  tasks:
+    - name: Install agent
+      include_role:
+        name: sensu.sensu_go.agent
+      vars:
+        version: 5.16.1
+        agent_config:
+          backend-url:
+            - ws://192.168.51.10:8081
+          deregister: true
+          keepalive-interval: 5
+          keepalive-warning-timeout: 10
+          subscriptions: "{{ subscriptions }}"
+
+- name: Manage Sensu Go resources
+  hosts: localhost
+  gather_facts: false
+  collections: [ sensu.sensu_go ]
+
+  tasks:
+    - name: Create custom asset
+      asset:
+        auth: &auth
+          user: tadej
+          password: my.password  # DO NOT DO THIS IN REAL SCENARIOS!!!
+          url: http://192.168.51.10:8080
+        name: custom-asset
+        builds:
+          - url: http://192.168.51.11/custom-asset-0.0.1.tar.gz
+            sha512: 069fb010a8419c42ad53430219cae034176975f7b7024d413d050293d5dfefd8cb22df6c3fea880bb0494779b4c156247fa7554240a3458fb6be08d039a98c1e
+            filters:
+              - entity.system.os == 'linux'
+
+    - name: Create a check that uses custom asset
+      check:
+        auth: *auth
+        name: custom-check
+        runtime_assets: custom-asset
+        command: custom.sh
+        publish: true 
+        interval: 5
+        timeout: 10
+        subscriptions: 
+          - linux

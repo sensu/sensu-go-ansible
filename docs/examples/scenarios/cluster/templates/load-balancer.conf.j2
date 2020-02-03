@@ -1,0 +1,65 @@
+upstream sensu_api {
+    # Clients with the same IP are redirected to the same backend
+    ip_hash;
+
+    # Available backend servers
+    server 192.168.51.20:8080;
+    server 192.168.51.21:8080;
+    server 192.168.51.22:8080;
+}
+
+upstream sensu_dashboard {
+    # Clients with the same IP are redirected to the same backend
+    ip_hash;
+
+    # Available backend servers
+    server 192.168.51.20:3000;
+    server 192.168.51.21:3000;
+    server 192.168.51.22:3000;
+}
+
+upstream sensu_agent_ws {
+    # Clients with the same IP are redirected to the same backend
+    ip_hash;
+
+    # Available backend servers
+    server 192.168.51.20:8081;
+    server 192.168.51.21:8081;
+    server 192.168.51.22:8081;
+}
+
+server {
+    listen 8081;
+
+    location / {
+        access_log off;
+
+        # redirect all HTTP traffic to localhost:8080
+        proxy_pass http://sensu_agent_ws;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        # WebSocket support (nginx 1.4)
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+    }
+}
+server {
+    listen 8080;
+
+    location / {
+        access_log off;
+        proxy_pass http://sensu_api;
+    }
+}
+server {
+    listen 3000;
+
+    location / {
+        access_log off;
+        proxy_pass http://sensu_dashboard;
+    }
+}

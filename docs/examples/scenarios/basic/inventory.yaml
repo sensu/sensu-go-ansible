@@ -1,0 +1,17 @@
+---
+all:
+  children:
+    backends:
+      hosts:
+        192.168.50.20:
+          ansible_user: vagrant
+    agents:
+      hosts:
+        192.168.50.30:
+          ansible_user: vagrant
+          subscriptions:
+            - linux
+        192.168.50.31:
+          ansible_user: vagrant
+          subscriptions:
+            - linux
