@@ -37,7 +37,7 @@ class ActionModule(ActionBase):
         self._supports_check_mode = True
         self._supports_async = True
 
-        result = super(ActionModule, self).run(task_vars)
+        result = super(ActionModule, self).run(task_vars=task_vars)
 
         wrap_async = (
             self._task.async_val and not self._connection.has_native_async
