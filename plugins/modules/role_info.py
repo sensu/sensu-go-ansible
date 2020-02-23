@@ -50,7 +50,7 @@ EXAMPLES = '''
 RETURN = '''
 roles:
   description: list of Sensu roles
-  returned: always
+  returned: success
   type: list
 '''
 

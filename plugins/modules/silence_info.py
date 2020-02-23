@@ -60,7 +60,7 @@ EXAMPLES = '''
 RETURN = '''
 objects:
   description: list of Sensu silence entries
-  returned: always
+  returned: success
   type: list
 '''
 

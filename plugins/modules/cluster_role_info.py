@@ -49,7 +49,7 @@ EXAMPLES = '''
 RETURN = '''
 roles:
   description: list of Sensu cluster roles
-  returned: always
+  returned: success
   type: list
 '''
 

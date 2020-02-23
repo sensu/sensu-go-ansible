@@ -49,7 +49,7 @@ EXAMPLES = '''
 RETURN = '''
 objects:
   description: list of Sensu checks
-  returned: always
+  returned: success
   type: list
 '''
 

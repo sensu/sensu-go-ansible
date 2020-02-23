@@ -49,7 +49,7 @@ EXAMPLES = '''
 RETURN = '''
 cluster_role_bindings:
   description: list of Sensu cluster role bindings
-  returned: always
+  returned: success
   type: list
 '''
 

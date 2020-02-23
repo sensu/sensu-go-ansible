@@ -155,7 +155,7 @@ EXAMPLES = '''
 RETURN = '''
 object:
   description: object representing Sensu event
-  returned: always
+  returned: success
   type: dict
 '''
 

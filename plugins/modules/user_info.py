@@ -48,7 +48,7 @@ EXAMPLES = '''
 RETURN = '''
 objects:
   description: list of Sensu users
-  returned: always
+  returned: success
   type: list
 '''
 

@@ -50,7 +50,7 @@ EXAMPLES = '''
 RETURN = '''
 role_bindings:
   description: list of Sensu role bindings
-  returned: always
+  returned: success
   type: list
 '''
 

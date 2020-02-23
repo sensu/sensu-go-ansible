@@ -49,7 +49,7 @@ EXAMPLES = """
 RETURN = """
 objects:
   description: list of external Sensu datastore providers
-  returned: always
+  returned: success
   type: list
 """
 
