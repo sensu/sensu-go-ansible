@@ -72,15 +72,6 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
-  - name: ubuntu-18.10
-    image: xlabsi/ubuntu:18.10
-    pre_build_image: true
-    pull: true
-    capabilities:
-      - SYS_ADMIN
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-
   - name: ubuntu-19.04
     image: xlabsi/ubuntu:19.04
     pre_build_image: true
