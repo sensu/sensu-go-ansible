@@ -40,6 +40,7 @@ sanity:  ## Run sanity tests
 	flake8
 	ansible-lint -p roles/*
 	ansible-test sanity --python $(python_version)
+	./tests/sanity/validate-role-metadata.py roles/*
 
 .PHONY: units
 units:  ## Run unit tests
