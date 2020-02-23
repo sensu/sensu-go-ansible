@@ -64,7 +64,7 @@ EXAMPLES = '''
 RETURN = '''
 objects:
   description: list of Sensu events
-  returned: always
+  returned: success
   type: list
 '''
 

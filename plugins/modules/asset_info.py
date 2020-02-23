@@ -55,7 +55,7 @@ EXAMPLES = """
 RETURN = """
 objects:
   description: list of Sensu assets
-  returned: always
+  returned: success
   type: list
 """
 
