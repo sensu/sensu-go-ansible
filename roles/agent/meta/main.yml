@@ -14,7 +14,11 @@ galaxy_info:
         - trusty
         - xenial
         - bionic
-        - disco dingo
+        - disco
+    - name: Debian
+      versions:
+        - stretch
+        - buster
 
   galaxy_tags:
     - sensu
