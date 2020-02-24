@@ -123,6 +123,11 @@ def _build_set(builds):
 
 
 def _do_builds_differ(current, desired):
+    # Since Sensu Go 5.16, the web API returns builds: None if the asset
+    # in question is a deprecated, single-build asset.
+    if current is None:
+        return True
+
     if len(current) != len(desired):
         return True
 

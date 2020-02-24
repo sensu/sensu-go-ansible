@@ -1,4 +1,20 @@
 ---
+- name: Setup sensuctl
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Configure sensuctl
+      command:
+        cmd: >
+          sensuctl configure
+          --non-interactive
+          --url http://localhost:8080
+          --username admin
+          --password P@ssw0rd!
+          --namespace default
+
+
 - name: Converge
   collections:
     - sensu.sensu_go
@@ -209,3 +225,36 @@
     - assert:
         that:
           - result.objects == []
+
+    - name: Create an asset with a deprecated definition
+      shell:
+        cmd: |
+          cat <<EOF | sensuctl create
+          type: Asset
+          api_version: core/v2
+          metadata:
+            name: old_asset
+            namespace: default
+          spec:
+            url: https://example.com/sensu-cpu-check_0.0.3_linux_amd64.tar.gz
+            sha512: 0ce9d52b270b77f4cab754e55732ae002228201d0bd01a89b954a0655b88c1ee6546e2f82cfd1eec04689af90ad940cde128e8867912d9e415f4a58d7fdcdadf
+            filters:
+              - entity.system.os == 'linux'
+              - entity.system.arch == 'amd64'
+          EOF
+
+    - name: Update deprecated asset
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: old_asset
+        builds:
+          - url: https://example.com/sensu-cpu-check_0.0.3_linux_amd64.tar.gz
+            sha512: 0ce9d52b270b77f4cab754e55732ae002228201d0bd01a89b954a0655b88c1ee6546e2f82cfd1eec04689af90ad940cde128e8867912d9e415f4a58d7fdcdadf
+            filters:
+              - entity.system.os == 'linux'
+              - entity.system.arch == 'amd64'
+      register: result
+
+    - assert:
+        that: result is changed
