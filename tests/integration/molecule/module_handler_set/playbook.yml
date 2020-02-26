@@ -77,15 +77,25 @@
         name: handler
         state: absent
 
+    - name: Get the Sensu Go backend's version
+      uri:
+        url: http://localhost:8080/version
+        return_content: true
+      register: backend_version
+
     - name: Get all handlers set
       handler_info:
         auth:
           url: http://localhost:8080
       register: result
+      # Sensu Go 5.15.0 returns none when no handler sets are present
+      when: (backend_version.content | from_json).sensu_backend != '5.15.0'
 
     - assert:
         that:
           - result.objects | length == 0
+      # Sensu Go 5.15.0 returns none when no handler sets are present
+      when: (backend_version.content | from_json).sensu_backend != '5.15.0'
 
     - name: Try to fetch non-existing handler
       handler_info:
