@@ -62,36 +62,38 @@ verifier:
   lint:
     enabled: false
 platforms:
-  - name: v5.14.2
-    image: xlabsi/sensu:5.14.2
+  - name: v5.18.0
+    image: xlabsi/sensu:5.18.0
     pre_build_image: true
     pull: true
-    command: &cmd >
-      sensu-backend start
-        --state-dir /var/lib/sensu/sensu-backend/etcd1
-        --log-level debug
-  - name: v5.14.1
-    image: xlabsi/sensu:5.14.1
+    override_command: false
+  - name: v5.17.2
+    image: xlabsi/sensu:5.17.2
     pre_build_image: true
     pull: true
-    command: *cmd
-  - name: v5.14.0
-    image: xlabsi/sensu:5.14.0
+    override_command: false
+  - name: v5.17.1
+    image: xlabsi/sensu:5.17.1
     pre_build_image: true
     pull: true
-    command: *cmd
-  - name: v5.13.2
-    image: xlabsi/sensu:5.13.2
+    override_command: false
+  - name: v5.17.0
+    image: xlabsi/sensu:5.17.0
     pre_build_image: true
     pull: true
-    command: *cmd
-  - name: v5.13.1
-    image: xlabsi/sensu:5.13.1
+    override_command: false
+  - name: v5.16.1
+    image: xlabsi/sensu:5.16.1
     pre_build_image: true
     pull: true
-    command: *cmd
-  - name: v5.13.0
-    image: xlabsi/sensu:5.13.0
+    override_command: false
+  - name: v5.16.0
+    image: xlabsi/sensu:5.16.0
     pre_build_image: true
     pull: true
-    command: *cmd
+    override_command: false
+  - name: v5.15.0
+    image: xlabsi/sensu:5.15.0
+    pre_build_image: true
+    pull: true
+    override_command: false
