@@ -41,19 +41,19 @@ workflows:
 # A list of all supported python versions.
 executors:
   python27:
-    docker: [ { image: circleci/python:2.7 } ]
+    docker: [ { image: circleci/python@sha256:2b69a7f724876064deefa78b41e6b03d4ea7e3083fdb3a8268fec9754158427f } ]
     working_directory: &wd ~/ansible_collections/sensu/sensu_go
 
   python35:
-    docker: [ { image: circleci/python:3.5 } ]
+    docker: [ { image: circleci/python@sha256:ce95d2f82fb2a4d2ec9f79a17ead2e8bba65da3bb1e3c4f339fb0deb9c1a1816 } ]
     working_directory: *wd
 
   python36:
-    docker: [ { image: circleci/python:3.6 } ]
+    docker: [ { image: circleci/python@sha256:11d3c6f85e08bb1f04ccb20f6d41540e3cfcf2d034472847d52989cd1c135426 } ]
     working_directory: *wd
 
   python37:
-    docker: [ { image: circleci/python:3.7 } ]
+    docker: [ { image: circleci/python@sha256:d1d382680cdb007ed058eabf05b5be158c504a96ea6f843899f50be74cce678c } ]
     working_directory: *wd
 
 # Matrix of tests that we run. At the moment, the only supported Ansible is
