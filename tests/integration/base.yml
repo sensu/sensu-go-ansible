@@ -62,6 +62,11 @@ verifier:
   lint:
     enabled: false
 platforms:
+  - name: v5.18.1
+    image: xlabsi/sensu:5.18.1
+    pre_build_image: true
+    pull: true
+    override_command: false
   - name: v5.18.0
     image: xlabsi/sensu:5.18.0
     pre_build_image: true
