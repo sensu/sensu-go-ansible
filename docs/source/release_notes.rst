@@ -1,6 +1,22 @@
 Release notes
 =============
 
+Version 1.3.1 -- Bug fixing galore
+----------------------------------
+
+This release makes it possible to use the *asset* module when replacing the
+deprecated, single-build assets that were created by means other than Ansible.
+
+**Bug fixes:**
+
+* Do not die when encountering a deprecated asset format.
+* Update return value documentation for info modules.
+* Add Sensu Go 5.17.x and 5.18.x to the test suite and remove the unsupported
+  versions (5.14.2 and lower).
+* Update the role metadata with proper platform markers.
+* Remove unsupported Ubuntu versions from the test suite.
+
+
 Version 1.3.0 -- Authenticating with style on Debian
 ----------------------------------------------------
 
