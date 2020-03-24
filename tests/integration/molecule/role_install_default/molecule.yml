@@ -9,8 +9,8 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
-  - name: centos-7
-    image: xlabsi/centos:7
+  - name: centos-8
+    image: xlabsi/centos:8
     pre_build_image: true
     pull: true
     capabilities:
