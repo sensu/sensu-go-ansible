@@ -1,11 +1,6 @@
 ---
 - name: Prepare package repositories
   include_tasks: repositories.yml
-  tags:
-    - prepare_install
-    - install
 
 - name: Install selected packages
   include_tasks: packages.yml
-  tags:
-    - install
