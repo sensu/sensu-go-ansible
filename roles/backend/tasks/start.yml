@@ -4,7 +4,6 @@
     name: sensu-backend
     state: started
     enabled: yes
-  tags: [run_backend]
 
 - name: Check for sensu-backend init command
   command:

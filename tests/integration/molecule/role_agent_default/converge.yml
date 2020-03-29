@@ -8,8 +8,6 @@
   hosts: agents
   vars:
     agent_yml: /etc/sensu/agent.yml
-  tags:
-    - configure_agent
   tasks:
     - name: Agent configuration must exist
       stat:
@@ -52,8 +50,6 @@
   hosts: agents
   vars:
     agent_yml: /etc/sensu/agent.yml
-  tags:
-    - configure_agent
   tasks:
     - name: Confirm overloaded variable sets
       lineinfile:
@@ -130,8 +126,6 @@
   hosts: agents
   vars:
     agent_yml: /etc/sensu/agent.yml
-  tags:
-    - configure_agent
   tasks:
     - name: Confirm full configuration settings
       lineinfile:

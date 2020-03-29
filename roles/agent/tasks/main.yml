@@ -13,7 +13,6 @@
     owner: &sensu_user sensu
     group: &sensu_group sensu
     mode: "0644"
-  tags: [configure_agent]
   when: agent_trusted_ca_file is defined
 
 - name: Configure sensu-agent (/etc/sensu/agent.yml)
@@ -24,11 +23,9 @@
     group: *sensu_group
     mode: '0600'
   notify: Restart agent
-  tags: [configure_agent]
 
 - name: Start sensu-agent
   service:
     name: sensu-agent
     state: started
     enabled: yes
-  tags: [run_agent]

@@ -2,8 +2,6 @@
 - name: Pre-converge secure backend config step
   hosts: backends
   gather_facts: no
-  tags:
-    - configure_agent
   tasks:
     - name: Set dummy backend PKI variables
       set_fact:
@@ -21,8 +19,6 @@
 
 - name: Verify configure_agent
   hosts: agents
-  tags:
-    - configure_agent
   tasks:
     - name: The trusted CA store file must exist
       stat:
@@ -59,8 +55,6 @@
 
 - name: Verify default configuration
   hosts: agents
-  tags:
-    - configure_agent
   tasks:
     - name: Confirm that none of secured configuration settings leak in
       lineinfile:
