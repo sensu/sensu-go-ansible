@@ -104,7 +104,7 @@ jobs:
     environment:
       ANSIBLE_VERSION: *ansible29
       TEST_KIND: integration
-    parallelism: 4
+    parallelism: 8
     steps: [ integration_test_git ]
 
   integration_ansible29_galaxy:
@@ -112,7 +112,7 @@ jobs:
     environment:
       ANSIBLE_VERSION: *ansible29
       TEST_KIND: integration
-    parallelism: 4
+    parallelism: 8
     steps: [ integration_test_galaxy ]
 
 commands:
