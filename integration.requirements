@@ -1,3 +1,2 @@
-# Temporary - until we get a proper release
-git+https://github.com/ansible/molecule.git@ec108275d17974d477d595eb4badd21630dafce0#egg=molecule[docker]
+molecule[docker] ~= 3.0.2
 selinux
