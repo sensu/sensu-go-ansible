@@ -1,0 +1,3 @@
+---
+- name: Install selected components
+  include_tasks: "{{ ansible_pkg_mgr }}/install.yml"
