@@ -5,6 +5,7 @@ scenario:
     - create
     - converge
     - verify
+    - check
     - destroy
 
 platforms:
