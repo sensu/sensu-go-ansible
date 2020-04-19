@@ -1,0 +1,24 @@
+---
+- name: Prepare
+  hosts: all
+
+  tasks:
+    - name: Create sensu group
+      group:
+        name: sensu
+
+    - name: Create sensu user
+      # We need FQCN here because we are running test from within the
+      # collection. In this case, our collection becomes the default
+      # collection and so the sensu.sensu_go.user module shadows the builtin
+      # one.
+      ansible.builtin.user:
+        name: sensu
+        groups: sensu
+
+    - name: Create /etc/sensu folder
+      file:
+        state: directory
+        path: /etc/sensu
+        owner: sensu
+        group: sensu

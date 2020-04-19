@@ -6,10 +6,8 @@
     - name: Install secured backend
       include_role:
         name: sensu.sensu_go.backend
+        tasks_from: configure
       vars:
-        # TODO(@tadeboro): remove next variable once we know how to run
-        # `sensu-backend init` command on secured backends.
-        version: 5.15.0
         etcd_cert_file: files/etcd-client.crt
         etcd_key_file: files/etcd-client.key
         etcd_trusted_ca_file: files/client-ca.crt
@@ -26,7 +24,7 @@
       stat:
         path: "{{ item }}"
       register: result
-      with_items:
+      loop:
         - /etc/sensu/etcd-client.crt
         - /etc/sensu/etcd-client-ca.crt
         - /etc/sensu/etcd-peer.crt
@@ -41,13 +39,13 @@
           - item.stat.pw_name == 'sensu'
           - item.stat.gr_name == 'sensu'
           - item.stat.mode == '0644'
-      with_items: "{{ result.results }}"
+      loop: "{{ result.results }}"
 
     - name: The private keys must exist and be protected
       stat:
         path: "{{ item }}"
       register: result
-      with_items:
+      loop:
         - /etc/sensu/etcd-client.key
         - /etc/sensu/etcd-peer.key
         - /etc/sensu/api.key
@@ -59,7 +57,7 @@
           - item.stat.pw_name == 'sensu'
           - item.stat.gr_name == 'sensu'
           - item.stat.mode == '0400'
-      with_items: "{{ result.results }}"
+      loop: "{{ result.results }}"
 
     - name: Confirm secured configuration settings
       slurp:
@@ -95,10 +93,8 @@
     - name: Configure an overriding of managed vars
       include_role:
         name: sensu.sensu_go.backend
+        tasks_from: configure
       vars:
-        # TODO(@tadeboro): remove next variable once we know how to run
-        # `sensu-backend init` command on secured backends.
-        version: 5.15.0
         etcd_cert_file: files/etcd-client.crt
         etcd_key_file: files/etcd-client.key
         etcd_trusted_ca_file: files/client-ca.crt
