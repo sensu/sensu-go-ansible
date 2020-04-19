@@ -1,0 +1,35 @@
+---
+- name: Verify
+  hosts: all
+
+  tasks:
+    - name: Backend configuration must exist
+      stat:
+        path: /etc/sensu/backend.yml
+      register: result
+
+    - assert:
+        that:
+          - result.stat.exists
+          - result.stat.mode == '0600'
+          - result.stat.pw_name == 'sensu'
+          - result.stat.gr_name == 'sensu'
+
+    - name: Confirm default configuration settings
+      slurp:
+        src: /etc/sensu/backend.yml
+      register: backend_yml
+
+    - assert:
+        that:
+          - |
+              backend_yml.content | b64decode | from_yaml == {
+                  "state-dir": "/var/lib/sensu/sensu-backend",
+              }
+
+    - name: Make sure login works
+      uri:
+        url: http://localhost:8080/auth
+        url_username: admin
+        url_password: P@ssw0rd!
+        force_basic_auth: yes

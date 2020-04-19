@@ -5,84 +5,12 @@
   vars:
     components: [sensu-go-backend]
 
-- name: Install etcd communication PKI
-  copy:
-    src: "{{ item.source }}"
-    dest: "/etc/sensu/{{ item.filename }}"
-    # Keep this in sync with what the backend service is running as from packager
-    owner: &sensu_user sensu
-    group: &sensu_group sensu
-    mode: "{{ item.mode | default('0644') }}"
-  with_items:
-    - { source: "{{ etcd_cert_file }}", filename: etcd-client.crt }
-    - { source: "{{ etcd_key_file }}", filename: etcd-client.key, mode: '0400' }
-    - { source: "{{ etcd_trusted_ca_file }}", filename: etcd-client-ca.crt }
-    - { source: "{{ etcd_peer_cert_file }}", filename: etcd-peer.crt }
-    - { source: "{{ etcd_peer_key_file }}", filename: etcd-peer.key, mode: '0400' }
-    - { source: "{{ etcd_peer_trusted_ca_file }}", filename: etcd-peer-ca.crt }
-  tags: [configure_backend]
-  when: etcd_trusted_ca_file is defined or etcd_cert_file is defined or
-        etcd_key_file is defined or etcd_peer_cert_file is defined or
-        etcd_peer_key_file is defined
+- name: Inform restart handler that we are in charge of the backend service
+  set_fact:
+    manage_sensu_backend_service: true
 
-- name: Install API communication PKI
-  copy:
-    src: "{{ item.source }}"
-    dest: "/etc/sensu/{{ item.filename }}"
-    owner: *sensu_user
-    group: *sensu_group
-    mode: "{{ item.mode | default('0644') }}"
-  with_items:
-    - { source: "{{ api_cert_file }}", filename: api.crt }
-    - { source: "{{ api_key_file }}", filename: api.key, mode: '0400' }
-    - { source: "{{ api_trusted_ca_file }}", filename: api-ca.crt }
-  tags: [configure_backend]
-  when: api_cert_file is defined or api_key_file is defined or
-        api_trusted_ca_file is defined
+- name: Configure the backend
+  include_tasks: configure.yml
 
-- name: Install dashboard communication PKI
-  copy:
-    src: "{{ item.source }}"
-    dest: "/etc/sensu/{{ item.filename }}"
-    owner: *sensu_user
-    group: *sensu_group
-    mode: "{{ item.mode }}"
-  with_items:
-    - { source: "{{ dashboard_cert_file }}", filename: dashboard.crt, mode: '0644' }
-    - { source: "{{ dashboard_key_file }}", filename: dashboard.key, mode: '0400' }
-  tags: [configure_backend]
-  when: dashboard_cert_file is defined or dashboard_key_file is defined
-
-- name: Configure sensu-backend (/etc/sensu/backend.yml)
-  template:
-    src: backend.yml.j2
-    dest: /etc/sensu/backend.yml
-    owner: *sensu_user
-    group: *sensu_group
-    mode: '0600'
-  notify: Restart backend
-  tags: [configure_backend]
-
-- name: Start sensu-backend
-  service:
-    name: sensu-backend
-    state: started
-    enabled: yes
-  tags: [run_backend]
-
-- name: Check for sensu-backend init command
-  command:
-    cmd: sensu-backend init -h
-  register: init_command_test
-  failed_when: false  # Never fail, we just want to know if init exists.
-  changed_when: false  # Displaying help is read-only operation.
-
-- name: Initialize backend
-  command:
-    cmd: sensu-backend init
-  environment:
-    SENSU_BACKEND_CLUSTER_ADMIN_USERNAME: "{{ cluster_admin_username }}"
-    SENSU_BACKEND_CLUSTER_ADMIN_PASSWORD: "{{ cluster_admin_password }}"
-  when: init_command_test.rc == 0
-  register: init_command
-  failed_when: init_command.rc not in (0, 3)  # 0 - OK, 3 - already initialized
+- name: Start the backend
+  include_tasks: start.yml
