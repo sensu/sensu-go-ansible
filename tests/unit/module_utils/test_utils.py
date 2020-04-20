@@ -152,6 +152,29 @@ class TestDoDiffer:
     def test_desired_none_values_are_ignored(self):
         assert utils.do_differ({"a": "b"}, {"c": None}) is False
 
+    def test_metadata_ignores_created_by(self):
+        assert utils.do_differ(
+            dict(metadata=dict(a=1, created_by=2)),
+            dict(metadata=dict(a=1)),
+        ) is False
+
+    def test_metadata_detects_change(self):
+        assert utils.do_differ(
+            dict(metadata=dict(a=1)), dict(metadata=dict(a=2)),
+        ) is True
+
+    def test_metadata_detects_change_in_presence_of_created_by(self):
+        assert utils.do_differ(
+            dict(metadata=dict(a=1, created_by=2)),
+            dict(metadata=dict(a=2)),
+        ) is True
+
+    def test_ignore_keys_do_not_affect_the_outcome(self):
+        assert utils.do_differ(dict(a=1), dict(a=2), "a") is False
+
+    def test_ignore_keys_do_not_mask_other_differences(self):
+        assert utils.do_differ(dict(a=1, b=1), dict(a=2, b=2), "a") is True
+
 
 class TestGet:
     @pytest.mark.parametrize(
