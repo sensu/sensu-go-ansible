@@ -55,18 +55,7 @@ class TestDoSubjectsDiffer:
         ) is True
 
 
-class TestDoDiffer:
-    def test_new_role_binding(self):
-        current = None
-        desired = {
-            'role_ref': 'a',
-            'subjects': [
-                {"type": "User", "name": "b"},
-                {"type": "Group", "name": "g"},
-            ]
-        }
-        assert role_utils.do_role_bindings_differ(current, desired) is True
-
+class TestDoRoleBindingsDiffer:
     def test_equal_role_binding(self):
         current = {
             'role_ref': 'a',

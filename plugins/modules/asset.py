@@ -135,9 +135,6 @@ def _do_builds_differ(current, desired):
 
 
 def do_differ(current, desired):
-    if current is None:
-        return True
-
     for key, value in desired.items():
         current_value = current.get(key)
         if key == 'builds':
