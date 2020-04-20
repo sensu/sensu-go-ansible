@@ -136,10 +136,6 @@ class TestSync:
 
 
 class TestDoDiffer:
-    @pytest.mark.parametrize("desired", [None, {"a": "b"}, 1, False, 2.3])
-    def test_current_none_always_differ(self, desired):
-        assert utils.do_differ(None, desired) is True
-
     def test_extra_keys_in_current_do_not_matter(self):
         assert utils.do_differ({"a": "b", "c": 3}, {"a": "b"}) is False
 

@@ -15,20 +15,6 @@ from .common.utils import (
 
 
 class TestDoDiffer:
-    def test_new_asset(self):
-        assert asset.do_differ(
-            None,
-            {
-                "name": "a",
-                "builds": [
-                    {
-                        "url": "http://abc.com",
-                        "sha512": "abc",
-                    }
-                ]
-            },
-        ) is True
-
     def test_equal_assets_with_none_values(self):
         assert asset.do_differ(
             {

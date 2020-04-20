@@ -87,7 +87,7 @@ def sync(remote_object, state, client, path, payload, check_mode):
             utils.delete(client, path)
         return True, utils.get(client, path)
 
-    if utils.do_differ(remote_object, payload):
+    if remote_object is None or utils.do_differ(remote_object, payload):
         if check_mode:
             return True, payload
         utils.put(client, path, payload)

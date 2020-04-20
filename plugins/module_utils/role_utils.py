@@ -35,9 +35,6 @@ def build_subjects(groups, users):
 
 
 def do_role_bindings_differ(current, desired):
-    if current is None:
-        return True
-
     for key, value in desired.items():
         current_value = current.get(key)
         if key == 'subjects':
@@ -76,9 +73,6 @@ def _do_rules_differ(current_rules, desired_rules):
 
 
 def do_roles_differ(current, desired):
-    if current is None:
-        return True
-
     for key, value in desired.items():
         current_value = current.get(key)
         if key == 'rules':
