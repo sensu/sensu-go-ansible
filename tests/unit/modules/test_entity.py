@@ -13,6 +13,33 @@ from .common.utils import (
 )
 
 
+class TestDoDiffer:
+    @pytest.mark.parametrize('current', [
+        dict(no=dict(system="here")),
+        dict(system=dict(here="is")),
+    ])
+    def test_no_system_in_desired(self, current):
+        assert entity.do_differ(current, {}) is False
+
+    def test_system_keys_not_in_current_are_ignored(self):
+        assert entity.do_differ(
+            dict(system=dict(a=1, b=2)),
+            dict(system=dict(a=1)),
+        ) is False
+
+    def test_actual_changes_are_detected(self):
+        assert entity.do_differ(
+            dict(system=dict(a=1, b=2)),
+            dict(system=dict(a=2)),
+        ) is True
+
+    def test_missing_keys_are_detected(self):
+        assert entity.do_differ(
+            dict(system=dict(b=2)),
+            dict(system=dict(a=2)),
+        ) is True
+
+
 class TestEntity(ModuleTestCase):
     def test_minimal_entity_parameters(self, mocker):
         sync_mock = mocker.patch.object(utils, 'sync')
@@ -25,7 +52,7 @@ class TestEntity(ModuleTestCase):
         with pytest.raises(AnsibleExitJson):
             entity.main()
 
-        state, _client, path, payload, check_mode = sync_mock.call_args[0]
+        state, _c, path, payload, check_mode, _d = sync_mock.call_args[0]
         assert state == 'present'
         assert path == '/api/core/v2/namespaces/default/entities/test_entity'
         assert payload == dict(
@@ -73,7 +100,7 @@ class TestEntity(ModuleTestCase):
         with pytest.raises(AnsibleExitJson):
             entity.main()
 
-        state, _client, path, payload, check_mode = sync_mock.call_args[0]
+        state, _c, path, payload, check_mode, _d = sync_mock.call_args[0]
         assert state == 'absent'
         assert path == '/api/core/v2/namespaces/my/entities/test_entity'
         assert payload == dict(

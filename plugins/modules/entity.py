@@ -129,6 +129,14 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
+def do_differ(current, desired):
+    system = desired.get('system')
+    if system and utils.do_differ(current.get('system'), system):
+        return True
+
+    return utils.do_differ(current, desired, 'system')
+
+
 def main():
     required_if = [
         ('state', 'present', ['entity_class'])
@@ -174,6 +182,7 @@ def main():
     try:
         changed, entity = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,
+            do_differ,
         )
         module.exit_json(changed=changed, object=entity)
     except errors.Error as e:
