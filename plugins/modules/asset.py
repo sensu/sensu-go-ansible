@@ -135,14 +135,10 @@ def _do_builds_differ(current, desired):
 
 
 def do_differ(current, desired):
-    for key, value in desired.items():
-        current_value = current.get(key)
-        if key == 'builds':
-            if _do_builds_differ(current_value, value):
-                return True
-        elif value != current_value:
-            return True
-    return False
+    if _do_builds_differ(current['builds'], desired['builds']):
+        return True
+
+    return utils.do_differ(current, desired, 'builds')
 
 
 def build_api_payload(params):
