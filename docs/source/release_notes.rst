@@ -1,6 +1,22 @@
 Release notes
 =============
 
+Version 1.4.0 -- Keeping up with the world
+------------------------------------------
+
+Main changes in this release are related to updates in the Sensu Go's web API
+that broke our change detection.
+
+**New features:**
+
+* Add support for RHEL and CentOS 8.
+
+**Bug fixes:**
+
+* Fix resource metadata comparison on Sensu Go 5.19.0 and newer.
+* Update entity comparator to handle new fields.
+
+
 Version 1.3.1 -- Bug fixing galore
 ----------------------------------
 
