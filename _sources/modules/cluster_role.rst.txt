@@ -17,7 +17,7 @@ Examples
 
    
    - name: Create a cluster role
-     cluster_role:
+     sensu.sensu_go.cluster_role:
        name: readonly
        rules:
          - verbs:
@@ -28,7 +28,7 @@ Examples
              - entities
 
    - name: Delete a cluster role
-     cluster_role:
+     sensu.sensu_go.cluster_role:
        name: readonly
        state: absent
 
@@ -135,5 +135,6 @@ Return Values
 
 object (success), dict, )
   object representing Sensu cluster role
+
 
 

@@ -17,12 +17,12 @@ Examples
 
    
    - name: Create a new namespace
-     namespace:
+     sensu.sensu_go.namespace:
        name: production
        state: present
 
    - name: Delete a namespace
-     namespace:
+     sensu.sensu_go.namespace:
        name: staging
        state: absent
 
@@ -100,5 +100,6 @@ Return Values
 
 object (success), dict, )
   object representing Sensu namespace
+
 
 

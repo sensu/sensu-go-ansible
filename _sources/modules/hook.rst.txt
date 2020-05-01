@@ -17,7 +17,7 @@ Examples
 
    
    - name: Rudimentary auto-remediation hook
-     hook:
+     sensu.sensu_go.hook:
        auth:
          url: http://localhost:8080
        name: restart_nginx
@@ -26,7 +26,7 @@ Examples
        stdin: false
 
    - name: Capture the process tree
-     hook:
+     sensu.sensu_go.hook:
        auth:
          url: http://localhost:8080
        name: process_tree
@@ -35,7 +35,7 @@ Examples
        stdin: false
 
    - name: Delete a hook
-     hook:
+     sensu.sensu_go.hook:
        name: process_tree
        state: absent
 
@@ -155,5 +155,6 @@ Return Values
 
 object (success), dict, )
   object representing Sensu hook
+
 
 

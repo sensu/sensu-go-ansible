@@ -17,7 +17,7 @@ Examples
 
    
    - name: Create a user
-     user:
+     sensu.sensu_go.user:
        auth:
          url: http://localhost:8080
        name: awesome_username
@@ -27,7 +27,7 @@ Examples
          - prod
 
    - name: Deactivate a user
-     user:
+     sensu.sensu_go.user:
        name: awesome_username
        state: disabled
 
@@ -119,5 +119,6 @@ Return Values
 
 object (success), dict, )
   object representing Sensu user
+
 
 

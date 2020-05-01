@@ -17,7 +17,7 @@ Examples
 
    
    - name: Disable Tessen
-     tessen:
+     sensu.sensu_go.tessen:
        state: disabled
      register: result
 
@@ -83,5 +83,6 @@ Return Values
 
 object (success), dict, )
   object representing Sensu tessen
+
 
 

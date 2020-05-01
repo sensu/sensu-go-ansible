@@ -17,7 +17,7 @@ Examples
 
    
    - name: Create a handler set
-     handler_set:
+     sensu.sensu_go.handler_set:
        name: notify_all_the_things
        handlers:
          - slack
@@ -25,7 +25,7 @@ Examples
          - udp_handler
 
    - name: Delete a handler set
-     handler_set:
+     sensu.sensu_go.handler_set:
        name: notify_all_the_things
        state: absent
 
@@ -130,5 +130,6 @@ Return Values
 
 object (success), dict, )
   object representing Sensu handler set
+
 
 

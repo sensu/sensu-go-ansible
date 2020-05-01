@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -224,16 +224,16 @@
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">List Sensu events</span>
-  <span class="nt">event_info</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.event_info</span><span class="p">:</span>
   <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">List Sensu events for api.example.com</span>
-  <span class="nt">event_info</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.event_info</span><span class="p">:</span>
     <span class="nt">entity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
   <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Filter events by check and entity</span>
-  <span class="nt">event_info</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.event_info</span><span class="p">:</span>
     <span class="nt">entity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
     <span class="nt">check</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check-cpu</span>
   <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
@@ -308,7 +308,7 @@
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
-<dt>objects (always), list, )</dt><dd><p>list of Sensu events</p>
+<dt>objects (success), list, )</dt><dd><p>list of Sensu events</p>
 </dd>
 </dl>
 </div>

@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -224,7 +224,7 @@
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a role binding</span>
-  <span class="nt">role_binding</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.role_binding</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dev_and_testing</span>
     <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">testers_permissive</span>
     <span class="nt">groups</span><span class="p">:</span>
@@ -235,7 +235,7 @@
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">alice</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a role binding for admins</span>
-  <span class="nt">role_binding</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.role_binding</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org-admins</span>
     <span class="nt">cluster_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">admin</span>
     <span class="nt">groups</span><span class="p">:</span>
@@ -243,7 +243,7 @@
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">team2-admins</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Delete a role binding</span>
-  <span class="nt">role_binding</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.role_binding</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org-admins</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
 </pre></div>

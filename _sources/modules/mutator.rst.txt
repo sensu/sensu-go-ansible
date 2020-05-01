@@ -17,7 +17,7 @@ Examples
 
    
    - name: Create a mutator
-     mutator:
+     sensu.sensu_go.mutator:
        name: mutator
        command: sensu-influxdb-mutator
        timeout: 30
@@ -28,7 +28,7 @@ Examples
          - sensu-influxdb-mutator
 
    - name: Delete a mutator
-     mutator:
+     sensu.sensu_go.mutator:
        name: mutator
        state: absent
 
@@ -146,5 +146,6 @@ Return Values
 
 object (success), dict, )
   object representing Sensu mutator
+
 
 

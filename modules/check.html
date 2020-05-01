@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -224,7 +224,7 @@
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Check executing command every 30 seconds</span>
-  <span class="nt">check</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.check</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check</span>
     <span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check-cpu.sh -w 75 -c 90</span>
     <span class="nt">subscriptions</span><span class="p">:</span>
@@ -233,7 +233,7 @@
     <span class="nt">publish</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yes</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Check executing command with cron scheduler</span>
-  <span class="nt">check</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.check</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check</span>
     <span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check-cpu.sh -w 75 -c 90</span>
     <span class="nt">subscriptions</span><span class="p">:</span>
@@ -244,7 +244,7 @@
     <span class="nt">publish</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yes</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ad-hoc scheduling</span>
-  <span class="nt">check</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.check</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check</span>
     <span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check-cpu.sh -w 75 -c 90</span>
     <span class="nt">subscriptions</span><span class="p">:</span>
@@ -255,7 +255,7 @@
     <span class="nt">publish</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">no</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Report events under proxy entity name instead of agent entity</span>
-  <span class="nt">check</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.check</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check</span>
     <span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http_check.sh https://sensu.io</span>
     <span class="nt">subscriptions</span><span class="p">:</span>
@@ -268,7 +268,7 @@
     <span class="nt">publish</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yes</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Remove check</span>
-  <span class="nt">check</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.check</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-check</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
 </pre></div>
@@ -331,7 +331,7 @@
 <div class="line"><strong>type</strong>: dict</div>
 </div>
 </dd>
-<dt>command (required)</dt><dd><p>Check command to run.</p>
+<dt>command (optional)</dt><dd><p>Check command to run.</p>
 <p>Required if <em>state</em> is <code class="docutils literal notranslate"><span class="pre">present</span></code>.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>

@@ -17,11 +17,11 @@ Examples
 
    
    - name: List all Sensu roles
-     role_info:
+     sensu.sensu_go.role_info:
      register: result
 
    - name: Retrieve a specific Sensu role
-     role_info:
+     sensu.sensu_go.role_info:
        name: my-role
      register: result
 
@@ -96,7 +96,8 @@ namespace (optional)
 Return Values
 -------------
 
-roles (always), list, )
+roles (success), list, )
   list of Sensu roles
+
 
 

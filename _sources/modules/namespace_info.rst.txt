@@ -17,7 +17,7 @@ Examples
 
    
    - name: List Sensu namespaces
-     namespace_info:
+     sensu.sensu_go.namespace_info:
      register: result
 
 
@@ -86,7 +86,8 @@ auth (optional)
 Return Values
 -------------
 
-objects (always), list, )
+objects (success), list, )
   list of Sensu namespaces
+
 
 

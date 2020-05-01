@@ -17,11 +17,11 @@ Examples
 
    
    - name: List Sensu users
-     user_info:
+     sensu.sensu_go.user_info:
      register: result
 
    - name: Retrieve a single Sensu user
-     user_info:
+     sensu.sensu_go.user_info:
        name: my-user
      register: result
 
@@ -90,7 +90,8 @@ name (optional)
 Return Values
 -------------
 
-objects (always), list, )
+objects (success), list, )
   list of Sensu users
+
 
 

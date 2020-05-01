@@ -17,7 +17,7 @@ Examples
 
    
    - name: Create an entity
-     entity:
+     sensu.sensu_go.entity:
        auth:
          url: http://localhost:8080
        name: entity
@@ -49,7 +49,7 @@ Examples
        user: agent
 
    - name: Delete an entity
-     entity:
+     sensu.sensu_go.entity:
        name: entity
        state: absent
 
@@ -187,5 +187,6 @@ Return Values
 
 object (success), dict, )
   object representing Sensu entity
+
 
 

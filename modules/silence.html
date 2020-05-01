@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -224,22 +224,22 @@
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Silence a specific check</span>
-  <span class="nt">silence</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.silence</span><span class="p">:</span>
     <span class="nt">subscription</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxy</span>
     <span class="nt">check</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check-disk</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Silence specific check regardless of the originating entities subscription</span>
-  <span class="nt">silence</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.silence</span><span class="p">:</span>
     <span class="nt">check</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check-cpu</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Silence all checks on a specific entity</span>
-  <span class="nt">silence</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.silence</span><span class="p">:</span>
     <span class="nt">subscription</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">entity:important-entity</span>
     <span class="nt">expire</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">120</span>
     <span class="nt">reason</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rebooting the world</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Delete a silencing entry</span>
-  <span class="nt">silence</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.silence</span><span class="p">:</span>
     <span class="nt">subscription</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">entity:important-entity</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
 </pre></div>
