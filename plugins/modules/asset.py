@@ -45,6 +45,7 @@ options:
         provide the named asset.
       - Required if I(state) is C(present).
     type: list
+    elements: dict
     suboptions:
       url:
         description:
@@ -61,6 +62,7 @@ options:
           - A set of Sensu query expressions used to determine if the asset
             should be installed.
         type: list
+        elements: str
       headers:
         description:
           - Additional headers to send when retrieving the asset, e.g. for
@@ -172,6 +174,7 @@ def main():
                     ),
                     filters=dict(
                         type="list",
+                        elements="str",
                     ),
                     headers=dict(
                         type="dict",

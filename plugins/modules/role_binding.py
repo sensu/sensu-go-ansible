@@ -56,12 +56,14 @@ options:
       - Note that at least one of I(users) and I(groups) must be
         specified when creating a role binding.
     type: list
+    elements: str
   groups:
     description:
       - List of groups to bind to the role or cluster role
       - Note that at least one of I(users) and I(groups) must be
         specified when creating a role binding.
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
@@ -133,10 +135,10 @@ def main():
             role=dict(),
             cluster_role=dict(),
             users=dict(
-                type="list",
+                type="list", elements="str",
             ),
             groups=dict(
-                type="list",
+                type="list", elements="str",
             ),
         )
     )

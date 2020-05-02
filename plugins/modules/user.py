@@ -48,6 +48,7 @@ options:
     description:
       - List of groups user belongs to.
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
@@ -180,7 +181,7 @@ def main():
                 no_log=True
             ),
             groups=dict(
-                type='list',
+                type='list', elements='str',
             )
         ),
     )

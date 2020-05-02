@@ -69,6 +69,7 @@ options:
         description:
           - Check status history for the last 21 check executions.
         type: list
+        elements: dict
       issued:
         description:
           - Time that the check request was issued in seconds since the Unix epoch.
@@ -244,7 +245,7 @@ def main():
                         type='int'
                     ),
                     history=dict(
-                        type='list'
+                        type='list', elements='dict',
                     ),
                     issued=dict(
                         type='int'

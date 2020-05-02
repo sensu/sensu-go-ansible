@@ -48,11 +48,13 @@ options:
       - Filter expressions to be compared with event data.
       - Required if I(state) is C(present).
     type: list
+    elements: str
   runtime_assets:
     description:
       - Assets to be applied to the filter's execution context.
         JavaScript files in the lib directory of the asset will be evaluated.
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
@@ -123,10 +125,10 @@ def main():
             ),
             action=dict(choices=['allow', 'deny']),
             expressions=dict(
-                type='list',
+                type='list', elements='str',
             ),
             runtime_assets=dict(
-                type='list',
+                type='list', elements='str',
             ),
         ),
     )

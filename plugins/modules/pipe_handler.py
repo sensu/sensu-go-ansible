@@ -46,6 +46,7 @@ options:
     description:
       - List of filters to use when determining whether to pass the check result to this handler.
     type: list
+    elements: str
   mutator:
     description:
       - Mutator to call for transforming the check result before passing it to this handler.
@@ -62,6 +63,7 @@ options:
     description:
       - List of runtime assets to required to run the handler C(command)
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
@@ -109,7 +111,7 @@ def main():
             ),
             command=dict(),
             filters=dict(
-                type='list',
+                type='list', elements='str',
             ),
             mutator=dict(),
             timeout=dict(
@@ -119,7 +121,7 @@ def main():
                 type='dict'
             ),
             runtime_assets=dict(
-                type='list'
+                type='list', elements='str',
             ),
         ),
     )

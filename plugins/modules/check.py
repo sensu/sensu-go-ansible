@@ -43,16 +43,17 @@ options:
       - Check command to run.
       - Required if I(state) is C(present).
     type: str
-    required: true
   subscriptions:
     description:
       - List of subscriptions which receive check requests.
       - Required if I(state) is C(present).
     type: list
+    elements: str
   handlers:
     description:
       - List of handlers which receive check results.
     type: list
+    elements: str
   interval:
     description:
       - Check request interval.
@@ -92,6 +93,7 @@ options:
     description:
       - List of runtime assets required to run the check.
     type: list
+    elements: str
   check_hooks:
     description:
       - A mapping of response codes to hooks which will be run by the agent when that code is returned.
@@ -110,6 +112,7 @@ options:
         description:
           - List of attribute checks for determining which proxy entities this check should be scheduled against.
         type: list
+        elements: str
       splay:
         description:
           - Enables or disables splaying of check request scheduling.
@@ -132,6 +135,7 @@ options:
     description:
       - List of handlers which receive check results. I'm not sure why this exists.
     type: list
+    elements: str
   round_robin:
     description:
       -  An array of environment variables to use with command execution.
@@ -264,10 +268,10 @@ def main():
             ),
             command=dict(),
             subscriptions=dict(
-                type='list'
+                type='list', elements='str',
             ),
             handlers=dict(
-                type='list'
+                type='list', elements='str',
             ),
             interval=dict(
                 type='int'
@@ -295,7 +299,7 @@ def main():
                 type='int'
             ),
             runtime_assets=dict(
-                type='list'
+                type='list', elements='str',
             ),
             check_hooks=dict(
                 type='dict'
@@ -305,7 +309,7 @@ def main():
                 type='dict',
                 options=dict(
                     entity_attributes=dict(
-                        type='list'
+                        type='list', elements='str',
                     ),
                     splay=dict(
                         type='bool'
@@ -319,7 +323,7 @@ def main():
                 choices=['nagios_perfdata', 'graphite_plaintext', 'influxdb_line', 'opentsdb_line']
             ),
             output_metric_handlers=dict(
-                type='list'
+                type='list', elements='str',
             ),
             round_robin=dict(
                 type='bool'
