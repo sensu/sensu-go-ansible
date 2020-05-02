@@ -80,7 +80,10 @@ Parameters
 {%     set typ = spec.type | default("any") %}
 {%     set sample = spec.sample %}
 {{ "  " * level }}{{ name }} ({{ spec.returned }}), {{ typ }}, {{ sample }})
-  {{ "  " * level }}{{ spec.description | rst_ify }}
+{%     for para in spec.description %}
+  {{ "  " * level }}{{ para | rst_ify }}
+
+{%     endfor %}
 
 {%     if spec.contains %}
 {{ result_desc(spec.contains, level + 1) }}
