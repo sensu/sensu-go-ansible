@@ -72,7 +72,7 @@ options:
 
 EXAMPLES = """
 - name: Create a multiple-build asset
-  asset:
+  sensu.sensu_go.asset:
     name: sensu-plugins-cpu-checks
     builds:
       - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
@@ -89,7 +89,7 @@ EXAMPLES = """
           - entity.system.platform == 'alpine'
 
 - name: Delete an asset
-  asset:
+  sensu.sensu_go.asset:
     name: sensu-plugins-cpu-check
     state: absent
 """

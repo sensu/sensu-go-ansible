@@ -47,11 +47,11 @@ options:
 
 EXAMPLES = '''
 - name: List all Sensu silence entries
-  silence_info:
+  sensu.sensu_go.silence_info:
   register: result
 
 - name: Fetch a specific silence with name proxy:awesome_check
-  silence_info:
+  sensu.sensu_go.silence_info:
     subscription: proxy
     check: awesome_check
   register: result

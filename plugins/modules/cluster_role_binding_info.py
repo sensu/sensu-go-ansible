@@ -37,11 +37,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu cluster role bindings
-  cluster_role_binding_info:
+  sensu.sensu_go.cluster_role_binding_info:
   register: result
 
 - name: Retrieve a specific Sensu cluster role binding
-  cluster_role_binding_info:
+  sensu.sensu_go.cluster_role_binding_info:
     name: my-binding
   register: result
 '''

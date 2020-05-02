@@ -37,11 +37,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu cluster roles
-  role_info:
+  sensu.sensu_go.cluster_role_info:
   register: result
 
 - name: Retrieve Sensu cluster role by name
-  role_info:
+  sensu.sensu_go.cluster_role_info:
     name: my-custer-role
   register: result
 '''

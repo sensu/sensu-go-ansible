@@ -37,11 +37,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu mutators
-  mutator_info:
+  sensu.sensu_go.mutator_info:
   register: result
 
 - name: Retrieve a single Sensu mutator
-  mutator_info:
+  sensu.sensu_go.mutator_info:
     name: my-mutator
   register: result
 '''

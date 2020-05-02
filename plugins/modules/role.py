@@ -68,7 +68,7 @@ options:
 
 EXAMPLES = '''
 - name: Create a role
-  role:
+  sensu.sensu_go.role:
     name: readonly
     rules:
       - verbs:
@@ -79,7 +79,7 @@ EXAMPLES = '''
           - entities
 
 - name: Delete a role
-  role:
+  sensu.sensu_go.role:
     name: readonly
     state: absent
 '''

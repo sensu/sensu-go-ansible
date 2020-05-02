@@ -56,7 +56,7 @@ seealso:
 
 EXAMPLES = """
 - name: Make sure specific version of asset is installed
-  bonsai_asset:
+  sensu.sensu_go.bonsai_asset:
     name: sensu/monitoring-plugins
     version: 2.2.0-1
 
@@ -66,7 +66,7 @@ EXAMPLES = """
     state: absent
 
 - name: Store Bonsai asset under a different name
-  bonsai_asset:
+  sensu.sensu_gobonsai_asset:
     name: sensu/monitoring-plugins
     version: 2.2.0-1
     rename: sensu-monitoring-2.2.0-1

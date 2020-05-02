@@ -68,7 +68,7 @@ options:
 
 EXAMPLES = '''
 - name: Setup InfluxDB handler
-  pipe_handler:
+  sensu.sensu_go.pipe_handler:
     name: influx-db
     command: sensu-influxdb-handler -d sensu
     env_vars:
@@ -79,7 +79,7 @@ EXAMPLES = '''
       - sensu-influxdb-handler
 
 - name: Delete  handler
-  pipe_handler:
+  sensu.sensu_go.pipe_handler:
     name: influx-db
     state: absent
 '''

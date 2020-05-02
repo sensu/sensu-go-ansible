@@ -73,22 +73,22 @@ options:
 
 EXAMPLES = '''
 - name: Silence a specific check
-  silence:
+  sensu.sensu_go.silence:
     subscription: proxy
     check: check-disk
 
 - name: Silence specific check regardless of the originating entities subscription
-  silence:
+  sensu.sensu_go.silence:
     check: check-cpu
 
 - name: Silence all checks on a specific entity
-  silence:
+  sensu.sensu_go.silence:
     subscription: entity:important-entity
     expire: 120
     reason: rebooting the world
 
 - name: Delete a silencing entry
-  silence:
+  sensu.sensu_go.silence:
     subscription: entity:important-entity
     state: absent
 '''

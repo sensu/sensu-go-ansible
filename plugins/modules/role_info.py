@@ -38,11 +38,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu roles
-  role_info:
+  sensu.sensu_go.role_info:
   register: result
 
 - name: Retrieve a specific Sensu role
-  role_info:
+  sensu.sensu_go.role_info:
     name: my-role
   register: result
 '''

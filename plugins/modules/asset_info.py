@@ -38,11 +38,11 @@ seealso:
 
 EXAMPLES = """
 - name: List all Sensu assets
-  asset_info:
+  sensu.sensu_go.asset_info:
   register: result
 
 - name: List the selected Sensu asset
-  asset_info:
+  sensu.sensu_go.asset_info:
     name: my_asset
   register: result
 

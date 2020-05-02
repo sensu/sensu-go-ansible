@@ -46,16 +46,16 @@ options:
 
 EXAMPLES = '''
 - name: List Sensu events
-  event_info:
+  sensu.sensu_go.event_info:
   register: result
 
 - name: List Sensu events for api.example.com
-  event_info:
+  sensu.sensu_go.event_info:
     entity: api.example.com
   register: result
 
 - name: Filter events by check and entity
-  event_info:
+  sensu.sensu_go.event_info:
     entity: api.example.com
     check: check-cpu
   register: result

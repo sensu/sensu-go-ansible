@@ -40,7 +40,7 @@ options:
 
 EXAMPLES = '''
 - name: Disable Tessen
-  tessen:
+  sensu.sensu_go.tessen:
     state: disabled
   register: result
 '''

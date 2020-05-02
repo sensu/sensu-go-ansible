@@ -117,7 +117,7 @@ options:
 
 EXAMPLES = '''
 - name: Create an event
-  event:
+  sensu.sensu_go.event:
     auth:
       url: http://localhost:8080
     entity: awesome_entity

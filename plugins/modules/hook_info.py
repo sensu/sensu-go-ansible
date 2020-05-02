@@ -37,11 +37,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu hooks
-  hook_info:
+  sensu.sensu_go.hook_info:
   register: result
 
 - name: Fetch a specific Sensu hook
-  hook_info:
+  sensu.sensu_go.hook_info:
     name: awesome-hook
   register: result
 '''
