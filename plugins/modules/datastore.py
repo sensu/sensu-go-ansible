@@ -49,12 +49,12 @@ notes:
 
 EXAMPLES = '''
 - name: Add external datastore
-  datastore:
+  sensu.sensu_go.datastore:
     name: my-postgres
     dsn: postgresql://user:secret@host:port/dbname
 
 - name: Remove external datastore
-  datastore:
+  sensu.sensu_go.datastore:
     name: my-postgres
     state: absent
 '''

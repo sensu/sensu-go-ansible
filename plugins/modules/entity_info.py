@@ -37,11 +37,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu entities
-  entity_info:
+  sensu.sensu_go.entity_info:
   register: result
 
 - name: Retrieve a specific Sensu entity
-  entity_info:
+  sensu.sensu_go.entity_info:
     name: my-entity
   register: result
 '''

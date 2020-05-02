@@ -72,21 +72,21 @@ options:
 
 EXAMPLES = '''
 - name: TCP handler
-  socket_handler:
+  sensu.sensu_go.socket_handler:
     name: tcp_handler
     type: tcp
     host: 10.0.1.99
     port: 4444
 
 - name: UDP handler
-  socket_handler:
+  sensu.sensu_go.socket_handler:
     name: udp_handler
     type: udp
     host: 10.0.1.99
     port: 4444
 
 - name: Delete a handler
-  socket_handler:
+  sensu.sensu_go.socket_handler:
     name: udp_handler
     state: absent
 '''

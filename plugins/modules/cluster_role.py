@@ -68,7 +68,7 @@ options:
 
 EXAMPLES = '''
 - name: Create a cluster role
-  cluster_role:
+  sensu.sensu_go.cluster_role:
     name: readonly
     rules:
       - verbs:
@@ -79,7 +79,7 @@ EXAMPLES = '''
           - entities
 
 - name: Delete a cluster role
-  cluster_role:
+  sensu.sensu_go.cluster_role:
     name: readonly
     state: absent
 '''

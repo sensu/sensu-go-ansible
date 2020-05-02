@@ -37,7 +37,7 @@ seealso:
 
 EXAMPLES = '''
 - name: List Sensu namespaces
-  namespace_info:
+  sensu.sensu_go.namespace_info:
   register: result
 '''
 

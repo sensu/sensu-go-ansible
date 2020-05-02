@@ -59,7 +59,7 @@ options:
 
 EXAMPLES = '''
 - name: Create a mutator
-  mutator:
+  sensu.sensu_go.mutator:
     name: mutator
     command: sensu-influxdb-mutator
     timeout: 30
@@ -70,7 +70,7 @@ EXAMPLES = '''
       - sensu-influxdb-mutator
 
 - name: Delete a mutator
-  mutator:
+  sensu.sensu_go.mutator:
     name: mutator
     state: absent
 '''

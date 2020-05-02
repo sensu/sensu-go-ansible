@@ -80,7 +80,7 @@ options:
 
 EXAMPLES = '''
 - name: Create an entity
-  entity:
+  sensu.sensu_go.entity:
     auth:
       url: http://localhost:8080
     name: entity
@@ -112,7 +112,7 @@ EXAMPLES = '''
     user: agent
 
 - name: Delete an entity
-  entity:
+  sensu.sensu_go.entity:
     name: entity
     state: absent
 '''

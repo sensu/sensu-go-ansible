@@ -53,7 +53,7 @@ options:
 
 EXAMPLES = '''
 - name: Create a user
-  user:
+  sensu.sensu_go.user:
     auth:
       url: http://localhost:8080
     name: awesome_username
@@ -63,7 +63,7 @@ EXAMPLES = '''
       - prod
 
 - name: Deactivate a user
-  user:
+  sensu.sensu_go.user:
     name: awesome_username
     state: disabled
 '''

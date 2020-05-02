@@ -148,7 +148,7 @@ options:
 
 EXAMPLES = '''
 - name: Check executing command every 30 seconds
-  check:
+  sensu.sensu_go.check:
     name: check
     command: check-cpu.sh -w 75 -c 90
     subscriptions:
@@ -157,7 +157,7 @@ EXAMPLES = '''
     publish: yes
 
 - name: Check executing command with cron scheduler
-  check:
+  sensu.sensu_go.check:
     name: check
     command: check-cpu.sh -w 75 -c 90
     subscriptions:
@@ -168,7 +168,7 @@ EXAMPLES = '''
     publish: yes
 
 - name: Ad-hoc scheduling
-  check:
+  sensu.sensu_go.check:
     name: check
     command: check-cpu.sh -w 75 -c 90
     subscriptions:
@@ -179,7 +179,7 @@ EXAMPLES = '''
     publish: no
 
 - name: Report events under proxy entity name instead of agent entity
-  check:
+  sensu.sensu_go.check:
     name: check
     command: http_check.sh https://sensu.io
     subscriptions:
@@ -192,7 +192,7 @@ EXAMPLES = '''
     publish: yes
 
 - name: Remove check
-  check:
+  sensu.sensu_go.check:
     name: my-check
     state: absent
 '''

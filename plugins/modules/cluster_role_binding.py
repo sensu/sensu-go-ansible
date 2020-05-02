@@ -59,7 +59,7 @@ seealso:
 
 EXAMPLES = '''
 - name: Create a cluster role binding
-  cluster_role_binding:
+  sensu.sensu_go.cluster_role_binding:
     name: all-cluster-admins
     cluster_role: cluster-admin
     groups:
@@ -68,7 +68,7 @@ EXAMPLES = '''
       - alice
 
 - name: Delete a cluster role binding
-  cluster_role_binding:
+  sensu.sensu_go.cluster_role_binding:
     name: all-cluster-admins
     state: absent
 '''

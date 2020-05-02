@@ -60,7 +60,7 @@ options:
 
 EXAMPLES = '''
 - name: Rudimentary auto-remediation hook
-  hook:
+  sensu.sensu_go.hook:
     auth:
       url: http://localhost:8080
     name: restart_nginx
@@ -69,7 +69,7 @@ EXAMPLES = '''
     stdin: false
 
 - name: Capture the process tree
-  hook:
+  sensu.sensu_go.hook:
     auth:
       url: http://localhost:8080
     name: process_tree
@@ -78,7 +78,7 @@ EXAMPLES = '''
     stdin: false
 
 - name: Delete a hook
-  hook:
+  sensu.sensu_go.hook:
     name: process_tree
     state: absent
 '''

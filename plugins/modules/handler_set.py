@@ -47,7 +47,7 @@ options:
 
 EXAMPLES = '''
 - name: Create a handler set
-  handler_set:
+  sensu.sensu_go.handler_set:
     name: notify_all_the_things
     handlers:
       - slack
@@ -55,7 +55,7 @@ EXAMPLES = '''
       - udp_handler
 
 - name: Delete a handler set
-  handler_set:
+  sensu.sensu_go.handler_set:
     name: notify_all_the_things
     state: absent
 '''

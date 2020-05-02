@@ -33,11 +33,11 @@ seealso:
 
 EXAMPLES = """
 - name: List all external Sensu datastores
-  datastore_info:
+  sensu.sensu_go.datastore_info:
   register: result
 
 - name: Retrieve the selected external Sensu datastore
-  datastore_info:
+  sensu.sensu_go.datastore_info:
     name: my-datastore
   register: result
 

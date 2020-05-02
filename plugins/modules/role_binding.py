@@ -68,7 +68,7 @@ options:
 
 EXAMPLES = '''
 - name: Create a role binding
-  role_binding:
+  sensu.sensu_go.role_binding:
     name: dev_and_testing
     role: testers_permissive
     groups:
@@ -79,7 +79,7 @@ EXAMPLES = '''
       - alice
 
 - name: Create a role binding for admins
-  role_binding:
+  sensu.sensu_go.role_binding:
     name: org-admins
     cluster_role: admin
     groups:
@@ -87,7 +87,7 @@ EXAMPLES = '''
       - team2-admins
 
 - name: Delete a role binding
-  role_binding:
+  sensu.sensu_go.role_binding:
     name: org-admins
     state: absent
 '''
