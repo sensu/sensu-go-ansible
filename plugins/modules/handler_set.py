@@ -42,6 +42,7 @@ options:
       - List of Sensu event handlers (names) to use for events using the handler set.
       - Required if I(state) is C(present).
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
@@ -85,7 +86,7 @@ def main():
                 "auth", "name", "state", "labels", "annotations", "namespace",
             ),
             handlers=dict(
-                type='list'
+                type='list', elements='str',
             ),
         ),
     )

@@ -54,6 +54,7 @@ options:
     description:
       - List of runtime assets, required to run the mutator I(command).
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
@@ -108,7 +109,7 @@ def main():
                 type='dict'
             ),
             runtime_assets=dict(
-                type='list'
+                type='list', elements='str',
             ),
         ),
     )

@@ -55,6 +55,7 @@ options:
     description:
       - List of runtime assets required to run the check.
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
@@ -115,7 +116,7 @@ def main():
                 type='bool'
             ),
             runtime_assets=dict(
-                type='list',
+                type='list', elements='str',
             ),
         ),
     )

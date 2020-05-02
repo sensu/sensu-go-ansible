@@ -47,6 +47,7 @@ options:
     description:
       - List of subscriptions for the entity.
     type: list
+    elements: str
   system:
     description:
       - System information about the entity, such as operating system and platform. See
@@ -69,6 +70,7 @@ options:
       - List of items to redact from log messages. If a value is provided,
         it overwrites the default list of items to be redacted.
     type: list
+    elements: str
   user:
     description:
       - Sensu RBAC username used by the entity. Agent entities require get,
@@ -150,7 +152,7 @@ def main():
             ),
             entity_class=dict(),
             subscriptions=dict(
-                type='list',
+                type='list', elements='str',
             ),
             system=dict(
                 type='dict'
@@ -163,7 +165,7 @@ def main():
             ),
             deregistration_handler=dict(),
             redact=dict(
-                type='list'
+                type='list', elements='str',
             ),
             user=dict()
         ),

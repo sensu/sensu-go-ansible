@@ -42,17 +42,20 @@ options:
       - Rules that the cluster role applies.
       - Must be non-empty if I(state) is C(present).
     type: list
+    elements: dict
     suboptions:
       verbs:
         description:
           - Permissions to be applied by the rule.
         type: list
+        elements: str
         required: yes
         choices: [get, list, create, update, delete]
       resources:
         description:
           - Types of resources the rule has permission to access.
         type: list
+        elements: str
         required: yes
       resource_names:
         description:
@@ -60,6 +63,7 @@ options:
           - Note that for the C(create) verb, this argument will not be
             taken into account when enforcing RBAC, even if it is provided.
         type: list
+        elements: str
 '''
 
 EXAMPLES = '''
@@ -105,14 +109,17 @@ def main():
                     verbs=dict(
                         required=True,
                         type="list",
+                        elements="str",
                         choices=["get", "list", "create", "update", "delete"],
                     ),
                     resources=dict(
                         required=True,
                         type="list",
+                        elements="str",
                     ),
                     resource_names=dict(
                         type="list",
+                        elements="str",
                     ),
                 )
             )
