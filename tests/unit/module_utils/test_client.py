@@ -192,3 +192,39 @@ class TestDelete:
         c.delete("/path")
 
         c.request.assert_called_with("DELETE", "/path")
+
+
+class TestValidateAuthData:
+    def test_valid_creds(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(200, None)
+        c = client.Client("http://example.com/", "user", "pass", None)
+
+        result = c.validate_auth_data("check_user", "check_pass")
+
+        assert result
+        assert 1 == request.call_count
+        assert ("GET", "http://example.com/auth/test") == request.call_args[0]
+        assert "check_user" == request.call_args[1]["url_username"]
+        assert "check_pass" == request.call_args[1]["url_password"]
+
+    def test_invalid_creds(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(401, None)
+        c = client.Client("http://example.com/", "user", "pass", None)
+
+        result = c.validate_auth_data("check_user", "check_pass")
+
+        assert not result
+        assert 1 == request.call_count
+        assert ("GET", "http://example.com/auth/test") == request.call_args[0]
+        assert "check_user" == request.call_args[1]["url_username"]
+        assert "check_pass" == request.call_args[1]["url_password"]
+
+    def test_broken_backend(self, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(500, None)
+        c = client.Client("http://example.com/", "user", "pass", None)
+
+        with pytest.raises(errors.SensuError, match="500"):
+            c.validate_auth_data("check_user", "check_pass")
