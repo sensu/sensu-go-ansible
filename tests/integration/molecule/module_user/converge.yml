@@ -4,11 +4,12 @@
     - sensu.sensu_go
   hosts: all
   gather_facts: no
+  environment:
+    SENSU_URL: http://localhost:8080
+
   tasks:
     - name: Create user with minimal parameters
       user:
-        auth:
-          url: http://localhost:8080
         name: awesome_username
         password: hidden_password?
       register: result
@@ -18,10 +19,51 @@
           - result is changed
           - result.object.username == 'awesome_username'
 
-    - name: Create a user
+    - name: Minimal parameter idempotence check
       user:
-        auth:
-          url: http://localhost:8080
+        name: awesome_username
+        password: hidden_password?
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Disable enabled user
+      user:
+        name: awesome_username
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result.object.disabled == True
+
+    - name: Add disabled user to some groups
+      user:
+        name: awesome_username
+        groups: [ a, b, c ]
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.groups | sort == ['a', 'b', 'c']
+
+    - name: Change password on disabled user
+      user:
+        name: awesome_username
+        password: new_pass
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+
+    - name: Create a disabled user
+      user:
         name: test_username
         password: hidden_password?
         state: disabled
@@ -37,10 +79,28 @@
           - result.object.disabled == True
           - result.object.groups == ['dev', 'prod']
 
+    - name: Try to disable an already disabled user
+      user:
+        name: test_username
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Enable a disabled user
+      user:
+        name: test_username
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.disabled == False
+
     - name: Modify a user
       user:
-        auth:
-          url: http://localhost:8080
         name: test_username
         password: hidden_password!
         groups:
@@ -54,9 +114,10 @@
 
     - name: Fetch all users
       user_info:
-        auth:
-          url: http://localhost:8080
       register: result
+
+    - debug:
+        var: result
 
     - assert:
         that:
@@ -64,8 +125,6 @@
 
     - name: Fetch specific user
       user_info:
-        auth:
-          url: http://localhost:8080
         name: test_username
       register: result
 
@@ -73,48 +132,10 @@
         that:
           - result.objects | length == 1
           - result.objects.0.username == 'test_username'
+          - result.objects.0.disabled == False
 
-    - name: Disable user
+    - name: Try to create a user with no password
       user:
-        auth:
-          url: http://localhost:8080
-        name: test_username
-        state: disabled
-      register: result
-
-    - assert:
-        that:
-          - result.object.username == 'test_username'
-          - result.object.disabled == True
-
-    - name: Disable already disabled user
-      user:
-        auth:
-          url: http://localhost:8080
-        name: test_username
-        state: disabled
-      register: result
-
-    - assert:
-        that:
-          - result is changed
-
-    - name: Fetch test_username
-      user_info:
-        auth:
-          url: http://localhost:8080
-        name: test_username
-      register: result
-
-    - assert:
-        that:
-          - result.objects.0.username == 'test_username'
-          - result.objects.0.disabled == True
-
-    - name: Try to disable non-existent user
-      user:
-        auth:
-          url: http://localhost:8080
         name: missing_user
         state: disabled
       ignore_errors: true
@@ -126,8 +147,6 @@
 
     - name: Try to fetch non-existing user
       user_info:
-        auth:
-          url: http://localhost:8080
         name: bad-bad-user
       register: result
 
