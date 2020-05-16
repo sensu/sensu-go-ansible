@@ -33,9 +33,13 @@ extends_documentation_fragment:
 seealso:
   - module: event_info
 notes:
-  - Metric events bypass the store and are sent off to the event pipeline and corresponding event
-    handlers. Read more about this at
-    U(https://docs.sensu.io/sensu-go/latest/reference/events/#metric-only-events)
+  - Metric events bypass the store and are sent off to the event pipeline and
+    corresponding event handlers. Read more about this at
+    U(https://docs.sensu.io/sensu-go/latest/reference/events/#metric-only-events).
+  - This module is not enforcing a state of any resource in particular. This
+    is why it ALWAYS sends an event (it is not idempotent).
+  - Module also does not return an event representation back because Sensu Go
+    backend processes events asynchronously.
 options:
   timestamp:
     description:
@@ -152,12 +156,7 @@ EXAMPLES = '''
           value: 0.004
 '''
 
-RETURN = '''
-object:
-  description: object representing Sensu event (deprecated)
-  returned: success
-  type: dict
-'''
+RETURN = ''' # '''
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -220,12 +219,6 @@ def _build_api_payload(client, params):
     return payload
 
 
-def send_event(client, path, payload, check_mode):
-    if not check_mode:
-        utils.put(client, path, payload)
-    return True, payload
-
-
 def main():
     module = AnsibleModule(
         supports_check_mode=True,
@@ -280,6 +273,9 @@ def main():
         )
     )
 
+    if module.check_mode:
+        module.exit_json(changed=True)
+
     client = arguments.get_sensu_client(module.params['auth'])
     path = utils.build_core_v2_path(
         module.params['namespace'], 'events', module.params['entity'],
@@ -288,8 +284,8 @@ def main():
 
     try:
         payload = _build_api_payload(client, module.params)
-        changed, event = send_event(client, path, payload, module.check_mode)
-        module.exit_json(changed=changed, object=event)
+        utils.put(client, path, payload)
+        module.exit_json(changed=True)
     except errors.Error as e:
         module.fail_json(msg=str(e))
 

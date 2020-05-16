@@ -89,9 +89,6 @@
     - assert:
         that:
           - result is changed
-          - result.object.check.metadata.name == 'awesome_check'
-          - result.object.check.command == '/bin/true'
-          - result.object.entity.metadata.name == 'awesome_entity'
 
     - name: Get last event
       event_info:
@@ -100,6 +97,11 @@
         entity: awesome_entity
         check: awesome_check
       register: result
+      # Give backend a few seconds to process the event (out CI is ofter under
+      # a considerate stress when testing).
+      retries: 3
+      delay: 3
+      until: result.objects | length > 0
 
     - assert:
         that:
@@ -181,18 +183,6 @@
     - assert:
         that:
           - result is changed
-          - result.object.entity.metadata.name == 'entity2'
-          - result.object.check.metadata.name == 'check2'
-          - result.object.check.command == '/bin/false'
-          - result.object.check.duration == 1.945
-          - result.object.check.executed == 1522100915
-          - "result.object.check.history.0 == {'executed': 1552505193, 'status': 1}"
-          - result.object.check.issued == 1552506034
-          - result.object.check.last_ok == 1552506033
-          - result.object.check.output == '10'
-          - result.object.check.state == 'passing'
-          - result.object.check.status == 0
-          - result.object.check.total_state_change == 0
 
     - name: Get events matching entity2
       event_info:
@@ -200,11 +190,28 @@
           url: http://localhost:8080
         entity: entity2
       register: result
+      # Give backend a few seconds to process the event (out CI is ofter under
+      # a considerate stress when testing).
+      retries: 3
+      delay: 3
+      until: result.objects | length > 0
 
     - assert:
         that:
           - result.objects | length == 1
           - result.objects.0.check.metadata.name == 'check2'
+          - result.objects.0.entity.metadata.name == 'entity2'
+          - result.objects.0.check.metadata.name == 'check2'
+          - result.objects.0.check.command == '/bin/false'
+          - result.objects.0.check.duration == 1.945
+          - result.objects.0.check.executed == 1522100915
+          - "result.objects.0.check.history.0 == {'executed': 1552505193, 'status': 1}"
+          - result.objects.0.check.issued == 1552506034
+          - result.objects.0.check.last_ok == 1552506033
+          - result.objects.0.check.output == '10'
+          - result.objects.0.check.state == 'passing'
+          - result.objects.0.check.status == 0
+          - result.objects.0.check.total_state_change == 0
 
     - name: Get all events
       event_info:
