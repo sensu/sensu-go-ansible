@@ -4,7 +4,7 @@ __metaclass__ = type
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, http,
+    errors, http, utils,
 )
 from ansible_collections.sensu.sensu_go.plugins.modules import event
 
@@ -72,8 +72,7 @@ class TestEvent(ModuleTestCase):
             event.main()
 
     def test_minimal_event_parameters(self, mocker):
-        send_event_mock = mocker.patch.object(event, 'send_event')
-        send_event_mock.return_value = True, {}
+        put_mock = mocker.patch.object(utils, 'put')
         get_entity_mock = mocker.patch.object(event, 'get_entity')
         get_entity_mock.return_value = dict(
             metadata=dict(
@@ -98,7 +97,7 @@ class TestEvent(ModuleTestCase):
         with pytest.raises(AnsibleExitJson):
             event.main()
 
-        _client, path, payload, check_mode = send_event_mock.call_args[0]
+        _client, path, payload = put_mock.call_args[0]
         assert path == '/api/core/v2/namespaces/default/events/awesome_entity/awesome_check'
         assert payload == dict(
             metadata=dict(
@@ -118,7 +117,6 @@ class TestEvent(ModuleTestCase):
                 )
             )
         )
-        assert check_mode is False
 
     def test_all_event_parameters(self, mocker):
         entity_object = dict(
@@ -139,8 +137,7 @@ class TestEvent(ModuleTestCase):
             publish=True,
             subscriptions=["linux"],
         )
-        send_event_mock = mocker.patch.object(event, 'send_event')
-        send_event_mock.return_value = True, {}
+        put_mock = mocker.patch.object(utils, 'put')
         get_entity_mock = mocker.patch.object(event, 'get_entity')
         get_entity_mock.return_value = entity_object
         get_check_mock = mocker.patch.object(event, 'get_check')
@@ -198,7 +195,7 @@ class TestEvent(ModuleTestCase):
         with pytest.raises(AnsibleExitJson):
             event.main()
 
-        _client, path, payload, check_mode = send_event_mock.call_args[0]
+        _client, path, payload = put_mock.call_args[0]
         assert path == '/api/core/v2/namespaces/my/events/awesome_entity/awesome_check'
         assert payload == dict(
             metadata=dict(
@@ -264,11 +261,10 @@ class TestEvent(ModuleTestCase):
                 }]
             )
         )
-        assert check_mode is False
 
     def test_failure(self, mocker):
-        send_event_mock = mocker.patch.object(event, 'send_event')
-        send_event_mock.side_effect = errors.Error('Bad error')
+        put_mock = mocker.patch.object(utils, 'put')
+        put_mock.side_effect = errors.Error('Bad error')
         set_module_args(
             entity='awesome_entity',
             check=dict(
