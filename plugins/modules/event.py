@@ -154,7 +154,7 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu event
+  description: object representing Sensu event (deprecated)
   returned: success
   type: dict
 '''
@@ -221,10 +221,9 @@ def _build_api_payload(client, params):
 
 
 def send_event(client, path, payload, check_mode):
-    if check_mode:
-        return True, payload
-    utils.put(client, path, payload)
-    return True, utils.get(client, path)
+    if not check_mode:
+        utils.put(client, path, payload)
+    return True, payload
 
 
 def main():
