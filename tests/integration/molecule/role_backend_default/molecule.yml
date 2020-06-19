@@ -4,6 +4,7 @@ scenario:
     - destroy
     - create
     - converge
+    - idempotence
     - verify
     - check
     - destroy

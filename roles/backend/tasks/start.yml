@@ -23,3 +23,4 @@
   when: init_command_test.rc == 0
   register: init_command
   failed_when: init_command.rc not in (0, 3)  # 0 - OK, 3 - already initialized
+  changed_when: init_command.rc == 0
