@@ -79,10 +79,13 @@ def main():
 
     try:
         stores = utils.prepare_result_list(utils.get(client, path))
-        # We simulate the behavior of v2 API here and only return the spec.
-        module.exit_json(changed=False, objects=[s["spec"] for s in stores])
     except errors.Error as e:
         module.fail_json(msg=str(e))
+
+    # We simulate the behavior of v2 API here and only return the spec.
+    module.exit_json(changed=False, objects=[
+        utils.convert_v1_to_v2_response(s) for s in stores
+    ])
 
 
 if __name__ == "__main__":
