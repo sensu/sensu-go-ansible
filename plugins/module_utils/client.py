@@ -7,7 +7,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, http, utils,
+    errors, http,
 )
 
 
@@ -32,25 +32,10 @@ class Client:
         return self._username_password_login()
 
     def _api_key_login(self):
-        # We check the API key validity by using it to fetch its metadata from
-        # the backend. This should also take care of validating if the backend
-        # even supports the API key authentication.
-
-        url = "{0}{1}".format(self.address, utils.build_core_v2_path(
-            None, "apikeys", self.api_key,
-        ))
-        headers = dict(Authorization="Key {0}".format(self.api_key))
-
-        resp = http.request("GET", url, headers=headers)
-        if resp.status != 200:
-            raise errors.SensuError(
-                "The API key {0}...{1} seems to be invalid or the backend "
-                "does not support the API key authentication".format(
-                    self.api_key[:5], self.api_key[-5:],
-                )
-            )
-
-        return headers
+        # We cannot validate the API key because there is no API endpoint that
+        # we could hit for verification purposes. This means that the error
+        # reporting will be a mess but there is not much we can do here.
+        return dict(Authorization="Key {0}".format(self.api_key))
 
     def _username_password_login(self):
         resp = http.request(
@@ -81,7 +66,14 @@ class Client:
         url = self.address + path
         headers = self.auth_header
 
-        return http.request(method, url, payload=payload, headers=headers)
+        response = http.request(method, url, payload=payload, headers=headers)
+
+        if response.status in (401, 403):
+            raise errors.SensuError(
+                "Authentication problem. Verify your credentials."
+            )
+
+        return response
 
     def get(self, path):
         return self.request("GET", path)
