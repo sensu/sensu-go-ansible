@@ -1,0 +1,28 @@
+---
+- name: Verify
+  hosts: agents
+
+  tasks:
+    - name: Agent configuration must exist
+      stat:
+        path: /etc/sensu/agent.yml
+      register: result
+
+    - assert:
+        that:
+          - result.stat.exists
+          - result.stat.mode == '0600'
+          - result.stat.pw_name == 'sensu'
+          - result.stat.gr_name == 'sensu'
+
+    - name: Confirm default configuration settings
+      slurp:
+        src: /etc/sensu/agent.yml
+      register: agent_yml
+
+    - assert:
+        that:
+          - |
+              agent_yml.content | b64decode | from_yaml == {
+                  "backend-url": ["ws://upstream-backend:8081"],
+              }

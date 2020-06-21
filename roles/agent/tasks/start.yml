@@ -1,0 +1,6 @@
+---
+- name: Start sensu-agent
+  service:
+    name: sensu-agent
+    state: started
+    enabled: yes

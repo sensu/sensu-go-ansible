@@ -1,4 +1,13 @@
 ---
+scenario:
+  test_sequence:
+    - destroy
+    - create
+    - converge
+    - verify
+    - check
+    - destroy
+
 platforms:
   - name: centos
     image: xlabsi/centos:7
