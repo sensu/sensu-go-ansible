@@ -1,0 +1,134 @@
+- name: Converge
+  hosts: all
+
+  tasks:
+    - name: Configure overloaded variables
+      include_role:
+        name: sensu.sensu_go.agent
+        tasks_from: configure
+      vars:
+        agent_config:
+          backend-url:
+            - "ws://0.0.0.0:4321"
+
+    - name: Confirm overloaded variables
+      slurp:
+        src: /etc/sensu/agent.yml
+      register: agent_yml
+
+    - assert:
+        that:
+          - |
+              agent_yml.content | b64decode | from_yaml == {
+                  "backend-url": ["ws://0.0.0.0:4321"]
+              }
+
+    - name: Configure full set of optional variables
+      include_role:
+        name: sensu.sensu_go.agent
+        tasks_from: configure
+      vars:
+        agent_config:
+          annotations:
+            example-key: "example value"
+            example-key2: "example value 2"
+          backend-url:
+            - "ws://0.0.0.0:4321"
+          cache-dir: /tmp/sensu-agent/cache
+          disable-assets: true
+          allow-list: /etc/sensu/check-allow-list.yaml
+          label:
+            example_label1: "example label"
+            example_label2: "example label 2"
+          name: "agent-01"
+          log-level: fatal
+          api-hosts: "192.168.10.3"
+          api-port: 3031
+          disable-api: true
+          events-burst-limit: 20
+          events-rate-limit: 13.4
+          deregister: false
+          deregister-handler: "deregister"
+          keepalive-interval: 35
+          keepalive-timeout: 215
+          namespace: "ops"
+          user: "sensuadmin"
+          password: "Never2GuessM3"
+          redact:
+            - secret_key
+            - usernames
+            - passwords
+          trusted-ca-file: "/var/lib/sensu/ca.pem"
+          insecure-skip-tls-verify: true
+          socket-host: "0.0.0.0"
+          socket-port: 13030
+          disable-sockets: true
+          statsd-disable: true
+          statsd-event-handlers:
+            - influxdb
+            - opentsdb
+          statsd-flush-interval: 18
+          statsd-metrics-host: 192.168.50.60
+          statsd-metrics-port: 18125
+          exec: "/usr/local/bin/check_disk.sh"
+          sha512: b648feb599b35722248e3d0b0c43ba1c60e4531e9547552e552e7b8dfdb54bb8e1ea414cf33b366ec0a51dd1423bd9a1846b9338771ab41d02a98695d9577834
+          args:
+            - /dev/sda1
+            - /dev/sda2
+            - "-r"
+          enable_env: false
+
+    - name: Confirm full set of optional variables
+      slurp:
+        src: /etc/sensu/agent.yml
+      register: agent_yml
+
+    - debug:
+        var: agent_yml.content | b64decode | from_yaml
+
+    - assert:
+        that:
+          - |
+              agent_yml.content | b64decode | from_yaml == {
+                  "allow-list": "/etc/sensu/check-allow-list.yaml",
+                  "annotations": {
+                      "example-key": "example value",
+                      "example-key2": "example value 2",
+                  },
+                  "api-hosts": "192.168.10.3",
+                  "api-port": 3031,
+                  "args": ["/dev/sda1", "/dev/sda2", "-r"],
+                  "backend-url": ["ws://0.0.0.0:4321"],
+                  "cache-dir": "/tmp/sensu-agent/cache",
+                  "deregister": False,
+                  "deregister-handler": "deregister",
+                  "disable-api": True,
+                  "disable-assets": True,
+                  "disable-sockets": True,
+                  "enable_env": False,
+                  "events-burst-limit": 20,
+                  "events-rate-limit": 13.4,
+                  "exec": "/usr/local/bin/check_disk.sh",
+                  "insecure-skip-tls-verify": True,
+                  "keepalive-interval": 35,
+                  "keepalive-timeout": 215,
+                  "label": {
+                      "example_label1": "example label",
+                      "example_label2": "example label 2",
+                  },
+                  "log-level": "fatal",
+                  "name": "agent-01",
+                  "namespace": "ops",
+                  "password": "Never2GuessM3",
+                  "redact": ["secret_key", "usernames", "passwords"],
+                  "sha512": "b648feb599b35722248e3d0b0c43ba1c60e4531e9547552e552e7b8dfdb54bb8e1ea414cf33b366ec0a51dd1423bd9a1846b9338771ab41d02a98695d9577834",
+                  "socket-host": "0.0.0.0",
+                  "socket-port": 13030,
+                  "statsd-disable": True,
+                  "statsd-event-handlers": ["influxdb", "opentsdb"],
+                  "statsd-flush-interval": 18,
+                  "statsd-metrics-host": "192.168.50.60",
+                  "statsd-metrics-port": 18125,
+                  "trusted-ca-file": "/var/lib/sensu/ca.pem",
+                  "user": "sensuadmin",
+              }
