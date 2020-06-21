@@ -111,3 +111,16 @@ def prepare_result_list(result):
     if isinstance(result, list):
         return result
     return [] if result is None else [result]
+
+
+def convert_v1_to_v2_response(response):
+    # dict(metadata=<meta>, spec=dict(a=1)) -> dict(metadata=<meta>, a=1)
+
+    if not response:
+        return response
+
+    if "metadata" not in response:
+        return response["spec"]
+
+    # Move metadata key into the spec.
+    return dict(response["spec"], metadata=response["metadata"])
