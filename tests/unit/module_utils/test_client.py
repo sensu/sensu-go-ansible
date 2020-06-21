@@ -26,35 +26,12 @@ class TestAuthHeader:
         assert "user" == request.call_args[1]["url_username"]
         assert "pass" == request.call_args[1]["url_password"]
 
-    def test_valid_valid_api_key(self, mocker):
-        request = mocker.patch.object(http, "request")
-        request.return_value = http.Response(200, "{}")
-
-        c = client.Client("http://example.com/", "user", "pass", "key")
-
-        assert dict(Authorization="Key key") == c.auth_header
-        assert 1 == request.call_count
-        request.assert_called_with(
-            "GET", "http://example.com/api/core/v2/apikeys/key",
-            headers=dict(Authorization="Key key"),
-        )
-
     def test_cache_auth_headers_with_token(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, '{"access_token": "token"}')
 
         c = client.Client("http://example.com/", "user", "pass", None)
         for i in range(5):
-            c.auth_header
-
-        assert 1 == request.call_count
-
-    def test_cache_auth_headers_with_api_key(self, mocker):
-        request = mocker.patch.object(http, "request")
-        request.return_value = http.Response(200, "{}")
-
-        c = client.Client("http://example.com/", "user", "pass", "key")
-        for i in range(6):
             c.auth_header
 
         assert 1 == request.call_count
@@ -86,15 +63,6 @@ class TestAuthHeader:
                 "http://example.com/", "user", "pass", None,
             ).auth_header
 
-    def test_login_failure_api_key_bad_status(self, mocker):
-        request = mocker.patch.object(http, "request")
-        request.return_value = http.Response(401, "{}")
-
-        with pytest.raises(errors.SensuError, match="API key .+ invalid"):
-            client.Client(
-                "http://example.com/", "user", "pass", "12345-xxxx-abcde",
-            ).auth_header
-
 
 class TestRequest:
     def test_request_payload_token(self, mocker):
@@ -116,16 +84,13 @@ class TestRequest:
 
     def test_request_payload_api_key(self, mocker):
         request = mocker.patch.object(http, "request")
-        request.side_effect = (
-            http.Response(200, "{}"),
-            http.Response(200, "data"),
-        )
+        request.return_value = http.Response(200, "data")
 
         client.Client("http://example.com/", None, None, "key").request(
             "PUT", "/path", dict(some="payload"),
         )
 
-        request.assert_called_with(
+        request.assert_called_once_with(
             "PUT", "http://example.com/path",
             payload=dict(some="payload"),
             headers=dict(Authorization="Key key"),
@@ -149,17 +114,30 @@ class TestRequest:
 
     def test_request_no_payload_api_key(self, mocker):
         request = mocker.patch.object(http, "request")
-        request.side_effect = (
-            http.Response(200, "{}"),
-            http.Response(200, "data"),
-        )
+        request.return_value = http.Response(200, "data")
 
         client.Client("http://example.com/", "u", "p", "key").request(
             "PUT", "/path",
         )
 
-        request.assert_called_with(
+        request.assert_called_once_with(
             "PUT", "http://example.com/path", payload=None,
+            headers=dict(Authorization="Key key"),
+        )
+
+    @pytest.mark.parametrize("status", [401, 403])
+    def test_request_bad_credentials(self, status, mocker):
+        request = mocker.patch.object(http, "request")
+        request.return_value = http.Response(status, "data")
+
+        with pytest.raises(errors.SensuError, match="credentials"):
+            client.Client("http://example.com/", None, None, "key").request(
+                "PUT", "/path", dict(some="payload"),
+            )
+
+        request.assert_called_once_with(
+            "PUT", "http://example.com/path",
+            payload=dict(some="payload"),
             headers=dict(Authorization="Key key"),
         )
 
