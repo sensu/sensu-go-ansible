@@ -322,3 +322,19 @@ class TestPrepareResultList:
     ])
     def test_list_construction(self, input, output):
         assert output == utils.prepare_result_list(input)
+
+
+class TestConvertV1ToV2Response:
+    def test_none_passes_through(self):
+        assert utils.convert_v1_to_v2_response(None) is None
+
+    def test_spec_only_if_metadata_is_missing(self):
+        assert utils.convert_v1_to_v2_response(dict(
+            spec=dict(a=1, b=2),
+        )) == dict(a=1, b=2)
+
+    def test_add_metadata_from_toplevel(self):
+        assert utils.convert_v1_to_v2_response(dict(
+            metadata=dict(name="sample"),
+            spec=dict(a=1, b=2),
+        )) == dict(metadata=dict(name="sample"), a=1, b=2)
