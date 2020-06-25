@@ -64,6 +64,53 @@ class TestAuthHeader:
             ).auth_header
 
 
+class TestVersion:
+    def test_valid_version(self, mocker):
+        c = client.Client("http://example.com/", "u", "p", None)
+        mocker.patch.object(c, "get").return_value = http.Response(
+            200, '{"sensu_backend":"5.21.0#sha-here"}',
+        )
+
+        assert c.version == "5.21.0"
+
+    def test_valid_version_is_cached(self, mocker):
+        c = client.Client("http://example.com/", "u", "p", None)
+        get = mocker.patch.object(c, "get")
+        get.return_value = http.Response(
+            200, '{"sensu_backend":"5.21.0#sha-here"}',
+        )
+
+        for i in range(4):
+            c.version
+
+        get.assert_called_once()
+
+    def test_non_200_response(self, mocker):
+        c = client.Client("http://example.com/", "u", "p", None)
+        mocker.patch.object(c, "get").return_value = http.Response(
+            400, '{"sensu_backend":"5.21.0#sha-here"}',
+        )
+
+        with pytest.raises(errors.SensuError, match="400"):
+            c.version
+
+    def test_bad_json_response(self, mocker):
+        c = client.Client("http://example.com/", "u", "p", None)
+        mocker.patch.object(c, "get").return_value = http.Response(
+            200, '"sensu_backend',
+        )
+
+        with pytest.raises(errors.SensuError, match="JSON"):
+            c.version
+
+    def test_missing_backend_version_in_response(self, mocker):
+        c = client.Client("http://example.com/", "u", "p", None)
+        mocker.patch.object(c, "get").return_value = http.Response(200, '{}')
+
+        with pytest.raises(errors.SensuError, match="backend"):
+            c.version
+
+
 class TestRequest:
     def test_request_payload_token(self, mocker):
         request = mocker.patch.object(http, "request")
