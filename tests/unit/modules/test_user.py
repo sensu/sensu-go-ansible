@@ -6,7 +6,7 @@ from distutils import version
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, http, utils
+    arguments, errors, http, utils
 )
 from ansible_collections.sensu.sensu_go.plugins.modules import user
 
@@ -41,7 +41,7 @@ class TestUpdatePassword:
             username='user', password='pass',
         ))
 
-    def test_password_is_invalid_newer_than_5_21_0(self, mocker):
+    def test_password_is_invalid_5_21_0_or_newer(self, mocker):
         client = mocker.Mock()
         client.validate_auth_data.return_value = False
         client.version = version.StrictVersion("5.21.0")
@@ -59,7 +59,7 @@ class TestUpdatePassword:
 
         # (tadeboro): We cannot validate the value without mocking the bcrypt.
         # And I would rather see that our code gets tested by actually using
-        # the bcrypt rather than mocking it out. This way, the messa
+        # the bcrypt rather than mocking it out. This way, the message
         # encode/decode stuff gets put through its paces.
         assert 'password_hash' in payload
 
@@ -411,4 +411,17 @@ class TestUser(ModuleTestCase):
         )
 
         with pytest.raises(AnsibleFailJson):
+            user.main()
+
+    def test_failure_on_missing_bcrypt_5_21_0_or_newer(self, mocker):
+        mocker.patch.object(arguments, 'get_sensu_client').return_value = (
+            mocker.MagicMock(version='5.22.3')
+        )
+        mocker.patch.object(user, 'HAS_BCRYPT', False)
+        set_module_args(
+            name='test_user',
+            password='password'
+        )
+
+        with pytest.raises(AnsibleFailJson, match='bcrypt'):
             user.main()

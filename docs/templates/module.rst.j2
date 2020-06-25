@@ -11,6 +11,18 @@
 
 {%   endfor %}
 
+{% if requirements -%}
+Requirements
+------------
+
+The below requirements are needed on the host that executes this module:
+
+{%   for req in requirements %}
+- {{ req | rst_ify }}
+{%   endfor %}
+{% endif %}
+
+
 Examples
 --------
 
