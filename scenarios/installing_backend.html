@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installing Sensu Go Backend &mdash; Sensu Go Ansible Collection  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Managing Sensu Go Resources" href="managing_resources.html" />
+    <link rel="prev" title="Scenario guides" href="../scenarios.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Sensu Go Ansible Collection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scenario guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../scenarios.html">Scenario guides</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Installing Sensu Go Backend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-the-inventory-file">Creating the inventory file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-the-installation-playbook">Writing the installation playbook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-playbook">Running the playbook</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managing_resources.html">Managing Sensu Go Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring_hosts.html">Monitoring hosts</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../roles.html">Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Hacker's guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../hacking.html">Developing Sensu Go Ansible Collection</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sensu Go Ansible Collection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../scenarios.html">Scenario guides</a> &raquo;</li>
+        
+      <li>Installing Sensu Go Backend</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/scenarios/installing_backend.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installing-sensu-go-backend">
+<h1>Installing Sensu Go Backend<a class="headerlink" href="#installing-sensu-go-backend" title="Permalink to this headline">¶</a></h1>
+<p>There are three steps that we need to go through when we are setting up the
+Sensu Go backend. We need to:</p>
+<ol class="arabic simple">
+<li><p>prepare the inventory file,</p></li>
+<li><p>write the playbook, and</p></li>
+<li><p>run the created playbook.</p></li>
+</ol>
+<p>Let us have a look at each of the steps in greater detail.</p>
+<div class="section" id="creating-the-inventory-file">
+<h2>Creating the inventory file<a class="headerlink" href="#creating-the-inventory-file" title="Permalink to this headline">¶</a></h2>
+<p>We will create an inventory file with a single group of hosts called
+<em>backends</em>. The <em>backends</em> group will, in turn, contain a single host named
+<em>my_backend</em> (it should be painfully apparent by now that a developer wrote
+this documentation ;). An inventory file that fits the description above would
+look something like
+<a class="reference download internal" download="" href="../_downloads/b7ae44b624f05c375aa89fccc083b794/inventory.yaml"><code class="xref download docutils literal notranslate"><span class="pre">this</span></code></a>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">all</span><span class="p">:</span>
+  <span class="nt">children</span><span class="p">:</span>
+    <span class="nt">backends</span><span class="p">:</span>
+      <span class="nt">hosts</span><span class="p">:</span>
+        <span class="nt">192.168.50.4</span><span class="p">:</span>
+          <span class="nt">ansible_user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">vagrant</span>
+</pre></div>
+</div>
+<p>The key-value pairs under the <em>my_backend</em> key describe the host-specific
+variable assignments. In the example above, we are telling Ansible that it can
+reach <em>my_backend</em> host by establishing an ssh-connection to the
+<code class="docutils literal notranslate"><span class="pre">vagrant&#64;192.168.50.4</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We are using a  YAML inventory format in this document. Feel free to use
+any other Ansible-supported form if this one does not feel right to you.</p>
+</div>
+<p>With the inventory file being taken care of, we can now focus on creating a
+playbook for the installation process.</p>
+</div>
+<div class="section" id="writing-the-installation-playbook">
+<h2>Writing the installation playbook<a class="headerlink" href="#writing-the-installation-playbook" title="Permalink to this headline">¶</a></h2>
+<p>Thanks to the <em>sensu.sensu_go.backend</em> Ansible role, writing a playbook for
+the Sensu Go backend installation is a relatively straightforward task. It all
+comes down to a few lines like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu backend</span>
+  <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">backends</span>
+  <span class="nt">become</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+  <span class="nt">tasks</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install backend</span>
+      <span class="nt">include_role</span><span class="p">:</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.backend</span>
+</pre></div>
+</div>
+<p>If we run the playbook above, Ansible will install the latest stable version
+of Sensu Go backend on all of the hosts in the <em>backends</em> inventory group with
+the default configuration. And while this is fine for the sandbox
+environments, we will want to, at least partially, pin the package version and
+adjust the backend configuration.</p>
+<p>We have two variables available for limiting the package version: <em>version</em>
+and <em>build</em>. We can set only <em>version</em> or <em>version</em> and <em>build</em>, but setting
+<em>build</em> on itself is pointless and is ignored by the Sensu Go collection
+roles. For example, pinning Sensu Go to version <code class="docutils literal notranslate"><span class="pre">5.16.1</span></code> would look somewhat
+like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu backend</span>
+  <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">backends</span>
+  <span class="nt">become</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+  <span class="nt">tasks</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install backend</span>
+      <span class="nt">include_role</span><span class="p">:</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.backend</span>
+      <span class="nt">vars</span><span class="p">:</span>
+        <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.16.1</span>
+</pre></div>
+</div>
+<p>And just for the sake of completeness, this is how we would go about pinning
+version down to the specific build:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu backend</span>
+  <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">backends</span>
+  <span class="nt">become</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+  <span class="nt">tasks</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install backend</span>
+      <span class="nt">include_role</span><span class="p">:</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.backend</span>
+      <span class="nt">vars</span><span class="p">:</span>
+        <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.16.1</span>
+        <span class="nt">build</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8521</span>
+</pre></div>
+</div>
+<p>There is also a third variable available, called <em>channel</em>. We can use this
+variable to tell the Sensu Go roles which repository to use when installing
+the packages. Most users will want to leave this variable set to its default
+value of <code class="docutils literal notranslate"><span class="pre">stable</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The stable package channel usually contains only one version build. What
+this means is that pinning only the version number should suffice in the
+vast majority of cases.</p>
+</div>
+<p>The last thing we need to do is get rid of the default configuration. And we
+can do that by modifying the <em>backend_config</em> variable. All we need to do is
+to stuff this variable with key-value pairs of configuration options. The end
+result should look like
+<a class="reference download internal" download="" href="../_downloads/fd58ff755114a8c421bd9a0641f371fe/playbook.yaml"><code class="xref download docutils literal notranslate"><span class="pre">this</span></code></a>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu backend</span>
+  <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">backends</span>
+  <span class="nt">become</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+  <span class="nt">tasks</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install backend</span>
+      <span class="nt">include_role</span><span class="p">:</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.backend</span>
+      <span class="nt">vars</span><span class="p">:</span>
+        <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.16.1</span>
+        <span class="nt">cluster_admin_username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tadej</span>
+        <span class="nt">cluster_admin_password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my.password</span>  <span class="c1"># USE VAULT IN REAL SCENARIOS!!!</span>
+        <span class="nt">backend_config</span><span class="p">:</span>
+          <span class="nt">log-level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>What constitutes a valid backend configuration file is Sensu Go
+version-dependent, so make sure to check the official documentation for the
+version you use when setting the <em>backend_config</em> variable.</p>
+</div>
+<p>If we are installing a version of Sensu Go that is greater or equal to 5.16.0,
+we can also set the initial username and password for the backend. The two
+variables that control this are <em>cluster_admin_username</em> and
+<em>cluster_admin_password</em>. Their default values are <code class="docutils literal notranslate"><span class="pre">admin</span></code> and <code class="docutils literal notranslate"><span class="pre">P&#64;ssw0rd!</span></code>
+in order to be compatible with the older Sensu Go releases.</p>
+<p>Now that we adequately pinned the version number and specified the
+configuration, we can finally run the playbook.</p>
+</div>
+<div class="section" id="running-the-playbook">
+<h2>Running the playbook<a class="headerlink" href="#running-the-playbook" title="Permalink to this headline">¶</a></h2>
+<p>At this point, we are ready to let Ansible deploy the Sensu Go backend while
+we take a quick snack. All that separates us from the cookie we started
+thinking about when we were two sentences into this document is this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-playbook -i inventory.yaml playbook.yaml
+</pre></div>
+</div>
+<p>And this is it. Congratulations on making all the way through! You can find
+the complete example along with some extras (like Vagrant configuration) in
+the <a class="reference external" href="https://link.to/github/example">example folder</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="managing_resources.html" class="btn btn-neutral float-right" title="Managing Sensu Go Resources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../scenarios.html" class="btn btn-neutral float-left" title="Scenario guides" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, XLAB Steampunk
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

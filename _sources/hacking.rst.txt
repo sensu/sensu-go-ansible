@@ -11,5 +11,6 @@ environment together, and then we can start hacking ;)
 
    hacking/setup
    hacking/testing
+   hacking/docker-images
    hacking/documentation
    hacking/releases

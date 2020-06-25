@@ -209,7 +209,7 @@ Return Values
 -------------
 
 object (success), dict, )
-  object representing Sensu event
+  object representing Sensu event (deprecated)
 
 
 

@@ -97,7 +97,7 @@ name (required)
 password (optional)
   Password for the user.
 
-  Required if *state* is ``enabled``.
+  Required if user with a desired name does not exist yet on the backend.
 
   | **type**: str
 
