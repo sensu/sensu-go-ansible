@@ -6,6 +6,8 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
+from distutils import version
+
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
     errors, http,
 )
@@ -19,12 +21,35 @@ class Client:
         self.api_key = api_key
 
         self._auth_header = None  # Login when/if required
+        self._version = None  # Set version only if the consumer needs it
 
     @property
     def auth_header(self):
         if not self._auth_header:
             self._auth_header = self._login()
         return self._auth_header
+
+    @property
+    def version(self):
+        if self._version is None:
+            resp = self.get("/version")
+            if resp.status != 200:
+                raise errors.SensuError(
+                    "Version API returned status {0}".format(resp.status),
+                )
+            if resp.json is None:
+                raise errors.SensuError(
+                    "Version API did not return a valid JSON",
+                )
+            if "sensu_backend" not in resp.json:
+                raise errors.SensuError(
+                    "Version API did not return backend version",
+                )
+            self._version = version.StrictVersion(
+                resp.json["sensu_backend"].split("#")[0]
+            )
+
+        return self._version
 
     def _login(self):
         if self.api_key:
