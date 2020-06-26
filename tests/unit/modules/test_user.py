@@ -1,6 +1,8 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
+from distutils import version
+
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
@@ -25,9 +27,10 @@ class TestUpdatePassword:
         client.validate_auth_data.assert_called_once_with('user', 'pass')
         client.put.assert_not_called()
 
-    def test_password_is_invalid(self, mocker):
+    def test_password_is_invalid_older_than_5_21_0(self, mocker):
         client = mocker.Mock()
         client.validate_auth_data.return_value = False
+        client.version = version.StrictVersion("5.20.2")
         client.put.return_value = http.Response(201, '')
 
         changed = user.update_password(client, '/path', 'user', 'pass', False)
@@ -37,6 +40,28 @@ class TestUpdatePassword:
         client.put.assert_called_once_with('/path/password', dict(
             username='user', password='pass',
         ))
+
+    def test_password_is_invalid_newer_than_5_21_0(self, mocker):
+        client = mocker.Mock()
+        client.validate_auth_data.return_value = False
+        client.version = version.StrictVersion("5.21.0")
+        client.put.return_value = http.Response(201, '')
+
+        changed = user.update_password(client, '/path', 'user', 'pass', False)
+
+        assert changed is True
+        client.validate_auth_data.assert_called_once_with('user', 'pass')
+        client.put.assert_called_once()
+
+        path, payload = client.put.call_args[0]
+        assert path == '/path/reset_password'
+        assert payload['username'] == 'user'
+
+        # (tadeboro): We cannot validate the value without mocking the bcrypt.
+        # And I would rather see that our code gets tested by actually using
+        # the bcrypt rather than mocking it out. This way, the messa
+        # encode/decode stuff gets put through its paces.
+        assert 'password_hash' in payload
 
     def test_password_is_invalid_check_mode(self, mocker):
         client = mocker.Mock()

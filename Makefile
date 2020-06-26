@@ -30,6 +30,7 @@ help:
 .PHONY: requirements
 requirements:  ## Install development requirements
 	pip install \
+	  -r collection.requirements \
 	  -r sanity.requirements \
 	  -r units.requirements \
 	  -r integration.requirements \

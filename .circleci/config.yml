@@ -183,7 +183,7 @@ commands:
     steps:
       - run:
           name: Install requirements
-          command: pip install -r ${TEST_KIND}.requirements
+          command: pip install -r ${TEST_KIND}.requirements -r collection.requirements
       - run:
           name: Run test
           command: make ${TEST_KIND}
