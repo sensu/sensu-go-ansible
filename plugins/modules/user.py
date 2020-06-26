@@ -29,6 +29,8 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
+requirements:
+  - bcrypt (when managing Sensu Go 5.21.0 or newer)
 seealso:
   - module: user_info
 options:
@@ -75,11 +77,21 @@ object:
     type: dict
 '''
 
-from ansible.module_utils.basic import AnsibleModule
+import traceback
+
+from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
     arguments, errors, utils,
 )
+
+try:
+    import bcrypt
+    HAS_BCRYPT = True
+    BCRYPT_IMPORT_ERROR = None
+except ImportError:
+    HAS_BCRYPT = False
+    BCRYPT_IMPORT_ERROR = traceback.format_exc()
 
 
 def update_password(client, path, username, password, check_mode):
@@ -89,9 +101,15 @@ def update_password(client, path, username, password, check_mode):
         return False
 
     if not check_mode:
-        utils.put(client, path + '/password', dict(
-            username=username, password=password,
-        ))
+        if client.version < "5.21.0":
+            utils.put(client, path + '/password', dict(
+                username=username, password=password,
+            ))
+        else:
+            hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            utils.put(client, path + '/reset_password', dict(
+                username=username, password_hash=hash.decode('ascii'),
+            ))
 
     return True
 
@@ -188,6 +206,15 @@ def main():
 
     client = arguments.get_sensu_client(module.params['auth'])
     path = utils.build_core_v2_path(None, 'users', module.params['name'])
+
+    try:
+        if not HAS_BCRYPT and client.version >= "5.21.0":
+            module.fail_json(
+                msg=missing_required_lib('bcrypt'),
+                exception=BCRYPT_IMPORT_ERROR,
+            )
+    except errors.SensuError as e:
+        module.fail_json(msg=str(e))
 
     try:
         remote_object = utils.get(client, path)
