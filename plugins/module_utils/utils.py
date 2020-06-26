@@ -92,6 +92,14 @@ def dict_to_single_item_dicts(data):
     return [{k: v} for k, v in data.items()]
 
 
+def single_item_dicts_to_dict(data):
+    result = {}
+    for item in data:
+        (k, v), = item.items()
+        result[k] = v
+    return result
+
+
 def dict_to_key_value_strings(data):
     return ["{0}={1}".format(k, v) for k, v in data.items()]
 

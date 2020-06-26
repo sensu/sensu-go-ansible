@@ -197,3 +197,58 @@
     - assert:
         that:
           - result.objects == []
+
+    - name: Create check for idempotency test of complex fields
+      check:
+        name: complex
+        command: sleep 10
+        interval: 10
+        subscriptions:
+          - sub1
+          - sub2
+        handlers: []
+        proxy_requests:
+          entity_attributes:
+            - "entity.entity_class == 'proxy'"
+            - "entity.entity_class == 'demo'"
+        check_hooks:
+          warning:
+            - h1
+            - h2
+            - h3
+          error:
+            - h4
+            - h2
+        env_vars:
+          var1: val1
+          var2: val2
+
+    - name: Test for idempotency test of complex fields
+      check:
+        name: complex
+        command: sleep 10
+        interval: 10
+        subscriptions:
+          - sub2
+          - sub1
+        runtime_assets: []
+        proxy_requests:
+          entity_attributes:
+            - "entity.entity_class == 'demo'"
+            - "entity.entity_class == 'proxy'"
+        check_hooks:
+          warning:
+            - h1
+            - h3
+            - h2
+          error:
+            - h2
+            - h4
+        env_vars:
+          var2: val2
+          var1: val1
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
