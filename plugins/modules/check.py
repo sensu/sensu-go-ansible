@@ -222,6 +222,56 @@ def validate_module_params(module):
         module.fail_json(msg='one of the following is required: interval, cron')
 
 
+def do_sets_differ(current, desired, key):
+    return set(current.get(key) or []) != set(desired.get(key) or [])
+
+
+def do_proxy_requests_differ(current, desired):
+    if 'proxy_requests' not in desired:
+        return False
+
+    current = current.get('proxy_requests') or {}
+    desired = desired['proxy_requests']
+
+    return (
+        (
+            'entity_attributes' in desired and
+            do_sets_differ(current, desired, 'entity_attributes')
+        ) or
+        utils.do_differ(current, desired, 'entity_attributes')
+    )
+
+
+def do_check_hooks_differ(current, desired):
+    if 'check_hooks' not in desired:
+        return False
+
+    current = utils.single_item_dicts_to_dict(current.get('check_hooks') or [])
+    current = {k: set(v) for k, v in current.items()}
+
+    desired = utils.single_item_dicts_to_dict(desired['check_hooks'])
+    desired = {k: set(v) for k, v in desired.items()}
+
+    return current != desired
+
+
+def do_differ(current, desired):
+    return (
+        utils.do_differ(
+            current, desired, 'proxy_requests', 'subscriptions', 'handlers',
+            'runtime_assets', 'check_hooks', 'output_metric_handlers',
+            'env_vars',
+        ) or
+        do_proxy_requests_differ(current, desired) or
+        do_sets_differ(current, desired, 'subscriptions') or
+        do_sets_differ(current, desired, 'handlers') or
+        do_sets_differ(current, desired, 'runtime_assets') or
+        do_check_hooks_differ(current, desired) or
+        do_sets_differ(current, desired, 'output_metric_handlers') or
+        do_sets_differ(current, desired, 'env_vars')
+    )
+
+
 def build_api_payload(params):
     payload = arguments.get_mutation_payload(
         params,
@@ -234,7 +284,6 @@ def build_api_payload(params):
         'output_metric_format',
         'output_metric_handlers',
         'proxy_entity_name',
-        'proxy_requests',
         'publish',
         'round_robin',
         'runtime_assets',
@@ -243,6 +292,13 @@ def build_api_payload(params):
         'timeout',
         'ttl'
     )
+
+    if params['proxy_requests']:
+        payload['proxy_requests'] = arguments.get_spec_payload(
+            params['proxy_requests'],
+            'entity_attributes', 'splay', 'splay_coverage',
+        )
+
     if params['check_hooks']:
         payload['check_hooks'] = utils.dict_to_single_item_dicts(params['check_hooks'])
 
@@ -340,6 +396,7 @@ def main():
     try:
         changed, check = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,
+            do_differ,
         )
         module.exit_json(changed=changed, object=check)
     except errors.Error as e:

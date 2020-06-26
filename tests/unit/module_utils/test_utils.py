@@ -265,6 +265,13 @@ class TestDictToSingleItemDicts:
             assert item in result
 
 
+class TestSingleItemDictsToDict:
+    def test_conversion(self):
+        assert dict(a=3, b=4, c=5) == utils.single_item_dicts_to_dict(
+            [dict(a=3), dict(b=4), dict(c=5)]
+        )
+
+
 class TestDictToKeyValueString:
     def test_conversion(self):
         result = utils.dict_to_key_value_strings({"a": 0, 1: "b"})
