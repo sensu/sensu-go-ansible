@@ -17,12 +17,11 @@ provisioner:
   lint:
     enabled: false
 platforms:
-  # Disable 5.21.x testing for now because it has quite a few problems
-  #- name: v5.21.0
-  #  image: xlabsi/sensu-go-tests-sensu:5.21.0
-  #  pre_build_image: true
-  #  pull: true
-  #  override_command: false
+  - name: v5.21.0
+    image: xlabsi/sensu-go-tests-sensu:5.21.0
+    pre_build_image: true
+    pull: true
+    override_command: false
   - name: v5.20.2
     image: xlabsi/sensu-go-tests-sensu:5.20.2
     pre_build_image: true
