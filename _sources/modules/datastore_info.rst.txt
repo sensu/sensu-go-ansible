@@ -10,6 +10,8 @@ Retrieve information about external Sensu datastores.
 For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/datastore/.
 
 
+
+
 Examples
 --------
 

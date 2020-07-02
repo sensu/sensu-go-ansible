@@ -10,6 +10,14 @@ Create, update, activate or deactivate Sensu user.
 For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#users.
 
 
+Requirements
+------------
+
+The below requirements are needed on the host that executes this module:
+
+- bcrypt (when managing Sensu Go 5.21.0 or newer)
+
+
 Examples
 --------
 

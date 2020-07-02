@@ -129,6 +129,7 @@
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">user – Manage Sensu users</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a></li>
@@ -224,6 +225,13 @@
 <span id="user-module"></span><h1>user – Manage Sensu users<a class="headerlink" href="#user-manage-sensu-users" title="Permalink to this headline">¶</a></h1>
 <p>Create, update, activate or deactivate Sensu user.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/rbac/#users">https://docs.sensu.io/sensu-go/latest/reference/rbac/#users</a>.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>The below requirements are needed on the host that executes this module:</p>
+<ul class="simple">
+<li><p>bcrypt (when managing Sensu Go 5.21.0 or newer)</p></li>
+</ul>
+</div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a user</span>
