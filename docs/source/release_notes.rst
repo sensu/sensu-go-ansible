@@ -1,6 +1,21 @@
 Release notes
 =============
 
+Version 1.4.2 -- Break the fall
+-------------------------------
+
+There is really only one reason for this release: making sure user management
+works with Sensu Go 5.21.0 and newer. And while the upstream did break the
+API, we did not, so all your playbooks should function as nothing happened. We
+had to add a *bcrypt* dependency to our collection so make sure it is
+installed on hosts that will execute the user module.
+
+**Bug fixes:**
+
+* Make sure check module is as idempotent as possible.
+* Make user module compatible with Sensu Go >= 5.21.0.
+
+
 Version 1.4.1 -- Maintenance is the name of the game
 ----------------------------------------------------
 
