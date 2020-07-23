@@ -5,7 +5,7 @@ __metaclass__ = type
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, http, utils,
+    errors, http,
 )
 from ansible_collections.sensu.sensu_go.plugins.modules import datastore
 
@@ -252,7 +252,7 @@ class TestDatastore(ModuleTestCase):
         assert check_mode is False
 
     def test_failure(self, mocker):
-        sync_mock = mocker.patch.object(utils, "sync")
+        sync_mock = mocker.patch.object(datastore, "sync")
         sync_mock.side_effect = errors.Error("Bad error")
         set_module_args(
             name="test_datastore",
