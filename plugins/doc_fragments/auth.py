@@ -49,4 +49,27 @@ options:
             U(https://docs.sensu.io/sensu-go/latest/guides/use-apikey-feature/).
         type: str
         version_added: "1.3"
+      verify:
+        description:
+          - Flag that controls the certificate validation.
+          - If you are using self-signed certificates, you can set this
+            parameter to C(false).
+          - ONLY USE THIS PARAMETER IN DEVELOPMENT SCENARIOS! In you use
+            self-signed certificates in production, see the I(auth.ca_path)
+            parameter.
+          - It is also possible to set this parameter via the I(SENSU_VERIFY)
+            environment variable.
+        type: bool
+        default: true
+        version_added: "1.5"
+      ca_path:
+        description:
+          - Path to the CA bundle that should be used to validate the backend
+            certificate.
+          - If this parameter is not set, module will use the CA bundle that
+            python is using.
+          - It is also possible to set this parameter via the I(SENSU_CA_PATH)
+            environment variable.
+        type: path
+        version_added: "1.5"
 """

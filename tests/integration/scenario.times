@@ -1,5 +1,6 @@
 molecule/action_bonsai_asset 53.32
 molecule/misc_api_authentication 72.43
+molecule/misc_api_cert 74.32
 molecule/module_asset 62.33
 molecule/module_check 54.32
 molecule/module_cluster_role 59.23

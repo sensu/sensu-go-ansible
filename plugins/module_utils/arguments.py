@@ -32,6 +32,15 @@ SHARED_SPECS = dict(
             api_key=dict(
                 fallback=(env_fallback, ["SENSU_API_KEY"]),
             ),
+            verify=dict(
+                default=True,
+                fallback=(env_fallback, ["SENSU_VERIFY"]),
+                type="bool",
+            ),
+            ca_path=dict(
+                fallback=(env_fallback, ["SENSU_CA_PATH"]),
+                type="path",
+            ),
         ),
     ),
     state=dict(
@@ -90,4 +99,5 @@ def get_mutation_payload(source, *wanted_params):
 def get_sensu_client(auth):
     return client.Client(
         auth["url"], auth["user"], auth["password"], auth["api_key"],
+        auth["verify"], auth["ca_path"],
     )

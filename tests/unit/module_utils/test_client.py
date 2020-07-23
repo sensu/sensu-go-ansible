@@ -18,7 +18,9 @@ class TestAuthHeader:
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, '{"access_token": "token"}')
 
-        c = client.Client("http://example.com/", "user", "pass", None)
+        c = client.Client(
+            "http://example.com/", "user", "pass", None, True, None,
+        )
 
         assert dict(Authorization="Bearer token") == c.auth_header
         assert 1 == request.call_count
@@ -30,7 +32,9 @@ class TestAuthHeader:
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, '{"access_token": "token"}')
 
-        c = client.Client("http://example.com/", "user", "pass", None)
+        c = client.Client(
+            "http://example.com/", "user", "pass", None, True, None,
+        )
         for i in range(5):
             c.auth_header
 
@@ -42,7 +46,7 @@ class TestAuthHeader:
 
         with pytest.raises(errors.SensuError, match="500"):
             client.Client(
-                "http://example.com/", "user", "pass", None,
+                "http://example.com/", "user", "pass", None, True, None,
             ).auth_header
 
     def test_login_failure_token_bad_json(self, mocker):
@@ -51,7 +55,7 @@ class TestAuthHeader:
 
         with pytest.raises(errors.SensuError, match="JSON"):
             client.Client(
-                "http://example.com/", "user", "pass", None,
+                "http://example.com/", "user", "pass", None, True, None,
             ).auth_header
 
     def test_login_failure_token_missing_token(self, mocker):
@@ -60,13 +64,13 @@ class TestAuthHeader:
 
         with pytest.raises(errors.SensuError, match="token"):
             client.Client(
-                "http://example.com/", "user", "pass", None,
+                "http://example.com/", "user", "pass", None, True, None,
             ).auth_header
 
 
 class TestVersion:
     def test_valid_version(self, mocker):
-        c = client.Client("http://example.com/", "u", "p", None)
+        c = client.Client("http://example.com/", "u", "p", None, True, None)
         mocker.patch.object(c, "get").return_value = http.Response(
             200, '{"sensu_backend":"5.21.0#sha-here"}',
         )
@@ -74,7 +78,7 @@ class TestVersion:
         assert c.version == "5.21.0"
 
     def test_valid_version_is_cached(self, mocker):
-        c = client.Client("http://example.com/", "u", "p", None)
+        c = client.Client("http://example.com/", "u", "p", None, True, None)
         get = mocker.patch.object(c, "get")
         get.return_value = http.Response(
             200, '{"sensu_backend":"5.21.0#sha-here"}',
@@ -86,7 +90,7 @@ class TestVersion:
         get.assert_called_once()
 
     def test_non_200_response(self, mocker):
-        c = client.Client("http://example.com/", "u", "p", None)
+        c = client.Client("http://example.com/", "u", "p", None, True, None)
         mocker.patch.object(c, "get").return_value = http.Response(
             400, '{"sensu_backend":"5.21.0#sha-here"}',
         )
@@ -95,7 +99,7 @@ class TestVersion:
             c.version
 
     def test_bad_json_response(self, mocker):
-        c = client.Client("http://example.com/", "u", "p", None)
+        c = client.Client("http://example.com/", "u", "p", None, True, None)
         mocker.patch.object(c, "get").return_value = http.Response(
             200, '"sensu_backend',
         )
@@ -104,7 +108,7 @@ class TestVersion:
             c.version
 
     def test_missing_backend_version_in_response(self, mocker):
-        c = client.Client("http://example.com/", "u", "p", None)
+        c = client.Client("http://example.com/", "u", "p", None, True, None)
         mocker.patch.object(c, "get").return_value = http.Response(200, '{}')
 
         with pytest.raises(errors.SensuError, match="backend"):
@@ -119,28 +123,32 @@ class TestRequest:
             http.Response(200, "data"),
         )
 
-        client.Client("http://example.com/", "user", "pass", None).request(
-            "PUT", "/path", dict(some="payload"),
-        )
+        client.Client(
+            "http://example.com/", "user", "pass", None, True, None,
+        ).request("PUT", "/path", dict(some="payload"))
 
         request.assert_called_with(
             "PUT", "http://example.com/path",
             payload=dict(some="payload"),
             headers=dict(Authorization="Bearer token"),
+            validate_certs=True,
+            ca_path=None,
         )
 
     def test_request_payload_api_key(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, "data")
 
-        client.Client("http://example.com/", None, None, "key").request(
-            "PUT", "/path", dict(some="payload"),
-        )
+        client.Client(
+            "http://example.com/", None, None, "key", False, None,
+        ).request("PUT", "/path", dict(some="payload"))
 
         request.assert_called_once_with(
             "PUT", "http://example.com/path",
             payload=dict(some="payload"),
             headers=dict(Authorization="Key key"),
+            validate_certs=False,
+            ca_path=None,
         )
 
     def test_request_no_payload_token(self, mocker):
@@ -150,26 +158,30 @@ class TestRequest:
             http.Response(200, "data"),
         )
 
-        client.Client("http://example.com/", "user", "pass", None).request(
-            "PUT", "/path",
-        )
+        client.Client(
+            "http://example.com/", "user", "pass", None, True, "/ca",
+        ).request("PUT", "/path")
 
         request.assert_called_with(
             "PUT", "http://example.com/path", payload=None,
             headers=dict(Authorization="Bearer token"),
+            validate_certs=True,
+            ca_path="/ca",
         )
 
     def test_request_no_payload_api_key(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, "data")
 
-        client.Client("http://example.com/", "u", "p", "key").request(
-            "PUT", "/path",
-        )
+        client.Client(
+            "http://example.com/", "u", "p", "key", False, "/ca",
+        ).request("PUT", "/path")
 
         request.assert_called_once_with(
             "PUT", "http://example.com/path", payload=None,
             headers=dict(Authorization="Key key"),
+            validate_certs=False,
+            ca_path="/ca",
         )
 
     @pytest.mark.parametrize("status", [401, 403])
@@ -178,20 +190,24 @@ class TestRequest:
         request.return_value = http.Response(status, "data")
 
         with pytest.raises(errors.SensuError, match="credentials"):
-            client.Client("http://example.com/", None, None, "key").request(
-                "PUT", "/path", dict(some="payload"),
-            )
+            client.Client(
+                "http://example.com/", None, None, "key", True, None,
+            ).request("PUT", "/path", dict(some="payload"))
 
         request.assert_called_once_with(
             "PUT", "http://example.com/path",
             payload=dict(some="payload"),
             headers=dict(Authorization="Key key"),
+            validate_certs=True,
+            ca_path=None,
         )
 
 
 class TestGet:
     def test_get(self, mocker):
-        c = client.Client("http://example.com/", "user", "pass", None)
+        c = client.Client(
+            "http://example.com/", "user", "pass", None, True, None,
+        )
         c.request = mocker.Mock()
 
         c.get("/path")
@@ -201,7 +217,9 @@ class TestGet:
 
 class TestPut:
     def test_put(self, mocker):
-        c = client.Client("http://example.com/", "user", "pass", None)
+        c = client.Client(
+            "http://example.com/", "user", "pass", None, True, None,
+        )
         c.request = mocker.Mock()
 
         c.put("/path", {})
@@ -211,7 +229,9 @@ class TestPut:
 
 class TestDelete:
     def test_delete(self, mocker):
-        c = client.Client("http://example.com/", "user", "pass", None)
+        c = client.Client(
+            "http://example.com/", "user", "pass", None, True, None,
+        )
         c.request = mocker.Mock()
 
         c.delete("/path")
@@ -223,7 +243,9 @@ class TestValidateAuthData:
     def test_valid_creds(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(200, None)
-        c = client.Client("http://example.com/", "user", "pass", None)
+        c = client.Client(
+            "http://example.com/", "user", "pass", None, True, None,
+        )
 
         result = c.validate_auth_data("check_user", "check_pass")
 
@@ -236,7 +258,9 @@ class TestValidateAuthData:
     def test_invalid_creds(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(401, None)
-        c = client.Client("http://example.com/", "user", "pass", None)
+        c = client.Client(
+            "http://example.com/", "user", "pass", None, True, None,
+        )
 
         result = c.validate_auth_data("check_user", "check_pass")
 
@@ -249,7 +273,9 @@ class TestValidateAuthData:
     def test_broken_backend(self, mocker):
         request = mocker.patch.object(http, "request")
         request.return_value = http.Response(500, None)
-        c = client.Client("http://example.com/", "user", "pass", None)
+        c = client.Client(
+            "http://example.com/", "user", "pass", None, True, None,
+        )
 
         with pytest.raises(errors.SensuError, match="500"):
             c.validate_auth_data("check_user", "check_pass")

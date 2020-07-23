@@ -14,11 +14,13 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 
 
 class Client:
-    def __init__(self, address, username, password, api_key):
+    def __init__(self, address, username, password, api_key, verify, ca_path):
         self.address = address.rstrip("/")
         self.username = username
         self.password = password
         self.api_key = api_key
+        self.verify = verify
+        self.ca_path = ca_path
 
         self._auth_header = None  # Login when/if required
         self._version = None  # Set version only if the consumer needs it
@@ -66,6 +68,7 @@ class Client:
         resp = http.request(
             "GET", "{0}/auth".format(self.address), force_basic_auth=True,
             url_username=self.username, url_password=self.password,
+            validate_certs=self.verify, ca_path=self.ca_path,
         )
 
         if resp.status != 200:
@@ -91,7 +94,10 @@ class Client:
         url = self.address + path
         headers = self.auth_header
 
-        response = http.request(method, url, payload=payload, headers=headers)
+        response = http.request(
+            method, url, payload=payload, headers=headers,
+            validate_certs=self.verify, ca_path=self.ca_path,
+        )
 
         if response.status in (401, 403):
             raise errors.SensuError(
@@ -113,7 +119,8 @@ class Client:
         resp = http.request(
             "GET", "{0}/auth/test".format(self.address),
             force_basic_auth=True, url_username=username,
-            url_password=password,
+            url_password=password, validate_certs=self.verify,
+            ca_path=self.ca_path,
         )
         if resp.status not in (200, 401):
             raise errors.SensuError(
