@@ -96,7 +96,13 @@ options:
     elements: str
   check_hooks:
     description:
-      - A mapping of response codes to hooks which will be run by the agent when that code is returned.
+      - A mapping of response codes to hooks which will be run by the agent
+        when that code is returned.
+      - Note that the structure of this parameter is a bit different from the
+        one described at
+        U(https://docs.sensu.io/sensu-go/latest/reference/checks/#check-hooks-attribute).
+      - See check hooks example below for more information on exact mapping
+        structure.
     type: dict
   proxy_entity_name:
     description:
@@ -190,6 +196,27 @@ EXAMPLES = '''
     proxy_entity_name: sensu-site
     round_robin: yes
     publish: yes
+
+- name: Event that triggers hooks
+  sensu.sensu_go.check:
+    name: check
+    command: http_check.sh https://sensu.io
+    subscriptions: [ proxy ]
+    # The upstream JSON payload for the hooks below would look like this:
+    #
+    #   "check_hooks": [
+    #     {"0": ["passing-hook", "always-run-this-hook"]},
+    #     {"critical": ["failing-hook", "always-run-this-hook"]}
+    #   ]
+    #
+    # Ansible task simplifies this structure into a simple mapping:
+    check_hooks:
+      "0":
+        - passing-hook
+        - always-run-this-hook
+      critical:
+        - failing-hook
+        - always-run-this-hook
 
 - name: Remove check
   sensu.sensu_go.check:
