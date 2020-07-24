@@ -267,6 +267,13 @@
 <div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
+<dt>ca_path (optional)</dt><dd><p>Path to the CA bundle that should be used to validate the backend certificate.</p>
+<p>If this parameter is not set, module will use the CA bundle that python is using.</p>
+<p>It is also possible to set this parameter via the <em>SENSU_CA_PATH</em> environment variable.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: path</div>
+</div>
+</dd>
 <dt>password (optional)</dt><dd><p>The Sensu user’s password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.</p>
 <p>This parameter is ignored if the <em>auth.api_key</em> parameter is set.</p>
 <div class="line-block">
@@ -285,6 +292,15 @@
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
 <div class="line"><strong>default</strong>: admin</div>
+</div>
+</dd>
+<dt>verify (optional)</dt><dd><p>Flag that controls the certificate validation.</p>
+<p>If you are using self-signed certificates, you can set this parameter to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<p>ONLY USE THIS PARAMETER IN DEVELOPMENT SCENARIOS! In you use self-signed certificates in production, see the <em>auth.ca_path</em> parameter.</p>
+<p>It is also possible to set this parameter via the <em>SENSU_VERIFY</em> environment variable.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: bool</div>
+<div class="line"><strong>default</strong>: True</div>
 </div>
 </dd>
 </dl>

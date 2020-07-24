@@ -101,6 +101,15 @@ auth (optional)
 
     | **type**: str
 
+  ca_path (optional)
+    Path to the CA bundle that should be used to validate the backend certificate.
+
+    If this parameter is not set, module will use the CA bundle that python is using.
+
+    It is also possible to set this parameter via the *SENSU_CA_PATH* environment variable.
+
+    | **type**: path
+
   password (optional)
     The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
 
@@ -123,6 +132,18 @@ auth (optional)
     | **type**: str
     | **default**: admin
 
+  verify (optional)
+    Flag that controls the certificate validation.
+
+    If you are using self-signed certificates, you can set this parameter to ``false``.
+
+    ONLY USE THIS PARAMETER IN DEVELOPMENT SCENARIOS! In you use self-signed certificates in production, see the *auth.ca_path* parameter.
+
+    It is also possible to set this parameter via the *SENSU_VERIFY* environment variable.
+
+    | **type**: bool
+    | **default**: True
+
 
 expressions (optional)
   Filter expressions to be compared with event data.
@@ -137,7 +158,11 @@ labels (optional)
   | **type**: dict
 
 name (required)
-  The Sensu object's name.
+  The Sensu resource's name. This name (in combination with the namespace where applicable) uniquely identifies the resource that Ansible operates on.
+
+  If the resource with selected name already exists, Ansible module will update it to match the specification in the task.
+
+  Consult the *name* metadata attribute specification in the upstream docs on https://docs.sensu.io/sensu-go/latest/reference/ for more details about valid names and other restrictions.
 
   | **type**: str
 

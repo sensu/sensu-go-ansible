@@ -98,6 +98,7 @@
 <p class="caption"><span class="caption-text">Appendices</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-5-0-self-signed-security">Version 1.5.0 – Self-signed security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-4-2-break-the-fall">Version 1.4.2 – Break the fall</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-4-1-maintenance-is-the-name-of-the-game">Version 1.4.1 – Maintenance is the name of the game</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-4-0-keeping-up-with-the-world">Version 1.4.0 – Keeping up with the world</a></li>
@@ -178,6 +179,23 @@
             
   <div class="section" id="release-notes">
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-5-0-self-signed-security">
+<h2>Version 1.5.0 – Self-signed security<a class="headerlink" href="#version-1-5-0-self-signed-security" title="Permalink to this headline">¶</a></h2>
+<p>The primary focus of this release is to enable configuration of Sensu Go
+backends that use certificates that are not considered trusted when using
+system-provided CA bundle.</p>
+<p><strong>New features:</strong></p>
+<ul class="simple">
+<li><p>Allow modules to supply custom CA bundle for backend certificate validation
+or skip the validation entirely.</p></li>
+</ul>
+<p><strong>Bug fixes:</strong></p>
+<ul class="simple">
+<li><p>Expand documentation about the <em>check_hooks</em> parameter in the check module.</p></li>
+<li><p>Explain how the resource name parameter is used and what invariants need to
+hold in order for the Sensu Go to consider it a valid name.</p></li>
+</ul>
+</div>
 <div class="section" id="version-1-4-2-break-the-fall">
 <h2>Version 1.4.2 – Break the fall<a class="headerlink" href="#version-1-4-2-break-the-fall" title="Permalink to this headline">¶</a></h2>
 <p>There is really only one reason for this release: making sure user management
