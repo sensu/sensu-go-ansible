@@ -1,6 +1,24 @@
 Release notes
 =============
 
+Version 1.5.0 -- Self-signed security
+-------------------------------------
+
+The primary focus of this release is to enable configuration of Sensu Go
+backends that use certificates that are not considered trusted when using
+system-provided CA bundle.
+
+**New features:**
+
+* Allow modules to supply custom CA bundle for backend certificate validation
+  or skip the validation entirely.
+
+**Bug fixes:**
+
+* Expand documentation about the *check_hooks* parameter in the check module.
+* Explain how the resource name parameter is used and what invariants need to
+  hold in order for the Sensu Go to consider it a valid name.
+
 Version 1.4.2 -- Break the fall
 -------------------------------
 
