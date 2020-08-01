@@ -11,6 +11,8 @@ driver:
   name: docker
 provisioner:
   name: ansible
+  options:
+    vv: true
   config_options:
     defaults:
       interpreter_python: auto_silent
