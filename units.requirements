@@ -1,5 +1,6 @@
 coverage < 5
 mock
-pytest
+pytest < 5 ; python_version <= "2.7"  # pytest 5 does not support python 2.7
+pytest < 6 ; python_version > "2.7"  # problems with relative imports
 pytest-mock
 pytest-xdist
