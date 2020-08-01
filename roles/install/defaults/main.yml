@@ -2,6 +2,7 @@
 os: unknown
 dist: unknown
 
+packagecloud_auth: ""
 channel: stable
 version: latest
 build: latest

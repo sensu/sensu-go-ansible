@@ -7,8 +7,8 @@
     name: sensu_{{ channel }}
     description: sensu_{{ channel }}
     file: sensu
-    baseurl: https://packagecloud.io/sensu/{{ channel }}/{{ os }}/{{ dist }}/$basearch
-    gpgkey: https://packagecloud.io/sensu/{{ channel }}/gpgkey
+    baseurl: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/{{ os }}/{{ dist }}/$basearch
+    gpgkey: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/gpgkey
     gpgcheck: no
     repo_gpgcheck: yes
     enabled: yes
@@ -21,8 +21,8 @@
     name: sensu_{{ channel }}-source
     description: sensu_{{ channel }}-source
     file: sensu
-    baseurl: https://packagecloud.io/sensu/{{ channel }}/{{ os }}/{{ dist }}/SRPMS
-    gpgkey: https://packagecloud.io/sensu/{{ channel }}/gpgkey
+    baseurl: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/{{ os }}/{{ dist }}/SRPMS
+    gpgkey: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/gpgkey
     gpgcheck: no
     repo_gpgcheck: yes
     enabled: yes

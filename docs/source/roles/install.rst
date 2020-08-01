@@ -59,6 +59,13 @@ install:
        set to ``latest``, this variable is ignored and the latest available
        build is installed.
 
+   * - packagecloud_auth
+     - ""
+     - Credentials to use when setting up Sensu Go repos. For publicly
+       available repos, this can be left empty. For private repos, this should
+       be set to the value of the read token, folloved by the ``:@``. Example:
+       ``ofb9123457acdddef6734524:@``.
+
 .. _packagecloud: https://packagecloud.io/sensu
 
 
