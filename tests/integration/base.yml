@@ -19,8 +19,8 @@ provisioner:
   lint:
     enabled: false
 platforms:
-  - name: v5.21.0
-    image: xlabsi/sensu-go-tests-sensu:5.21.0
+  - name: v5.21.1
+    image: xlabsi/sensu-go-tests-sensu:5.21.1
     pre_build_image: true
     pull: true
     override_command: false
