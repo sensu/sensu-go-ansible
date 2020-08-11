@@ -186,7 +186,7 @@
 
     - assert:
         that:
-          - result.objects | length == 4
+          - result.objects | length >= 4
 
     - name: Fetch a specific role binding
       role_binding_info:
@@ -216,7 +216,7 @@
 
     - assert:
         that:
-          - result.objects | length == 3
+          - result.objects | length >= 3
 
     - name: Try to fetch non-existing binding
       role_binding_info:

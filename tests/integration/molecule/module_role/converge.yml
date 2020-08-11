@@ -175,7 +175,8 @@
 
     - assert:
         that:
-          - result.objects | length == 2
+          # We created two roles but there might be others present by default
+          - result.objects | length >= 2
 
     - name: Fetch a specific role
       role_info:
@@ -205,7 +206,7 @@
 
     - assert:
         that:
-          - result.objects | length == 1
+          - result.objects | length >= 1
 
     - name: Try to fetch non-existing role
       role_info:

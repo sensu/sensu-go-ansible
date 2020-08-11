@@ -127,7 +127,6 @@
           - result is changed
           - result.object.entity_class == 'some_class'
           - not result.object.subscriptions
-          - not result.object.last_seen
 
     - name: Create a second entity
       entity:
