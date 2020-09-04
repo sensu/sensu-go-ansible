@@ -124,6 +124,7 @@
       systemd:
         name: sensu-backend
         state: stopped
+      ignore_errors: yes
 
 
     - name: Generate backend cert
@@ -226,9 +227,9 @@
           # If set use for agent websocket communication
           # if not set, uses cert-file,key-file,trusted-ca-file as fallback
           ##
-          agent-auth-cert-file: "/etc/sensu/certs/{{ etcd_name }}.pem"
-          agent-auth-key-file: "/etc/sensu/certs/{{ etcd_name }}-key.pem"
-          agent-auth-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/sensu-ca.pem"
+          #agent-auth-cert-file: "/etc/sensu/certs/agent.pem"
+          #agent-auth-key-file: "/etc/sensu/certs/agent-key.pem"
+          #agent-auth-trusted-ca-file: "/etc/pki/ca-trust/source/anchors/sensu-ca.pem"
 
 
 - name: Install, configure and run Sensu agent 

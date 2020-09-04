@@ -15,6 +15,7 @@
       systemd:
         name: sensu-backend
         state: stopped
+      ignore_errors: true
     - name : Remove sensu embedded etcd store
       file:
         path: /var/lib/sensu/sensu-backend/etcd
