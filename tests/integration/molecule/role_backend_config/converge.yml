@@ -1,0 +1,74 @@
+---
+- name: Converge
+  hosts: all
+
+  tasks:
+    - name: Configure select set of optional variables
+      include_role:
+        name: sensu.sensu_go.backend
+        tasks_from: configure
+      vars:
+        backend_config:
+          debug: no
+          log-level: debug
+          api-listen-address: "[::]:4430"
+
+    - name: Confirm optional configuration settings
+      slurp:
+        src: /etc/sensu/backend.yml
+      register: backend_yml
+
+    - assert:
+        that:
+          - |
+              backend_yml.content | b64decode | from_yaml == {
+                  "state-dir": "/var/lib/sensu/sensu-backend",
+                  "debug": False,
+                  "log-level": "debug",
+                  "api-listen-address": "[::]:4430",
+              }
+
+    - name: Configure full set of optional variables
+      include_role:
+        name: sensu.sensu_go.backend
+        tasks_from: configure
+      vars:
+        backend_config:
+          debug: yes
+          log-level: debug
+          state-dir: /tmp/different/state
+          deregistration-handler: /tmp/handler.sh
+          agent-host: "127.0.0.1"
+          agent-port: 4431
+          api-listen-address: "[::]:4430"
+          api-url: "http://localhost:4432"
+          dashboard-host: "192.168.10.6"
+          dashboard-port: 4433
+          etcd-initial-advertise-peer-urls:
+            - https://10.10.0.1:2380
+            - https://10.20.0.1:2380
+
+    - name: Confirm full configuration settings
+      slurp:
+        src: /etc/sensu/backend.yml
+      register: backend_yml
+
+    - assert:
+        that:
+          - |
+              backend_yml.content | b64decode | from_yaml == {
+                  "debug": True,
+                  "log-level": "debug",
+                  "state-dir": "/tmp/different/state",
+                  "deregistration-handler": "/tmp/handler.sh",
+                  "agent-host": "127.0.0.1",
+                  "agent-port": 4431,
+                  "api-listen-address": "[::]:4430",
+                  "api-url": "http://localhost:4432",
+                  "dashboard-host": "192.168.10.6",
+                  "dashboard-port": 4433,
+                  "etcd-initial-advertise-peer-urls": [
+                      "https://10.10.0.1:2380",
+                      "https://10.20.0.1:2380",
+                  ]
+              }

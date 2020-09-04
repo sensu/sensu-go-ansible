@@ -5,30 +5,12 @@
   vars:
     components: [sensu-go-agent]
 
-- name: Install agent communication PKI
-  copy:
-    src: "{{ agent_trusted_ca_file }}"
-    dest: "/etc/sensu/sensu-agent-trusted-ca.crt"
-    # Keep this in sync with what the backend service is running as from packager
-    owner: &sensu_user sensu
-    group: &sensu_group sensu
-    mode: "0644"
-  tags: [configure_agent]
-  when: agent_trusted_ca_file is defined
+- name: Inform restart handler that we are in charge of the agent service
+  set_fact:
+    manage_sensu_agent_service: true
 
-- name: Configure sensu-agent (/etc/sensu/agent.yml)
-  template:
-    src: agent.yml.j2
-    dest: /etc/sensu/agent.yml
-    owner: *sensu_user
-    group: *sensu_group
-    mode: '0600'
-  notify: Restart agent
-  tags: [configure_agent]
+- name: Configure the agent
+  include_tasks: configure.yml
 
-- name: Start sensu-agent
-  service:
-    name: sensu-agent
-    state: started
-    enabled: yes
-  tags: [run_agent]
+- name: Start the agent
+  include_tasks: start.yml

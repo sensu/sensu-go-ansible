@@ -37,11 +37,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu handlers
-  handler_info:
+  sensu.sensu_go.handler_info:
   register: result
 
 - name: Retrieve info for a specific Sensu handler
-  handler_info:
+  sensu.sensu_go.handler_info:
       name: my-handler
   register: result
 '''
@@ -49,7 +49,7 @@ EXAMPLES = '''
 RETURN = '''
 objects:
   description: list of Sensu handlers
-  returned: always
+  returned: success
   type: list
 '''
 

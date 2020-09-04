@@ -6,6 +6,8 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
+from ansible_collections.sensu.sensu_go.plugins.module_utils import utils
+
 
 def validate_module_params(params):
     if params['state'] == 'present':
@@ -35,18 +37,10 @@ def build_subjects(groups, users):
 
 
 def do_role_bindings_differ(current, desired):
-    if current is None:
+    if _do_subjects_differ(current['subjects'], desired['subjects']):
         return True
 
-    for key, value in desired.items():
-        current_value = current.get(key)
-        if key == 'subjects':
-            if _do_subjects_differ(current_value, value):
-                return True
-        elif value != current_value:
-            return True
-
-    return False
+    return utils.do_differ(current, desired, 'subjects')
 
 
 # sorts a list of subjects (dicts returned by type_name_dict)
@@ -76,15 +70,7 @@ def _do_rules_differ(current_rules, desired_rules):
 
 
 def do_roles_differ(current, desired):
-    if current is None:
+    if _do_rules_differ(current['rules'], desired['rules']):
         return True
 
-    for key, value in desired.items():
-        current_value = current.get(key)
-        if key == 'rules':
-            if _do_rules_differ(current_value, value):
-                return True
-        elif value != current.get(key):
-            return True
-
-    return False
+    return utils.do_differ(current, desired, 'rules')

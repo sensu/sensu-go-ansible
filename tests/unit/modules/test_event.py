@@ -267,8 +267,8 @@ class TestEvent(ModuleTestCase):
         assert check_mode is False
 
     def test_failure(self, mocker):
-        send_event_mock = mocker.patch.object(event, 'send_event')
-        send_event_mock.side_effect = errors.Error('Bad error')
+        get_entity_mock = mocker.patch.object(event, 'get_entity')
+        get_entity_mock.side_effect = errors.Error('Bad error')
         set_module_args(
             entity='awesome_entity',
             check=dict(

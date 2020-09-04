@@ -1,0 +1,10 @@
+plugins/module_utils/arguments.py compile-2.6!skip
+plugins/module_utils/bonsai.py compile-2.6!skip
+plugins/module_utils/role_utils.py compile-2.6!skip
+plugins/modules/asset.py compile-2.6!skip
+plugins/modules/check.py compile-2.6!skip
+plugins/modules/user.py compile-2.6!skip
+tests/unit/module_utils/test_arguments.py compile-2.6!skip
+tests/unit/module_utils/test_bonsai.py compile-2.6!skip
+tests/unit/module_utils/test_role_utils.py compile-2.6!skip
+tests/unit/module_utils/test_utils.py compile-2.6!skip

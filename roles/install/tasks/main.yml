@@ -1,11 +1,6 @@
 ---
-- name: Prepare package manager ({{ ansible_pkg_mgr }})
-  include_tasks: '{{ ansible_pkg_mgr }}/prepare.yml'
-  tags:
-    - prepare_install
-    - install
+- name: Prepare package repositories
+  include_tasks: repositories.yml
 
-- name: Install components
-  include_tasks: '{{ ansible_pkg_mgr }}/install.yml'
-  tags:
-    - install
+- name: Install selected packages
+  include_tasks: packages.yml

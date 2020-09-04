@@ -37,12 +37,12 @@ seealso:
 
 EXAMPLES = '''
 - name: Create a new namespace
-  namespace:
+  sensu.sensu_go.namespace:
     name: production
     state: present
 
 - name: Delete a namespace
-  namespace:
+  sensu.sensu_go.namespace:
     name: staging
     state: absent
 '''

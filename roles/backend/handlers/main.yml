@@ -3,5 +3,4 @@
   service:
     name: sensu-backend
     state: restarted
-  tags:
-    - run_backend
+  when: manage_sensu_backend_service | default(False)

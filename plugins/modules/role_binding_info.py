@@ -38,11 +38,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu role bindings
-  role_binding_info:
+  sensu.sensu_go.role_binding_info:
   register: result
 
 - name: Retrieve a single Sensu role binding
-  role_binding_info:
+  sensu.sensu_go.role_binding_info:
       name: my-role-binding
   register: result
 '''
@@ -50,7 +50,7 @@ EXAMPLES = '''
 RETURN = '''
 role_bindings:
   description: list of Sensu role bindings
-  returned: always
+  returned: success
   type: list
 '''
 

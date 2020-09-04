@@ -1,10 +1,20 @@
 ---
+scenario:
+  test_sequence:
+    - destroy
+    - create
+    - converge
+    - idempotence
+    - verify
+    - check
+    - destroy
+
 platforms:
   - name: centos
-    image: xlabsi/centos:7
+    image: xlabsi/sensu-go-tests-centos:7
     pre_build_image: true
     pull: true
-    capabilities:
-      - SYS_ADMIN
+    override_command: false
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro

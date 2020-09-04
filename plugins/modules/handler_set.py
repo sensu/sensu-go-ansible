@@ -42,11 +42,12 @@ options:
       - List of Sensu event handlers (names) to use for events using the handler set.
       - Required if I(state) is C(present).
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
 - name: Create a handler set
-  handler_set:
+  sensu.sensu_go.handler_set:
     name: notify_all_the_things
     handlers:
       - slack
@@ -54,7 +55,7 @@ EXAMPLES = '''
       - udp_handler
 
 - name: Delete a handler set
-  handler_set:
+  sensu.sensu_go.handler_set:
     name: notify_all_the_things
     state: absent
 '''
@@ -85,7 +86,7 @@ def main():
                 "auth", "name", "state", "labels", "annotations", "namespace",
             ),
             handlers=dict(
-                type='list'
+                type='list', elements='str',
             ),
         ),
     )

@@ -1,7 +1,16 @@
 ---
+scenario:
+  test_sequence:
+    - destroy
+    - create
+    - converge
+    - verify
+    - check
+    - destroy
+
 platforms:
   - name: centos
-    image: xlabsi/centos:7
+    image: xlabsi/sensu-go-tests-centos:7
     pre_build_image: true
     pull: true
     groups: [ agents ]

@@ -49,6 +49,7 @@ options:
     description:
       - List of filters to use when determining whether to pass the check result to this handler.
     type: list
+    elements: str
   mutator:
     description:
       - Mutator to call for transforming the check result before passing it to this handler.
@@ -71,21 +72,21 @@ options:
 
 EXAMPLES = '''
 - name: TCP handler
-  socket_handler:
+  sensu.sensu_go.socket_handler:
     name: tcp_handler
     type: tcp
     host: 10.0.1.99
     port: 4444
 
 - name: UDP handler
-  socket_handler:
+  sensu.sensu_go.socket_handler:
     name: udp_handler
     type: udp
     host: 10.0.1.99
     port: 4444
 
 - name: Delete a handler
-  socket_handler:
+  sensu.sensu_go.socket_handler:
     name: udp_handler
     state: absent
 '''
@@ -117,7 +118,7 @@ def main():
             ),
             type=dict(choices=['tcp', 'udp']),
             filters=dict(
-                type='list',
+                type='list', elements='str',
             ),
             mutator=dict(),
             timeout=dict(

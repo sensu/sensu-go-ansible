@@ -30,6 +30,7 @@ help:
 .PHONY: requirements
 requirements:  ## Install development requirements
 	pip install \
+	  -r collection.requirements \
 	  -r sanity.requirements \
 	  -r units.requirements \
 	  -r integration.requirements \
@@ -40,6 +41,7 @@ sanity:  ## Run sanity tests
 	flake8
 	ansible-lint -p roles/*
 	ansible-test sanity --python $(python_version)
+	./tests/sanity/validate-role-metadata.py roles/*
 
 .PHONY: units
 units:  ## Run unit tests

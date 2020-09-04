@@ -1,97 +1,46 @@
 ---
 scenario:
   test_sequence:
-    - lint
-    - cleanup
     - destroy
-    - dependency
-    - syntax
     - create
-    - prepare
     - converge
-    - side_effect
-    - verify
-    - cleanup
     - destroy
 dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
-  options:
-    config-data:
-      rules:
-        braces:
-          max-spaces-inside: 1
-          level: error
-        brackets:
-          max-spaces-inside: 1
-          level: error
-        colons:
-          max-spaces-after: -1
-          level: error
-        commas:
-          max-spaces-after: -1
-          level: error
-        comments: disable
-        comments-indentation: disable
-        document-start: disable
-        empty-lines:
-          max: 3
-          level: error
-        hyphens:
-          level: error
-        indentation: disable
-        key-duplicates: enable
-        line-length: disable
-        new-line-at-end-of-file: disable
-        new-lines:
-          type: unix
-        trailing-spaces: disable
-        truthy: disable
 provisioner:
   name: ansible
+  options:
+    vv: true
   config_options:
     defaults:
       interpreter_python: auto_silent
   lint:
     enabled: false
-verifier:
-  name: testinfra
-  lint:
-    enabled: false
 platforms:
-  - name: v5.14.2
-    image: xlabsi/sensu:5.14.2
+  - name: v6.0.0
+    image: xlabsi/sensu-go-tests-sensu:6.0.0
     pre_build_image: true
     pull: true
-    command: &cmd >
-      sensu-backend start
-        --state-dir /var/lib/sensu/sensu-backend/etcd1
-        --log-level debug
-  - name: v5.14.1
-    image: xlabsi/sensu:5.14.1
+    override_command: false
+  - name: v5.21.1
+    image: xlabsi/sensu-go-tests-sensu:5.21.1
     pre_build_image: true
     pull: true
-    command: *cmd
-  - name: v5.14.0
-    image: xlabsi/sensu:5.14.0
+    override_command: false
+  - name: v5.20.2
+    image: xlabsi/sensu-go-tests-sensu:5.20.2
     pre_build_image: true
     pull: true
-    command: *cmd
-  - name: v5.13.2
-    image: xlabsi/sensu:5.13.2
+    override_command: false
+  - name: v5.19.3
+    image: xlabsi/sensu-go-tests-sensu:5.19.3
     pre_build_image: true
     pull: true
-    command: *cmd
-  - name: v5.13.1
-    image: xlabsi/sensu:5.13.1
+    override_command: false
+  - name: v5.18.1
+    image: xlabsi/sensu-go-tests-sensu:5.18.1
     pre_build_image: true
     pull: true
-    command: *cmd
-  - name: v5.13.0
-    image: xlabsi/sensu:5.13.0
-    pre_build_image: true
-    pull: true
-    command: *cmd
+    override_command: false

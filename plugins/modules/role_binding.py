@@ -56,17 +56,19 @@ options:
       - Note that at least one of I(users) and I(groups) must be
         specified when creating a role binding.
     type: list
+    elements: str
   groups:
     description:
       - List of groups to bind to the role or cluster role
       - Note that at least one of I(users) and I(groups) must be
         specified when creating a role binding.
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
 - name: Create a role binding
-  role_binding:
+  sensu.sensu_go.role_binding:
     name: dev_and_testing
     role: testers_permissive
     groups:
@@ -77,7 +79,7 @@ EXAMPLES = '''
       - alice
 
 - name: Create a role binding for admins
-  role_binding:
+  sensu.sensu_go.role_binding:
     name: org-admins
     cluster_role: admin
     groups:
@@ -85,7 +87,7 @@ EXAMPLES = '''
       - team2-admins
 
 - name: Delete a role binding
-  role_binding:
+  sensu.sensu_go.role_binding:
     name: org-admins
     state: absent
 '''
@@ -133,10 +135,10 @@ def main():
             role=dict(),
             cluster_role=dict(),
             users=dict(
-                type="list",
+                type="list", elements="str",
             ),
             groups=dict(
-                type="list",
+                type="list", elements="str",
             ),
         )
     )

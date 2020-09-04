@@ -1,0 +1,260 @@
+---
+- name: Setup sensuctl
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Configure sensuctl
+      command:
+        cmd: >
+          sensuctl configure
+          --non-interactive
+          --url http://localhost:8080
+          --username admin
+          --password P@ssw0rd!
+          --namespace default
+
+
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create an asset with missing required parameters
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: asset
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'state is present but all of the following are missing: builds'"
+
+    - name: Create an asset with empty builds
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: asset
+        builds:
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'builds must include at least one element'"
+
+    - name: Create an asset with missing parameters for build
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: asset
+        builds:
+          - url: http://assets.bonsai.sensu.io/asset
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'missing required arguments: sha512 found in builds'"
+
+    - name: Create an asset with minimal parameters
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: minimal_asset
+        builds:
+          - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+            sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.builds | length == 1
+          - result.object.builds.0.url == 'https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz'
+          - result.object.builds.0.sha512 == '518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b'
+          - result.object.builds.0.filters == None
+          - result.object.builds.0.headers == None
+
+    - name: Create an asset
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: asset
+        builds:
+          - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+            sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+            filters:
+              - entity.system.os == 'linux'
+              - entity.system.arch == 'amd64'
+              - entity.system.platform == 'rhel'
+            headers:
+              Sensu-Blivet: foo
+          - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_alpine_linux_amd64.tar.gz
+            sha512: b2da25ecd7642e6de41fde37d674fe19dcb6ee3d680e145e32289f7cfc352e6b5f9413ee9b701d61faeaa47b399aa30b25885dbc1ca432c4061c8823774c28f3
+            filters:
+              - entity.system.os == 'linux'
+              - entity.system.arch == 'amd64'
+              - entity.system.platform == 'alpine'
+            headers:
+              Sensu-Blivet: bar
+        annotations:
+          sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+          sensio.io.bonsai.tier: Community
+          sensio.io.bonsai.version: 4.0.0
+          sensio.io.bonsai.tags: ruby-runtime-2.4.4
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'asset'
+          - result.object.builds | length == 2
+          - result.object.metadata.annotations | dict2items | length == 4
+
+    - name: Test asset creation idempotence
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: asset
+        builds:
+          - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_alpine_linux_amd64.tar.gz
+            sha512: b2da25ecd7642e6de41fde37d674fe19dcb6ee3d680e145e32289f7cfc352e6b5f9413ee9b701d61faeaa47b399aa30b25885dbc1ca432c4061c8823774c28f3
+            filters:
+              - entity.system.platform == 'alpine'
+              - entity.system.os == 'linux'
+              - entity.system.arch == 'amd64'
+            headers:
+              Sensu-Blivet: bar
+          - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+            sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+            filters:
+              - entity.system.arch == 'amd64'
+              - entity.system.platform == 'rhel'
+              - entity.system.os == 'linux'
+            headers:
+              Sensu-Blivet: foo
+        annotations:
+          sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+          sensio.io.bonsai.tier: Community
+          sensio.io.bonsai.version: 4.0.0
+          sensio.io.bonsai.tags: ruby-runtime-2.4.4
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify an asset
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: asset
+        builds:
+          - url: https://assets.bonsai.sensu.io/73a6f8b6f56672630d83ec21676f9a6251094475/sensu-plugins-disk-checks_5.0.0_centos_linux_amd64.tar.gz
+            sha512: 0ce9d52b270b77f4cab754e55732ae002228201d0bd01a89b954a0655b88c1ee6546e2f82cfd1eec04689af90ad940cde128e8867912d9e415f4a58d7fdcdadf
+        annotations:
+          sensio.io.bonsai.url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+          sensio.io.bonsai.tier: Community
+          sensio.io.bonsai.version: 4.0.0
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.builds | length == 1
+          - result.object.builds.0.sha512 == '0ce9d52b270b77f4cab754e55732ae002228201d0bd01a89b954a0655b88c1ee6546e2f82cfd1eec04689af90ad940cde128e8867912d9e415f4a58d7fdcdadf'
+          - not result.object.builds.0.headers
+          - not result.object.builds.0.filters
+          - result.object.metadata.annotations | dict2items | length == 3
+          - "'sensu.io.bonsai.tags' not in result.object.metadata.annotations"
+
+    - name: Fetch a specific asset
+      asset_info:
+        auth:
+          url: http://localhost:8080
+        name: asset
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'asset'
+
+    - name: Fetch all assets
+      asset_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
+          - result.objects.0.metadata.name == 'asset'
+
+    - name: Delete an asset
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: asset2
+        state: absent
+
+    - name: Fetch all assets again after deletion
+      asset_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 2
+          - result.objects.0.metadata.name == 'asset'
+
+    - name: Try to fetch non-existing asset
+      asset_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-asset
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []
+
+    - name: Create an asset with a deprecated definition
+      shell:
+        cmd: |
+          cat <<EOF | sensuctl create
+          type: Asset
+          api_version: core/v2
+          metadata:
+            name: old_asset
+            namespace: default
+          spec:
+            url: https://example.com/sensu-cpu-check_0.0.3_linux_amd64.tar.gz
+            sha512: 0ce9d52b270b77f4cab754e55732ae002228201d0bd01a89b954a0655b88c1ee6546e2f82cfd1eec04689af90ad940cde128e8867912d9e415f4a58d7fdcdadf
+            filters:
+              - entity.system.os == 'linux'
+              - entity.system.arch == 'amd64'
+          EOF
+
+    - name: Update deprecated asset
+      asset:
+        auth:
+          url: http://localhost:8080
+        name: old_asset
+        builds:
+          - url: https://example.com/sensu-cpu-check_0.0.3_linux_amd64.tar.gz
+            sha512: 0ce9d52b270b77f4cab754e55732ae002228201d0bd01a89b954a0655b88c1ee6546e2f82cfd1eec04689af90ad940cde128e8867912d9e415f4a58d7fdcdadf
+            filters:
+              - entity.system.os == 'linux'
+              - entity.system.arch == 'amd64'
+      register: result
+
+    - assert:
+        that: result is changed

@@ -43,12 +43,14 @@ options:
       - Note that at least one of I(users) and I(groups) must be
         specified when creating a cluster role binding.
     type: list
+    elements: str
   groups:
     description:
       - List of groups to bind to the cluster role.
       - Note that at least one of I(users) and I(groups) must be
         specified when creating a cluster role binding.
     type: list
+    elements: str
 seealso:
   - module: cluster_role_binding_info
   - module: cluster_role
@@ -57,7 +59,7 @@ seealso:
 
 EXAMPLES = '''
 - name: Create a cluster role binding
-  cluster_role_binding:
+  sensu.sensu_go.cluster_role_binding:
     name: all-cluster-admins
     cluster_role: cluster-admin
     groups:
@@ -66,7 +68,7 @@ EXAMPLES = '''
       - alice
 
 - name: Delete a cluster role binding
-  cluster_role_binding:
+  sensu.sensu_go.cluster_role_binding:
     name: all-cluster-admins
     state: absent
 '''
@@ -103,10 +105,10 @@ def main():
             arguments.get_spec("auth", "name", "state"),
             cluster_role=dict(),
             users=dict(
-                type="list",
+                type="list", elements="str",
             ),
             groups=dict(
-                type="list",
+                type="list", elements="str",
             ),
         )
     )

@@ -48,16 +48,18 @@ options:
       - Filter expressions to be compared with event data.
       - Required if I(state) is C(present).
     type: list
+    elements: str
   runtime_assets:
     description:
       - Assets to be applied to the filter's execution context.
         JavaScript files in the lib directory of the asset will be evaluated.
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
 - name: Create a filter
-  filter:
+  sensu.sensu_go.filter:
     name: filter
     action: deny
     expressions:
@@ -66,14 +68,14 @@ EXAMPLES = '''
     runtime_assets: awesomeness
 
 - name: Create a production filter
-  filter:
+  sensu.sensu_go.filter:
     name: filter
     action: allow
     expressions:
       - event.entity.labels['environment'] == 'production'
 
 - name: Create a filter with JS expression
-  filter:
+  sensu.sensu_go.filter:
     name: filter
     action: deny
     expressions:
@@ -82,7 +84,7 @@ EXAMPLES = '''
       - underscore
 
 - name: Handling repeated events
-  filter:
+  sensu.sensu_go.filter:
     name: filter_interval_60_hourly
     action: allow
     expressions:
@@ -90,7 +92,7 @@ EXAMPLES = '''
       - event.check.occurrences == 1 || event.check.occurrences % 60 == 0
 
 - name: Delete a filter
-  filter:
+  sensu.sensu_go.filter:
     name: filter_interval_60_hourly
     state: absent
 '''
@@ -123,10 +125,10 @@ def main():
             ),
             action=dict(choices=['allow', 'deny']),
             expressions=dict(
-                type='list',
+                type='list', elements='str',
             ),
             runtime_assets=dict(
-                type='list',
+                type='list', elements='str',
             ),
         ),
     )

@@ -1,0 +1,155 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  environment:
+    SENSU_URL: http://localhost:8080
+
+  tasks:
+    - name: Create user with minimal parameters
+      user:
+        name: awesome_username
+        password: hidden_password?
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.username == 'awesome_username'
+
+    - name: Minimal parameter idempotence check
+      user:
+        name: awesome_username
+        password: hidden_password?
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Disable enabled user
+      user:
+        name: awesome_username
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result.object.disabled == True
+
+    - name: Add disabled user to some groups
+      user:
+        name: awesome_username
+        groups: [ a, b, c ]
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.groups | sort == ['a', 'b', 'c']
+
+    - name: Change password on disabled user
+      user:
+        name: awesome_username
+        password: new_pass
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+
+    - name: Create a disabled user
+      user:
+        name: test_username
+        password: hidden_password?
+        state: disabled
+        groups:
+          - dev
+          - prod
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.username == 'test_username'
+          - result.object.disabled == True
+          - result.object.groups == ['dev', 'prod']
+
+    - name: Try to disable an already disabled user
+      user:
+        name: test_username
+        state: disabled
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Enable a disabled user
+      user:
+        name: test_username
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.disabled == False
+
+    - name: Modify a user
+      user:
+        name: test_username
+        password: hidden_password!
+        groups:
+          - dev
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.groups == ['dev']
+
+    - name: Fetch all users
+      user_info:
+      register: result
+
+    - debug:
+        var: result
+
+    - assert:
+        that:
+          - result.objects | length == 4 # users admin and agent already exist
+
+    - name: Fetch specific user
+      user_info:
+        name: test_username
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.username == 'test_username'
+          - result.objects.0.disabled == False
+
+    - name: Try to create a user with no password
+      user:
+        name: missing_user
+        state: disabled
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+
+    - name: Try to fetch non-existing user
+      user_info:
+        name: bad-bad-user
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

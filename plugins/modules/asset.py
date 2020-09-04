@@ -45,6 +45,7 @@ options:
         provide the named asset.
       - Required if I(state) is C(present).
     type: list
+    elements: dict
     suboptions:
       url:
         description:
@@ -61,6 +62,7 @@ options:
           - A set of Sensu query expressions used to determine if the asset
             should be installed.
         type: list
+        elements: str
       headers:
         description:
           - Additional headers to send when retrieving the asset, e.g. for
@@ -70,7 +72,7 @@ options:
 
 EXAMPLES = """
 - name: Create a multiple-build asset
-  asset:
+  sensu.sensu_go.asset:
     name: sensu-plugins-cpu-checks
     builds:
       - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
@@ -87,7 +89,7 @@ EXAMPLES = """
           - entity.system.platform == 'alpine'
 
 - name: Delete an asset
-  asset:
+  sensu.sensu_go.asset:
     name: sensu-plugins-cpu-check
     state: absent
 """
@@ -123,6 +125,11 @@ def _build_set(builds):
 
 
 def _do_builds_differ(current, desired):
+    # Since Sensu Go 5.16, the web API returns builds: None if the asset
+    # in question is a deprecated, single-build asset.
+    if current is None:
+        return True
+
     if len(current) != len(desired):
         return True
 
@@ -130,17 +137,10 @@ def _do_builds_differ(current, desired):
 
 
 def do_differ(current, desired):
-    if current is None:
+    if _do_builds_differ(current['builds'], desired['builds']):
         return True
 
-    for key, value in desired.items():
-        current_value = current.get(key)
-        if key == 'builds':
-            if _do_builds_differ(current_value, value):
-                return True
-        elif value != current_value:
-            return True
-    return False
+    return utils.do_differ(current, desired, 'builds')
 
 
 def build_api_payload(params):
@@ -174,6 +174,7 @@ def main():
                     ),
                     filters=dict(
                         type="list",
+                        elements="str",
                     ),
                     headers=dict(
                         type="dict",

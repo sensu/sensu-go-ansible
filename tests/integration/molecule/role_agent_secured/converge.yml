@@ -1,0 +1,71 @@
+---
+- name: Pre-converge secure backend config step
+  hosts: backends
+  gather_facts: no
+  tasks:
+    - name: Set dummy backend PKI variables
+      set_fact:
+        api_key_file: /tmp/dummy.key
+
+    - debug:
+        msg: "{{ hostvars['upstream-backend']['api_key_file'] }}"
+
+- name: Converge
+  hosts: agents
+  vars:
+    agent_trusted_ca_file: files/sensu-agent-trusted-ca.crt
+  roles:
+    - sensu.sensu_go.agent
+
+- name: Verify configure_agent
+  hosts: agents
+  tasks:
+    - name: The trusted CA store file must exist
+      stat:
+        path: /etc/sensu/sensu-agent-trusted-ca.crt
+      register: result
+
+    - assert:
+        that:
+          - "{{ result.stat.exists }}"
+          - "{{ result.stat.pw_name == 'sensu' }}"
+          - "{{ result.stat.gr_name == 'sensu' }}"
+          - "{{ result.stat.mode == '0644' }}"
+
+    - name: Confirm secured agent configuration settings
+      lineinfile:
+        path: &agent_yml /etc/sensu/agent.yml
+        line: '{{ item }}'
+      with_items:
+        - 'backend-url:'
+        - '- wss://upstream-backend:8081'
+        - 'trusted-ca-file: /etc/sensu/sensu-agent-trusted-ca.crt'
+        - 'insecure-skip-tls-verify: false'
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+- name: Default configuration
+  hosts: agents
+  gather_facts: no
+  roles:
+    - sensu.sensu_go.agent
+
+- name: Verify default configuration
+  hosts: agents
+  tasks:
+    - name: Confirm that none of secured configuration settings leak in
+      lineinfile:
+        path: *agent_yml
+        regexp: '{{ item }}'
+        state: absent
+      with_items:
+        - '^trusted-ca-file:'
+        - '^insecure-skip-tls-verify:'
+      register: result
+
+    - assert:
+        that:
+          - result is not changed

@@ -1,0 +1,13 @@
+---
+- name: Prepare
+  hosts: all
+
+  tasks:
+    - name: Install backend with secured API
+      include_role:
+        name: sensu.sensu_go.backend
+      vars:
+        version: 5.21.0
+        api_cert_file: files/sensu-api.crt
+        api_key_file: files/sensu-api.key
+        api_trusted_ca_file: files/sensu-api-ca.crt

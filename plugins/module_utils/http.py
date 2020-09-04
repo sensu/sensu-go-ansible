@@ -8,6 +8,14 @@ __metaclass__ = type
 
 import json
 
+try:
+    from ssl import CertificateError
+except ImportError:
+    # This will never match the ssl exception, which will cause exception to
+    # bubble up the call stack.
+    class CertificateError(Exception):
+        pass
+
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 from ansible.module_utils.urls import open_url
 
@@ -56,3 +64,5 @@ def request(method, url, payload=None, data=None, headers=None, **kwargs):
         raise errors.HttpError(
             "{0} request failed: {1}".format(method, e.reason),
         )
+    except CertificateError as e:
+        raise errors.HttpError("Certificate error: {0}".format(e))

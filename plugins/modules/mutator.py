@@ -54,11 +54,12 @@ options:
     description:
       - List of runtime assets, required to run the mutator I(command).
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
 - name: Create a mutator
-  mutator:
+  sensu.sensu_go.mutator:
     name: mutator
     command: sensu-influxdb-mutator
     timeout: 30
@@ -69,7 +70,7 @@ EXAMPLES = '''
       - sensu-influxdb-mutator
 
 - name: Delete a mutator
-  mutator:
+  sensu.sensu_go.mutator:
     name: mutator
     state: absent
 '''
@@ -108,7 +109,7 @@ def main():
                 type='dict'
             ),
             runtime_assets=dict(
-                type='list'
+                type='list', elements='str',
             ),
         ),
     )

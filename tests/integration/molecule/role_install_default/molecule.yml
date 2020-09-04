@@ -1,7 +1,16 @@
 ---
+scenario:
+  test_sequence:
+    - destroy
+    - create
+    - converge
+    - verify
+    - check
+    - destroy
+
 platforms:
   - name: centos-6
-    image: xlabsi/centos:6
+    image: xlabsi/sensu-go-tests-centos:6
     pre_build_image: true
     pull: true
     capabilities:
@@ -9,8 +18,8 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
-  - name: centos-7
-    image: xlabsi/centos:7
+  - name: centos-8
+    image: xlabsi/sensu-go-tests-centos:8
     pre_build_image: true
     pull: true
     capabilities:
@@ -19,7 +28,25 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: redhat-7
-    image: xlabsi/redhat:7
+    image: xlabsi/sensu-go-tests-redhat:7
+    pre_build_image: true
+    pull: true
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name: debian-9
+    image: xlabsi/sensu-go-tests-debian:9
+    pre_build_image: true
+    pull: true
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  - name: debian-10
+    image: xlabsi/sensu-go-tests-debian:10
     pre_build_image: true
     pull: true
     capabilities:
@@ -28,7 +55,7 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: ubuntu-14.04
-    image: xlabsi/ubuntu:14.04
+    image: xlabsi/sensu-go-tests-ubuntu:14.04
     pre_build_image: true
     pull: true
     capabilities:
@@ -37,7 +64,7 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: ubuntu-16.04
-    image: xlabsi/ubuntu:16.04
+    image: xlabsi/sensu-go-tests-ubuntu:16.04
     pre_build_image: true
     pull: true
     capabilities:
@@ -46,25 +73,7 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   - name: ubuntu-18.04
-    image: xlabsi/ubuntu:18.04
-    pre_build_image: true
-    pull: true
-    capabilities:
-      - SYS_ADMIN
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-
-  - name: ubuntu-18.10
-    image: xlabsi/ubuntu:18.10
-    pre_build_image: true
-    pull: true
-    capabilities:
-      - SYS_ADMIN
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-
-  - name: ubuntu-19.04
-    image: xlabsi/ubuntu:19.04
+    image: xlabsi/sensu-go-tests-ubuntu:18.04
     pre_build_image: true
     pull: true
     capabilities:

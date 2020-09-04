@@ -36,11 +36,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List Sensu users
-  user_info:
+  sensu.sensu_go.user_info:
   register: result
 
 - name: Retrieve a single Sensu user
-  user_info:
+  sensu.sensu_go.user_info:
     name: my-user
   register: result
 '''
@@ -48,7 +48,7 @@ EXAMPLES = '''
 RETURN = '''
 objects:
   description: list of Sensu users
-  returned: always
+  returned: success
   type: list
 '''
 

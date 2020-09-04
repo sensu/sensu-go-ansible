@@ -1,0 +1,164 @@
+---
+- name: Converge
+  hosts: all
+
+  tasks:
+    - name: Install secured backend
+      include_role:
+        name: sensu.sensu_go.backend
+        tasks_from: configure
+      vars:
+        etcd_cert_file: files/etcd-client.crt
+        etcd_key_file: files/etcd-client.key
+        etcd_trusted_ca_file: files/client-ca.crt
+        etcd_peer_cert_file: files/etcd-peer.crt
+        etcd_peer_key_file: files/etcd-peer.key
+        etcd_peer_trusted_ca_file: files/etcd-peer-ca.crt
+        api_cert_file: files/sensu-api.crt
+        api_key_file: files/sensu-api.key
+        api_trusted_ca_file: files/sensu-api-ca.crt
+        dashboard_cert_file: files/sensu-dashboard.crt
+        dashboard_key_file: files/sensu-dashboard.key
+
+    - name: The public keys must exist
+      stat:
+        path: "{{ item }}"
+      register: result
+      loop:
+        - /etc/sensu/etcd-client.crt
+        - /etc/sensu/etcd-client-ca.crt
+        - /etc/sensu/etcd-peer.crt
+        - /etc/sensu/etcd-peer-ca.crt
+        - /etc/sensu/api.crt
+        - /etc/sensu/api-ca.crt
+        - /etc/sensu/dashboard.crt
+
+    - assert:
+        that:
+          - item.stat.exists
+          - item.stat.pw_name == 'sensu'
+          - item.stat.gr_name == 'sensu'
+          - item.stat.mode == '0644'
+      loop: "{{ result.results }}"
+
+    - name: The private keys must exist and be protected
+      stat:
+        path: "{{ item }}"
+      register: result
+      loop:
+        - /etc/sensu/etcd-client.key
+        - /etc/sensu/etcd-peer.key
+        - /etc/sensu/api.key
+        - /etc/sensu/dashboard.key
+
+    - assert:
+        that:
+          - item.stat.exists
+          - item.stat.pw_name == 'sensu'
+          - item.stat.gr_name == 'sensu'
+          - item.stat.mode == '0400'
+      loop: "{{ result.results }}"
+
+    - name: Confirm secured configuration settings
+      slurp:
+        src: /etc/sensu/backend.yml
+      register: backend_yml
+
+    - assert:
+        that:
+          - |
+              backend_yml.content | b64decode | from_yaml == {
+                  "state-dir": "/var/lib/sensu/sensu-backend",
+                  "etcd-listen-client-urls": "https://localhost:2379",
+                  "etcd-listen-peer-urls": "https://localhost:2380",
+                  "etcd-initial-advertise-peer-urls": "https://localhost:2380",
+                  "etcd-initial-cluster": "default=https://localhost:2380",
+                  "etcd-cert-file": "/etc/sensu/etcd-client.crt",
+                  "etcd-key-file": "/etc/sensu/etcd-client.key",
+                  "etcd-trusted-ca-file": "/etc/sensu/etcd-client-ca.crt",
+                  "etcd-client-cert-auth": True,
+                  "etcd-peer-cert-file": "/etc/sensu/etcd-peer.crt",
+                  "etcd-peer-key-file": "/etc/sensu/etcd-peer.key",
+                  "etcd-peer-client-cert-auth": True,
+                  "etcd-peer-trusted-ca-file": "/etc/sensu/etcd-peer-ca.crt",
+                  "cert-file": "/etc/sensu/api.crt",
+                  "key-file": "/etc/sensu/api.key",
+                  "trusted-ca-file": "/etc/sensu/api-ca.crt",
+                  "insecure-skip-tls-verify": False,
+                  "api-url": "https://localhost:8080",
+                  "dashboard-cert-file": "/etc/sensu/dashboard.crt",
+                  "dashboard-key-file": "/etc/sensu/dashboard.key",
+              }
+
+    - name: Configure an overriding of managed vars
+      include_role:
+        name: sensu.sensu_go.backend
+        tasks_from: configure
+      vars:
+        etcd_cert_file: files/etcd-client.crt
+        etcd_key_file: files/etcd-client.key
+        etcd_trusted_ca_file: files/client-ca.crt
+        etcd_peer_cert_file: files/etcd-peer.crt
+        etcd_peer_key_file: files/etcd-peer.key
+        etcd_peer_trusted_ca_file: files/etcd-peer-ca.crt
+        api_cert_file: files/sensu-api.crt
+        api_key_file: files/sensu-api.key
+        api_trusted_ca_file: files/sensu-api-ca.crt
+        dashboard_cert_file: files/sensu-dashboard.crt
+        dashboard_key_file: files/sensu-dashboard.key
+        backend_config:
+          debug: true
+          log-level: debug
+          state-dir: /tmp/different-state
+          etcd-listen-client-urls: "https://127.0.0.1:2379"
+          etcd-listen-peer-urls: "https://127.0.0.1:2380"
+          etcd-initial-advertise-peer-urls: "https://127.0.0.1:2380"
+          etcd-initial-cluster: "default=https://127.0.0.1:2380"
+          etcd-cert-file: "/etc/sensu/../sensu/etcd-client.crt"
+          etcd-key-file: "/etc/sensu/../sensu/etcd-client.key"
+          etcd-trusted-ca-file: "/etc/sensu/../sensu/etcd-client-ca.crt"
+          etcd-client-cert-auth: false
+          etcd-peer-cert-file: "/etc/sensu/../sensu/etcd-peer.crt"
+          etcd-peer-key-file: "/etc/sensu/../sensu/etcd-peer.key"
+          etcd-peer-client-cert-auth: false
+          etcd-peer-trusted-ca-file: "/etc/sensu/../sensu/etcd-peer-ca.crt"
+          cert-file: "/etc/sensu/../sensu/api.crt"
+          key-file: "/etc/sensu/../sensu/api.key"
+          trusted-ca-file: "/etc/sensu/../sensu/api-ca.crt"
+          insecure-skip-tls-verify: true
+          api-url: "https://127.0.0.1:8080"
+          dashboard-cert-file: /etc/sensu/../sensu/dashboard.crt
+          dashboard-key-file: /etc/sensu/../sensu/dashboard.key
+
+    - name: Confirm overriding of managed vars configuration settings
+      slurp:
+        src: /etc/sensu/backend.yml
+      register: backend_yml
+
+    - assert:
+        that:
+          - |
+              backend_yml.content | b64decode | from_yaml == {
+                  "api-url": "https://127.0.0.1:8080",
+                  "cert-file": "/etc/sensu/../sensu/api.crt",
+                  "dashboard-cert-file": "/etc/sensu/../sensu/dashboard.crt",
+                  "dashboard-key-file": "/etc/sensu/../sensu/dashboard.key",
+                  "debug": True,
+                  "etcd-cert-file": "/etc/sensu/../sensu/etcd-client.crt",
+                  "etcd-client-cert-auth": False,
+                  "etcd-initial-advertise-peer-urls": "https://127.0.0.1:2380",
+                  "etcd-initial-cluster": "default=https://127.0.0.1:2380",
+                  "etcd-key-file": "/etc/sensu/../sensu/etcd-client.key",
+                  "etcd-listen-client-urls": "https://127.0.0.1:2379",
+                  "etcd-listen-peer-urls": "https://127.0.0.1:2380",
+                  "etcd-peer-cert-file": "/etc/sensu/../sensu/etcd-peer.crt",
+                  "etcd-peer-client-cert-auth": False,
+                  "etcd-peer-key-file": "/etc/sensu/../sensu/etcd-peer.key",
+                  "etcd-peer-trusted-ca-file": "/etc/sensu/../sensu/etcd-peer-ca.crt",
+                  "etcd-trusted-ca-file": "/etc/sensu/../sensu/etcd-client-ca.crt",
+                  "insecure-skip-tls-verify": True,
+                  "key-file": "/etc/sensu/../sensu/api.key",
+                  "log-level": "debug",
+                  "state-dir": "/tmp/different-state",
+                  "trusted-ca-file": "/etc/sensu/../sensu/api-ca.crt",
+              }

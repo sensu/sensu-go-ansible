@@ -29,6 +29,8 @@ version_added: "1.0"
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
+requirements:
+  - bcrypt (when managing Sensu Go 5.21.0 or newer)
 seealso:
   - module: user_info
 options:
@@ -42,17 +44,18 @@ options:
   password:
     description:
       - Password for the user.
-      - Required if I(state) is C(enabled).
+      - Required if user with a desired name does not exist yet on the backend.
     type: str
   groups:
     description:
       - List of groups user belongs to.
     type: list
+    elements: str
 '''
 
 EXAMPLES = '''
 - name: Create a user
-  user:
+  sensu.sensu_go.user:
     auth:
       url: http://localhost:8080
     name: awesome_username
@@ -62,7 +65,7 @@ EXAMPLES = '''
       - prod
 
 - name: Deactivate a user
-  user:
+  sensu.sensu_go.user:
     name: awesome_username
     state: disabled
 '''
@@ -74,34 +77,117 @@ object:
     type: dict
 '''
 
-from ansible.module_utils.basic import AnsibleModule
+import traceback
+
+from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
     arguments, errors, utils,
 )
 
+try:
+    import bcrypt
+    HAS_BCRYPT = True
+    BCRYPT_IMPORT_ERROR = None
+except ImportError:
+    HAS_BCRYPT = False
+    BCRYPT_IMPORT_ERROR = traceback.format_exc()
 
-def sync(remote_object, state, client, path, payload, check_mode):
-    if state == 'disabled' and remote_object is not None:
-        if not check_mode:
+
+def update_password(client, path, username, password, check_mode):
+    # Hit the auth testing API and try to validate the credentials. If the API
+    # says they are invalid, we need to update them.
+    if client.validate_auth_data(username, password):
+        return False
+
+    if not check_mode:
+        if client.version < "5.21.0":
+            utils.put(client, path + '/password', dict(
+                username=username, password=password,
+            ))
+        else:
+            hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            utils.put(client, path + '/reset_password', dict(
+                username=username, password_hash=hash.decode('ascii'),
+            ))
+
+    return True
+
+
+def update_groups(client, path, old_groups, new_groups, check_mode):
+    to_delete = set(old_groups).difference(new_groups)
+    to_add = set(new_groups).difference(old_groups)
+
+    if not check_mode:
+        # Next few lines are far from atomic, which means that we can leave a
+        # user in any of the intermediate states, but this is the best we can
+        # do given the API limitations.
+        for g in to_add:
+            utils.put(client, path + '/groups/' + g, None)
+        for g in to_delete:
+            utils.delete(client, path + '/groups/' + g)
+
+    return len(to_delete) + len(to_add) > 0
+
+
+def update_state(client, path, old_disabled, new_disabled, check_mode):
+    changed = old_disabled != new_disabled
+
+    if not check_mode and changed:
+        if new_disabled:  # `state: disabled` input parameter
             utils.delete(client, path)
-        return True, utils.get(client, path)
+        else:  # `state: enabled` input parameter
+            utils.put(client, path + '/reinstate', None)
 
-    if utils.do_differ(remote_object, payload):
+    return changed
+
+
+def sync(remote_object, client, path, payload, check_mode):
+    # Create new user (either enabled or disabled)
+    if remote_object is None:
         if check_mode:
             return True, payload
         utils.put(client, path, payload)
         return True, utils.get(client, path)
 
-    return False, remote_object
+    # Update existing user. We do this on a field-by-field basis because the
+    # upsteam API for updating users requires a password field to be set. Of
+    # course, we do not want to force users to specify an existing password
+    # just for the sake of updating the group membership, so this is why we
+    # use field-specific API endpoints to update the user data.
+
+    changed = False
+    if 'password' in payload:
+        changed = update_password(
+            client, path, payload['username'], payload['password'],
+            check_mode,
+        ) or changed
+
+    if 'groups' in payload:
+        changed = update_groups(
+            client, path, remote_object.get('groups') or [],
+            payload['groups'], check_mode,
+        ) or changed
+
+    if 'disabled' in payload:
+        changed = update_state(
+            client, path, remote_object['disabled'], payload['disabled'],
+            check_mode,
+        ) or changed
+
+    if check_mode:
+        # Backend does not return back passwords, so we should follow the
+        # example set by the backend API.
+        return changed, dict(
+            remote_object,
+            **{k: v for k, v in payload.items() if k != 'password'}
+        )
+
+    return changed, utils.get(client, path)
 
 
 def main():
-    required_if = [
-        ('state', 'enabled', ('password', ))
-    ]
     module = AnsibleModule(
-        required_if=required_if,
         supports_check_mode=True,
         argument_spec=dict(
             arguments.get_spec("auth", "name"),
@@ -113,18 +199,30 @@ def main():
                 no_log=True
             ),
             groups=dict(
-                type='list',
+                type='list', elements='str',
             )
         ),
     )
 
     client = arguments.get_sensu_client(module.params['auth'])
     path = utils.build_core_v2_path(None, 'users', module.params['name'])
-    state = module.params['state']
 
-    remote_object = utils.get(client, path)
-    if remote_object is None and state == 'disabled' and module.params['password'] is None:
-        module.fail_json(msg='Cannot disable a non existent user')
+    try:
+        if not HAS_BCRYPT and client.version >= "5.21.0":
+            module.fail_json(
+                msg=missing_required_lib('bcrypt'),
+                exception=BCRYPT_IMPORT_ERROR,
+            )
+    except errors.SensuError as e:
+        module.fail_json(msg=str(e))
+
+    try:
+        remote_object = utils.get(client, path)
+    except errors.Error as e:
+        module.fail_json(msg=str(e))
+
+    if remote_object is None and module.params['password'] is None:
+        module.fail_json(msg='Cannot create new user without a password')
 
     payload = arguments.get_spec_payload(module.params, 'password', 'groups')
     payload['username'] = module.params['name']
@@ -132,7 +230,7 @@ def main():
 
     try:
         changed, user = sync(
-            remote_object, state, client, path, payload, module.check_mode
+            remote_object, client, path, payload, module.check_mode
         )
         module.exit_json(changed=changed, object=user)
     except errors.Error as e:

@@ -37,14 +37,14 @@ seealso:
 
 EXAMPLES = '''
 - name: List Sensu namespaces
-  namespace_info:
+  sensu.sensu_go.namespace_info:
   register: result
 '''
 
 RETURN = '''
 objects:
   description: list of Sensu namespaces
-  returned: always
+  returned: success
   type: list
 '''
 

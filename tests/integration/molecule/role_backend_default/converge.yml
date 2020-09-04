@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+
+  tasks:
+    - name: Install backend
+      include_role:
+        name: sensu.sensu_go.backend

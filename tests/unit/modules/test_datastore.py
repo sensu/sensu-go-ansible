@@ -5,7 +5,7 @@ __metaclass__ = type
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, http, utils,
+    errors, http,
 )
 from ansible_collections.sensu.sensu_go.plugins.modules import datastore
 
@@ -77,7 +77,7 @@ class TestSync(ModuleTestCase):
         )
 
         assert changed is True
-        assert {"spec": {"new": "data"}} == object
+        assert {"new": "data"} == object
         client.put.assert_called_once_with(
             "/resource", {"spec": {"my": "data"}},
         )
@@ -94,7 +94,7 @@ class TestSync(ModuleTestCase):
         )
 
         assert changed is True
-        assert {"spec": {"my": "data"}} == object
+        assert {"my": "data"} == object
         client.put.assert_not_called()
 
     def test_present_current_object_does_not_differ(self, mocker):
@@ -109,7 +109,7 @@ class TestSync(ModuleTestCase):
         )
 
         assert changed is False
-        assert {"spec": {"my": "data"}} == object
+        assert {"my": "data"} == object
         client.put.assert_not_called()
 
     def test_present_current_object_does_not_differ_check(self, mocker):
@@ -124,7 +124,7 @@ class TestSync(ModuleTestCase):
         )
 
         assert changed is False
-        assert {"spec": {"my": "data"}} == object
+        assert {"my": "data"} == object
         client.put.assert_not_called()
 
     def test_present_no_current_object_empty_backend(self, mocker):
@@ -142,7 +142,7 @@ class TestSync(ModuleTestCase):
         )
 
         assert changed is True
-        assert {"spec": {"new": "data"}} == object
+        assert {"new": "data"} == object
         client.put.assert_called_once_with(
             "/resource", {"spec": {"my": "data"}},
         )
@@ -160,7 +160,7 @@ class TestSync(ModuleTestCase):
         )
 
         assert changed is True
-        assert {"spec": {"my": "data"}} == object
+        assert {"my": "data"} == object
         client.put.assert_not_called()
 
     @pytest.mark.parametrize("check", [False, True])
@@ -201,12 +201,8 @@ class TestDatastore(ModuleTestCase):
         assert payload == dict(
             type="PostgresConfig",
             api_version="store/v1",
-            spec=dict(
-                metadata=dict(
-                    name="test_datastore",
-                ),
-                dsn="my-dsn",
-            ),
+            metadata=dict(name="test_datastore"),
+            spec=dict(dsn="my-dsn"),
         )
         assert check_mode is False
 
@@ -250,18 +246,13 @@ class TestDatastore(ModuleTestCase):
         assert payload == dict(
             type="PostgresConfig",
             api_version="store/v1",
-            spec=dict(
-                metadata=dict(
-                    name="test_datastore",
-                ),
-                dsn="my-dsn",
-                pool_size=543,
-            ),
+            metadata=dict(name="test_datastore"),
+            spec=dict(dsn="my-dsn", pool_size=543),
         )
         assert check_mode is False
 
     def test_failure(self, mocker):
-        sync_mock = mocker.patch.object(utils, "sync")
+        sync_mock = mocker.patch.object(datastore, "sync")
         sync_mock.side_effect = errors.Error("Bad error")
         set_module_args(
             name="test_datastore",

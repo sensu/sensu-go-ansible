@@ -69,6 +69,7 @@ options:
         description:
           - Check status history for the last 21 check executions.
         type: list
+        elements: dict
       issued:
         description:
           - Time that the check request was issued in seconds since the Unix epoch.
@@ -116,7 +117,7 @@ options:
 
 EXAMPLES = '''
 - name: Create an event
-  event:
+  sensu.sensu_go.event:
     auth:
       url: http://localhost:8080
     entity: awesome_entity
@@ -154,8 +155,8 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu event
-  returned: always
+  description: object representing Sensu event (deprecated)
+  returned: success
   type: dict
 '''
 
@@ -221,10 +222,9 @@ def _build_api_payload(client, params):
 
 
 def send_event(client, path, payload, check_mode):
-    if check_mode:
-        return True, payload
-    utils.put(client, path, payload)
-    return True, utils.get(client, path)
+    if not check_mode:
+        utils.put(client, path, payload)
+    return True, payload
 
 
 def main():
@@ -245,7 +245,7 @@ def main():
                         type='int'
                     ),
                     history=dict(
-                        type='list'
+                        type='list', elements='dict',
                     ),
                     issued=dict(
                         type='int'

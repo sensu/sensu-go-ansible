@@ -47,6 +47,7 @@ options:
     description:
       - List of subscriptions for the entity.
     type: list
+    elements: str
   system:
     description:
       - System information about the entity, such as operating system and platform. See
@@ -69,6 +70,7 @@ options:
       - List of items to redact from log messages. If a value is provided,
         it overwrites the default list of items to be redacted.
     type: list
+    elements: str
   user:
     description:
       - Sensu RBAC username used by the entity. Agent entities require get,
@@ -78,7 +80,7 @@ options:
 
 EXAMPLES = '''
 - name: Create an entity
-  entity:
+  sensu.sensu_go.entity:
     auth:
       url: http://localhost:8080
     name: entity
@@ -110,7 +112,7 @@ EXAMPLES = '''
     user: agent
 
 - name: Delete an entity
-  entity:
+  sensu.sensu_go.entity:
     name: entity
     state: absent
 '''
@@ -129,6 +131,14 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
+def do_differ(current, desired):
+    system = desired.get('system')
+    if system and utils.do_differ(current.get('system'), system):
+        return True
+
+    return utils.do_differ(current, desired, 'system')
+
+
 def main():
     required_if = [
         ('state', 'present', ['entity_class'])
@@ -142,7 +152,7 @@ def main():
             ),
             entity_class=dict(),
             subscriptions=dict(
-                type='list',
+                type='list', elements='str',
             ),
             system=dict(
                 type='dict'
@@ -155,7 +165,7 @@ def main():
             ),
             deregistration_handler=dict(),
             redact=dict(
-                type='list'
+                type='list', elements='str',
             ),
             user=dict()
         ),
@@ -174,6 +184,7 @@ def main():
     try:
         changed, entity = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,
+            do_differ,
         )
         module.exit_json(changed=changed, object=entity)
     except errors.Error as e:

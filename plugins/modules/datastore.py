@@ -49,12 +49,12 @@ notes:
 
 EXAMPLES = '''
 - name: Add external datastore
-  datastore:
+  sensu.sensu_go.datastore:
     name: my-postgres
     dsn: postgresql://user:secret@host:port/dbname
 
 - name: Remove external datastore
-  datastore:
+  sensu.sensu_go.datastore:
     name: my-postgres
     state: absent
 '''
@@ -76,12 +76,12 @@ API_GROUP = "enterprise"
 API_VERSION = "store/v1"
 
 
-def _do_differ(remote, payload):
-    return utils.do_differ(remote["spec"], payload["spec"])
+def _get(client, path):
+    return utils.convert_v1_to_v2_response(utils.get(client, path))
 
 
 def sync(state, client, list_path, resource_path, payload, check_mode):
-    datastore = utils.get(client, resource_path)
+    datastore = _get(client, resource_path)
 
     # When we are deleting stores, we do not care if there is more than one
     # datastore present. We just make sure the currently manipulated store is
@@ -98,11 +98,11 @@ def sync(state, client, list_path, resource_path, payload, check_mode):
     # If the store exists, update it and ignore the fact that there might be
     # more than one present.
     if datastore:
-        if _do_differ(datastore, payload):
+        if utils.do_differ(datastore, payload["spec"]):
             if check_mode:
-                return True, payload
+                return True, payload["spec"]
             utils.put(client, resource_path, payload)
-            return True, utils.get(client, resource_path)
+            return True, _get(client, resource_path)
         return False, datastore
 
     # When adding a new datastore, we first make sure there is no other
@@ -112,9 +112,9 @@ def sync(state, client, list_path, resource_path, payload, check_mode):
         raise errors.Error("Some other external datastore is already active.")
 
     if check_mode:
-        return True, payload
+        return True, payload["spec"]
     utils.put(client, resource_path, payload)
-    return True, utils.get(client, resource_path)
+    return True, _get(client, resource_path)
 
 
 def main():
@@ -141,7 +141,8 @@ def main():
     payload = dict(
         type="PostgresConfig",
         api_version=API_VERSION,
-        spec=arguments.get_mutation_payload(module.params, "dsn", "pool_size"),
+        metadata=dict(name=module.params["name"]),
+        spec=arguments.get_spec_payload(module.params, "dsn", "pool_size"),
     )
 
     try:
@@ -149,10 +150,7 @@ def main():
             module.params["state"], client, list_path, resource_path, payload,
             module.check_mode,
         )
-        # We simulate the behavior of v2 API here and only return the spec.
-        module.exit_json(
-            changed=changed, object=datastore and datastore["spec"],
-        )
+        module.exit_json(changed=changed, object=datastore)
     except errors.Error as e:
         module.fail_json(msg=str(e))
 

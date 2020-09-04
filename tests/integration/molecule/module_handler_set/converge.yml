@@ -1,0 +1,109 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create handler set
+      handler_set:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        handlers:
+          - udp_handler
+          - tcp_handler
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.handlers == ['udp_handler', 'tcp_handler']
+          - result.object.metadata.name == 'handler'
+
+    - name: Test handler set creation idempotence
+      handler_set:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        handlers:
+          - udp_handler
+          - tcp_handler
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Modify handler set
+      handler_set:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        handlers:
+          - slack
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.handlers == ['slack']
+
+    - name: Fetch all set handlers
+      handler_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+
+    - name: Fetch a specific handler set
+      handler_info:
+        auth:
+          url: http://localhost:8080
+        name: handler
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'handler'
+
+    - name: Delete handler set
+      handler_set:
+        auth:
+          url: http://localhost:8080
+        name: handler
+        state: absent
+
+    - name: Get the Sensu Go backend's version
+      uri:
+        url: http://localhost:8080/version
+        return_content: true
+      register: backend_version
+
+    - name: Get all handlers set
+      handler_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+      # Sensu Go 5.15.0 returns none when no handler sets are present
+      when: (backend_version.content | from_json).sensu_backend != '5.15.0'
+
+    - assert:
+        that:
+          - result.objects | length == 0
+      # Sensu Go 5.15.0 returns none when no handler sets are present
+      when: (backend_version.content | from_json).sensu_backend != '5.15.0'
+
+    - name: Try to fetch non-existing handler
+      handler_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-handler
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

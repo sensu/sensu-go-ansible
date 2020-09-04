@@ -1,0 +1,13 @@
+platforms:
+  - name: v5.20.2
+    image: xlabsi/sensu-go-tests-sensu:5.20.2
+    groups: [ has_api_key_support ]
+    pre_build_image: true
+    pull: true
+    override_command: false
+  - name: v5.14.2
+    image: xlabsi/sensu-go-tests-sensu:5.14.2
+    groups: [ no_api_key_support ]
+    pre_build_image: true
+    pull: true
+    override_command: false

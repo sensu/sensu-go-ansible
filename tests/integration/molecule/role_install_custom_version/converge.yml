@@ -1,0 +1,31 @@
+---
+- name: Converge with older versions of components
+  hosts: all
+
+  tasks:
+    - name: Install all components
+      include_role:
+        name: sensu.sensu_go.install
+      vars:
+        components:
+          - sensu-go-backend
+          - sensu-go-agent
+          - sensu-go-cli
+        version: 5.14.1
+
+    - name: Make sure components are installed
+      command:
+        cmd: "{{ item }} version"
+      loop:
+        - sensu-backend
+        - sensu-agent
+        - sensuctl
+      register: result
+
+    - assert:
+        quiet: true
+        that:
+          - item.stdout is search("5.14.1")
+      loop: "{{ result.results }}"
+      loop_control:
+        label: "{{ item.item }}"  # Reduce verbosity a bit

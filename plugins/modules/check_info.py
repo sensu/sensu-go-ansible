@@ -37,11 +37,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu checks
-  check_info:
+  sensu.sensu_go.check_info:
   register: result
 
 - name: Obtain a specific check
-  check_info:
+  sensu.sensu_go.check_info:
     name: my-check
   register: result
 '''
@@ -49,7 +49,7 @@ EXAMPLES = '''
 RETURN = '''
 objects:
   description: list of Sensu checks
-  returned: always
+  returned: success
   type: list
 '''
 

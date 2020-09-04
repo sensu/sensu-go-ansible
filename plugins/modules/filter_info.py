@@ -37,11 +37,11 @@ seealso:
 
 EXAMPLES = '''
 - name: List all Sensu filters
-  filter_info:
+  sensu.sensu_go.filter_info:
   register: result
 
 - name: Retrieve a specific Sensu filter
-  filter_info:
+  sensu.sensu_go.filter_info:
     name: my-filter
   register: result
 '''
@@ -49,7 +49,7 @@ EXAMPLES = '''
 RETURN = '''
 objects:
   description: list of Sensu filters
-  returned: always
+  returned: success
   type: list
 '''
 

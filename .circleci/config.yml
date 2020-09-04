@@ -4,19 +4,23 @@ workflows:
   version: 2
   main_workflow:
     jobs:
-      - sanity
+      - sanity_python27
+      - sanity_python38
       - unit_python27_ansible29
       - unit_python35_ansible29
       - unit_python36_ansible29
       - unit_python37_ansible29
+      - unit_python38_ansible29
 
       - integration_ansible29_git:
           requires: &reqs
-            - sanity
+            - sanity_python27
+            - sanity_python38
             - unit_python27_ansible29
             - unit_python35_ansible29
             - unit_python36_ansible29
             - unit_python37_ansible29
+            - unit_python38_ansible29
 
       - integration_ansible29_galaxy:
           filters: { branches: { only: [ stable ] } }
@@ -56,13 +60,24 @@ executors:
     docker: [ { image: circleci/python:3.7 } ]
     working_directory: *wd
 
+  python38:
+    docker: [ { image: circleci/python:3.8 } ]
+    working_directory: *wd
+
 # Matrix of tests that we run. At the moment, the only supported Ansible is
 # 2.9 because previous versions do not install ansible-test executable.
 jobs:
-  # Sanity test is not python-dependent and should be always run with the
-  # latest supported, stable python and with latest stable Ansible.
-  sanity:
-    executor: python37
+  # Sanity test could run on python 3.8 only, but we also run them on python
+  # 2.7 just in case.
+  sanity_python27:
+    executor: python27
+    environment:
+      ANSIBLE_VERSION: &ansible29 ==2.9.*
+      TEST_KIND: sanity
+    steps: [ sanity_test ]
+
+  sanity_python38:
+    executor: python38
     environment:
       ANSIBLE_VERSION: &ansible29 ==2.9.*
       TEST_KIND: sanity
@@ -97,6 +112,13 @@ jobs:
       TEST_KIND: units
     steps: [ unit_test ]
 
+  unit_python38_ansible29:
+    executor: python38
+    environment:
+      ANSIBLE_VERSION: *ansible29
+      TEST_KIND: units
+    steps: [ unit_test ]
+
   # Integration tests run on single python version, because python portability
   # is checked by sanity and unit tests.
   integration_ansible29_git:
@@ -104,7 +126,7 @@ jobs:
     environment:
       ANSIBLE_VERSION: *ansible29
       TEST_KIND: integration
-    parallelism: 4
+    parallelism: 8
     steps: [ integration_test_git ]
 
   integration_ansible29_galaxy:
@@ -112,7 +134,7 @@ jobs:
     environment:
       ANSIBLE_VERSION: *ansible29
       TEST_KIND: integration
-    parallelism: 4
+    parallelism: 8
     steps: [ integration_test_galaxy ]
 
 commands:
@@ -183,7 +205,7 @@ commands:
     steps:
       - run:
           name: Install requirements
-          command: pip install -r ${TEST_KIND}.requirements
+          command: pip install -r ${TEST_KIND}.requirements -r collection.requirements
       - run:
           name: Run test
           command: make ${TEST_KIND}

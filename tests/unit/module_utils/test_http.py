@@ -6,6 +6,8 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
+import ssl
+
 import pytest
 
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
@@ -142,3 +144,21 @@ class TestRequest:
         assert "example.com/path" == open_url.call_args[1]["url"]
         assert 3 == open_url.call_args[1]["a"]
         assert "f" == open_url.call_args[1]["b"]
+
+    def test_cert_error_ssl_module_present(self, mocker):
+        open_url = mocker.patch.object(http, "open_url")
+        open_url.side_effect = ssl.CertificateError("Invalid")
+
+        with pytest.raises(errors.HttpError):
+            http.request("GET", "example.com/bad")
+
+    def test_cert_error_ssl_module_absent(self, mocker):
+        class Dummy(Exception):
+            pass
+
+        open_url = mocker.patch.object(http, "open_url")
+        open_url.side_effect = ssl.CertificateError("Invalid")
+        mocker.patch.object(http, "CertificateError", Dummy)
+
+        with pytest.raises(ssl.CertificateError):
+            http.request("GET", "example.com/bad")

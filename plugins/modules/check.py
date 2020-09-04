@@ -43,16 +43,17 @@ options:
       - Check command to run.
       - Required if I(state) is C(present).
     type: str
-    required: true
   subscriptions:
     description:
       - List of subscriptions which receive check requests.
       - Required if I(state) is C(present).
     type: list
+    elements: str
   handlers:
     description:
       - List of handlers which receive check results.
     type: list
+    elements: str
   interval:
     description:
       - Check request interval.
@@ -92,9 +93,16 @@ options:
     description:
       - List of runtime assets required to run the check.
     type: list
+    elements: str
   check_hooks:
     description:
-      - A mapping of response codes to hooks which will be run by the agent when that code is returned.
+      - A mapping of response codes to hooks which will be run by the agent
+        when that code is returned.
+      - Note that the structure of this parameter is a bit different from the
+        one described at
+        U(https://docs.sensu.io/sensu-go/latest/reference/checks/#check-hooks-attribute).
+      - See check hooks example below for more information on exact mapping
+        structure.
     type: dict
   proxy_entity_name:
     description:
@@ -110,6 +118,7 @@ options:
         description:
           - List of attribute checks for determining which proxy entities this check should be scheduled against.
         type: list
+        elements: str
       splay:
         description:
           - Enables or disables splaying of check request scheduling.
@@ -132,6 +141,7 @@ options:
     description:
       - List of handlers which receive check results. I'm not sure why this exists.
     type: list
+    elements: str
   round_robin:
     description:
       -  An array of environment variables to use with command execution.
@@ -144,7 +154,7 @@ options:
 
 EXAMPLES = '''
 - name: Check executing command every 30 seconds
-  check:
+  sensu.sensu_go.check:
     name: check
     command: check-cpu.sh -w 75 -c 90
     subscriptions:
@@ -153,7 +163,7 @@ EXAMPLES = '''
     publish: yes
 
 - name: Check executing command with cron scheduler
-  check:
+  sensu.sensu_go.check:
     name: check
     command: check-cpu.sh -w 75 -c 90
     subscriptions:
@@ -164,7 +174,7 @@ EXAMPLES = '''
     publish: yes
 
 - name: Ad-hoc scheduling
-  check:
+  sensu.sensu_go.check:
     name: check
     command: check-cpu.sh -w 75 -c 90
     subscriptions:
@@ -175,7 +185,7 @@ EXAMPLES = '''
     publish: no
 
 - name: Report events under proxy entity name instead of agent entity
-  check:
+  sensu.sensu_go.check:
     name: check
     command: http_check.sh https://sensu.io
     subscriptions:
@@ -187,8 +197,29 @@ EXAMPLES = '''
     round_robin: yes
     publish: yes
 
+- name: Event that triggers hooks
+  sensu.sensu_go.check:
+    name: check
+    command: http_check.sh https://sensu.io
+    subscriptions: [ proxy ]
+    # The upstream JSON payload for the hooks below would look like this:
+    #
+    #   "check_hooks": [
+    #     {"0": ["passing-hook", "always-run-this-hook"]},
+    #     {"critical": ["failing-hook", "always-run-this-hook"]}
+    #   ]
+    #
+    # Ansible task simplifies this structure into a simple mapping:
+    check_hooks:
+      "0":
+        - passing-hook
+        - always-run-this-hook
+      critical:
+        - failing-hook
+        - always-run-this-hook
+
 - name: Remove check
-  check:
+  sensu.sensu_go.check:
     name: my-check
     state: absent
 '''
@@ -218,6 +249,56 @@ def validate_module_params(module):
         module.fail_json(msg='one of the following is required: interval, cron')
 
 
+def do_sets_differ(current, desired, key):
+    return set(current.get(key) or []) != set(desired.get(key) or [])
+
+
+def do_proxy_requests_differ(current, desired):
+    if 'proxy_requests' not in desired:
+        return False
+
+    current = current.get('proxy_requests') or {}
+    desired = desired['proxy_requests']
+
+    return (
+        (
+            'entity_attributes' in desired and
+            do_sets_differ(current, desired, 'entity_attributes')
+        ) or
+        utils.do_differ(current, desired, 'entity_attributes')
+    )
+
+
+def do_check_hooks_differ(current, desired):
+    if 'check_hooks' not in desired:
+        return False
+
+    current = utils.single_item_dicts_to_dict(current.get('check_hooks') or [])
+    current = {k: set(v) for k, v in current.items()}
+
+    desired = utils.single_item_dicts_to_dict(desired['check_hooks'])
+    desired = {k: set(v) for k, v in desired.items()}
+
+    return current != desired
+
+
+def do_differ(current, desired):
+    return (
+        utils.do_differ(
+            current, desired, 'proxy_requests', 'subscriptions', 'handlers',
+            'runtime_assets', 'check_hooks', 'output_metric_handlers',
+            'env_vars',
+        ) or
+        do_proxy_requests_differ(current, desired) or
+        do_sets_differ(current, desired, 'subscriptions') or
+        do_sets_differ(current, desired, 'handlers') or
+        do_sets_differ(current, desired, 'runtime_assets') or
+        do_check_hooks_differ(current, desired) or
+        do_sets_differ(current, desired, 'output_metric_handlers') or
+        do_sets_differ(current, desired, 'env_vars')
+    )
+
+
 def build_api_payload(params):
     payload = arguments.get_mutation_payload(
         params,
@@ -230,7 +311,6 @@ def build_api_payload(params):
         'output_metric_format',
         'output_metric_handlers',
         'proxy_entity_name',
-        'proxy_requests',
         'publish',
         'round_robin',
         'runtime_assets',
@@ -239,6 +319,13 @@ def build_api_payload(params):
         'timeout',
         'ttl'
     )
+
+    if params['proxy_requests']:
+        payload['proxy_requests'] = arguments.get_spec_payload(
+            params['proxy_requests'],
+            'entity_attributes', 'splay', 'splay_coverage',
+        )
+
     if params['check_hooks']:
         payload['check_hooks'] = utils.dict_to_single_item_dicts(params['check_hooks'])
 
@@ -264,10 +351,10 @@ def main():
             ),
             command=dict(),
             subscriptions=dict(
-                type='list'
+                type='list', elements='str',
             ),
             handlers=dict(
-                type='list'
+                type='list', elements='str',
             ),
             interval=dict(
                 type='int'
@@ -295,7 +382,7 @@ def main():
                 type='int'
             ),
             runtime_assets=dict(
-                type='list'
+                type='list', elements='str',
             ),
             check_hooks=dict(
                 type='dict'
@@ -305,7 +392,7 @@ def main():
                 type='dict',
                 options=dict(
                     entity_attributes=dict(
-                        type='list'
+                        type='list', elements='str',
                     ),
                     splay=dict(
                         type='bool'
@@ -319,7 +406,7 @@ def main():
                 choices=['nagios_perfdata', 'graphite_plaintext', 'influxdb_line', 'opentsdb_line']
             ),
             output_metric_handlers=dict(
-                type='list'
+                type='list', elements='str',
             ),
             round_robin=dict(
                 type='bool'
@@ -336,6 +423,7 @@ def main():
     try:
         changed, check = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,
+            do_differ,
         )
         module.exit_json(changed=changed, object=check)
     except errors.Error as e:

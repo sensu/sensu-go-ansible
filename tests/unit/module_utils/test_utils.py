@@ -136,10 +136,6 @@ class TestSync:
 
 
 class TestDoDiffer:
-    @pytest.mark.parametrize("desired", [None, {"a": "b"}, 1, False, 2.3])
-    def test_current_none_always_differ(self, desired):
-        assert utils.do_differ(None, desired) is True
-
     def test_extra_keys_in_current_do_not_matter(self):
         assert utils.do_differ({"a": "b", "c": 3}, {"a": "b"}) is False
 
@@ -151,6 +147,29 @@ class TestDoDiffer:
 
     def test_desired_none_values_are_ignored(self):
         assert utils.do_differ({"a": "b"}, {"c": None}) is False
+
+    def test_metadata_ignores_created_by(self):
+        assert utils.do_differ(
+            dict(metadata=dict(a=1, created_by=2)),
+            dict(metadata=dict(a=1)),
+        ) is False
+
+    def test_metadata_detects_change(self):
+        assert utils.do_differ(
+            dict(metadata=dict(a=1)), dict(metadata=dict(a=2)),
+        ) is True
+
+    def test_metadata_detects_change_in_presence_of_created_by(self):
+        assert utils.do_differ(
+            dict(metadata=dict(a=1, created_by=2)),
+            dict(metadata=dict(a=2)),
+        ) is True
+
+    def test_ignore_keys_do_not_affect_the_outcome(self):
+        assert utils.do_differ(dict(a=1), dict(a=2), "a") is False
+
+    def test_ignore_keys_do_not_mask_other_differences(self):
+        assert utils.do_differ(dict(a=1, b=1), dict(a=2, b=2), "a") is True
 
 
 class TestGet:
@@ -246,6 +265,13 @@ class TestDictToSingleItemDicts:
             assert item in result
 
 
+class TestSingleItemDictsToDict:
+    def test_conversion(self):
+        assert dict(a=3, b=4, c=5) == utils.single_item_dicts_to_dict(
+            [dict(a=3), dict(b=4), dict(c=5)]
+        )
+
+
 class TestDictToKeyValueString:
     def test_conversion(self):
         result = utils.dict_to_key_value_strings({"a": 0, 1: "b"})
@@ -303,3 +329,19 @@ class TestPrepareResultList:
     ])
     def test_list_construction(self, input, output):
         assert output == utils.prepare_result_list(input)
+
+
+class TestConvertV1ToV2Response:
+    def test_none_passes_through(self):
+        assert utils.convert_v1_to_v2_response(None) is None
+
+    def test_spec_only_if_metadata_is_missing(self):
+        assert utils.convert_v1_to_v2_response(dict(
+            spec=dict(a=1, b=2),
+        )) == dict(a=1, b=2)
+
+    def test_add_metadata_from_toplevel(self):
+        assert utils.convert_v1_to_v2_response(dict(
+            metadata=dict(name="sample"),
+            spec=dict(a=1, b=2),
+        )) == dict(metadata=dict(name="sample"), a=1, b=2)

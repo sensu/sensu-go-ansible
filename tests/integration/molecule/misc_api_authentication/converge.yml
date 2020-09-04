@@ -1,0 +1,313 @@
+---
+- name: Prepare new backend
+  hosts: has_api_key_support
+  gather_facts: no
+
+  tasks:
+    - name: Create a regular user
+      sensu.sensu_go.user:
+        name: test_user
+        password: test_pass
+
+    - name: Create a regular user role
+      sensu.sensu_go.role:
+        name: test_role
+        rules:
+          - verbs: [ list ]
+            resources: [ assets ]
+
+    - name: Allow user to list entities
+      sensu.sensu_go.role_binding:
+        name: test_binding
+        role: test_role
+        users: [ test_user ]
+
+    - name: Configure sensuctl
+      command:
+        cmd: >
+          sensuctl configure
+          --non-interactive
+          --url http://localhost:8080
+          --username admin
+          --password P@ssw0rd!
+          --namespace default
+
+    - name: Create API key for admin
+      command:
+        cmd: sensuctl api-key grant admin
+      register: api_key_admin_result
+
+    - name: Create API key for test user
+      command:
+        cmd: sensuctl api-key grant test_user
+      register: api_key_test_user_result
+
+    - name: Store API keys
+      set_fact:
+        api_key_admin: "{{ api_key_admin_result.stdout | regex_search('[^/]+$') }}"
+        api_key_test_user: "{{ api_key_test_user_result.stdout | regex_search('[^/]+$') }}"
+
+    - name: Change default admin password for tests
+      command:
+        cmd: >
+          sensuctl user change-password admin
+          --current-password 'P@ssw0rd!'
+          --new-password insecure
+
+
+- name: Test against a new backend
+  hosts: has_api_key_support
+  collections:
+    - sensu.sensu_go
+  gather_facts: no
+
+  tasks:
+    - name: Fail with invalid password
+      mutator:
+        auth:
+          user: admin
+          password: not-a-password
+          url: http://localhost:8080
+        name: my_mutator
+        command: sensu-influxdb-mutator
+        timeout: 30
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'Authentication' in result.msg"
+
+    - name: Fail with bad username
+      asset_info:
+        auth:
+          user: not-a-valid-user
+          password: insecure
+          url: http://localhost:8080
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'Authentication' in result.msg"
+
+    - name: Fail with bad API token
+      hook:
+        auth:
+          api_key: not-a-valid-api-key
+          url: http://localhost:8080
+        name: restart_nginx
+        command: sudo systemctl start nginx
+        timeout: 60
+        stdin: false
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'Authentication' in result.msg"
+
+    - name: Fail with bad API token even if username/password would be OK
+      hook:
+        auth:
+          api_key: not-a-valid-api-key
+          user: admin
+          password: insecure
+          url: http://localhost:8080
+        name: restart_nginx
+        command: sudo systemctl start nginx
+        timeout: 60
+        stdin: false
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'Authentication' in result.msg"
+
+    - name: Authenticate with a valid user/pass combination
+      asset:
+        auth:
+          user: admin
+          password: insecure
+          url: http://localhost:8080
+        name: my_asset
+        builds:
+          - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+            sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+      register: result
+
+    - assert:
+        that:
+          - result is success
+
+    - name: Authenticate with a valid API key
+      asset_info:
+        auth:
+          api_key: "{{ api_key_admin }}"
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result is success
+
+    - name: Authenticate with a valid API key and ignore user/password
+      asset_info:
+        auth:
+          api_key: "{{ api_key_admin }}"
+          user: not-a-valid-user
+          password: not-a-password
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result is success
+
+    - name: List assets using test user API key
+      asset_info:
+        auth:
+          api_key: "{{ api_key_test_user }}"
+
+    - name: Fail to create an asset because test_user can only list them
+      bonsai_asset:
+        auth:
+          api_key: "{{ api_key_test_user }}"
+        name: sensu/monitoring-plugins
+        version: 2.2.0-1
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+
+    - name: Fail to list entities because test_user has no access to entities
+      entity_info:
+        auth:
+          api_key: "{{ api_key_test_user }}"
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+
+
+- name: Prepare old backend
+  hosts: no_api_key_support
+  gather_facts: no
+
+  tasks:
+    - name: Configure sensuctl
+      command:
+        cmd: >
+          sensuctl configure
+          --non-interactive
+          --url http://localhost:8080
+          --username admin
+          --password P@ssw0rd!
+          --namespace default
+
+    - name: Change default admin password for tests
+      command:
+        cmd: >
+          sensuctl user change-password admin
+          --current-password 'P@ssw0rd!'
+          --new-password insecure
+
+
+- name: Test against an old backend
+  hosts: no_api_key_support
+  collections:
+    - sensu.sensu_go
+  gather_facts: no
+
+  tasks:
+    - name: Fail with invalid password
+      mutator:
+        auth:
+          user: admin
+          password: not-a-password
+          url: http://localhost:8080
+        name: my_mutator
+        command: sensu-influxdb-mutator
+        timeout: 30
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'Authentication' in result.msg"
+
+    - name: Fail with bad username
+      asset_info:
+        auth:
+          user: not-a-valid-user
+          password: insecure
+          url: http://localhost:8080
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'Authentication' in result.msg"
+
+    - name: Fail with API token
+      hook:
+        auth:
+          api_key: not-a-valid-api-key
+          url: http://localhost:8080
+        name: restart_nginx
+        command: sudo systemctl start nginx
+        timeout: 60
+        stdin: false
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'Authentication' in result.msg"
+
+    - name: Fail with bad API token even if username/password would be OK
+      hook:
+        auth:
+          api_key: not-a-valid-api-key
+          user: admin
+          password: insecure
+          url: http://localhost:8080
+        name: restart_nginx
+        command: sudo systemctl start nginx
+        timeout: 60
+        stdin: false
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "'Authentication' in result.msg"
+
+    - name: Authenticate with a valid user/pass combination
+      asset:
+        auth:
+          user: admin
+          password: insecure
+          url: http://localhost:8080
+        name: my_asset
+        builds:
+          - url: https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz
+            sha512: 518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b
+      register: result
+
+    - assert:
+        that:
+          - result is success

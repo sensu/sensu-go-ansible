@@ -1,0 +1,220 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create a role with missing required parameters
+      role:
+        auth:
+          url: http://localhost:8080
+        name: test_role
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'state is present but all of the following are missing: rules'"
+
+    - name: Create a role with empty rules
+      role:
+        auth:
+          url: http://localhost:8080
+        name: test_role
+        rules: []
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'state is present but all of the following are missing: rules'"
+
+    - name: Create a role with invalid rule verbs
+      role:
+        auth:
+          url: http://localhost:8080
+        name: test_role
+        rules:
+          - verbs:
+              - list
+              - do_something
+            resources:
+              - entities
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+
+    - name: Create a role with minimal parameters
+      role:
+        auth:
+          url: http://localhost:8080
+        name: minimal_test_role
+        rules:
+          - verbs:
+              - get
+              - list
+            resources:
+              - entities
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'minimal_test_role'
+          - result.object.rules | length == 1
+          - result.object.rules.0.verbs | length == 2
+          - result.object.rules.0.verbs == ['get', 'list']
+          - result.object.rules.0.resources == ['entities']
+
+    - name: Check idempotence of role creation with minimal parameters
+      role:
+        auth:
+          url: http://localhost:8080
+        name: minimal_test_role
+        rules:
+          - verbs:
+              - list
+              - get
+            resources:
+              - entities
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Create a role
+      role:
+        auth:
+          url: http://localhost:8080
+        name: test_role
+        rules:
+          - verbs:
+              - list
+            resources:
+              - assets
+              - checks
+            resource_names:
+              - some_resource_1
+              - some_resource_2
+          - verbs:
+              - list
+              - get
+            resources:
+              - checks
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'test_role'
+          - result.object.rules | length == 2
+          - result.object.rules.0.verbs | length == 1
+          - result.object.rules.0.verbs == ['list']
+          - result.object.rules.0.resources == ['assets', 'checks']
+          - result.object.rules.0.resource_names == ['some_resource_1', 'some_resource_2']
+          - result.object.rules.1.verbs == ['list', 'get']
+          - result.object.rules.1.resources == ['checks']
+          - not result.object.rules.1.resource_names
+
+    - name: Check idempotence of role creation
+      role:
+        auth:
+          url: http://localhost:8080
+        name: test_role
+        rules:
+          - verbs:
+              - list
+            resources:
+              - checks
+              - assets
+            resource_names:
+              - some_resource_2
+              - some_resource_1
+          - verbs:
+              - get
+              - list
+            resources:
+              - checks
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Modify a role
+      role:
+        auth:
+          url: http://localhost:8080
+        name: test_role
+        rules:
+          - verbs:
+              - list
+            resources:
+              - assets
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.rules | length == 1
+          - result.object.rules.0.verbs == ['list']
+          - result.object.rules.0.resources == ['assets']
+          - not result.object.rules.0.resource_names
+
+    - name: Fetch all roles
+      role_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          # We created two roles but there might be others present by default
+          - result.objects | length >= 2
+
+    - name: Fetch a specific role
+      role_info:
+        auth:
+          url: http://localhost:8080
+        name: test_role
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'test_role'
+
+    - name: Delete a role
+      role:
+        auth:
+          url: http://localhost:8080
+        state: absent
+        name: minimal_test_role
+      register: result
+
+    - name: Fetch all roles after deletion of a role
+      role_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length >= 1
+
+    - name: Try to fetch non-existing role
+      role_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-role
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

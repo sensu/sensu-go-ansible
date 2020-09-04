@@ -1,0 +1,230 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Create a role binding with missing required parameters
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'state is present but any of the following are missing: role, cluster_role'"
+
+    - name: Create a role binding with mutually exclusive role and cluster_role
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding
+        role: test_role
+        cluster_role: test_cluster_role
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'parameters are mutually exclusive: role|cluster_role'"
+
+    - name: Create a role binding without providing users or groups
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding
+        role: test_role
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - "result.msg == 'missing required parameters: users or groups'"
+
+    - name: Create a role binding with minimal parameters (users only)
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: minimal_test_role_binding_users
+        role: test_role
+        users:
+          - test_user
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'minimal_test_role_binding_users'
+          - result.object.role_ref.name == 'test_role'
+          - result.object.subjects | length == 1
+          - result.object.subjects.0.name == 'test_user'
+          - result.object.subjects.0.type == 'User'
+
+    - name: Create a role binding with minimal parameters (groups only)
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: minimal_test_role_binding_groups
+        role: test_role
+        groups:
+          - test_group_1
+          - test_group_2
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'minimal_test_role_binding_groups'
+          - result.object.role_ref.name == 'test_role'
+          - result.object.subjects | length == 2
+
+    - name: Check idempotence of role binding creation with minimal parameters
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: minimal_test_role_binding_groups
+        role: test_role
+        groups:
+          - test_group_2
+          - test_group_1
+      register: result
+
+    - assert:
+        that: result is not changed
+
+    - name: Create a role binding
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding
+        role: test_role
+        users:
+          - test_user_1
+          - test_user_2
+        groups:
+          - test_group_1
+          - test_group_2
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'test_role_binding'
+          - result.object.role_ref.name == 'test_role'
+          - result.object.subjects | length == 4
+
+    - name: Check idempotence of role binding creation
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding
+        role: test_role
+        users:
+          - test_user_2
+          - test_user_1
+        groups:
+          - test_group_2
+          - test_group_1
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Modify a role binding
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding
+        cluster_role: test_cluster_role
+        users:
+        groups:
+          - group_1
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'test_role_binding'
+          - result.object.role_ref.name == 'test_cluster_role'
+          - result.object.role_ref.type == 'ClusterRole'
+          - result.object.subjects | length == 1
+          - result.object.subjects.0.name == 'group_1'
+          - result.object.subjects.0.type == 'Group'
+
+    - name: Create a role binding with cluster role
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding_with_cluster_role
+        cluster_role: test_cluster_role
+        users:
+          - user_1
+      register: result
+
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'test_role_binding_with_cluster_role'
+          - result.object.role_ref.name == 'test_cluster_role'
+          - result.object.role_ref.type == 'ClusterRole'
+          - result.object.subjects | length == 1
+          - result.object.subjects.0.name == 'user_1'
+          - result.object.subjects.0.type == 'User'
+
+    - name: Fetch all role bindings
+      role_binding_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length >= 4
+
+    - name: Fetch a specific role binding
+      role_binding_info:
+        auth:
+          url: http://localhost:8080
+        name: test_role_binding
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'test_role_binding'
+
+    - name: Delete a role binding
+      role_binding:
+        auth:
+          url: http://localhost:8080
+        state: absent
+        name: test_role_binding
+      register: result
+
+    - name: Fetch all roles bindings after deletion
+      role_binding_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - assert:
+        that:
+          - result.objects | length >= 3
+
+    - name: Try to fetch non-existing binding
+      role_binding_info:
+        auth:
+          url: http://localhost:8080
+        name: bad-bad-binding
+      register: result
+
+    - assert:
+        that:
+          - result.objects == []

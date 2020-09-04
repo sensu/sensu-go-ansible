@@ -1,0 +1,67 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Test connection using no verification
+      sensu.sensu_go.asset_info:
+        auth:
+          url: https://localhost:8080
+          verify: false
+
+    - name: Test connection using no verification (env var)
+      sensu.sensu_go.asset_info:
+        auth:
+          url: https://localhost:8080
+      environment:
+        SENSU_VERIFY: "false"
+
+    - name: Test connection using custom CA
+      sensu.sensu_go.user_info:
+        auth:
+          url: https://sensu-api:8080
+          ca_path: /etc/sensu/api-ca.crt
+
+    - name: Test connection using custom CA (env var)
+      sensu.sensu_go.user_info:
+        auth:
+          url: https://sensu-api:8080
+      environment:
+        SENSU_CA_PATH: /etc/sensu/api-ca.crt
+
+    - name: Test connection using default verification
+      sensu.sensu_go.asset_info:
+        auth:
+          url: https://localhost:8080
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - '"certificate" in result.msg'
+
+    - name: Test connection using custom CA not matching name
+      sensu.sensu_go.user_info:
+        auth:
+          url: https://localhost:8080
+          ca_path: /etc/sensu/api-ca.crt
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed
+          - result.msg is search("localhost.+sensu-api")
+
+    - name: Test connection using the wrong protocol
+      sensu.sensu_go.asset_info:
+        auth:
+          url: http://localhost:8080
+      ignore_errors: true
+      register: result
+
+    - assert:
+        that:
+          - result is failed

@@ -33,11 +33,11 @@ seealso:
 
 EXAMPLES = """
 - name: List all external Sensu datastores
-  datastore_info:
+  sensu.sensu_go.datastore_info:
   register: result
 
 - name: Retrieve the selected external Sensu datastore
-  datastore_info:
+  sensu.sensu_go.datastore_info:
     name: my-datastore
   register: result
 
@@ -49,7 +49,7 @@ EXAMPLES = """
 RETURN = """
 objects:
   description: list of external Sensu datastore providers
-  returned: always
+  returned: success
   type: list
 """
 
@@ -79,10 +79,13 @@ def main():
 
     try:
         stores = utils.prepare_result_list(utils.get(client, path))
-        # We simulate the behavior of v2 API here and only return the spec.
-        module.exit_json(changed=False, objects=[s["spec"] for s in stores])
     except errors.Error as e:
         module.fail_json(msg=str(e))
+
+    # We simulate the behavior of v2 API here and only return the spec.
+    module.exit_json(changed=False, objects=[
+        utils.convert_v1_to_v2_response(s) for s in stores
+    ])
 
 
 if __name__ == "__main__":
