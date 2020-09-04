@@ -1,0 +1,50 @@
+$lscript = <<-SCRIPT
+echo "provisioning...."
+touch /home/vagrant/.ssh/authorized_keys
+cat /vagrant/demo.pub >> /home/vagrant/.ssh/authorized_keys
+apt-get update
+apt-get install -y nginx
+cp /vagrant/conf/load-balancing.conf /etc/nginx/conf.d/
+systemctl restart nginx
+SCRIPT
+
+
+Vagrant.configure("2") do |config|
+  # Common config
+
+  # VM-specific config
+  3.times do |i|
+    config.vm.define("sensu-cluster#{i}") do |backend|
+      backend.vm.box = "centos/7" 
+      backend.vm.provision(
+        "shell",
+        inline: "cat /vagrant/demo.pub >> /home/vagrant/.ssh/authorized_keys"
+      )
+      backend.vm.hostname = "sensu-cluster#{i}"
+      backend.vm.network "private_network", ip: "192.168.50.2#{i}"
+      backend.vm.provider("virtualbox") do |v|
+        v.memory = 1024
+        v.cpus = 1
+      end
+    end
+  end
+
+
+  config.vm.define("loadbalance") do |loadbalance|
+    loadbalance.vm.provision(
+      "shell",
+      inline: $lscript 
+    )
+    loadbalance.vm.box = "hashicorp/bionic64" 
+    loadbalance.vm.hostname = "loadbalancer"
+    loadbalance.vm.network "private_network", ip: "192.168.50.30"
+    loadbalance.vm.network "forwarded_port", guest: 3000, host: 3000
+    loadbalance.vm.network "forwarded_port", guest: 8080, host: 8080
+
+    loadbalance.vm.provider("virtualbox") do |v|
+      v.memory = 1024
+      v.cpus = 1
+    end
+  end
+
+end

@@ -1,0 +1,7 @@
+---
+ansible_ssh_common_args: >
+  -o IdentitiesOnly=yes
+  -o BatchMode=yes
+  -o UserKnownHostsFile=/dev/null
+  -o StrictHostKeyChecking=no
+  -i demo

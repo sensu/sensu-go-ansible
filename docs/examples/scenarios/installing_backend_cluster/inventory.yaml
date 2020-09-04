@@ -1,0 +1,22 @@
+---
+all:
+  hosts: 
+    localhost:
+      ansible_connection: local
+  children:
+    backends:
+      hosts:
+        sensu-cluster0:
+          ansible_host: 192.168.50.20
+          ansible_user: vagrant
+        sensu-cluster1:
+          ansible_host: 192.168.50.21
+          ansible_user: vagrant
+        sensu-cluster2:
+          ansible_host: 192.168.50.22
+          ansible_user: vagrant
+    agents:
+      hosts:
+        sensu-cluster0:
+          ansible_host: 192.168.50.20
+          ansible_user: vagrant
