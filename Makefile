@@ -27,30 +27,24 @@ help:
 	@echo Available targets:
 	@fgrep "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sort
 
-.PHONY: requirements
-requirements:  ## Install development requirements
-	pip install \
-	  -r collection.requirements \
-	  -r sanity.requirements \
-	  -r units.requirements \
-	  -r integration.requirements \
-	  -r docs.requirements
-
 .PHONY: sanity
 sanity:  ## Run sanity tests
+	pip install -r sanity.requirements -r collection.requirements
 	flake8
-	ansible-lint -p roles/*
-	ansible-test sanity --python $(python_version)
+	if which ansible-lint 2> /dev/null; then ansible-lint -p roles/*; fi
+	ansible-test sanity --python $(python_version) --requirements
 	./tests/sanity/validate-role-metadata.py roles/*
 
 .PHONY: units
 units:  ## Run unit tests
+	pip install -r collection.requirements
 	-ansible-test coverage erase # On first run, there is nothing to erase.
-	ansible-test units --python $(python_version) --coverage
+	ansible-test units --python $(python_version) --coverage --requirements
 	ansible-test coverage html
 
 .PHONY: integration
 integration:  ## Run integration tests
+	pip install -r integration.requirements -r collection.requirements
 	$(MAKE) -C tests/integration $(CI)
 
 .PHONY: docs
@@ -60,3 +54,4 @@ docs:  ## Build collection documentation
 .PHONY: clean
 clean:  ## Remove all auto-generated files
 	$(MAKE) -C docs -f Makefile.custom clean
+	rm -rf tests/output
