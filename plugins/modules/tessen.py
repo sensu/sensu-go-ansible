@@ -26,7 +26,7 @@ description:
   - Enable or disable Tessen service.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/tessen/).
-version_added: "1.0"
+version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth
 options:

@@ -48,7 +48,7 @@ options:
             Sensu documentation at
             U(https://docs.sensu.io/sensu-go/latest/guides/use-apikey-feature/).
         type: str
-        version_added: "1.3"
+        version_added: 1.3.0
       verify:
         description:
           - Flag that controls the certificate validation.
@@ -61,7 +61,7 @@ options:
             environment variable.
         type: bool
         default: true
-        version_added: "1.5"
+        version_added: 1.5.0
       ca_path:
         description:
           - Path to the CA bundle that should be used to validate the backend
@@ -71,5 +71,5 @@ options:
           - It is also possible to set this parameter via the I(SENSU_CA_PATH)
             environment variable.
         type: path
-        version_added: "1.5"
+        version_added: 1.5.0
 """

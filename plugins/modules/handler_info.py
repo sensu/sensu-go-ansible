@@ -24,7 +24,7 @@ description:
   - Retrieve information about Sensu handlers.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/handlers/).
-version_added: "1.0"
+version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info

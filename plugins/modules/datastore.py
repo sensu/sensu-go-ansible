@@ -23,7 +23,7 @@ description:
   - Add or remove external datastore provider.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/datastore/).
-version_added: "1.1"
+version_added: 1.1.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.name

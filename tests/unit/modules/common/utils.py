@@ -6,10 +6,7 @@ import json
 from ansible.module_utils import basic
 from ansible.module_utils._text import to_bytes
 
-try:
-    from unittest.mock import patch  # Python 3
-except ImportError:
-    from mock import patch  # Python 2 needs mock package installed
+from mock import patch
 
 
 def set_module_args(**args):

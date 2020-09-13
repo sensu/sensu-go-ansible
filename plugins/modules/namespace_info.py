@@ -25,7 +25,7 @@ description:
   - Retrieve information about Sensu namespaces.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces).
-version_added: "1.0"
+version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth
 notes:
