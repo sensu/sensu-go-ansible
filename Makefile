@@ -14,9 +14,6 @@ else ifneq (ansible_collections,$(toplevel))
   $(error $(err_msg))
 endif
 
-# Make sure ansible can find our collection without having to install it.
-export ANSIBLE_COLLECTIONS_PATHS ?= $(realpath $(CURDIR)/../../..)
-
 python_version := $(shell \
   python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))' \
 )

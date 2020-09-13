@@ -4,9 +4,6 @@ actions   := $(wildcard molecule/action_*)
 misc      := $(wildcard molecule/misc_*)
 scenarios := $(modules) $(roles) $(actions) $(misc)
 
-# Make sure ansible can find our collection without having to install it.
-export ANSIBLE_COLLECTIONS_PATHS ?= $(realpath $(CURDIR)/../../../../..)
-
 
 .PHONY: all
 all: $(scenarios)
