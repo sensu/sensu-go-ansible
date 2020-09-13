@@ -5,8 +5,8 @@ platforms:
     pre_build_image: true
     pull: true
     groups: [ agents ]
-    capabilities:
-      - SYS_ADMIN
+    override_command: false
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
 

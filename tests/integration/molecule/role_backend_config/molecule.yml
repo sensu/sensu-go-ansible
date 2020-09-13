@@ -12,7 +12,3 @@ platforms:
     image: xlabsi/sensu-go-tests-centos:7
     pre_build_image: true
     pull: true
-    override_command: false
-    privileged: true
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
