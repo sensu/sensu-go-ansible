@@ -4,27 +4,39 @@ workflows:
   version: 2
   main_workflow:
     jobs:
-      - sanity_python27
-      - sanity_python38
-      - unit_python27_ansible29
-      - unit_python35_ansible29
-      - unit_python36_ansible29
-      - unit_python37_ansible29
-      - unit_python38_ansible29
+      - sanity_test:
+          matrix:
+            parameters:
+              # python parameter is a circleci/python image tag
+              python: [ "2.7", "3.6", "3.7", "3.8" ]
+              # ansible is PyPI version specification for Ansible
+              ansible: [ "2.9.*", "2.10.0b2" ]
 
-      - integration_ansible29_git:
-          requires: &reqs
-            - sanity_python27
-            - sanity_python38
-            - unit_python27_ansible29
-            - unit_python35_ansible29
-            - unit_python36_ansible29
-            - unit_python37_ansible29
-            - unit_python38_ansible29
+      - unit_test:
+          matrix:
+            parameters:
+              # python parameter is a circleci/python image tag
+              python: [ "2.7", "3.6", "3.7", "3.8" ]
+              # ansible is PyPI version specification for Ansible
+              ansible: [ "2.9.*", "2.10.0b2" ]
 
-      - integration_ansible29_galaxy:
+      - integration_test_git:
+          requires:
+            - sanity_test
+            - unit_test
+          matrix:
+            parameters:
+              # ansible is PyPI version specification for Ansible
+              ansible: [ "2.9.*", "2.10.0b2" ]
+
+      - integration_test_galaxy:
           filters: { branches: { only: [ stable ] } }
-          requires: *reqs
+          requires:
+            - integration_test_git
+          matrix:
+            parameters:
+              # ansible is PyPI version specification for Ansible
+              ansible: [ "2.9.*", "2.10.0b2" ]
 
   daily_master:
     triggers:
@@ -32,7 +44,11 @@ workflows:
           cron: "12 4 * * *"
           filters: { branches: { only: [ master ] } }
     jobs:
-      - integration_ansible29_git
+      - integration_test_git:
+          matrix:
+            parameters:
+              # ansible is PyPI version specification for Ansible
+              ansible: [ "2.9.*", "2.10.0b2" ]
 
   daily_released:
     triggers:
@@ -40,142 +56,126 @@ workflows:
           cron: "12 5 * * *"
           filters: { branches: { only: [ stable ] } }
     jobs:
-      - integration_ansible29_galaxy
+      - integration_test_galaxy:
+          matrix:
+            parameters:
+              # ansible is PyPI version specification for Ansible
+              ansible: [ "2.9.*", "2.10.0b2" ]
 
-# A list of all supported python versions.
-executors:
-  python27:
-    docker: [ { image: circleci/python:2.7 } ]
-    working_directory: &wd ~/ansible_collections/sensu/sensu_go
-
-  python35:
-    docker: [ { image: circleci/python:3.5 } ]
-    working_directory: *wd
-
-  python36:
-    docker: [ { image: circleci/python:3.6 } ]
-    working_directory: *wd
-
-  python37:
-    docker: [ { image: circleci/python:3.7 } ]
-    working_directory: *wd
-
-  python38:
-    docker: [ { image: circleci/python:3.8 } ]
-    working_directory: *wd
-
-# Matrix of tests that we run. At the moment, the only supported Ansible is
-# 2.9 because previous versions do not install ansible-test executable.
 jobs:
-  # Sanity test could run on python 3.8 only, but we also run them on python
-  # 2.7 just in case.
-  sanity_python27:
-    executor: python27
-    environment:
-      ANSIBLE_VERSION: &ansible29 ==2.9.*
-      TEST_KIND: sanity
-    steps: [ sanity_test ]
-
-  sanity_python38:
-    executor: python38
-    environment:
-      ANSIBLE_VERSION: &ansible29 ==2.9.*
-      TEST_KIND: sanity
-    steps: [ sanity_test ]
-
-  # Unit tests run on all supported python and Ansible versions.
-  unit_python27_ansible29:
-    executor: python27
-    environment:
-      ANSIBLE_VERSION: *ansible29
-      TEST_KIND: units
-    steps: [ unit_test ]
-
-  unit_python35_ansible29:
-    executor: python35
-    environment:
-      ANSIBLE_VERSION: *ansible29
-      TEST_KIND: units
-    steps: [ unit_test ]
-
-  unit_python36_ansible29:
-    executor: python36
-    environment:
-      ANSIBLE_VERSION: *ansible29
-      TEST_KIND: units
-    steps: [ unit_test ]
-
-  unit_python37_ansible29:
-    executor: python37
-    environment:
-      ANSIBLE_VERSION: *ansible29
-      TEST_KIND: units
-    steps: [ unit_test ]
-
-  unit_python38_ansible29:
-    executor: python38
-    environment:
-      ANSIBLE_VERSION: *ansible29
-      TEST_KIND: units
-    steps: [ unit_test ]
-
-  # Integration tests run on single python version, because python portability
-  # is checked by sanity and unit tests.
-  integration_ansible29_git:
-    executor: python37
-    environment:
-      ANSIBLE_VERSION: *ansible29
-      TEST_KIND: integration
-    parallelism: 8
-    steps: [ integration_test_git ]
-
-  integration_ansible29_galaxy:
-    executor: python37
-    environment:
-      ANSIBLE_VERSION: *ansible29
-      TEST_KIND: integration
-    parallelism: 8
-    steps: [ integration_test_galaxy ]
-
-commands:
-  # Composite commands (parametrized jobs)
   sanity_test:
-    description: Run sanity tests
+    parameters:
+      python:
+        description: Python docker image tag
+        type: string
+      ansible:
+        description: Ansible version to use
+        type: string
+    docker:
+      - image: "circleci/python:<< parameters.python >>"
+    working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
-      - common_setup
-      - run_test
+      - wrapper:
+          python: << parameters.python >>
+          ansible: << parameters.ansible >>
+          kind: sanity
+          test_commands:
+            - run: make sanity
 
   unit_test:
-    description: Run unit tests
+    parameters:
+      python:
+        description: Python docker image tag
+        type: string
+      ansible:
+        description: Ansible version to use
+        type: string
+    docker:
+      - image: "circleci/python:<< parameters.python >>"
+    working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
-      - common_setup
-      - run_test
-      - store_artifacts:
-          path: tests/output/reports/coverage
-          destination: coverage-report
-      - store_test_results:
-          path: tests/output/junit
+      - wrapper:
+          python: << parameters.python >>
+          ansible: << parameters.ansible >>
+          kind: sanity
+          test_commands:
+            - run: make units
+            - store_artifacts:
+                path: tests/output/reports/coverage
+                destination: coverage-report
+            - store_test_results:
+                path: tests/output/junit
 
   integration_test_git:
-    description: Run integration tests on git collection
+    parameters:
+      ansible:
+        description: Ansible version to use
+        type: string
+    docker:
+      - image: "circleci/python:3.8"
+    working_directory: ~/ansible_collections/sensu/sensu_go
+    parallelism: 4
     steps:
-      - common_setup
-      - setup_remote_docker
-      - run_test
+      - wrapper:
+          python: "3.8"
+          ansible: << parameters.ansible >>
+          kind: integration
+          test_commands:
+            - setup_remote_docker
+            - run: make integration
 
   integration_test_galaxy:
-    description: Run integration tests on galaxy collection
+    parallelism: 4
+    parameters:
+      ansible:
+        description: Ansible version to use
+        type: string
+    docker:
+      - image: "circleci/python:3.8"
+    working_directory: ~/sensu_go
     steps:
-      - common_setup
-      - setup_remote_docker
-      - install_galaxy_collection
-      - run_test
+      - wrapper:
+          python: "3.8"
+          ansible: << parameters.ansible >>
+          kind: integration
+          test_commands:
+            - setup_remote_docker
+            - run: |
+                ansible-galaxy collection install \
+                  sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
+            - run: |
+                cd tests/integration
+                make true
 
-  # Lower-level command implementations
-  common_setup:
-    description: Common steps for all jobs
+commands:
+  wrapper:
+    description: Wrapper command that takes care of venv caching
+    parameters:
+      python:
+        description: Python version (used for cache restore)
+        type: string
+      ansible:
+        description: Ansible version to install
+        type: string
+      kind:
+        description: Test kind (used to construct cache name)
+        type: string
+      test_commands:
+        description: Test commands to execute
+        type: steps
     steps:
       - checkout: { path: . }
+      - run:
+          name: Generate cache id file
+          command: |
+            rm -f cache-id.txt
+            echo "week $(date +%V)" >> cache-id.txt
+            echo "python << parameters.python >>" >> cache-id.txt
+            echo "ansible << parameters.ansible >>" >> cache-id.txt
+            echo "kind << parameters.kind >>" >> cache-id.txt
+            echo "cache busting string 0" >> cache-id.txt
+      - restore_cache:
+          key: '{{ checksum "cache-id.txt" }}'
       - run:
           name: Create virtual environment
           command: virtualenv ${HOME}/venv
@@ -185,27 +185,9 @@ commands:
             echo 'export PATH=${HOME}/venv/bin:$PATH' >> $BASH_ENV
       - run:
           name: Install Ansible
-          command: pip install "ansible${ANSIBLE_VERSION}"
-
-  install_galaxy_collection:
-    description: Install sensu_go collection from Ansible Galaxy
-    steps:
-      - run:
-          name: Set ANSIBLE_COLLECTIONS_PATHS
-          command: >
-            echo 'export ANSIBLE_COLLECTIONS_PATHS=${HOME}/.ansible/collections' >> $BASH_ENV
-      - run:
-          name: Install sensu_go collection
-          command: |
-            ansible-galaxy collection install \
-              sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
-
-  run_test:
-    description: Run selected test kind
-    steps:
-      - run:
-          name: Install requirements
-          command: pip install -r ${TEST_KIND}.requirements -r collection.requirements
-      - run:
-          name: Run test
-          command: make ${TEST_KIND}
+          command: pip install -U "ansible==<< parameters.ansible >>"
+      - steps: << parameters.test_commands >>
+      - save_cache:
+          key: '{{ checksum "cache-id.txt" }}'
+          paths:
+            - "~/venv"
