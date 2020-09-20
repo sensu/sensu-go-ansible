@@ -19,7 +19,8 @@ this collection is also available on `Automation Hub`_.
    :maxdepth: 2
    :caption: Using Sensu Go Ansible Collection
 
-   quickstart
+   quickstart-sensu-go-6
+   quickstart-sensu-go-5
    installation
 
 .. toctree::

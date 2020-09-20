@@ -7,6 +7,8 @@
     - name: Install backend
       include_role:
         name: sensu.sensu_go.backend
+      vars:
+        version: 6.0.0
 
 - name: Install, configure and run Sensu agents
   hosts: agents
@@ -17,34 +19,40 @@
       include_role:
         name: sensu.sensu_go.agent
       vars:
+        version: 6.0.0
         agent_config:
-          deregister: true
+          name: my-agent
           keepalive-interval: 5
           keepalive-timeout: 10
-          subscriptions:
-            - linux
 
 - name: Configure your first monitor
   hosts: localhost
-  collections:
-    - sensu.sensu_go
   tasks:
-    - name: Create sensu asset
-      bonsai_asset:
+    - name: Add subscriptions to agent entity
+      sensu.sensu_go.entity:
         auth: &auth
           url: http://{{ groups['backends'][0] }}:8080
+        name: my-agent
+        entity_class: agent
+        deregister: true
+        subscriptions:
+          - linux
+
+    - name: Create sensu asset
+      sensu.sensu_go.bonsai_asset:
+        auth: *auth
         name: sensu/monitoring-plugins
         version: 2.2.0-1
 
     - name: Create sensu ntp check
-      check:
+      sensu.sensu_go.check:
         auth: *auth
         name: ntp
         runtime_assets: sensu/monitoring-plugins
         command: check_ntp_time -H time.nist.gov --warn 0.5 --critical 1.0
         output_metric_format: nagios_perfdata
-        publish: true 
+        publish: true
         interval: 30
         timeout: 10
-        subscriptions: 
+        subscriptions:
           - linux
