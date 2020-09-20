@@ -23,6 +23,14 @@ this collection is also available on `Automation Hub`_.
    quickstart-sensu-go-5
    installation
 
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Guides
+
+   sensu_go_5_6_migration
+
+
 .. toctree::
    :maxdepth: 1
    :caption: References
