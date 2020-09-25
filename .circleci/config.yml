@@ -10,7 +10,7 @@ workflows:
               # python parameter is a circleci/python image tag
               python: [ "2.7", "3.6", "3.7", "3.8" ]
               # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.0b2" ]
+              ansible: [ "2.9.*", "2.10.*" ]
 
       - unit_test:
           matrix:
@@ -18,7 +18,7 @@ workflows:
               # python parameter is a circleci/python image tag
               python: [ "2.7", "3.6", "3.7", "3.8" ]
               # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.0b2" ]
+              ansible: [ "2.9.*", "2.10.*" ]
 
       - integration_test_git:
           requires:
@@ -27,7 +27,7 @@ workflows:
           matrix:
             parameters:
               # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.0b2" ]
+              ansible: [ "2.9.*", "2.10.*" ]
 
       - integration_test_galaxy:
           filters: { branches: { only: [ stable ] } }
@@ -36,7 +36,7 @@ workflows:
           matrix:
             parameters:
               # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.0b2" ]
+              ansible: [ "2.9.*", "2.10.*" ]
 
   daily_master:
     triggers:
@@ -48,7 +48,7 @@ workflows:
           matrix:
             parameters:
               # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.0b2" ]
+              ansible: [ "2.9.*", "2.10.*" ]
 
   daily_released:
     triggers:
@@ -60,7 +60,7 @@ workflows:
           matrix:
             parameters:
               # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.0b2" ]
+              ansible: [ "2.9.*", "2.10.*" ]
 
 jobs:
   sanity_test:
