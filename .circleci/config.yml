@@ -121,7 +121,8 @@ jobs:
           ansible: << parameters.ansible >>
           kind: integration
           test_commands:
-            - setup_remote_docker
+            - setup_remote_docker: &docker_version
+                version: 19.03.12
             - run: make integration
 
   integration_test_galaxy:
@@ -139,7 +140,7 @@ jobs:
           ansible: << parameters.ansible >>
           kind: integration
           test_commands:
-            - setup_remote_docker
+            - setup_remote_docker: *docker_version
             - run: |
                 ansible-galaxy collection install \
                   sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
