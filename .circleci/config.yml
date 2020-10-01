@@ -107,39 +107,39 @@ jobs:
                 path: tests/output/junit
 
   integration_test_git:
+    parallelism: 6
     parameters:
       ansible:
         description: Ansible version to use
         type: string
-    docker:
-      - image: "circleci/python:3.8"
+    machine:
+      image: ubuntu-2004:202010-01
     working_directory: ~/ansible_collections/sensu/sensu_go
-    parallelism: 4
     steps:
       - wrapper:
           python: "3.8"
           ansible: << parameters.ansible >>
           kind: integration
+          venv_cmd: python3 -m venv
           test_commands:
-            - setup_remote_docker
             - run: make integration
 
   integration_test_galaxy:
-    parallelism: 4
+    parallelism: 6
     parameters:
       ansible:
         description: Ansible version to use
         type: string
-    docker:
-      - image: "circleci/python:3.8"
+    machine:
+      image: ubuntu-2004:202010-01
     working_directory: ~/sensu_go
     steps:
       - wrapper:
           python: "3.8"
           ansible: << parameters.ansible >>
           kind: integration
+          venv_cmd: python3 -m venv
           test_commands:
-            - setup_remote_docker
             - run: |
                 ansible-galaxy collection install \
                   sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
@@ -163,6 +163,10 @@ commands:
       test_commands:
         description: Test commands to execute
         type: steps
+      venv_cmd:
+        description: Virtual environment creation command
+        type: string
+        default: virtualenv
     steps:
       - checkout: { path: . }
       - run:
@@ -173,12 +177,13 @@ commands:
             echo "python << parameters.python >>" >> cache-id.txt
             echo "ansible << parameters.ansible >>" >> cache-id.txt
             echo "kind << parameters.kind >>" >> cache-id.txt
+            echo "venv_cmd << parameters.venv_cmd >>" >> cache-id.txt
             echo "cache busting string 0" >> cache-id.txt
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
           name: Create virtual environment
-          command: virtualenv ${HOME}/venv
+          command: << parameters.venv_cmd >> ${HOME}/venv
       - run:
           name: Activate virtualenv
           command: |
