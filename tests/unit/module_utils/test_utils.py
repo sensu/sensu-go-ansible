@@ -135,6 +135,23 @@ class TestSync:
         client.put.assert_not_called()
 
 
+class TestSyncV1:
+    def test_parameter_passthrough(self, mocker):
+        sync_mock = mocker.patch.object(utils, "sync")
+        sync_mock.return_value = (True, {
+            "metadata": {"name": "test", "namespace": "space"},
+            "spec": {"key": "value"},
+        })
+
+        changed, object = utils.sync_v1("absent", "c", "/path", {}, False)
+
+        assert changed is True
+        assert {
+            "metadata": {"name": "test", "namespace": "space"},
+            "key": "value",
+        }
+
+
 class TestDoDiffer:
     def test_extra_keys_in_current_do_not_matter(self):
         assert utils.do_differ({"a": "b", "c": 3}, {"a": "b"}) is False
@@ -170,6 +187,55 @@ class TestDoDiffer:
 
     def test_ignore_keys_do_not_mask_other_differences(self):
         assert utils.do_differ(dict(a=1, b=1), dict(a=2, b=2), "a") is True
+
+
+class TestDoDifferV1:
+    def test_extra_keys_in_current_do_not_matter(self):
+        assert utils.do_differ_v1(
+            {"spec": {"a": "b", "c": 3}}, {"spec": {"a": "b"}},
+        ) is False
+
+    def test_detect_different_values(self):
+        assert utils.do_differ_v1(
+            {"spec": {"a": "b"}}, {"spec": {"a": "c"}},
+        ) is True
+
+    def test_detect_missing_keys_in_current(self):
+        assert utils.do_differ_v1(
+            {"spec": {"a": "b"}}, {"spec": {"c": "d"}},
+        ) is True
+
+    def test_desired_none_values_are_ignored(self):
+        assert utils.do_differ_v1(
+            {"spec": {"a": "b"}}, {"spec": {"c": None}},
+        ) is False
+
+    def test_metadata_ignores_created_by(self):
+        assert utils.do_differ_v1(
+            {"metadata": {"a": 1, "created_by": 2}},
+            {"metadata": {"a": 1}},
+        ) is False
+
+    def test_metadata_detects_change(self):
+        assert utils.do_differ_v1(
+            {"metadata": {"a": 1}}, {"metadata": {"a": 2}},
+        ) is True
+
+    def test_metadata_detects_change_in_presence_of_created_by(self):
+        assert utils.do_differ_v1(
+            {"metadata": {"a": 1, "created_by": 2}},
+            {"metadata": {"a": 2}},
+        ) is True
+
+    def test_ignore_keys_do_not_affect_the_outcome(self):
+        assert utils.do_differ_v1(
+            {"spec": {"a": 1}}, {"spec": {"a": 2}}, "a",
+        ) is False
+
+    def test_ignore_keys_do_not_mask_other_differences(self):
+        assert utils.do_differ_v1(
+            {"spec": {"a": 1, "b": 1}}, {"spec": {"a": 2, "b": 2}}, "a",
+        ) is True
 
 
 class TestGet:
