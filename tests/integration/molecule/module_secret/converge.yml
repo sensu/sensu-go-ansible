@@ -1,0 +1,171 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Make sure we start clean
+      sensu.sensu_go.secret_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is success
+          - result.objects | length == 0
+
+    - name: Create new secret (check mode)
+      sensu.sensu_go.secret: &secret
+        name: sample-secret
+        provider: env
+        id: MY_ENV_VAR
+      check_mode: true
+      register: result
+    - ansible.builtin.assert: &secret-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == 'sample-secret'
+          - result.object.id == 'MY_ENV_VAR'
+          - result.object.provider == 'env'
+
+    - name: Make sure things are still clean
+      sensu.sensu_go.secret_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Create new secret
+      sensu.sensu_go.secret: *secret
+      register: result
+    - ansible.builtin.assert: *secret-assertions
+
+    - name: Make sure secret is present on the backend
+      sensu.sensu_go.secret_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'sample-secret'
+          - result.objects.0.id == 'MY_ENV_VAR'
+          - result.objects.0.provider == 'env'
+
+    - name: Create new secret (idempotence)
+      sensu.sensu_go.secret: *secret
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Update existing secret (check mode)
+      sensu.sensu_go.secret: &update
+        name: sample-secret
+        id: MY_NEW_ENV_VAR
+        provider: env
+      check_mode: true
+      register: result
+    - ansible.builtin.assert: &update-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == 'sample-secret'
+          - result.object.id == 'MY_NEW_ENV_VAR'
+          - result.object.provider == 'env'
+
+    - name: Make sure secret did not change
+      sensu.sensu_go.secret_info:
+        name: sample-secret
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'sample-secret'
+          - result.objects.0.id == 'MY_ENV_VAR'
+          - result.objects.0.provider == 'env'
+
+    - name: Update existing secret
+      sensu.sensu_go.secret: *update
+      register: result
+    - ansible.builtin.assert: *update-assertions
+
+    - name: Make sure secret is updated
+      sensu.sensu_go.secret_info:
+        name: sample-secret
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'sample-secret'
+          - result.objects.0.id == 'MY_NEW_ENV_VAR'
+          - result.objects.0.provider == 'env'
+
+    - name: Update existing secret (idempotence)
+      sensu.sensu_go.secret: *update
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Create additional secret
+      sensu.sensu_go.secret:
+        name: additional-secret
+        provider: hashi-vault
+        id: secret/database#pass
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'additional-secret'
+          - result.object.id == 'secret/database#pass'
+          - result.object.provider == 'hashi-vault'
+
+    - name: Make sure we have two secrets now
+      sensu.sensu_go.secret_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 2
+
+    - name: Delete secret (check mode)
+      sensu.sensu_go.secret: &delete
+        name: sample-secret
+        state: absent
+      check_mode: true
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure we still have two secrets
+      sensu.sensu_go.secret_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 2
+
+    - name: Delete secret
+      sensu.sensu_go.secret: *delete
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Now we have only one secret
+      sensu.sensu_go.secret_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'additional-secret'
+
+    - name: And the sample-secret is no more
+      sensu.sensu_go.secret_info:
+        name: sample-secret
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Delete secret (idempotency)
+      sensu.sensu_go.secret: *delete
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is not changed

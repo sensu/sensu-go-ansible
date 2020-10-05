@@ -16,6 +16,7 @@ molecule/module_namespace 42.92
 molecule/module_pipe_handler 53.66
 molecule/module_role 68.01
 molecule/module_role_binding 74.62
+molecule/module_secret 76.00
 molecule/module_silence 68.81
 molecule/module_socket_handler 56.86
 molecule/module_tessen 38.23
