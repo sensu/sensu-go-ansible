@@ -62,6 +62,14 @@ SHARED_SPECS = dict(
         type="dict",
         default={},
     ),
+    secrets=dict(
+        type="list",
+        elements="dict",
+        options=dict(
+            name=dict(type="str", required=True),
+            secret=dict(type="str", required=True),
+        ),
+    ),
 )
 
 
