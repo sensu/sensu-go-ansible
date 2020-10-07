@@ -83,6 +83,13 @@ def get_spec_payload(source, *wanted_params):
     }
 
 
+def get_renamed_spec_payload(source, param_mapping):
+    return {
+        n: source[k] for k, n in param_mapping.items()
+        if source.get(k) is not None
+    }
+
+
 def get_mutation_payload(source, *wanted_params):
     payload = get_spec_payload(source, *wanted_params)
     payload["metadata"] = dict(

@@ -45,6 +45,27 @@ class TestGetSpecPayload:
         )
 
 
+class TestGetRenamedSpecPayload:
+    def test_no_mapping(self):
+        params = dict(
+            name="name",
+            key="value",
+        )
+        assert arguments.get_renamed_spec_payload(params, dict()) == dict()
+
+    def test_renamed_payload(self):
+        params = dict(
+            name="name",
+            key="value",
+        )
+        mapping = dict(
+            name="new_name",
+        )
+        assert arguments.get_renamed_spec_payload(params, mapping) == dict(
+            new_name="name",
+        )
+
+
 class TestGetMutationPayload:
     def test_name_only(self):
         params = dict(
