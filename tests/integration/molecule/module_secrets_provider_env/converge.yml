@@ -1,0 +1,127 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Fetch all secrets providers and verify the presence of the
+            default env provider
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1  # env provider is present by default
+          - result.objects.0.metadata.name == 'env'
+
+    - name: Check idempotence of env provider creation
+      sensu.sensu_go.secrets_provider_env: &create-provider
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Delete the default env secrets provider (check mode)
+      sensu.sensu_go.secrets_provider_env: &delete-provider
+        auth:
+          url: http://localhost:8080
+        state: absent
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure we didn't delete the env secrets provider in check mode
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+
+    - name: Delete the default env secrets provider
+      sensu.sensu_go.secrets_provider_env: *delete-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure env secrets provider was deleted
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: env
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects == []
+
+    - name: Delete a non-existent env secrets provider
+      sensu.sensu_go.secrets_provider_env:
+        auth:
+          url: http://localhost:8080
+        state: absent
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Fetch a non-existent secrets provider
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: env
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects == []
+
+    - name: Re-create the env secrets provider (check mode)
+      sensu.sensu_go.secrets_provider_env: *create-provider
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert: &create-provider-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == 'env'
+
+    - name: Make sure no secrets providers were created when running in check mode
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects == []
+
+    - name: Re-create the env secrets provider
+      sensu.sensu_go.secrets_provider_env: *create-provider
+      register: result
+
+    - ansible.builtin.assert: *create-provider-assertions
+
+    - name: Make sure env secrets provider was really created
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: env
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'env'

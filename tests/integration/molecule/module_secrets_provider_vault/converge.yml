@@ -1,0 +1,277 @@
+---
+- name: Pre-converge step - ensure presence of valid PEM files for TLS configuration
+  hosts: all
+  gather_facts: no
+  tasks:
+    # As part of configuring TLS for the vault secrets provider, we need
+    # to specify paths to CA cert and client cert/key files.
+    # If these files do not exist at the specified paths on SensuGo backend,
+    # or are not valid PEM files, the API returns error 500.
+    - name: Copy PEM files to Sensu backend
+      copy:
+        src: "files/{{ item }}"
+        dest: "/tmp/{{ item }}"
+        mode: 0744
+      loop:
+        - ca.crt
+        - client.crt
+        - client.key
+
+- name: Converge
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Fetch all secrets providers and verify the presence of the
+        default env provider
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1  # env provider is present by default
+          - result.objects.0.metadata.name == 'env'
+
+    - name: Fail when trying to create a vault provider with missing required params
+      sensu.sensu_go.secrets_provider_vault:
+        auth:
+          url: http://localhost:8080
+        name: my-vault
+      register: result
+      ignore_errors: true
+
+    - ansible.builtin.assert:
+        that:
+          - result is failed
+          - "'state is present but all of the following are missing' in result.msg"
+
+    - name: Create a vault provider with minimal params (check mode)
+      sensu.sensu_go.secrets_provider_vault: &create-provider
+        auth:
+          url: http://localhost:8080
+        name: my-vault
+        address: https://my-vault.com
+        token: VAULT_TOKEN
+        version: v1
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert: &create-provider-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == 'my-vault'
+          - result.object.client.address == 'https://my-vault.com'
+          - result.object.client.token == 'VAULT_TOKEN'
+          - result.object.client.version == 'v1'
+
+    - name: Make sure vault provider was not created when running in check mode
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'env'
+
+    - name: Create a vault provider with minimal params
+      sensu.sensu_go.secrets_provider_vault: *create-provider
+      register: result
+
+    - ansible.builtin.assert: *create-provider-assertions
+
+    - name: Make sure vault secrets provider was created
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: my-vault
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'my-vault'
+
+    - name: Idempotence check for vault provider creation with minimal params
+      sensu.sensu_go.secrets_provider_vault: *create-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Update vault secrets provider (check mode)
+      sensu.sensu_go.secrets_provider_vault: &update-provider
+        auth:
+          url: http://localhost:8080
+        name: my-vault
+        address: https://my-new-vault.com
+        token: ANOTHER_VAULT_TOKEN
+        version: v2
+        timeout: 5
+        max_retries: 1
+        rate_limit: 15.3
+        burst_limit: 50
+        tls:
+          ca_cert: /tmp/ca.crt
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert: &update-provider-assertions
+        that:
+          - result is changed
+          - result.object.client.address == 'https://my-new-vault.com'
+          - result.object.client.token == 'ANOTHER_VAULT_TOKEN'
+          - result.object.client.version == 'v2'
+          - result.object.client.timeout == '5s'
+          - result.object.client.max_retries == 1
+          - result.object.client.rate_limiter.limit == 15.3
+          - result.object.client.rate_limiter.burst == 50
+          - result.object.client.tls.ca_cert == '/tmp/ca.crt'
+
+    - name: Make sure vault secrets provider was not updated in check mode
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: my-vault
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects.0.metadata.name == 'my-vault'
+          - result.objects.0.client.address == 'https://my-vault.com'
+          - result.objects.0.client.token == 'VAULT_TOKEN'
+          - result.objects.0.client.version == 'v1'
+          - result.objects.0.client.tls == None
+
+    - name: Update vault secrets provider
+      sensu.sensu_go.secrets_provider_vault: *update-provider
+      register: result
+
+    - ansible.builtin.assert: *update-provider-assertions
+
+    - name: Make sure vault secrets provider was updated
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: my-vault
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects.0.client.address == 'https://my-new-vault.com'
+          - result.objects.0.client.token == 'ANOTHER_VAULT_TOKEN'
+          - result.objects.0.client.version == 'v2'
+          - result.objects.0.client.timeout == '5s'
+          - result.objects.0.client.max_retries == 1
+          - result.objects.0.client.rate_limiter.limit == 15.3
+          - result.objects.0.client.rate_limiter.burst == 50
+          - result.objects.0.client.tls.ca_cert == '/tmp/ca.crt'
+
+    - name: Idempotence check for vault provider modification
+      sensu.sensu_go.secrets_provider_vault:  *update-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Create a vault secrets provider with all params
+      sensu.sensu_go.secrets_provider_vault: &create-provider-all-params
+        auth:
+          url: http://localhost:8080
+        name: my-other-vault
+        address: https://my-other-vault.com
+        token: OTHER_VAULT_TOKEN
+        version: v1
+        timeout: 30
+        max_retries: 1
+        rate_limit: 5.2
+        burst_limit: 90
+        tls:
+          ca_cert: /tmp/ca.crt
+          client_cert: /tmp/client.crt
+          client_key: /tmp/client.key
+          cname: my-vault.com
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'my-other-vault'
+          - result.object.client.address == 'https://my-other-vault.com'
+          - result.object.client.token == 'OTHER_VAULT_TOKEN'
+          - result.object.client.version == 'v1'
+          - result.object.client.timeout == '30s'
+          - result.object.client.max_retries == 1
+          - result.object.client.rate_limiter.limit == 5.2
+          - result.object.client.rate_limiter.burst == 90
+          - result.object.client.tls.ca_cert == '/tmp/ca.crt'
+          - result.object.client.tls.client_cert == '/tmp/client.crt'
+          - result.object.client.tls.client_key == '/tmp/client.key'
+          - result.object.client.tls.cname == 'my-vault.com'
+
+    - name: Idempotence check for vault provider creation with all params
+      sensu.sensu_go.secrets_provider_vault: *create-provider-all-params
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Delete a vault secrets provider (check mode)
+      sensu.sensu_go.secrets_provider_vault: &delete-provider
+        auth:
+          url: http://localhost:8080
+        name: my-vault
+        state: absent
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure vault secrets provider was not deleted when running in check mode
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: my-vault
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+
+    - name: Delete a vault secrets provider
+      sensu.sensu_go.secrets_provider_vault: *delete-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure vault secrets provider was deleted
+      sensu.sensu_go.secrets_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: my-vault
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects == []
+
+    - name: Delete a non-existent vault secrets provider
+      sensu.sensu_go.secrets_provider_vault:
+        auth:
+          url: http://localhost:8080
+        name: i-dont-exist
+        state: absent
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
