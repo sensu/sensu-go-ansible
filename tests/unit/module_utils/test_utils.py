@@ -411,3 +411,52 @@ class TestConvertV1ToV2Response:
             metadata=dict(name="sample"),
             spec=dict(a=1, b=2),
         )) == dict(metadata=dict(name="sample"), a=1, b=2)
+
+
+class TestDoSecretsDiffer:
+    @pytest.mark.parametrize("current,desired", [
+        (  # All empty
+            [], [],
+        ),
+        (  # All is equal
+            [dict(name="a", secret="1"), dict(name="b", secret="2")],
+            [dict(name="a", secret="1"), dict(name="b", secret="2")],
+        ),
+        (  # Different order
+            [dict(name="a", secret="1"), dict(name="b", secret="2")],
+            [dict(name="b", secret="2"), dict(name="a", secret="1")],
+        ),
+    ])
+    def test_no_difference(self, current, desired):
+        assert utils.do_secrets_differ(
+            dict(secrets=current), dict(secrets=desired),
+        ) is False
+
+    @pytest.mark.parametrize("current,desired", [
+        (  # Different source for variable b
+            [dict(name="b", secret="2")], [dict(name="b", secret="3")],
+        ),
+        (  # Different name
+            [dict(name="a", secret="1")], [dict(name="b", secret="1")],
+        ),
+        (  # Different number of secrets
+            [dict(name="a", secret="1"), dict(name="b", secret="2")],
+            [dict(name="a", secret="1")],
+        ),
+    ])
+    def test_difference(self, current, desired):
+        assert utils.do_secrets_differ(
+            dict(secrets=current), dict(secrets=desired),
+        ) is True
+
+    @pytest.mark.parametrize("secrets,diff", [
+        # Missing secrets and empty list are the same
+        ([], False),
+        # None secrets are treated as empy list of secrets
+        (None, False),
+        # If anything is set, we have difference
+        ([dict(name="n", secret="s")], True),
+    ])
+    def test_missing_secrets(self, secrets, diff):
+        assert utils.do_secrets_differ(dict(), dict(secrets=secrets)) is diff
+        assert utils.do_secrets_differ(dict(secrets=secrets), dict()) is diff

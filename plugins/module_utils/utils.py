@@ -157,3 +157,11 @@ def convert_v1_to_v2_response(response):
 
     # Move metadata key into the spec.
     return dict(response["spec"], metadata=response["metadata"])
+
+
+def do_secrets_differ(current, desired):
+    return {
+        (c["name"], c["secret"]) for c in (current.get("secrets") or [])
+    } != {
+        (d["name"], d["secret"]) for d in (desired.get("secrets") or [])
+    }
