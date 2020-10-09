@@ -35,6 +35,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+  - sensu.sensu_go.secrets
 seealso:
   - module: check_info
 options:
@@ -287,8 +288,9 @@ def do_differ(current, desired):
         utils.do_differ(
             current, desired, 'proxy_requests', 'subscriptions', 'handlers',
             'runtime_assets', 'check_hooks', 'output_metric_handlers',
-            'env_vars',
+            'env_vars', 'secrets',
         ) or
+        utils.do_secrets_differ(current, desired) or
         do_proxy_requests_differ(current, desired) or
         do_sets_differ(current, desired, 'subscriptions') or
         do_sets_differ(current, desired, 'handlers') or
@@ -314,6 +316,7 @@ def build_api_payload(params):
         'publish',
         'round_robin',
         'runtime_assets',
+        'secrets',
         'stdin',
         'subscriptions',
         'timeout',
@@ -348,6 +351,7 @@ def main():
         argument_spec=dict(
             arguments.get_spec(
                 "auth", "name", "state", "labels", "annotations", "namespace",
+                "secrets",
             ),
             command=dict(),
             subscriptions=dict(

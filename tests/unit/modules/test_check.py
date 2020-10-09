@@ -161,6 +161,40 @@ class TestDoDiffer:
             )
         )
 
+    @pytest.mark.parametrize("current,desired", [
+        (  # No diff in params, no secrets
+            dict(name="demo"),
+            dict(name="demo"),
+        ),
+        (  # No diff in params, no diff in secrets
+            dict(name="demo", secrets=[
+                dict(name="n1", secret="s1"), dict(name="n2", secret="s2"),
+            ]),
+            dict(name="demo", secrets=[
+                dict(name="n2", secret="s2"), dict(name="n1", secret="s1"),
+            ]),
+        ),
+    ])
+    def test_no_difference_secrets(self, current, desired):
+        assert check.do_differ(current, desired) is False
+
+    @pytest.mark.parametrize("current,desired", [
+        (  # Diff in params, no diff in secrets
+            dict(name="demo", secrets=[dict(name="a", secret="1")]),
+            dict(name="prod", secrets=[dict(name="a", secret="1")]),
+        ),
+        (  # No diff in params, missing and set secrets
+            dict(name="demo", secrets=[dict(name="a", secret="1")]),
+            dict(name="demo", secrets=[dict(name="b", secret="2")]),
+        ),
+        (  # Diff in params, missing and set secrets
+            dict(name="demo", secrets=[dict(name="a", secret="1")]),
+            dict(name="prod", secrets=[dict(name="b", secret="2")]),
+        ),
+    ])
+    def test_difference_secrets(self, current, desired):
+        assert check.do_differ(current, desired) is True
+
 
 class TestSensuGoCheck(ModuleTestCase):
     def test_minimal_check_parameters(self, mocker):
@@ -217,7 +251,8 @@ class TestSensuGoCheck(ModuleTestCase):
             output_metric_handlers=['influx-db'],
             round_robin=True,
             env_vars=dict(foo='bar'),
-            runtime_assets='awesomeness'
+            runtime_assets='awesomeness',
+            secrets=[dict(name="a", secret="b")],
         )
 
         with pytest.raises(AnsibleExitJson):
@@ -250,6 +285,7 @@ class TestSensuGoCheck(ModuleTestCase):
                 name="test_check",
                 namespace="my",
             ),
+            secrets=[dict(name="a", secret="b")],
         )
         assert check_mode is False
 
