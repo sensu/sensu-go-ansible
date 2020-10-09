@@ -13,6 +13,42 @@ from .common.utils import (
 )
 
 
+class TestDoDiffer:
+    @pytest.mark.parametrize("current,desired", [
+        (  # No diff in params, no secrets
+            dict(name="demo"),
+            dict(name="demo"),
+        ),
+        (  # No diff in params, no diff in secrets
+            dict(name="demo", secrets=[
+                dict(name="n1", secret="s1"), dict(name="n2", secret="s2"),
+            ]),
+            dict(name="demo", secrets=[
+                dict(name="n2", secret="s2"), dict(name="n1", secret="s1"),
+            ]),
+        ),
+    ])
+    def test_no_difference(self, current, desired):
+        assert pipe_handler.do_differ(current, desired) is False
+
+    @pytest.mark.parametrize("current,desired", [
+        (  # Diff in params, no diff in secrets
+            dict(name="demo", secrets=[dict(name="a", secret="1")]),
+            dict(name="prod", secrets=[dict(name="a", secret="1")]),
+        ),
+        (  # No diff in params, missing and set secrets
+            dict(name="demo", secrets=[dict(name="a", secret="1")]),
+            dict(name="demo", secrets=[dict(name="b", secret="2")]),
+        ),
+        (  # Diff in params, missing and set secrets
+            dict(name="demo", secrets=[dict(name="a", secret="1")]),
+            dict(name="prod", secrets=[dict(name="b", secret="2")]),
+        ),
+    ])
+    def test_difference(self, current, desired):
+        assert pipe_handler.do_differ(current, desired) is True
+
+
 class TestPipeHandler(ModuleTestCase):
     def test_minimal_pipe_handler_parameters(self, mocker):
         sync_mock = mocker.patch.object(utils, "sync")
@@ -25,7 +61,7 @@ class TestPipeHandler(ModuleTestCase):
         with pytest.raises(AnsibleExitJson):
             pipe_handler.main()
 
-        state, _client, path, payload, check_mode = sync_mock.call_args[0]
+        state, _client, path, payload, check_mode, _d = sync_mock.call_args[0]
         assert state == "present"
         assert path == "/api/core/v2/namespaces/default/handlers/test_handler"
         assert payload == dict(
@@ -50,13 +86,14 @@ class TestPipeHandler(ModuleTestCase):
             mutator='only_check_output',
             timeout=30,
             env_vars=dict(foo='bar'),
-            runtime_assets='awesomeness'
+            runtime_assets='awesomeness',
+            secrets=[dict(name="a", secret="b")],
         )
 
         with pytest.raises(AnsibleExitJson):
             pipe_handler.main()
 
-        state, _client, path, payload, check_mode = sync_mock.call_args[0]
+        state, _client, path, payload, check_mode, _d = sync_mock.call_args[0]
         assert state == "absent"
         assert path == "/api/core/v2/namespaces/my/handlers/test_handler"
         assert payload == dict(
@@ -71,6 +108,7 @@ class TestPipeHandler(ModuleTestCase):
                 name="test_handler",
                 namespace="my",
             ),
+            secrets=[dict(name="a", secret="b")],
         )
         assert check_mode is False
 

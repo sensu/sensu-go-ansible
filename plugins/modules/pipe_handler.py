@@ -32,6 +32,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
+  - sensu.sensu_go.secrets
 seealso:
   - module: socket_handler
   - module: handler_info
@@ -98,6 +99,13 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
 )
 
 
+def do_differ(current, desired):
+    return (
+        utils.do_differ(current, desired, "secrets") or
+        utils.do_secrets_differ(current, desired)
+    )
+
+
 def main():
     required_if = [
         ('state', 'present', ['command'])
@@ -108,6 +116,7 @@ def main():
         argument_spec=dict(
             arguments.get_spec(
                 "auth", "name", "state", "labels", "annotations", "namespace",
+                "secrets",
             ),
             command=dict(),
             filters=dict(
@@ -131,7 +140,8 @@ def main():
         module.params['namespace'], 'handlers', module.params['name'],
     )
     payload = arguments.get_mutation_payload(
-        module.params, 'command', 'filters', 'mutator', 'timeout', 'runtime_assets'
+        module.params, 'command', 'filters', 'mutator', 'timeout',
+        'runtime_assets', 'secrets',
     )
     payload['type'] = 'pipe'
     if module.params['env_vars']:
@@ -140,6 +150,7 @@ def main():
     try:
         changed, handler = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,
+            do_differ,
         )
         module.exit_json(changed=changed, object=handler)
     except errors.Error as e:
