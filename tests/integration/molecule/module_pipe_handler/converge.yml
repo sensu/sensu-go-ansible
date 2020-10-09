@@ -31,7 +31,7 @@
         that: result is not changed
 
     - name: Create pipe handler
-      pipe_handler:
+      pipe_handler: &handler
         auth:
           url: http://localhost:8080
         name: handler
@@ -47,6 +47,9 @@
           INFLUXDB_PASS: password
         runtime_assets:
           - sensu-influxdb-handler
+        secrets:
+          - name: test
+            secret: value
       register: result
 
     - debug:
@@ -61,24 +64,10 @@
           - result.object.filters == ['occurances', 'production']
           - result.object.runtime_assets == ['sensu-influxdb-handler']
           - result.object.metadata.name == 'handler'
+          - "result.object.secrets == [{'name': 'test', 'secret': 'value'}]"
 
     - name: Test pipe handler creation idempotence
-      pipe_handler:
-        auth:
-          url: http://localhost:8080
-        name: handler
-        command: sensu-influxdb-handler
-        mutator: mutate_input
-        timeout: 30
-        filters:
-          - occurances
-          - production
-        env_vars:
-          INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
-          INFLUXDB_USER: sensu
-          INFLUXDB_PASS: password
-        runtime_assets:
-          - sensu-influxdb-handler
+      pipe_handler: *handler
       register: result
 
     - assert:
