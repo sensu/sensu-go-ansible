@@ -77,6 +77,9 @@
         name: mutator
         command: sensu-influxdb-mutator
         timeout: 60
+        secrets:
+          - name: test
+            secret: value
       register: result
 
     - assert:
@@ -84,6 +87,7 @@
           - result is changed
           - not result.object.env_vars
           - not result.object.runtime_assets
+          - "result.object.secrets == [{'name': 'test', 'secret': 'value'}]"
 
     - name: Create a second mutator
       mutator:
