@@ -84,8 +84,13 @@
             
               <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart-sensu-go-6.html">Quickstart for Sensu Go 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart-sensu-go-5.html">Quickstart for Sensu Go 5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sensu_go_5_6_migration.html">Updating playbooks for Sensu Go 6</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul class="current">
@@ -130,6 +135,11 @@
 <li class="toctree-l3"><a class="reference internal" href="role_binding.html">role_binding – Manage Sensu role bindings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="role_binding_info.html">role_binding_info – List Sensu role bindings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="role_info.html">role_info – List Sensu roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secret.html">secret – Manage Sensu Go secrets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secret_info.html">secret_info – List available Sensu Go secrets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secrets_provider_env.html">secrets_provider_env – Manage Sensu Env secrets provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secrets_provider_info.html">secrets_provider_info – List Sensu secrets providers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secrets_provider_vault.html">secrets_provider_vault – Manage Sensu VaultProvider secrets providers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
@@ -345,6 +355,23 @@
 <div class="line-block">
 <div class="line"><strong>type</strong>: list</div>
 </div>
+</dd>
+<dt>secrets (optional)</dt><dd><p>List of secrets that are available to the command.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: list</div>
+</div>
+<dl>
+<dt>name (required)</dt><dd><p>Variable name that will contain the sensitive data.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>secret (required)</dt><dd><p>Name of the secret that contains sensitive data.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+</dl>
 </dd>
 <dt>state (optional)</dt><dd><p>Target state of the Sensu object.</p>
 <div class="line-block">

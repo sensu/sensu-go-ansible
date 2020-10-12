@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quickstart &mdash; Sensu Go Ansible Collection  documentation</title>
+  <title>Quickstart for Sensu Go 6 &mdash; Sensu Go Ansible Collection  documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="next" title="Quickstart for Sensu Go 5" href="quickstart-sensu-go-5.html" />
     <link rel="prev" title="Sensu Go Ansible Collection" href="index.html" /> 
 </head>
 
@@ -84,8 +84,13 @@
             
               <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart for Sensu Go 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-sensu-go-5.html">Quickstart for Sensu Go 5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sensu_go_5_6_migration.html">Updating playbooks for Sensu Go 6</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -145,14 +150,14 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Quickstart</li>
+      <li>Quickstart for Sensu Go 6</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/quickstart.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/quickstart-sensu-go-6.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -166,15 +171,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="quickstart">
-<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="quickstart-for-sensu-go-6">
+<h1>Quickstart for Sensu Go 6<a class="headerlink" href="#quickstart-for-sensu-go-6" title="Permalink to this headline">¶</a></h1>
 <p>Before we can do anything, we need to install Sensu Go Ansible Collection.
 Luckily, we are just one short command away from that goal:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-galaxy collection install sensu.sensu_go
 </pre></div>
 </div>
 <p>Now we can set up a simple Sensu Go sandbox using the following
-<a class="reference download internal" download="" href="_downloads/61f4727dd27a65f4ea3f7227d307362a/playbook.yaml"><code class="xref download docutils literal notranslate"><span class="pre">playbook</span></code></a>:</p>
+<a class="reference download internal" download="" href="_downloads/1fa79d8369e435b943985296e3076cb0/playbook-6.yaml"><code class="xref download docutils literal notranslate"><span class="pre">playbook</span></code></a>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu backend</span>
   <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">backends</span>
@@ -184,6 +189,8 @@ Luckily, we are just one short command away from that goal:</p>
     <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install backend</span>
       <span class="nt">include_role</span><span class="p">:</span>
         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.backend</span>
+      <span class="nt">vars</span><span class="p">:</span>
+        <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6.0.0</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu agents</span>
   <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agents</span>
@@ -194,36 +201,42 @@ Luckily, we are just one short command away from that goal:</p>
       <span class="nt">include_role</span><span class="p">:</span>
         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.agent</span>
       <span class="nt">vars</span><span class="p">:</span>
+        <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6.0.0</span>
         <span class="nt">agent_config</span><span class="p">:</span>
-          <span class="nt">deregister</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-agent</span>
           <span class="nt">keepalive-interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
           <span class="nt">keepalive-timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-          <span class="nt">subscriptions</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">linux</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Configure your first monitor</span>
   <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
-  <span class="nt">collections</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go</span>
   <span class="nt">tasks</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create sensu asset</span>
-      <span class="nt">bonsai_asset</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Add subscriptions to agent entity</span>
+      <span class="nt">sensu.sensu_go.entity</span><span class="p">:</span>
         <span class="nt">auth</span><span class="p">:</span> <span class="nl">&amp;auth</span>
           <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://{{ groups[&#39;backends&#39;][0] }}:8080</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-agent</span>
+        <span class="nt">entity_class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agent</span>
+        <span class="nt">deregister</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+        <span class="nt">subscriptions</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">linux</span>
+
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create sensu asset</span>
+      <span class="nt">sensu.sensu_go.bonsai_asset</span><span class="p">:</span>
+        <span class="nt">auth</span><span class="p">:</span> <span class="nv">*auth</span>
         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu/monitoring-plugins</span>
         <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2.2.0-1</span>
 
     <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create sensu ntp check</span>
-      <span class="nt">check</span><span class="p">:</span>
+      <span class="nt">sensu.sensu_go.check</span><span class="p">:</span>
         <span class="nt">auth</span><span class="p">:</span> <span class="nv">*auth</span>
         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ntp</span>
         <span class="nt">runtime_assets</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu/monitoring-plugins</span>
         <span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check_ntp_time -H time.nist.gov --warn 0.5 --critical 1.0</span>
         <span class="nt">output_metric_format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nagios_perfdata</span>
-        <span class="nt">publish</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span> 
+        <span class="nt">publish</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
         <span class="nt">interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
         <span class="nt">timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-        <span class="nt">subscriptions</span><span class="p">:</span> 
+        <span class="nt">subscriptions</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">linux</span>
 </pre></div>
 </div>
@@ -250,9 +263,8 @@ only two hosts will look somewhat like this:</p>
 <p>Replace the IP addresses with your own and make sure you can ssh into those
 hosts. If you need help with building your inventory file, consult <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html">official
 documentation on inventory</a>.</p>
-<p>All that we need to do now is to
-run the playbook:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-playbook -i inventory.yaml playbook.yaml
+<p>All that we need to do now is to run the playbook:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-playbook -i inventory.yaml playbook-6.yaml
 </pre></div>
 </div>
 <p>And in a few minutes, things should be ready to go. And if we now visit
@@ -268,7 +280,7 @@ backend), we can log in and start exploring.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="quickstart-sensu-go-5.html" class="btn btn-neutral float-right" title="Quickstart for Sensu Go 5" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Sensu Go Ansible Collection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

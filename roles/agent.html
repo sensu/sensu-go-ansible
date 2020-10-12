@@ -84,8 +84,13 @@
             
               <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart-sensu-go-6.html">Quickstart for Sensu Go 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart-sensu-go-5.html">Quickstart for Sensu Go 5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sensu_go_5_6_migration.html">Updating playbooks for Sensu Go 6</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul class="current">
@@ -192,7 +197,7 @@
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.agent</span>
   <span class="nt">vars</span><span class="p">:</span>
     <span class="nt">agent_config</span><span class="p">:</span>
-      <span class="nt">backend-url</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">ws</span><span class="p p-Indicator">:</span><span class="nv">//upstream-backend</span><span class="p p-Indicator">:</span><span class="nv">4321</span> <span class="p p-Indicator">]</span>
+      <span class="nt">backend-url</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="s">&quot;ws://upstream-backend:4321&quot;</span> <span class="p p-Indicator">]</span>
 </pre></div>
 </div>
 <p>This playbook will install the latest stable version of the Sensu Go agent

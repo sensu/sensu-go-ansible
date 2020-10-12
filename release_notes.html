@@ -83,8 +83,13 @@
             
               <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-sensu-go-6.html">Quickstart for Sensu Go 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart-sensu-go-5.html">Quickstart for Sensu Go 5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sensu_go_5_6_migration.html">Updating playbooks for Sensu Go 6</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -98,6 +103,7 @@
 <p class="caption"><span class="caption-text">Appendices</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-6-0-our-little-secret">Version 1.6.0 – Our little secret</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-5-0-self-signed-security">Version 1.5.0 – Self-signed security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-4-2-break-the-fall">Version 1.4.2 – Break the fall</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-4-1-maintenance-is-the-name-of-the-game">Version 1.4.1 – Maintenance is the name of the game</a></li>
@@ -179,6 +185,20 @@
             
   <div class="section" id="release-notes">
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-6-0-our-little-secret">
+<h2>Version 1.6.0 – Our little secret<a class="headerlink" href="#version-1-6-0-our-little-secret" title="Permalink to this headline">¶</a></h2>
+<p>This release contains a few new modules that allow you to manage all things
+related to the Sensu Go secrets: from adding secrets providers to passing
+secrets to resources that know how to use them.</p>
+<p><strong>New features:</strong></p>
+<ul class="simple">
+<li><p>Add modules for managing Sensu Go secret providers.</p></li>
+<li><p>Add modules for managing Sensu Go secrets.</p></li>
+<li><p>Add support for secrets to pipe handler module.</p></li>
+<li><p>Add support for secrets to check module.</p></li>
+<li><p>Add support for secrets to mutator module.</p></li>
+</ul>
+</div>
 <div class="section" id="version-1-5-0-self-signed-security">
 <h2>Version 1.5.0 – Self-signed security<a class="headerlink" href="#version-1-5-0-self-signed-security" title="Permalink to this headline">¶</a></h2>
 <p>The primary focus of this release is to enable configuration of Sensu Go

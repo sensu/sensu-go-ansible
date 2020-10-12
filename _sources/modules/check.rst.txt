@@ -291,6 +291,22 @@ runtime_assets (optional)
 
   | **type**: list
 
+secrets (optional)
+  List of secrets that are available to the command.
+
+  | **type**: list
+
+  name (required)
+    Variable name that will contain the sensitive data.
+
+    | **type**: str
+
+  secret (required)
+    Name of the secret that contains sensitive data.
+
+    | **type**: str
+
+
 state (optional)
   Target state of the Sensu object.
 
