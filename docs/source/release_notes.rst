@@ -1,6 +1,22 @@
 Release notes
 =============
 
+Version 1.6.0 -- Our little secret
+----------------------------------
+
+This release contains a few new modules that allow you to manage all things
+related to the Sensu Go secrets: from adding secrets providers to passing
+secrets to resources that know how to use them.
+
+**New features:**
+
+* Add modules for managing Sensu Go secret providers.
+* Add modules for managing Sensu Go secrets.
+* Add support for secrets to pipe handler module.
+* Add support for secrets to check module.
+* Add support for secrets to mutator module.
+
+
 Version 1.5.0 -- Self-signed security
 -------------------------------------
 
