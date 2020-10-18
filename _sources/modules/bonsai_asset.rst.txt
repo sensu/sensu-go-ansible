@@ -10,6 +10,8 @@ Create or update a Sensu Go asset whose definition is available in the Bonsai, t
 For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/assets/ and https://bonsai.sensu.io/
 
 
+.. versionadded:: 1.0.0
+
 
 
 Examples

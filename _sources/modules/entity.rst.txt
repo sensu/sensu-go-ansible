@@ -10,6 +10,8 @@ Create, update or delete Sensu entity.
 For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/entities/.
 
 
+.. versionadded:: 1.0.0
+
 
 
 Examples

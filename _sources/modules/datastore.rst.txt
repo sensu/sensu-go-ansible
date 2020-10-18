@@ -10,6 +10,8 @@ Add or remove external datastore provider.
 For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/datastore/.
 
 
+.. versionadded:: 1.1.0
+
 
 
 Examples

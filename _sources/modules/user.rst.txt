@@ -10,6 +10,8 @@ Create, update, activate or deactivate Sensu user.
 For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/rbac/#users.
 
 
+.. versionadded:: 1.0.0
+
 Requirements
 ------------
 

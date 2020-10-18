@@ -10,6 +10,8 @@ Send a synthetic event to Sensu.
 For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/events/.
 
 
+.. versionadded:: 1.0.0
+
 
 
 Examples
