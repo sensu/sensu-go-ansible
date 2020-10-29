@@ -10,41 +10,41 @@ scenario:
 
 platforms:
   - name: centos-6
-    image: xlabsi/sensu-go-tests-centos:6
+    image: quay.io/xlab-steampunk/sensu-go-tests-centos:6
     pre_build_image: true
     pull: true
 
   - name: centos-8
-    image: xlabsi/sensu-go-tests-centos:8
+    image: quay.io/xlab-steampunk/sensu-go-tests-centos:8
     pre_build_image: true
     pull: true
 
   - name: redhat-7
-    image: xlabsi/sensu-go-tests-redhat:7
+    image: quay.io/xlab-steampunk/sensu-go-tests-redhat:7
     pre_build_image: true
     pull: true
 
   - name: debian-9
-    image: xlabsi/sensu-go-tests-debian:9
+    image: quay.io/xlab-steampunk/sensu-go-tests-debian:9
     pre_build_image: true
     pull: true
 
   - name: debian-10
-    image: xlabsi/sensu-go-tests-debian:10
+    image: quay.io/xlab-steampunk/sensu-go-tests-debian:10
     pre_build_image: true
     pull: true
 
   - name: ubuntu-14.04
-    image: xlabsi/sensu-go-tests-ubuntu:14.04
+    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:14.04
     pre_build_image: true
     pull: true
 
   - name: ubuntu-16.04
-    image: xlabsi/sensu-go-tests-ubuntu:16.04
+    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:16.04
     pre_build_image: true
     pull: true
 
   - name: ubuntu-18.04
-    image: xlabsi/sensu-go-tests-ubuntu:18.04
+    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:18.04
     pre_build_image: true
     pull: true

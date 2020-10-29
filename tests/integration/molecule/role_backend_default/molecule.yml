@@ -11,7 +11,7 @@ scenario:
 
 platforms:
   - name: centos
-    image: xlabsi/sensu-go-tests-centos:7
+    image: quay.io/xlab-steampunk/sensu-go-tests-centos:7
     pre_build_image: true
     pull: true
     override_command: false

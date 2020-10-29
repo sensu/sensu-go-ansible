@@ -16,4 +16,4 @@ To build and publish our image, we can run the *docker/build.sh* script::
 
 Note that the command will add a *sensu-go-tests-* prefix to all images. In
 the previous example, the build script will build the
-*xlabsi/sensu-go-tests-sensu:5.21.0* image.
+*quay.io/xlab-steampunk/sensu-go-tests-sensu:5.21.0* image.
