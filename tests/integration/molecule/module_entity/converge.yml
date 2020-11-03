@@ -126,7 +126,6 @@
         that:
           - result is changed
           - result.object.entity_class == 'some_class'
-          - not result.object.subscriptions
 
     - name: Create a second entity
       entity:

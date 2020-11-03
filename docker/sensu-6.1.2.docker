@@ -1,4 +1,4 @@
-FROM sensu/sensu:5.21.1
+FROM sensu/sensu:6.1.2
 RUN apk update \
     && apk add --no-cache python sudo bash ca-certificates \
                           py-bcrypt py-six py-cffi
