@@ -39,6 +39,27 @@ class TestDoDiffer:
             dict(system=dict(a=2)),
         ) is True
 
+    @pytest.mark.parametrize("current,desired", [
+        ([], None), ([], []),
+        (["a"], ["a"]),
+        (["a", "b"], ["b", "a"]),
+    ])
+    def test_no_diff_in_subscriptions(self, current, desired):
+        assert entity.do_differ(
+            dict(subscriptions=current), dict(subscriptions=desired),
+        ) is False
+
+    @pytest.mark.parametrize("current,desired", [
+        ([], ["a"]), (["a"], []),
+        (["a"], ["b"]),
+        (["a", "b"], ["a", "c"]),
+    ])
+    def test_diff_in_subscriptions(self, current, desired):
+        print((current, desired))
+        assert entity.do_differ(
+            dict(subscriptions=current), dict(subscriptions=desired),
+        ) is True
+
 
 class TestEntity(ModuleTestCase):
     def test_minimal_entity_parameters(self, mocker):

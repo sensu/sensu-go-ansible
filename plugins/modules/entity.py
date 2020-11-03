@@ -136,7 +136,11 @@ def do_differ(current, desired):
     if system and utils.do_differ(current.get('system'), system):
         return True
 
-    return utils.do_differ(current, desired, 'system')
+    subs = desired.get('subscriptions')
+    if subs is not None and set(subs) != set(current.get('subscriptions', [])):
+        return True
+
+    return utils.do_differ(current, desired, 'system', 'subscriptions')
 
 
 def main():
