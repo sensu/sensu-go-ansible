@@ -181,6 +181,19 @@ def main():
     )
     if module.params['deregistration_handler']:
         payload['deregistration'] = dict(handler=module.params['deregistration_handler'])
+
+    # As per conversation with @echlebek, the only two supported entity
+    # classes are agent and proxy. All other classes can lead to undefined
+    # behavior and should not be used.
+    eclass = payload.get('entity_class')
+    if eclass and eclass not in ('agent', 'proxy'):
+        module.deprecate(
+            'The `entity_class` parameter should be set to either `agent` or '
+            '`proxy`. All other values can result in undefined behavior of '
+            'the Sensu Go backend.',
+            version='2.0.0'
+        )
+
     try:
         changed, entity = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,

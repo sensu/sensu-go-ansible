@@ -126,6 +126,7 @@
         that:
           - result is changed
           - result.object.entity_class == 'some_class'
+          - "'deprecations' in result"
 
     - name: Create a second entity
       entity:

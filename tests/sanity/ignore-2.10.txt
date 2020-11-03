@@ -55,3 +55,4 @@ plugins/modules/socket_handler.py import-2.6!skip
 plugins/modules/tessen.py import-2.6!skip
 plugins/modules/user.py import-2.6!skip
 plugins/modules/user_info.py import-2.6!skip
+plugins/modules/entity.py pylint:ansible-deprecated-no-collection-name # We still want to support ansible < 2.9.10
