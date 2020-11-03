@@ -198,6 +198,17 @@ def main():
             version='2.0.0'
         )
 
+    # Agent entities always have entity:{entity_name} subscription enabled
+    # even if we pass an empty subscriptions. In order to prevent falsely
+    # reporting changed: true, we always add this subscription to the agent
+    # entities.
+    if eclass == 'agent':
+        entity_sub = 'entity:' + module.params['name']
+        subs = payload.get('subscriptions', [])
+        if entity_sub not in subs:
+            # Copy subs in order to avoid mutating module params
+            payload['subscriptions'] = subs + [entity_sub]
+
     try:
         changed, entity = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,

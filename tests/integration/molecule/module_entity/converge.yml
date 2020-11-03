@@ -128,12 +128,20 @@
           - result.object.entity_class == 'some_class'
           - "'deprecations' in result"
 
-    - name: Create a second entity
-      entity:
+    - name: Create an agent entity
+      entity: &agent_entity
         auth:
           url: http://localhost:8080
         name: entity2
-        entity_class: proxy
+        entity_class: agent
+
+    - name: Create an agent entity (idempotence)
+      entity: *agent_entity
+      register: result
+
+    - assert:
+        that:
+          - result is not changed
 
     - name: Fetch all entities
       entity_info:

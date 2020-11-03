@@ -85,6 +85,31 @@ class TestEntity(ModuleTestCase):
         )
         assert check_mode is False
 
+    def test_minimal_entity_parameters_agent_class(self, mocker):
+        sync_mock = mocker.patch.object(utils, 'sync')
+        sync_mock.return_value = True, {}
+        set_module_args(
+            name='test_entity',
+            entity_class='agent',
+        )
+
+        with pytest.raises(AnsibleExitJson):
+            entity.main()
+
+        state, _c, path, payload, check_mode, _d = sync_mock.call_args[0]
+        print(payload)
+        assert state == 'present'
+        assert path == '/api/core/v2/namespaces/default/entities/test_entity'
+        assert payload == dict(
+            entity_class='agent',
+            metadata=dict(
+                name='test_entity',
+                namespace='default',
+            ),
+            subscriptions=['entity:test_entity'],
+        )
+        assert check_mode is False
+
     def test_all_entity_parameters(self, mocker):
         sync_mock = mocker.patch.object(utils, 'sync')
         sync_mock.return_value = True, {}
