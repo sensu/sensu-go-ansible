@@ -1,6 +1,18 @@
 Release notes
 =============
 
+Version 1.6.1 -- Comparing entities is hard
+-------------------------------------------
+
+This is a bugfix release that makes sure agent entity changes are properly
+detected.
+
+**Bug fixes:**
+
+* Make subscriptions comparison insensitive to ordering.
+* Make sure agent entities handle *entity:{name}* automatic subscriptions.
+
+
 Version 1.6.0 -- Our little secret
 ----------------------------------
 
