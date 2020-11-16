@@ -122,7 +122,16 @@ jobs:
           kind: integration
           venv_cmd: python3 -m venv
           test_commands:
-            - run: make integration
+            - run:
+                name: Display scheduled scenarios
+                command: |
+                  circleci tests glob "tests/integration/molecule/*/molecule.yml" \
+                   | circleci tests split --split-by=timings
+            - run: make integration_ci
+            - store_test_results:
+                path: test_results
+            - store_artifacts:
+                path: test_results
 
   integration_test_galaxy:
     parallelism: 6
@@ -143,9 +152,16 @@ jobs:
             - run: |
                 ansible-galaxy collection install \
                   sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
-            - run: |
-                cd tests/integration
-                make true
+            - run:
+                name: Display scheduled scenarios
+                command: |
+                  circleci tests glob "tests/integration/molecule/*/molecule.yml" \
+                   | circleci tests split --split-by=timings
+            - run: make integration_ci
+            - store_test_results:
+                path: test_results
+            - store_artifacts:
+                path: test_results
 
 commands:
   wrapper:
@@ -178,7 +194,7 @@ commands:
             echo "ansible << parameters.ansible >>" >> cache-id.txt
             echo "kind << parameters.kind >>" >> cache-id.txt
             echo "venv_cmd << parameters.venv_cmd >>" >> cache-id.txt
-            echo "cache busting string 0" >> cache-id.txt
+            echo "cache busting string 1" >> cache-id.txt
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
