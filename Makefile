@@ -18,6 +18,8 @@ python_version := $(shell \
   python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))' \
 )
 
+molecule_scenarios := $(wildcard tests/integration/molecule/*)
+
 
 .PHONY: help
 help:
@@ -43,7 +45,21 @@ units:  ## Run unit tests
 .PHONY: integration
 integration:  ## Run integration tests
 	pip install -r integration.requirements -r collection.requirements
-	$(MAKE) -C tests/integration $(CI)
+	pytest -s --molecule-base-config=base.yml tests/integration/molecule
+
+.PHONY: $(molecule_scenarios)
+$(molecule_scenarios):
+	pytest -s --molecule-base-config=base.yml $@
+
+.PHONY: integration_ci
+integration_ci:  ## Run integration tests on CircleCI
+	pip install -r integration.requirements -r collection.requirements
+	mkdir -p test_results/integration
+	pytest -s \
+	  --junitxml=test_results/integration/junit.xml \
+	  --molecule-base-config=base.yml \
+	  $$(circleci tests glob "tests/integration/molecule/*/molecule.yml" \
+	     | circleci tests split --split-by=timings)
 
 .PHONY: docs
 docs:  ## Build collection documentation
@@ -52,4 +68,4 @@ docs:  ## Build collection documentation
 .PHONY: clean
 clean:  ## Remove all auto-generated files
 	$(MAKE) -C docs -f Makefile.custom clean
-	rm -rf tests/output
+	rm -rf tests/output test_results
