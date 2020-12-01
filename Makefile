@@ -6,7 +6,9 @@ namespace  := $(notdir $(realpath $(CURDIR)/..   ))
 toplevel   := $(notdir $(realpath $(CURDIR)/../..))
 
 err_msg := Place collection at <WHATEVER>/ansible_collections/sensu/sensu_go
-ifneq (sensu_go,$(collection))
+ifeq (true,$(CI))
+  $(info Running in CI setting, skipping directory checks.)
+else ifneq (sensu_go,$(collection))
   $(error $(err_msg))
 else ifneq (sensu,$(namespace))
   $(error $(err_msg))
