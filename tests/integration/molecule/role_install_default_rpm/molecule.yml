@@ -18,3 +18,13 @@ platforms:
     image: quay.io/xlab-steampunk/sensu-go-tests-redhat:7
     pre_build_image: true
     pull: true
+
+  - name: amazon-1
+    image: quay.io/xlab-steampunk/sensu-go-tests-amazon:1
+    pre_build_image: true
+    pull: true
+
+  - name: amazon-2
+    image: quay.io/xlab-steampunk/sensu-go-tests-amazon:2
+    pre_build_image: true
+    pull: true
