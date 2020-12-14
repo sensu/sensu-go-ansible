@@ -1,0 +1,75 @@
+---
+_msi_lookup:
+  6.1.3: &latest
+    version: 6.1.3
+    build: 3642
+    product_codes:
+      x64: "{82789B56-72CF-4AB7-81E5-C136DEF9B71A}"
+      x86: "{39658556-334B-4D48-ABC9-64B2EA7AFFEC}"
+  6.1.2:
+    version: 6.1.2
+    build: 3565
+    product_codes:
+      x64: "{FF9C0C8A-C5A0-4DC9-BE2C-BC032490E763}"
+      x86: "{4C61E49D-BE7C-4795-B00B-B400A2DEC310}"
+  6.1.1:
+    version: 6.1.1
+    build: 3555
+    product_codes:
+      x64: "{5205A350-92F1-4643-8EAA-1B88EFCBD013}"
+      x86: "{BEB96AA7-F29B-4AF6-8C51-27CF3DA35F0B}"
+  6.1.0:
+    version: 6.1.0
+    build: 3465
+    product_codes:
+      x64: "{D07CF7A8-741D-41D2-A4ED-DD12005F5AF6}"
+      x86: "{1C03DD78-C86E-484B-A20B-F31A81D7F7AB}"
+  6.0.0:
+    version: 6.0.0
+    build: 3003
+    product_codes:
+      x64: "{E0C22D5F-C434-4AEB-B44B-8972D699DEB0}"
+      x86: "{81F1520D-6FA4-4663-AA7A-599C7BC00D2D}"
+  5.21.3:
+    version: 5.21.3
+    build: 42094
+    product_codes:
+      x64: "{FA45624F-0296-444B-8864-BC26EC5775F1}"
+      x86: "{57F5C867-44FE-465A-8C76-AF516BBF7A83}"
+  5.21.2:
+    version: 5.21.2
+    build: 32982
+    product_codes:
+      x64: "{0BBB6501-40C6-4C65-A456-FBA41710B2E9}"
+      x86: "{FBE03C70-4015-48D4-8680-938E1BD03551}"
+  5.21.1:
+    version: 5.21.1
+    build: 25872
+    product_codes:
+      x64: "{4B391527-0345-42F7-B298-878ACA618A6C}"
+      x86: "{2F1B32C5-C6DC-4EB9-959E-B225570115DF}"
+  5.21.0:
+    version: 5.21.0
+    build: 14262
+    product_codes:
+      x64: "{072C534E-BEDF-41F3-BA24-7F57F8932E3E}"
+      x86: "{9458C181-9512-492B-8FF3-B33165D69920}"
+  5.20.2:
+    version: 5.20.2
+    build: 12959
+    product_codes:
+      x64: "{8A6B1636-A850-4F6B-B6B7-8B7BF44ABFFE}"
+      x86: "{88E35B3B-0B23-4DAC-826F-7B16B4284C89}"
+  5.20.1:
+    version: 5.20.1
+    build: 12427
+    product_codes:
+      x64: "{24283517-F637-4BD7-BA6C-4E4C8A0ABC91}"
+      x86: "{CF53D755-A675-4C93-B099-850BBD9E6FFE}"
+  5.20.0:
+    version: 5.20.0
+    build: 12118
+    product_codes:
+      x64: "{1289F1F1-771F-4554-98CE-64C75EE483A0}"
+      x86: "{050A9321-E95E-4D93-8C4E-2ADE630ED6BA}"
+  latest: *latest
