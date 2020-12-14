@@ -110,6 +110,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="docker-images.html">Preparing docker images for integration tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="documentation.html">Documenting Sensu Go Ansible collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="windows.html">Windows things</a></li>
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Releasing the Sensu Go Ansible Collection</a></li>
 </ul>
 </li>
@@ -255,17 +256,22 @@ configuration file empty. But we must still create the configuration file, or
 Molecule will not detect this scenario. For example, if we would like to
 create a new Molecule scenario that is testing the <code class="docutils literal notranslate"><span class="pre">asset</span></code> module, we would
 run this sequence of commands:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(venv) $ cd tests/integration
-(venv) $ mkdir molecule/module_asset
-(venv) $ touch molecule/module_asset/{molecule,playbook}.yml
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(venv) $ mkdir tests/integration/molecule/module_asset
+(venv) $ touch tests/integration/molecule/module_asset/{molecule,playbook}.yml
 </pre></div>
 </div>
 <p>Now we need to add some content to the playbook we just created. There are
 plenty of examples in our test directory if you need some inspiration ;)</p>
 <p>Once we have our playbook ready, we can test our scenario by running:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(venv) $ make molecule/module_asset
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(venv) $ make tests/integration/molecule/module_asset
 </pre></div>
 </div>
+<p>We can also run all integration tests with a single command:</p>
+<blockquote>
+<div><p>(venv) $ make integration</p>
+</div></blockquote>
+<p>Do note that this will take about an hour or so, so make sure you have
+something else to do in the mean time ;)</p>
 <p>Adding a scenario for role is a bit more complicated since we need to inform
 Molecule what docker images it should use for running tests, but nothing
 drastic.</p>
@@ -281,19 +287,8 @@ executing and passing, we start execution of the slow stage that runs
 integration tests.</p>
 <p>In order to keep the test times as short as possible, the slow stage is
 parallelized. And in order to maximize the benefits of this parallel
-execution, we need to split the work into similarly sized chunks.</p>
-<p>How do we build those work chunks? By first measuring the time needed to
-execute each individual test and storing the results into
-<code class="docutils literal notranslate"><span class="pre">tests/integration/scenario.times</span></code> file. We do this using a helper script
-<code class="docutils literal notranslate"><span class="pre">tests/integration/time_scenarios.sh</span></code>. Note that we are not really required
-to run this script after adding a new integration test. We can add it to the
-list in <code class="docutils literal notranslate"><span class="pre">scenario.times</span></code> manually and eyeball the testing time from other
-similar tests.</p>
-<p>When we execute the tests on the CI servers, we use those measurements to
-partition the tests using the <em>longest processing time first</em> (<a class="reference external" href="https://www.encyclopediaofmath.org/index.php/LPT_sequencing">LPT</a>)
-sequencing rule. Implementation is stored in the
-<code class="docutils literal notranslate"><span class="pre">tests/integration/partition.py</span></code> program. Note that this program needs to be
-completely deterministic or some tests may not be executed on the CI server.</p>
+execution, we need to split the work into similarly sized chunks. This is done
+automatically on CircleCI based on the timings from the previous runs.</p>
 </div>
 </div>
 

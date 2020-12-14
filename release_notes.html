@@ -103,6 +103,8 @@
 <p class="caption"><span class="caption-text">Appendices</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-7-0-say-hello-to-amazon-linux-and-windows">Version 1.7.0 – Say hello to Amazon Linux and Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-6-1-comparing-entities-is-hard">Version 1.6.1 – Comparing entities is hard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-6-0-our-little-secret">Version 1.6.0 – Our little secret</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-5-0-self-signed-security">Version 1.5.0 – Self-signed security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-4-2-break-the-fall">Version 1.4.2 – Break the fall</a></li>
@@ -185,6 +187,27 @@
             
   <div class="section" id="release-notes">
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-7-0-say-hello-to-amazon-linux-and-windows">
+<h2>Version 1.7.0 – Say hello to Amazon Linux and Windows<a class="headerlink" href="#version-1-7-0-say-hello-to-amazon-linux-and-windows" title="Permalink to this headline">¶</a></h2>
+<p>As the title suggests, we worked hard to bring you two new supported platforms
+to the Sensu Go Ansible Colletions. And yes, all your existing playbooks still
+work.All you need to do is run them against the right host and voila ;)</p>
+<p><strong>New features:</strong></p>
+<ul class="simple">
+<li><p>Add support for installing Sensu Go on Amazon Linux.</p></li>
+<li><p>Add support for installing Sensu Go agents on Windows.</p></li>
+</ul>
+</div>
+<div class="section" id="version-1-6-1-comparing-entities-is-hard">
+<h2>Version 1.6.1 – Comparing entities is hard<a class="headerlink" href="#version-1-6-1-comparing-entities-is-hard" title="Permalink to this headline">¶</a></h2>
+<p>This is a bugfix release that makes sure agent entity changes are properly
+detected.</p>
+<p><strong>Bug fixes:</strong></p>
+<ul class="simple">
+<li><p>Make subscriptions comparison insensitive to ordering.</p></li>
+<li><p>Make sure agent entities handle <em>entity:{name}</em> automatic subscriptions.</p></li>
+</ul>
+</div>
 <div class="section" id="version-1-6-0-our-little-secret">
 <h2>Version 1.6.0 – Our little secret<a class="headerlink" href="#version-1-6-0-our-little-secret" title="Permalink to this headline">¶</a></h2>
 <p>This release contains a few new modules that allow you to manage all things

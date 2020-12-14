@@ -1,6 +1,32 @@
 Release notes
 =============
 
+Version 1.7.0 -- Say hello to Amazon Linux and Windows
+------------------------------------------------------
+
+As the title suggests, we worked hard to bring you two new supported platforms
+to the Sensu Go Ansible Colletions. And yes, all your existing playbooks still
+work.All you need to do is run them against the right host and voila ;)
+
+**New features:**
+
+* Add support for installing Sensu Go on Amazon Linux.
+* Add support for installing Sensu Go agents on Windows.
+
+
+
+Version 1.6.1 -- Comparing entities is hard
+-------------------------------------------
+
+This is a bugfix release that makes sure agent entity changes are properly
+detected.
+
+**Bug fixes:**
+
+* Make subscriptions comparison insensitive to ordering.
+* Make sure agent entities handle *entity:{name}* automatic subscriptions.
+
+
 Version 1.6.0 -- Our little secret
 ----------------------------------
 

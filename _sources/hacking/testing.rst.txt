@@ -85,16 +85,22 @@ Molecule will not detect this scenario. For example, if we would like to
 create a new Molecule scenario that is testing the ``asset`` module, we would
 run this sequence of commands::
 
-   (venv) $ cd tests/integration
-   (venv) $ mkdir molecule/module_asset
-   (venv) $ touch molecule/module_asset/{molecule,playbook}.yml
+   (venv) $ mkdir tests/integration/molecule/module_asset
+   (venv) $ touch tests/integration/molecule/module_asset/{molecule,playbook}.yml
 
 Now we need to add some content to the playbook we just created. There are
 plenty of examples in our test directory if you need some inspiration ;)
 
 Once we have our playbook ready, we can test our scenario by running::
 
-   (venv) $ make molecule/module_asset
+   (venv) $ make tests/integration/molecule/module_asset
+
+We can also run all integration tests with a single command:
+
+   (venv) $ make integration
+
+Do note that this will take about an hour or so, so make sure you have
+something else to do in the mean time ;)
 
 Adding a scenario for role is a bit more complicated since we need to inform
 Molecule what docker images it should use for running tests, but nothing
@@ -116,20 +122,5 @@ integration tests.
 
 In order to keep the test times as short as possible, the slow stage is
 parallelized. And in order to maximize the benefits of this parallel
-execution, we need to split the work into similarly sized chunks.
-
-How do we build those work chunks? By first measuring the time needed to
-execute each individual test and storing the results into
-``tests/integration/scenario.times`` file. We do this using a helper script
-``tests/integration/time_scenarios.sh``. Note that we are not really required
-to run this script after adding a new integration test. We can add it to the
-list in ``scenario.times`` manually and eyeball the testing time from other
-similar tests.
-
-When we execute the tests on the CI servers, we use those measurements to
-partition the tests using the *longest processing time first* (LPT_)
-sequencing rule. Implementation is stored in the
-``tests/integration/partition.py`` program. Note that this program needs to be
-completely deterministic or some tests may not be executed on the CI server.
-
-.. _LPT: https://www.encyclopediaofmath.org/index.php/LPT_sequencing
+execution, we need to split the work into similarly sized chunks. This is done
+automatically on CircleCI based on the timings from the previous runs.

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Releasing the Sensu Go Ansible Collection &mdash; Sensu Go Ansible Collection  documentation</title>
+  <title>Windows things &mdash; Sensu Go Ansible Collection  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Release notes" href="../release_notes.html" />
-    <link rel="prev" title="Windows things" href="windows.html" /> 
+    <link rel="next" title="Releasing the Sensu Go Ansible Collection" href="releases.html" />
+    <link rel="prev" title="Documenting Sensu Go Ansible collection" href="documentation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -104,8 +104,11 @@
 <li class="toctree-l2"><a class="reference internal" href="testing.html">Testing Sensu Go Ansible Collection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docker-images.html">Preparing docker images for integration tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="documentation.html">Documenting Sensu Go Ansible collection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="windows.html">Windows things</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Releasing the Sensu Go Ansible Collection</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Windows things</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-sensu-go-version">Adding new Sensu Go version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="releases.html">Releasing the Sensu Go Ansible Collection</a></li>
 </ul>
 </li>
 </ul>
@@ -160,14 +163,14 @@
         
           <li><a href="../hacking.html">Developing Sensu Go Ansible Collection</a> &raquo;</li>
         
-      <li>Releasing the Sensu Go Ansible Collection</li>
+      <li>Windows things</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/hacking/releases.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/hacking/windows.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -181,46 +184,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="releasing-the-sensu-go-ansible-collection">
-<h1>Releasing the Sensu Go Ansible Collection<a class="headerlink" href="#releasing-the-sensu-go-ansible-collection" title="Permalink to this headline">¶</a></h1>
-<p>The Sensu Go Ansible collection is primarily available from <a class="reference external" href="https://galaxy.ansible.com/sensu/sensu_go">Ansible Galaxy</a>
-and <a class="reference external" href="https://cloud.redhat.com/ansible/automation-hub/sensu/sensu_go">Automation Hub</a>. Which means that we need to get our content up there
-somehow. But before we can start uploading things, we need to do some chores
-first.</p>
-<p>First, we need to tag the commit and move the <code class="docutils literal notranslate"><span class="pre">stable</span></code> branch forward:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ VERSION=$(grep version: galaxy.yml | cut -d&quot; &quot; -f2)
-$ git tag -am &quot;Version $VERSION&quot; v$VERSION
-$ git branch -f stable v$VERSION
-</pre></div>
+  <div class="section" id="windows-things">
+<h1>Windows things<a class="headerlink" href="#windows-things" title="Permalink to this headline">¶</a></h1>
+<p>Working with Windows is a bit different from what most of us are probably used
+to since there is no package manager to delegate installation to and services
+behave a bit differently. Here is a collection of things that might come in
+handy when working with installation and agent role.</p>
+<div class="section" id="adding-new-sensu-go-version">
+<h2>Adding new Sensu Go version<a class="headerlink" href="#adding-new-sensu-go-version" title="Permalink to this headline">¶</a></h2>
+<p>As already state, Windows has no built-in package manager backed by a
+repository, which means we have to do a bit more work when installing
+packages. And this is why our installation role contains a few pieces of
+information about the available Sensu Go agent packages.</p>
+<p>We can add a new version of Sensu Go for Windows using the following steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Find the version and build we are interested in on <a class="reference external" href="https://packagecloud.io/sensu/stable">packagecloud</a>.</p></li>
+<li><p>Download the x64 and x86 msi files from the download page. Use the
+download URL from the <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/operations/deploy-sensu/install-sensu/#install-sensu-agents">installation guide</a> as a base and adjust as
+needed.</p></li>
+<li><p>Extract product codes from the msi packages (document author used orca msi
+editor, would be very much interested in a PowerShell script).</p></li>
+<li><p>Add a new entry to the roles/install/vars/Windows.yml file.</p></li>
+</ol>
+</div></blockquote>
 </div>
-<p>Now, we need to package the collection. Because the <code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span>
-<span class="pre">collection</span> <span class="pre">build</span></code> command will package anything that it can find next to the
-<code class="docutils literal notranslate"><span class="pre">galaxy.yml</span></code> file, we need to execute it in a clean environment. This is why
-we will temporarily check out the <em>stable</em> branch into the <em>release</em>
-subdirectory, build the collection package, and then delete the checkout. This
-translates into the following sequence of commands:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git worktree add release stable
-$ cd release
-$ ansible-galaxy collection build
-$ mv sensu-sensu_go-$VERSION.tar.gz ..
-$ cd ..
-$ git worktree remove release
-</pre></div>
-</div>
-<p>Now we can upload the package to Ansible Galaxy:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ API_KEY=api-key-from-https://galaxy.ansible.com/me/preferences
-$ ansible-galaxy collection publish \
-    --api-key &quot;$API_KEY&quot; \
-    sensu-sensu_go-$VERSION.tar.gz
-</pre></div>
-</div>
-<p>Last thing we need to do is push the <code class="docutils literal notranslate"><span class="pre">stable</span></code> branch and created tag to the
-GitHub and attach the package to the GitHub release:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push origin stable v$VERSION
-</pre></div>
-</div>
-<p>We need to attach the asset manually at the moment. Fully automated solution
-is in the works.</p>
 </div>
 
 
@@ -231,10 +219,10 @@ is in the works.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../release_notes.html" class="btn btn-neutral float-right" title="Release notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="releases.html" class="btn btn-neutral float-right" title="Releasing the Sensu Go Ansible Collection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="windows.html" class="btn btn-neutral float-left" title="Windows things" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="documentation.html" class="btn btn-neutral float-left" title="Documenting Sensu Go Ansible collection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
