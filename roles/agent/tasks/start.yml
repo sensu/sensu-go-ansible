@@ -1,6 +1,14 @@
 ---
-- name: Start sensu-agent
+- name: Start sensu-agent (Linux)
   service:
     name: sensu-agent
     state: started
     enabled: yes
+  when: ansible_facts.os_family != "Windows"
+
+- name: Start sensu-agent (Windows)
+  win_service:
+    name: SensuAgent
+    path: C:\Program Files\sensu\sensu-agent\bin\sensu-agent.exe service run
+    state: started
+  when: ansible_facts.os_family == "Windows"

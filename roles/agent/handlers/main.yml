@@ -1,6 +1,12 @@
 ---
-- name: Restart agent
+- name: Restart Linux agent
   service:
     name: sensu-agent
+    state: restarted
+  when: manage_sensu_agent_service | default(False)
+
+- name: Restart Windows agent
+  win_service:
+    name: SensuAgent
     state: restarted
   when: manage_sensu_agent_service | default(False)

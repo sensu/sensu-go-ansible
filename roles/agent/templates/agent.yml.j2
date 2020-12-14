@@ -13,7 +13,7 @@ backend-url:
 
 {% if agent_trusted_ca_file is defined and
       not (agent_config and "trusted-ca-file" in agent_config) %}
-trusted-ca-file: /etc/sensu/sensu-agent-trusted-ca.crt
+trusted-ca-file: {{ trusted_ca_file_path }}
 {% endif -%}
 
 {% if agent_trusted_ca_file is defined or agent_config and

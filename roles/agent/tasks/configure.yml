@@ -1,19 +1,8 @@
 ---
-- name: Install agent communication PKI
-  copy:
-    src: "{{ agent_trusted_ca_file }}"
-    dest: "/etc/sensu/sensu-agent-trusted-ca.crt"
-    # Keep this in sync with what the backend service is running as from packager
-    owner: &sensu_user sensu
-    group: &sensu_group sensu
-    mode: "0644"
-  when: agent_trusted_ca_file is defined
+- name: Configure agent (Linux)
+  include_tasks: linux/configure.yml
+  when: ansible_facts.os_family != "Windows"
 
-- name: Configure sensu-agent (/etc/sensu/agent.yml)
-  template:
-    src: agent.yml.j2
-    dest: /etc/sensu/agent.yml
-    owner: *sensu_user
-    group: *sensu_group
-    mode: '0600'
-  notify: Restart agent
+- name: Configure agent (Windows)
+  include_tasks: windows/configure.yml
+  when: ansible_facts.os_family == "Windows"
