@@ -47,7 +47,7 @@ EXAMPLES = """
   register: result
 
 - name: Do something with result
-  debug:
+  ansible.builtin.debug:
     msg: "{{ result.objects.0.metadata.name }}"
 """
 

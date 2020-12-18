@@ -61,18 +61,18 @@ EXAMPLES = """
     version: 2.2.0-1
 
 - name: Remove previously added asset
-  asset:
+  sensu.sensu_go.asset:
     name: sensu/monitoring-plugins
     state: absent
 
 - name: Store Bonsai asset under a different name
-  sensu.sensu_gobonsai_asset:
+  sensu.sensu_go.bonsai_asset:
     name: sensu/monitoring-plugins
     version: 2.2.0-1
     rename: sensu-monitoring-2.2.0-1
 
 - name: Display asset info
-  asset_info:
+  sensu.sensu_go.asset_info:
     name: sensu-monitoring-2.2.0-1  # value from rename field
 """
 
