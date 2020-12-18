@@ -88,10 +88,10 @@ options:
         type: str
 
 seealso:
-  - module: secrets_provider_env
-  - module: secrets_provider_info
-  - module: secret
-  - module: secret_info
+  - module: sensu.sensu_go.secrets_provider_env
+  - module: sensu.sensu_go.secrets_provider_info
+  - module: sensu.sensu_go.secret
+  - module: sensu.sensu_go.secret_info
 '''
 
 EXAMPLES = '''

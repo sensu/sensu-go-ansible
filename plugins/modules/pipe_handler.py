@@ -34,9 +34,9 @@ extends_documentation_fragment:
   - sensu.sensu_go.annotations
   - sensu.sensu_go.secrets
 seealso:
-  - module: socket_handler
-  - module: handler_info
-  - module: handler_set
+  - module: sensu.sensu_go.socket_handler
+  - module: sensu.sensu_go.handler_info
+  - module: sensu.sensu_go.handler_set
 options:
   command:
     description:

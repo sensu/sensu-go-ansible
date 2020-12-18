@@ -31,7 +31,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.namespace
 seealso:
-  - module: event
+  - module: sensu.sensu_go.event
 options:
   check:
     description:

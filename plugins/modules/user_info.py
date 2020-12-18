@@ -31,7 +31,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
 seealso:
-  - module: user
+  - module: sensu.sensu_go.user
 '''
 
 EXAMPLES = '''

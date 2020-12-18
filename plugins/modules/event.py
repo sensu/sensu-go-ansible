@@ -31,7 +31,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.namespace
 seealso:
-  - module: event_info
+  - module: sensu.sensu_go.event_info
 notes:
   - Metric events bypass the store and are sent off to the event pipeline and corresponding event
     handlers. Read more about this at

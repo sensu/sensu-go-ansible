@@ -29,7 +29,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.name
   - sensu.sensu_go.state
 seealso:
-  - module: datastore_info
+  - module: sensu.sensu_go.datastore_info
 options:
   dsn:
     description:

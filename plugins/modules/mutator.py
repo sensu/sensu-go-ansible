@@ -36,7 +36,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.annotations
   - sensu.sensu_go.secrets
 seealso:
-  - module: mutator_info
+  - module: sensu.sensu_go.mutator_info
 options:
   command:
     description:

@@ -35,7 +35,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
 seealso:
-  - module: entity_info
+  - module: sensu.sensu_go.entity_info
 options:
   entity_class:
     description:

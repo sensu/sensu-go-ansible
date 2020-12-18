@@ -31,10 +31,10 @@ extends_documentation_fragment:
   - sensu.sensu_go.info
   - sensu.sensu_go.namespace
 seealso:
-  - module: secret
-  - module: secrets_provider_env
-  - module: secrets_provider_vault
-  - module: secrets_provider_info
+  - module: sensu.sensu_go.secret
+  - module: sensu.sensu_go.secrets_provider_env
+  - module: sensu.sensu_go.secrets_provider_vault
+  - module: sensu.sensu_go.secrets_provider_info
 """
 
 EXAMPLES = """

@@ -33,9 +33,9 @@ extends_documentation_fragment:
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
 seealso:
-  - module: socket_handler
-  - module: pipe_handler
-  - module: handler_info
+  - module: sensu.sensu_go.socket_handler
+  - module: sensu.sensu_go.pipe_handler
+  - module: sensu.sensu_go.handler_info
 options:
   handlers:
     description:

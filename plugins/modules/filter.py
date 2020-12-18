@@ -35,7 +35,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
 seealso:
-  - module: filter_info
+  - module: sensu.sensu_go.filter_info
 options:
   action:
     description:

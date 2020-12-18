@@ -35,7 +35,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
 seealso:
-  - module: hook_info
+  - module: sensu.sensu_go.hook_info
 options:
   command:
     description:

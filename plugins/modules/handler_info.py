@@ -30,9 +30,9 @@ extends_documentation_fragment:
   - sensu.sensu_go.info
   - sensu.sensu_go.namespace
 seealso:
-  - module: socket_handler
-  - module: pipe_handler
-  - module: handler_set
+  - module: sensu.sensu_go.socket_handler
+  - module: sensu.sensu_go.pipe_handler
+  - module: sensu.sensu_go.handler_set
 '''
 
 EXAMPLES = '''

@@ -30,10 +30,10 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
 seealso:
-  - module: secrets_provider_env
-  - module: secrets_provider_vault
-  - module: secret
-  - module: secret_info
+  - module: sensu.sensu_go.secrets_provider_env
+  - module: sensu.sensu_go.secrets_provider_vault
+  - module: sensu.sensu_go.secret
+  - module: sensu.sensu_go.secret_info
 """
 
 EXAMPLES = """

@@ -34,7 +34,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
 seealso:
-  - module: silence_info
+  - module: sensu.sensu_go.silence_info
 options:
   subscription:
     description:

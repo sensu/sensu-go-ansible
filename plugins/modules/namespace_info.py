@@ -32,7 +32,7 @@ notes:
   - Currently, it is not possible to retrieve information about a single
     namespace because namespace is not much more than a name itself.
 seealso:
-  - module: namespace
+  - module: sensu.sensu_go.namespace
 '''
 
 EXAMPLES = '''

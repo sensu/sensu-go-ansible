@@ -32,10 +32,10 @@ extends_documentation_fragment:
   - sensu.sensu_go.namespace
   - sensu.sensu_go.state
 seealso:
-  - module: secret_info
-  - module: secrets_provider_env
-  - module: secrets_provider_vault
-  - module: secrets_provider_info
+  - module: sensu.sensu_go.secret_info
+  - module: sensu.sensu_go.secrets_provider_env
+  - module: sensu.sensu_go.secrets_provider_vault
+  - module: sensu.sensu_go.secrets_provider_info
 options:
   provider:
     description:

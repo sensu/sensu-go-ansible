@@ -32,8 +32,8 @@ extends_documentation_fragment:
   - sensu.sensu_go.info
   - sensu.sensu_go.namespace
 seealso:
-  - module: asset
-  - module: bonsai_asset
+  - module: sensu.sensu_go.asset
+  - module: sensu.sensu_go.bonsai_asset
 """
 
 EXAMPLES = """

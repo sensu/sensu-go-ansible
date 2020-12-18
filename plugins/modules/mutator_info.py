@@ -32,7 +32,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.info
   - sensu.sensu_go.namespace
 seealso:
-  - module: mutator
+  - module: sensu.sensu_go.mutator
 '''
 
 EXAMPLES = '''

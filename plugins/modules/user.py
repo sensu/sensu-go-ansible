@@ -32,7 +32,7 @@ extends_documentation_fragment:
 requirements:
   - bcrypt (when managing Sensu Go 5.21.0 or newer)
 seealso:
-  - module: user_info
+  - module: sensu.sensu_go.user_info
 options:
   state:
     description:

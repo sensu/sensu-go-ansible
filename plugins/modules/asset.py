@@ -36,8 +36,8 @@ extends_documentation_fragment:
   - sensu.sensu_go.labels
   - sensu.sensu_go.annotations
 seealso:
-  - module: asset_info
-  - module: bonsai_asset
+  - module: sensu.sensu_go.asset_info
+  - module: sensu.sensu_go.bonsai_asset
 options:
   builds:
     description:

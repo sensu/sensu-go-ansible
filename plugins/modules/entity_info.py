@@ -32,7 +32,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.info
   - sensu.sensu_go.namespace
 seealso:
-  - module: entity
+  - module: sensu.sensu_go.entity
 '''
 
 EXAMPLES = '''

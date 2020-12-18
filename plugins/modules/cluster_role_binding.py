@@ -52,9 +52,9 @@ options:
     type: list
     elements: str
 seealso:
-  - module: cluster_role_binding_info
-  - module: cluster_role
-  - module: role_binding
+  - module: sensu.sensu_go.cluster_role_binding_info
+  - module: sensu.sensu_go.cluster_role
+  - module: sensu.sensu_go.role_binding
 '''
 
 EXAMPLES = '''

@@ -31,7 +31,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.namespace
 seealso:
-  - module: silence
+  - module: sensu.sensu_go.silence
 options:
   subscription:
     description:

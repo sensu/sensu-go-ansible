@@ -33,7 +33,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.info
   - sensu.sensu_go.namespace
 seealso:
-  - module: role_binding
+  - module: sensu.sensu_go.role_binding
 '''
 
 EXAMPLES = '''

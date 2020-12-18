@@ -33,9 +33,9 @@ extends_documentation_fragment:
   - sensu.sensu_go.namespace
   - sensu.sensu_go.state
 seealso:
-  - module: role_info
-  - module: cluster_role
-  - module: role_binding
+  - module: sensu.sensu_go.role_info
+  - module: sensu.sensu_go.cluster_role
+  - module: sensu.sensu_go.role_binding
 options:
   rules:
     description:

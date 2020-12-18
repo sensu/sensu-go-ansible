@@ -32,7 +32,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.name
   - sensu.sensu_go.state
 seealso:
-  - module: namespace_info
+  - module: sensu.sensu_go.namespace_info
 '''
 
 EXAMPLES = '''

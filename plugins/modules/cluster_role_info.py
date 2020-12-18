@@ -32,7 +32,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
 seealso:
-  - module: cluster_role
+  - module: sensu.sensu_go.cluster_role
 '''
 
 EXAMPLES = '''

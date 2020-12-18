@@ -37,7 +37,7 @@ extends_documentation_fragment:
   - sensu.sensu_go.annotations
   - sensu.sensu_go.secrets
 seealso:
-  - module: check_info
+  - module: sensu.sensu_go.check_info
 options:
   command:
     description:

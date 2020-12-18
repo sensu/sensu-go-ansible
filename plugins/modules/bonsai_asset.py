@@ -50,8 +50,8 @@ notes:
     values obtained from Bonsai.
   - To delete an asset, use regular M(asset) module.
 seealso:
-  - module: asset
-  - module: asset_info
+  - module: sensu.sensu_go.asset
+  - module: sensu.sensu_go.asset_info
 """
 
 EXAMPLES = """
