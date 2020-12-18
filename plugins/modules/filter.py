@@ -99,9 +99,9 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-    description: object representing Sensu filter
-    returned: success
-    type: dict
+  description: object representing Sensu filter
+  returned: success
+  type: dict
 '''
 
 

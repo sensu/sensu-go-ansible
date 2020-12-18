@@ -72,9 +72,9 @@ EXAMPLES = '''
     name: dev_and_testing
     role: testers_permissive
     groups:
-        - testers
-        - dev
-        - ops
+      - testers
+      - dev
+      - ops
     users:
       - alice
 
@@ -94,9 +94,9 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-    description: object representing Sensu role binding
-    returned: success
-    type: dict
+  description: object representing Sensu role binding
+  returned: success
+  type: dict
 '''
 
 from ansible.module_utils.basic import AnsibleModule

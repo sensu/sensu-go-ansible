@@ -72,9 +72,9 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-    description: object representing Sensu user
-    returned: success
-    type: dict
+  description: object representing Sensu user
+  returned: success
+  type: dict
 '''
 
 import traceback

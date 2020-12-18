@@ -78,9 +78,9 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-    description: object representing Sensu mutator
-    returned: success
-    type: dict
+  description: object representing Sensu mutator
+  returned: success
+  type: dict
 '''
 
 

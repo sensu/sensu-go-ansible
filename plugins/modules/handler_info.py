@@ -42,7 +42,7 @@ EXAMPLES = '''
 
 - name: Retrieve info for a specific Sensu handler
   sensu.sensu_go.handler_info:
-      name: my-handler
+    name: my-handler
   register: result
 '''
 

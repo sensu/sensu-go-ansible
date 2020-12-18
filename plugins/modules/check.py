@@ -227,9 +227,9 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-    description: object representing Sensu check
-    returned: success
-    type: dict
+  description: object representing Sensu check
+  returned: success
+  type: dict
 '''
 
 from ansible.module_utils.basic import AnsibleModule

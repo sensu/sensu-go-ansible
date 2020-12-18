@@ -78,7 +78,7 @@ EXAMPLES = """
 
 RETURN = """
 object:
-    description: object representing Sensu asset
-    returned: success
-    type: dict
+  description: object representing Sensu asset
+  returned: success
+  type: dict
 """

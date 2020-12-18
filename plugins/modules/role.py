@@ -72,11 +72,11 @@ EXAMPLES = '''
     name: readonly
     rules:
       - verbs:
-          - get
-          - list
-        resources:
-          - checks
-          - entities
+      - get
+      - list
+    resources:
+      - checks
+      - entities
 
 - name: Delete a role
   sensu.sensu_go.role:
@@ -86,9 +86,9 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-    description: object representing Sensu role
-    returned: success
-    type: dict
+  description: object representing Sensu role
+  returned: success
+  type: dict
 '''
 
 from ansible.module_utils.basic import AnsibleModule

@@ -43,7 +43,7 @@ EXAMPLES = '''
 
 - name: Retrieve a single Sensu role binding
   sensu.sensu_go.role_binding_info:
-      name: my-role-binding
+    name: my-role-binding
   register: result
 '''
 

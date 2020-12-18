@@ -49,9 +49,9 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-    description: object representing Sensu namespace
-    returned: success
-    type: dict
+  description: object representing Sensu namespace
+  returned: success
+  type: dict
 '''
 
 
