@@ -8,7 +8,7 @@ __metaclass__ = type
 
 from ansible.module_utils.basic import env_fallback
 
-from ansible_collections.sensu.sensu_go.plugins.module_utils import client
+from . import client
 
 
 SHARED_SPECS = dict(

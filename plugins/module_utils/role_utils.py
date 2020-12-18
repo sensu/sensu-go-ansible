@@ -6,7 +6,7 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-from ansible_collections.sensu.sensu_go.plugins.module_utils import utils
+from . import utils
 
 
 def validate_module_params(params):

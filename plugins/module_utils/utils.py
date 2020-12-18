@@ -8,7 +8,7 @@ __metaclass__ = type
 
 from ansible.module_utils.six.moves.urllib.parse import quote
 
-from ansible_collections.sensu.sensu_go.plugins.module_utils import errors
+from . import errors
 
 
 def do_differ(current, desired, *ignored_keys):

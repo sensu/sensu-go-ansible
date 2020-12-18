@@ -81,9 +81,7 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 
-from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    arguments, errors, utils,
-)
+from ..module_utils import arguments, errors, utils
 
 try:
     import bcrypt

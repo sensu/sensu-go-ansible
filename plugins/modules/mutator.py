@@ -83,12 +83,9 @@ object:
   type: dict
 '''
 
-
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    arguments, errors, utils,
-)
+from ..module_utils import arguments, errors, utils
 
 
 def do_differ(current, desired):

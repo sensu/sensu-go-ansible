@@ -19,9 +19,7 @@ except ImportError:
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 from ansible.module_utils.urls import open_url
 
-from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, debug,
-)
+from . import errors, debug
 
 
 class Response:

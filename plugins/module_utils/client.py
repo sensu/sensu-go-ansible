@@ -8,9 +8,7 @@ __metaclass__ = type
 
 from distutils import version
 
-from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    errors, http,
-)
+from . import errors, http
 
 
 class Client:

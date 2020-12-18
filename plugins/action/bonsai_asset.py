@@ -10,9 +10,7 @@ from ansible.module_utils.six import text_type
 from ansible.plugins.action import ActionBase
 from ansible.utils.vars import merge_hash
 
-from ansible_collections.sensu.sensu_go.plugins.module_utils import (
-    bonsai, errors,
-)
+from ..module_utils import bonsai, errors
 
 
 def validate(name, args, required, typ):
