@@ -14,6 +14,9 @@ subscribers, this collection is also available on [Automation Hub][hub].
           (Sensu Go on Automation Hub)
 
 For user guides and references, please visit [the documentation site][docs].
+And if you would like to help us out, check our [hacking docs][hacking].
 
    [docs]: https://sensu.github.io/sensu-go-ansible/
            (Sensu Go Ansible Collection documentation)
+   [hacking]: https://sensu.github.io/sensu-go-ansible/hacking.html
+              (Developer guides)
