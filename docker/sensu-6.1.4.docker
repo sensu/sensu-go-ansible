@@ -1,6 +1,6 @@
-FROM sensu/sensu:5.20.2
+FROM sensu/sensu:6.1.4
 RUN apk update \
-    && apk add --no-cache python sudo bash ca-certificates
+    && apk add --no-cache python3 py3-bcrypt py3-six py3-cffi bash
 CMD [ \
   "sensu-backend", "start", \
   "--state-dir", "/var/lib/sensu/sensu-backend", \

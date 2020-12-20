@@ -19,18 +19,18 @@ provisioner:
   lint:
     enabled: false
 platforms:
-  - name: v6.1.2
-    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.1.2
+  - name: v6.2.0
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.2.0
     pre_build_image: true
     pull: true
     override_command: false
-  - name: v5.21.1
-    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:5.21.1
+  - name: v6.1.4
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.1.4
     pre_build_image: true
     pull: true
     override_command: false
-  - name: v5.20.2
-    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:5.20.2
+  - name: v5.21.3
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:5.21.3
     pre_build_image: true
     pull: true
     override_command: false

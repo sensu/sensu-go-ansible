@@ -1,0 +1,13 @@
+---
+platforms:
+  # We do not test on 6.2.0 because the upstream broke the silencing API
+  - name: v6.1.4
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.1.4
+    pre_build_image: true
+    pull: true
+    override_command: false
+  - name: v5.21.3
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:5.21.3
+    pre_build_image: true
+    pull: true
+    override_command: false
