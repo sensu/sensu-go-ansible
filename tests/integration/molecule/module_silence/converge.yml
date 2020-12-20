@@ -66,12 +66,14 @@
           - result is not changed
 
     - name: Create a silence
-      silence:
+      silence: &idempotence
         auth:
           url: http://localhost:8080
         subscription: entity:mail-server
         check: some-check
-        begin: 1512512023
+        # Schedule silence in the future (2030) in order to prevent it from
+        # expiring and getting dropped on the floor by the backend.
+        begin: 1893452400
         expire: 120
         expire_on_resolve: True
         reason: updating mail server
@@ -83,22 +85,14 @@
           - result.object.metadata.name == 'entity:mail-server:some-check'
           - result.object.subscription == 'entity:mail-server'
           - result.object.check == 'some-check'
-          - result.object.begin == 1512512023
+          - result.object.begin == 1893452400
           - result.object.expire == 120
           - result.object.expire_on_resolve == True
           - result.object.creator == 'admin'
           - result.object.reason == 'updating mail server'
 
     - name: Test silence creation idempotence
-      silence:
-        auth:
-          url: http://localhost:8080
-        subscription: entity:mail-server
-        check: some-check
-        begin: 1512512023
-        expire: 120
-        expire_on_resolve: True
-        reason: updating mail server
+      silence: *idempotence
       register: result
 
     - assert:
@@ -110,13 +104,13 @@
           url: http://localhost:8080
         subscription: entity:mail-server
         check: some-check
-        begin: 1512512024
+        begin: 1893452500
       register: result
 
     - assert:
         that:
           - result is changed
-          - result.object.begin == 1512512024
+          - result.object.begin == 1893452500
           - result.object.subscription == 'entity:mail-server'
           - result.object.check == 'some-check'
           - not result.object.expire
