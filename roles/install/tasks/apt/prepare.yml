@@ -5,6 +5,9 @@
 - name: Update apt cache (ensure we have package index)
   apt:
     update_cache: true
+  # Updating the APT cache does not change the system so we never report a
+  # change here (helps keep the role idempotent).
+  changed_when: false
 
 - name: Install utility packages
   apt:
