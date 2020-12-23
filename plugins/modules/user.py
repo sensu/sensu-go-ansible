@@ -72,9 +72,17 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu user
+  description: Object representing Sensu user.
   returned: success
   type: dict
+  sample:
+    disabled: false
+    groups:
+      - ops
+      - dev
+    password: USER_PASSWORD
+    password_hash: $5f$14$.brXRviMZpbaleSq9kjoUuwm67V/s4IziOLGHjEqxJbzPsreQAyNm
+    username: alice
 '''
 
 import traceback

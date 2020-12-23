@@ -56,7 +56,7 @@ options:
     type: str
   timeout:
     description:
-      - Timeout for handler execution
+      - Timeout for handler execution.
     type: int
   host:
     description:
@@ -93,9 +93,17 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu socket handler
+  description: Object representing Sensu socket handler.
   returned: success
   type: dict
+  sample:
+    - metadata:
+        name: udp_handler
+        namespace: default
+      socket:
+        host: 10.0.1.99
+        port: 4444
+      type: udp
 '''
 
 from ansible.module_utils.basic import AnsibleModule

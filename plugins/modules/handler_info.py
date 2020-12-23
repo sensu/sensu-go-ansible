@@ -48,9 +48,18 @@ EXAMPLES = '''
 
 RETURN = '''
 objects:
-  description: list of Sensu handlers
+  description: List of Sensu handlers.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        name: tcp_udp_handler_minimum
+        namespace: default
+      socket:
+        host: 10.0.1.99
+        port: 4444
+      type: tcp
 '''
 
 from ansible.module_utils.basic import AnsibleModule

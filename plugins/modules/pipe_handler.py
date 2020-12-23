@@ -40,7 +40,8 @@ seealso:
 options:
   command:
     description:
-      - The handler command to be executed. The event data is passed to the process via STDIN.
+      - The handler command to be executed. The event data is passed to the
+        process through STDIN.
       - Required if I(state) is C(present).
     type: str
   filters:
@@ -62,7 +63,7 @@ options:
     type: dict
   runtime_assets:
     description:
-      - List of runtime assets to required to run the handler C(command)
+      - List of runtime assets to required to run the handler C(command).
     type: list
     elements: str
 '''
@@ -87,9 +88,15 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu pipe handler
+  description: Object representing Sensu pipe handler.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: pipe_handler_minimum
+      namespace: default
+    command: command-example
+    type: pipe
 '''
 
 from ansible.module_utils.basic import AnsibleModule

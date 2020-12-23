@@ -70,9 +70,15 @@ EXAMPLES = """
 
 RETURN = """
 object:
-  description: object representing Sensu secret
+  description: Object representing Sensu secret.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: sensu-ansible
+      namespace: default
+    id: 'secret/database#password'
+    provider: vault
 """
 
 from ansible.module_utils.basic import AnsibleModule

@@ -63,9 +63,47 @@ EXAMPLES = '''
 
 RETURN = '''
 objects:
-  description: list of Sensu events
+  description: List of Sensu events.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        namespace: default
+      check:
+        check_hooks: null
+        command: check-cpu.sh -w 75 -c 90
+        duration: 1.07055808
+        env_vars: null
+        executed: 1552594757
+        handlers: []
+        high_flap_threshold: 0
+        history:
+        - executed: 1552594757
+          status: 0
+        interval: 60
+        metadata:
+          name: check-cpu
+          namespace: default
+        occurrences: 1
+        occurrences_watermark: 1
+        output: CPU OK - Usage:3.96
+        subscriptions:
+          - linux
+        timeout: 0
+        total_state_change: 0
+        ttl: 0
+      entity:
+        deregister: false
+        deregistration: {}
+        entity_class: agent
+        last_seen: 1552594641
+        metadata:
+          name: sensu-centos
+          namespace: default
+      timestamp: 1552594758
+      id: 3a5948f3-6ffd-4ea2-a41e-334f4a72ca2f
+      sequence: 1
 '''
 
 from ansible.module_utils.basic import AnsibleModule

@@ -85,9 +85,18 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu hook
+  description: Object representing Sensu hook.
   returned: success
   type: dict
+  sample:
+    metadata:
+      annotations: null
+      labels: null
+      name: restart_nginx
+      namespace: default
+    command: sudo systemctl start nginx
+    stdin: false
+    timeout: 60
 '''
 
 from ansible.module_utils.basic import AnsibleModule

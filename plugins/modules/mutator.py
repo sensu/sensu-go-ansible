@@ -78,9 +78,19 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu mutator
+  description: Object representing Sensu mutator.
   returned: success
   type: dict
+  sample:
+    metadata:
+      annotations: null
+      labels: null
+      name: example-mutator
+      namespace: default
+    command: example_mutator.go
+    env_vars: []
+    runtime_assets: []
+    timeout: 0
 '''
 
 from ansible.module_utils.basic import AnsibleModule

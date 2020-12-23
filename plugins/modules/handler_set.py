@@ -62,9 +62,16 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu handler set
+  description: Object representing Sensu handler set.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: tcp_udp_handler_minimum
+      namespace: default
+    handlers:
+      - slack
+    type: set
 '''
 
 from ansible.module_utils.basic import AnsibleModule

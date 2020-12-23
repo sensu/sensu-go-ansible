@@ -38,19 +38,22 @@ seealso:
 options:
   subscription:
     description:
-      - The name of the subscription the entry should match. If left empty a silencing entry will
-        contain an asterisk in the subscription position. This indicates that any event with a
-        matching check name will be marked as silenced, regardless of the originating entities
-        subscriptions. Specific entity can also be targeted by taking advantage of per-entity
-        subscription (entity:<entity_name>)
+      - The name of the subscription the entry should match.
+      - If left empty a silencing entry will contain an asterisk in the
+        subscription position. This indicates that any event with a matching
+        check name will be marked as silenced, regardless of the originating
+        entities subscriptions.
+      - Specific entity can also be targeted by taking advantage of per-entity
+        subscription (entity:<entity_name>).
       - This parameter is required if the I(check) parameter is absent.
     type: str
   check:
     description:
-     - The name of the check the entry should match. If left empty a silencing entry will contain an
-       asterisk in the check position. This indicates that any event where the originating entities
-       subscriptions match the subscription specified in the entry will be marked as silenced,
-       regardless of the check name.
+      - The name of the check the entry should match.
+      - If left empty a silencing entry will contain an asterisk in the check
+        position. This indicates that any event where the originating entities
+        subscriptions match the subscription specified in the entry will be
+        marked as silenced, regardless of the check name.
       - This parameter is required if the I(subscription) parameter is absent.
     type: str
   begin:
@@ -95,9 +98,22 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu silence
+  description: Object representing Sensu silence.
   returned: success
   type: dict
+  sample:
+    metadata:
+      annotations: null
+      labels: null
+      name: entity:i-424242:*
+      namespace: default
+    begin: 1542671205
+    check: null
+    creator: admin
+    expire: -1
+    expire_on_resolve: false
+    reason: null
+    subscription: entity:i-424242
 '''
 
 from ansible.module_utils.basic import AnsibleModule

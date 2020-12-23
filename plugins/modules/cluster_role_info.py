@@ -48,9 +48,22 @@ EXAMPLES = '''
 
 RETURN = '''
 roles:
-  description: list of Sensu cluster roles
+  description: List of Sensu cluster roles.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        name: cluster-role
+      rules:
+        - resource_names:
+            - sample-name
+          resources:
+            - assets
+            - checks
+          verbs:
+            - get
+            - list
 '''
 
 from ansible.module_utils.basic import AnsibleModule

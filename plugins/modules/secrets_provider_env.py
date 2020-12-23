@@ -48,9 +48,12 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu Env secrets provider
+  description: Object representing Sensu Env secrets provider.
   returned: success
   type: dict
+  sample:
+    - metadata:
+        name: env
 '''
 
 from ansible.module_utils.basic import AnsibleModule

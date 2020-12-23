@@ -110,9 +110,23 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu vault secrets provider
+  description: Object representing Sensu vault secrets provider.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: vault
+    client:
+      address: https://vaultserver.example.com:8200
+      token: VAULT_TOKEN
+      version: v1
+      tls:
+        ca_cert: "/etc/ssl/certs/vault_ca_cert.pem"
+      max_retries: 2
+      timeout: 20s
+      rate_limiter:
+        limit: 10
+        burst: 100
 '''
 
 from ansible.module_utils.basic import AnsibleModule

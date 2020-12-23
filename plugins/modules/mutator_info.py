@@ -48,9 +48,20 @@ EXAMPLES = '''
 
 RETURN = '''
 objects:
-  description: list of Sensu mutators
+  description: List of Sensu mutators.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        annotations: null
+        labels: null
+        name: example-mutator
+        namespace: default
+      command: example_mutator.go
+      env_vars: []
+      runtime_assets: []
+      timeout: 0
 '''
 
 from ansible.module_utils.basic import AnsibleModule

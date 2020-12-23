@@ -61,9 +61,21 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing external datastore provider
+  description: Object representing external datastore provider.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: my-postgres
+    batch_buffer: 0
+    batch_size: 1
+    batch_workers: 0
+    dsn: "postgresql://user:secret@host:port/dbname"
+    max_conn_lifetime: 5m
+    max_idle_conns: 2
+    pool_size: 20
+    strict: true
+    enable_round_robin: true
 '''
 
 from ansible.module_utils.basic import AnsibleModule

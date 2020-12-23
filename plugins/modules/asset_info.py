@@ -54,9 +54,17 @@ EXAMPLES = """
 
 RETURN = """
 objects:
-  description: list of Sensu assets
+  description: List of Sensu assets.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        name: check_script
+        namespace: default
+      builds:
+        - sha512: 4f926bf4328f...2c58ad9ab40c9e2edc31b288d066b195b21b
+          url: http://example.com/asset.tar.gz
 """
 
 from ansible.module_utils.basic import AnsibleModule

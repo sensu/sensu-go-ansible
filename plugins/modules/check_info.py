@@ -48,9 +48,21 @@ EXAMPLES = '''
 
 RETURN = '''
 objects:
-  description: list of Sensu checks
+  description: List of Sensu checks.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        name: check_minimum
+        namespace: default
+      command: collect.sh
+      handlers:
+        - slack
+      interval: 10
+      publish: true
+      subscriptions:
+        - system
 '''
 
 from ansible.module_utils.basic import AnsibleModule

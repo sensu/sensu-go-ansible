@@ -49,9 +49,20 @@ EXAMPLES = '''
 
 RETURN = '''
 role_bindings:
-  description: list of Sensu role bindings
+  description: List of Sensu role bindings.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        name: event-reader-binding
+        namespace: default
+      role_ref:
+        name: event-reader
+        type: Role
+      subjects:
+        - name: bob
+          type: User
 '''
 
 from ansible.module_utils.basic import AnsibleModule

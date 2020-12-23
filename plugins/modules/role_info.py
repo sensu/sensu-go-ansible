@@ -49,9 +49,23 @@ EXAMPLES = '''
 
 RETURN = '''
 roles:
-  description: list of Sensu roles
+  description: List of Sensu roles.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        name: namespaced-resources-all-verbs
+        namespace: default
+      rules:
+        - resource_names: []
+          resources:
+            - assets
+            - checks
+          verbs:
+             - create
+             - update
+             - delete
 '''
 
 from ansible.module_utils.basic import AnsibleModule

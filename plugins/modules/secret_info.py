@@ -54,9 +54,21 @@ EXAMPLES = """
 
 RETURN = """
 objects:
-  description: list of Sensu Go secrets
+  description: List of Sensu Go secrets.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        name: sensu-ansible-token
+        namespace: default
+      id: ANSIBLE_TOKEN
+      provider: env
+    - metadata:
+        name: sensu-ansible
+        namespace: default
+      id: 'secret/database#password'
+      provider: vault
 """
 
 from ansible.module_utils.basic import AnsibleModule

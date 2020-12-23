@@ -25,7 +25,7 @@ description:
     Bonsai, the Sensu asset index.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/assets/)
-    and U(https://bonsai.sensu.io/)
+    and U(https://bonsai.sensu.io/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.auth
@@ -78,7 +78,14 @@ EXAMPLES = """
 
 RETURN = """
 object:
-  description: object representing Sensu asset
+  description: Object representing Sensu asset.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: check_script
+      namespace: default
+    builds:
+      - sha512: 4f926bf4328f...2c58ad9ab40c9e2edc31b288d066b195b21b
+        url: http://example.com/asset.tar.gz
 """

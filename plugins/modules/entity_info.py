@@ -48,9 +48,49 @@ EXAMPLES = '''
 
 RETURN = '''
 objects:
-  description: list of Sensu entities
+  description: List of Sensu entities.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        annotations: null
+        labels: null
+        name: webserver01
+        namespace: default
+      deregister: false
+      deregistration: {}
+      entity_class: agent
+      last_seen: 1542667231
+      redact:
+        - password
+        - private_key
+        - secret
+      subscriptions:
+        - entity:webserver01
+      system:
+        arch: amd64
+        libc_type: glibc
+        vm_system: kvm
+        vm_role: host
+        cloud_provider: null
+        network:
+          interfaces:
+            - addresses:
+                - 127.0.0.1/8
+                - ::1/128
+              name: lo
+            - addresses:
+                - 172.28.128.3/24
+                - fe80::a00:27ff:febc:be60/64
+              mac: 08:00:27:bc:be:60
+              name: enp0s8
+        os: linux
+        platform: centos
+        platform_family: rhel
+        platform_version: 7.4.1708
+      sensu_agent_version: 1.0.0
+      user: agent
 '''
 
 from ansible.module_utils.basic import AnsibleModule

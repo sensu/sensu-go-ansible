@@ -21,7 +21,7 @@ author:
  - Manca Bizjak (@mancabizjak)
  - Aljaz Kosir (@aljazkosir)
  - Tadej Borovsak (@tadeboro)
-short_description: Manage Sensu's Tessen configuration.
+short_description: Manage Sensu's Tessen configuration
 description:
   - Enable or disable Tessen service.
   - For more information, refer to the Sensu documentation at
@@ -47,9 +47,11 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu tessen
+  description: Object representing Sensu tessen.
   returned: success
   type: dict
+  sample:
+    opt_out: false
 '''
 
 from ansible.module_utils.basic import AnsibleModule

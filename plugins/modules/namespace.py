@@ -49,9 +49,11 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu namespace
+  description: Object representing Sensu namespace.
   returned: success
   type: dict
+  sample:
+    name: default
 '''
 
 from ansible.module_utils.basic import AnsibleModule

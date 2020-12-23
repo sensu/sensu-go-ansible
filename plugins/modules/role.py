@@ -86,9 +86,22 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu role
+  description: Object representing Sensu role.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: namespaced-resources-all-verbs
+      namespace: default
+    rules:
+      - resource_names: []
+        resources:
+          - assets
+          - checks
+        verbs:
+           - create
+           - update
+           - delete
 '''
 
 from ansible.module_utils.basic import AnsibleModule

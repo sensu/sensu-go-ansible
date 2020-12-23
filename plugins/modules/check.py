@@ -227,9 +227,20 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu check
+  description: Object representing Sensu check.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: check_minimum
+      namespace: default
+    command: collect.sh
+    handlers:
+      - slack
+    interval: 10
+    publish: true
+    subscriptions:
+      - system
 '''
 
 from ansible.module_utils.basic import AnsibleModule

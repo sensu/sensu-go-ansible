@@ -99,9 +99,16 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu filter
+  description: Object representing Sensu filter.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: filter_minimum
+      namespace: default
+    action: allow
+    expressions:
+      - event.check.occurrences == 1
 '''
 
 from ansible.module_utils.basic import AnsibleModule

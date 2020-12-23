@@ -47,10 +47,20 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-cluster_role_bindings:
-  description: list of Sensu cluster role bindings
+objects:
+  description: List of Sensu cluster role bindings.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        name: cluster-admin
+      role_ref:
+        name: cluster-admin
+        type: ClusterRole
+      subjects:
+        - name: cluster-admins
+          type: Group
 '''
 
 from ansible.module_utils.basic import AnsibleModule

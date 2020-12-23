@@ -59,9 +59,23 @@ EXAMPLES = '''
 
 RETURN = '''
 objects:
-  description: list of Sensu silence entries
+  description: List of Sensu silence entries.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - metadata:
+        annotations: null
+        labels: null
+        name: entity:i-424242:*
+        namespace: default
+      begin: 1542671205
+      check: null
+      creator: admin
+      expire: -1
+      expire_on_resolve: false
+      reason: null
+      subscription: entity:i-424242
 '''
 
 from ansible.module_utils.basic import AnsibleModule

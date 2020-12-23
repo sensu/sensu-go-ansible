@@ -47,9 +47,18 @@ EXAMPLES = '''
 
 RETURN = '''
 objects:
-  description: list of Sensu users
+  description: List of Sensu users.
   returned: success
   type: list
+  elements: dict
+  sample:
+    - disabled: false
+      groups:
+        - ops
+        - dev
+      password: USER_PASSWORD
+      password_hash: $5f$14$.brXRviMZpbaleSq9kjoUuwm67V/s4IziOLGHjEqxJbzPsreQAyNm
+      username: alice
 '''
 
 from ansible.module_utils.basic import AnsibleModule

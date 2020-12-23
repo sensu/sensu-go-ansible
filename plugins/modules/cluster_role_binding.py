@@ -39,7 +39,7 @@ options:
     type: str
   users:
     description:
-      - List of users to bind to the cluster role
+      - List of users to bind to the cluster role.
       - Note that at least one of I(users) and I(groups) must be
         specified when creating a cluster role binding.
     type: list
@@ -75,9 +75,18 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu cluster role binding
+  description: Object representing Sensu cluster role binding.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: cluster-admin
+    role_ref:
+      name: cluster-admin
+      type: ClusterRole
+    subjects:
+      - name: cluster-admins
+        type: Group
 '''
 
 from ansible.module_utils.basic import AnsibleModule

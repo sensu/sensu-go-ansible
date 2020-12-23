@@ -52,14 +52,14 @@ options:
     type: str
   users:
     description:
-      - List of users to bind to the role or cluster role
+      - List of users to bind to the role or cluster role.
       - Note that at least one of I(users) and I(groups) must be
         specified when creating a role binding.
     type: list
     elements: str
   groups:
     description:
-      - List of groups to bind to the role or cluster role
+      - List of groups to bind to the role or cluster role.
       - Note that at least one of I(users) and I(groups) must be
         specified when creating a role binding.
     type: list
@@ -94,9 +94,19 @@ EXAMPLES = '''
 
 RETURN = '''
 object:
-  description: object representing Sensu role binding
+  description: Object representing Sensu role binding.
   returned: success
   type: dict
+  sample:
+    metadata:
+      name: event-reader-binding
+      namespace: default
+    role_ref:
+      name: event-reader
+      type: Role
+    subjects:
+      - name: bob
+        type: User
 '''
 
 from ansible.module_utils.basic import AnsibleModule
