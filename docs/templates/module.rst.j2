@@ -62,7 +62,7 @@ See Also
 {% macro option_desc(opts, level) %}
 {%   for name, spec in opts | dictsort recursive %}
 {%     set req = "required" if spec.required else "optional" %}
-{%     set default = ", default: " + spec.default if spec.default else "" %}
+{%     set default = ", default: " ~ spec.default if spec.default else "" %}
 {{ "  " * level }}{{ name }} ({{ req }})
 {%     for para in spec.description %}
   {{ "  " * level }}{{ para | rst_ify }}
