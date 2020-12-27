@@ -11,6 +11,10 @@
 
 {%   endfor %}
 
+{% if version_added is defined -%}
+.. versionadded:: {{ version_added }}
+{% endif %}
+
 {% if requirements -%}
 Requirements
 ------------
