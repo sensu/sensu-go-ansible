@@ -89,27 +89,20 @@ Parameters
 {{ option_desc(options, 0) }}
 {% endif %}
 
-
-{% macro result_desc(results, level) %}
-{%   for name, spec in results.items() %}
-{%     set ret = spec.returned %}
-{%     set typ = spec.type | default("any") %}
-{%     set sample = spec.sample %}
-{{ "  " * level }}{{ name }} ({{ spec.returned }}), {{ typ }}, {{ sample }})
-{%     for para in spec.description %}
-  {{ "  " * level }}{{ para | rst_ify }}
-
-{%     endfor %}
-
-{%     if spec.contains %}
-{{ result_desc(spec.contains, level + 1) }}
-{%     endif %}
-{%   endfor %}
-{% endmacro %}
-
 {% if returndocs -%}
 Return Values
 -------------
 
-{{ result_desc(returndocs, 0) }}
+{% for name, spec in returndocs.items() %}
+{{ name }}
+{%   for para in spec.description %}
+   {{ para | rst_ify }}
+
+{%   endfor %}
+   **sample**:
+
+   .. code-block:: yaml
+
+      {{ spec.sample | to_yaml(default_flow_style=False, indent=2) | indent(6) }}
+{% endfor %}
 {% endif %}
