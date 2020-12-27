@@ -48,7 +48,7 @@ notes:
   - I(labels) and I(annotations) values are merged with the values obtained
     from Bonsai. Values passed-in as parameters take precedence over the
     values obtained from Bonsai.
-  - To delete an asset, use regular M(asset) module.
+  - To delete an asset, use regular M(sensu.sensu_go.asset) module.
 seealso:
   - module: sensu.sensu_go.asset
   - module: sensu.sensu_go.asset_info
