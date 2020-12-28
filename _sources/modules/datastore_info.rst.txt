@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/datastore_info.py
 
-.. _datastore_info_module:
+.. _sensu.sensu_go.datastore_info_module:
 
 datastore_info -- List external Sensu datastore providers
 =========================================================
@@ -30,7 +30,7 @@ Examples
      register: result
 
    - name: Do something with result
-     debug:
+     ansible.builtin.debug:
        msg: "{{ result.objects.0.dsn }}"
 
 
@@ -42,7 +42,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`datastore_module`
+   - :ref:`sensu.sensu_go.datastore_module`
 
 
 
@@ -114,13 +114,25 @@ name (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of external Sensu datastore providers
+objects
+   List of external Sensu datastore providers.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - batch_buffer: 0
+        batch_size: 1
+        batch_workers: 0
+        dsn: postgresql://user:secret@host:port/dbname
+        enable_round_robin: true
+        max_conn_lifetime: 5m
+        max_idle_conns: 2
+        metadata:
+          name: my-postgres
+        pool_size: 20
+        strict: true
 

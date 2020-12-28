@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/silence.py
 
-.. _silence_module:
+.. _sensu.sensu_go.silence_module:
 
 silence -- Manage Sensu silences
 ================================
@@ -49,7 +49,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`silence_info_module`
+   - :ref:`sensu.sensu_go.silence_info_module`
 
 
 
@@ -127,7 +127,11 @@ begin (optional)
   | **type**: int
 
 check (optional)
-  The name of the check the entry should match. If left empty a silencing entry will contain an asterisk in the check position. This indicates that any event where the originating entities subscriptions match the subscription specified in the entry will be marked as silenced, regardless of the check name. - This parameter is required if the *subscription* parameter is absent.
+  The name of the check the entry should match.
+
+  If left empty a silencing entry will contain an asterisk in the check position. This indicates that any event where the originating entities subscriptions match the subscription specified in the entry will be marked as silenced, regardless of the check name.
+
+  This parameter is required if the *subscription* parameter is absent.
 
   | **type**: str
 
@@ -165,7 +169,11 @@ state (optional)
   | **choices**: present, absent
 
 subscription (optional)
-  The name of the subscription the entry should match. If left empty a silencing entry will contain an asterisk in the subscription position. This indicates that any event with a matching check name will be marked as silenced, regardless of the originating entities subscriptions. Specific entity can also be targeted by taking advantage of per-entity subscription (entity:<entity_name>)
+  The name of the subscription the entry should match.
+
+  If left empty a silencing entry will contain an asterisk in the subscription position. This indicates that any event with a matching check name will be marked as silenced, regardless of the originating entities subscriptions.
+
+  Specific entity can also be targeted by taking advantage of per-entity subscription (entity:<entity_name>).
 
   This parameter is required if the *check* parameter is absent.
 
@@ -173,13 +181,26 @@ subscription (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu silence
+object
+   Object representing Sensu silence.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      begin: 1542671205
+      check: null
+      creator: admin
+      expire: -1
+      expire_on_resolve: false
+      metadata:
+        annotations: null
+        labels: null
+        name: entity:i-424242:*
+        namespace: default
+      reason: null
+      subscription: entity:i-424242
 

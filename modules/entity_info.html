@@ -143,7 +143,7 @@
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -231,7 +231,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="entity-info-list-sensu-entities">
-<span id="entity-info-module"></span><h1>entity_info – List Sensu entities<a class="headerlink" href="#entity-info-list-sensu-entities" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-entity-info-module"></span><h1>entity_info – List Sensu entities<a class="headerlink" href="#entity-info-list-sensu-entities" title="Permalink to this headline">¶</a></h1>
 <p>Retrieve information about Sensu entities.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/entities/">https://docs.sensu.io/sensu-go/latest/reference/entities/</a>.</p>
 <div class="versionadded">
@@ -255,7 +255,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="entity.html#entity-module"><span class="std std-ref">entity – Manage Sensu entities</span></a></p></li>
+<li><p><a class="reference internal" href="entity.html#sensu-sensu-go-entity-module"><span class="std std-ref">entity – Manage Sensu entities</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -327,8 +327,49 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>objects (success), list, )</dt><dd><p>list of Sensu entities</p>
+<dl>
+<dt>objects</dt><dd><p>List of Sensu entities.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deregister</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">deregistration</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+  <span class="nt">entity_class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agent</span>
+  <span class="nt">last_seen</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1542667231</span>
+  <span class="nt">metadata</span><span class="p">:</span>
+    <span class="nt">annotations</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+    <span class="nt">labels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">webserver01</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+  <span class="nt">redact</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">password</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">private_key</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">secret</span>
+  <span class="nt">sensu_agent_version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.0.0</span>
+  <span class="nt">subscriptions</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">entity:webserver01</span>
+  <span class="nt">system</span><span class="p">:</span>
+    <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">amd64</span>
+    <span class="nt">cloud_provider</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+    <span class="nt">libc_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">glibc</span>
+    <span class="nt">network</span><span class="p">:</span>
+      <span class="nt">interfaces</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">addresses</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">127.0.0.1/8</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">::1/128</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lo</span>
+      <span class="p p-Indicator">-</span> <span class="nt">addresses</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">172.28.128.3/24</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">fe80::a00:27ff:febc:be60/64</span>
+        <span class="nt">mac</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">08:00:27:bc:be:60</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">enp0s8</span>
+    <span class="nt">os</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">linux</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">centos</span>
+    <span class="nt">platform_family</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rhel</span>
+    <span class="nt">platform_version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7.4.1708</span>
+    <span class="nt">vm_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+    <span class="nt">vm_system</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kvm</span>
+  <span class="nt">user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agent</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

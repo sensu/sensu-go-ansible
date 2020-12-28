@@ -143,7 +143,7 @@
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -231,7 +231,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="asset-info-list-sensu-assets">
-<span id="asset-info-module"></span><h1>asset_info – List Sensu assets<a class="headerlink" href="#asset-info-list-sensu-assets" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-asset-info-module"></span><h1>asset_info – List Sensu assets<a class="headerlink" href="#asset-info-list-sensu-assets" title="Permalink to this headline">¶</a></h1>
 <p>Retrieve information about Sensu Go assets.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/assets/">https://docs.sensu.io/sensu-go/latest/reference/assets/</a>.</p>
 <div class="versionadded">
@@ -249,7 +249,7 @@
   <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">result</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Do something with result</span>
-  <span class="nt">debug</span><span class="p">:</span>
+  <span class="nt">ansible.builtin.debug</span><span class="p">:</span>
     <span class="nt">msg</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">result.objects.0.metadata.name</span> <span class="cp">}}</span><span class="s">&quot;</span>
 </pre></div>
 </div>
@@ -259,8 +259,8 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="asset.html#asset-module"><span class="std std-ref">asset – Manage Sensu assets</span></a></p></li>
-<li><p><a class="reference internal" href="bonsai_asset.html#bonsai-asset-module"><span class="std std-ref">bonsai_asset – Add Sensu assets from Bonsai</span></a></p></li>
+<li><p><a class="reference internal" href="asset.html#sensu-sensu-go-asset-module"><span class="std std-ref">asset – Manage Sensu assets</span></a></p></li>
+<li><p><a class="reference internal" href="bonsai_asset.html#sensu-sensu-go-bonsai-asset-module"><span class="std std-ref">bonsai_asset – Add Sensu assets from Bonsai</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -332,8 +332,17 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>objects (success), list, )</dt><dd><p>list of Sensu assets</p>
+<dl>
+<dt>objects</dt><dd><p>List of Sensu assets.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">builds</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">sha512</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4f926bf4328f...2c58ad9ab40c9e2edc31b288d066b195b21b</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://example.com/asset.tar.gz</span>
+  <span class="nt">metadata</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check_script</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

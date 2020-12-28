@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/handler_info.py
 
-.. _handler_info_module:
+.. _sensu.sensu_go.handler_info_module:
 
 handler_info -- List Sensu handlers
 ===================================
@@ -26,7 +26,7 @@ Examples
 
    - name: Retrieve info for a specific Sensu handler
      sensu.sensu_go.handler_info:
-         name: my-handler
+       name: my-handler
      register: result
 
 
@@ -38,9 +38,9 @@ See Also
 
 .. seealso::
 
-   - :ref:`socket_handler_module`
-   - :ref:`pipe_handler_module`
-   - :ref:`handler_set_module`
+   - :ref:`sensu.sensu_go.socket_handler_module`
+   - :ref:`sensu.sensu_go.pipe_handler_module`
+   - :ref:`sensu.sensu_go.handler_set_module`
 
 
 
@@ -118,13 +118,21 @@ namespace (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of Sensu handlers
+objects
+   List of Sensu handlers.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - metadata:
+          name: tcp_udp_handler_minimum
+          namespace: default
+        socket:
+          host: 10.0.1.99
+          port: 4444
+        type: tcp
 

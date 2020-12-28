@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/pipe_handler.py
 
-.. _pipe_handler_module:
+.. _sensu.sensu_go.pipe_handler_module:
 
 pipe_handler -- Manage Sensu pipe handler
 =========================================
@@ -45,9 +45,9 @@ See Also
 
 .. seealso::
 
-   - :ref:`socket_handler_module`
-   - :ref:`handler_info_module`
-   - :ref:`handler_set_module`
+   - :ref:`sensu.sensu_go.socket_handler_module`
+   - :ref:`sensu.sensu_go.handler_info_module`
+   - :ref:`sensu.sensu_go.handler_set_module`
 
 
 
@@ -120,7 +120,7 @@ auth (optional)
 
 
 command (optional)
-  The handler command to be executed. The event data is passed to the process via STDIN.
+  The handler command to be executed. The event data is passed to the process through STDIN.
 
   Required if *state* is ``present``.
 
@@ -162,7 +162,7 @@ namespace (optional)
   | **default**: default
 
 runtime_assets (optional)
-  List of runtime assets to required to run the handler ``command``
+  List of runtime assets to required to run the handler ``command``.
 
   | **type**: list
 
@@ -196,13 +196,19 @@ timeout (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu pipe handler
+object
+   Object representing Sensu pipe handler.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      command: command-example
+      metadata:
+        name: pipe_handler_minimum
+        namespace: default
+      type: pipe
 

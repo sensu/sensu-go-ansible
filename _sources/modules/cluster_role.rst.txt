@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/cluster_role.py
 
-.. _cluster_role_module:
+.. _sensu.sensu_go.cluster_role_module:
 
 cluster_role -- Manage Sensu cluster roles
 ==========================================
@@ -45,10 +45,10 @@ See Also
 
 .. seealso::
 
-   - :ref:`cluster_role_info_module`
-   - :ref:`cluster_role_binding_module`
-   - :ref:`role_module`
-   - :ref:`role_binding_module`
+   - :ref:`sensu.sensu_go.cluster_role_info_module`
+   - :ref:`sensu.sensu_go.cluster_role_binding_module`
+   - :ref:`sensu.sensu_go.role_module`
+   - :ref:`sensu.sensu_go.role_binding_module`
 
 
 
@@ -157,13 +157,25 @@ state (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu cluster role
+object
+   Object representing Sensu cluster role.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      metadata:
+        name: cluster-role
+      rules:
+      - resource_names:
+        - sample-name
+        resources:
+        - assets
+        - checks
+        verbs:
+        - get
+        - list
 

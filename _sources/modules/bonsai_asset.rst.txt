@@ -1,13 +1,13 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/bonsai_asset.py
 
-.. _bonsai_asset_module:
+.. _sensu.sensu_go.bonsai_asset_module:
 
 bonsai_asset -- Add Sensu assets from Bonsai
 ============================================
 
 Create or update a Sensu Go asset whose definition is available in the Bonsai, the Sensu asset index.
 
-For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/assets/ and https://bonsai.sensu.io/
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/reference/assets/ and https://bonsai.sensu.io/.
 
 
 .. versionadded:: 1.0.0
@@ -26,18 +26,18 @@ Examples
        version: 2.2.0-1
 
    - name: Remove previously added asset
-     asset:
+     sensu.sensu_go.asset:
        name: sensu/monitoring-plugins
        state: absent
 
    - name: Store Bonsai asset under a different name
-     sensu.sensu_gobonsai_asset:
+     sensu.sensu_go.bonsai_asset:
        name: sensu/monitoring-plugins
        version: 2.2.0-1
        rename: sensu-monitoring-2.2.0-1
 
    - name: Display asset info
-     asset_info:
+     sensu.sensu_go.asset_info:
        name: sensu-monitoring-2.2.0-1  # value from rename field
 
 
@@ -48,7 +48,7 @@ Notes
 .. note::
    *labels* and *annotations* values are merged with the values obtained from Bonsai. Values passed-in as parameters take precedence over the values obtained from Bonsai.
 
-   To delete an asset, use regular :ref:`asset <asset_module>` module.
+   To delete an asset, use regular :ref:`sensu.sensu_go.asset <sensu.sensu_go.asset_module>` module.
 
 
 
@@ -57,8 +57,8 @@ See Also
 
 .. seealso::
 
-   - :ref:`asset_module`
-   - :ref:`asset_info_module`
+   - :ref:`sensu.sensu_go.asset_module`
+   - :ref:`sensu.sensu_go.asset_info_module`
 
 
 
@@ -164,13 +164,20 @@ version (required)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu asset
+object
+   Object representing Sensu asset.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      builds:
+      - sha512: 4f926bf4328f...2c58ad9ab40c9e2edc31b288d066b195b21b
+        url: http://example.com/asset.tar.gz
+      metadata:
+        name: check_script
+        namespace: default
 

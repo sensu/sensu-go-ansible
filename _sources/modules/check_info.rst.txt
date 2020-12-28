@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/check_info.py
 
-.. _check_info_module:
+.. _sensu.sensu_go.check_info_module:
 
 check_info -- List Sensu checks
 ===============================
@@ -38,7 +38,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`check_module`
+   - :ref:`sensu.sensu_go.check_module`
 
 
 
@@ -116,13 +116,24 @@ namespace (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of Sensu checks
+objects
+   List of Sensu checks.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - command: collect.sh
+        handlers:
+        - slack
+        interval: 10
+        metadata:
+          name: check_minimum
+          namespace: default
+        publish: true
+        subscriptions:
+        - system
 

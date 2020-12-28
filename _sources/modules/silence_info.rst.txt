@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/silence_info.py
 
-.. _silence_info_module:
+.. _sensu.sensu_go.silence_info_module:
 
 silence_info -- List Sensu silence entries
 ==========================================
@@ -39,7 +39,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`silence_module`
+   - :ref:`sensu.sensu_go.silence_module`
 
 
 
@@ -122,13 +122,26 @@ subscription (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of Sensu silence entries
+objects
+   List of Sensu silence entries.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - begin: 1542671205
+        check: null
+        creator: admin
+        expire: -1
+        expire_on_resolve: false
+        metadata:
+          annotations: null
+          labels: null
+          name: entity:i-424242:*
+          namespace: default
+        reason: null
+        subscription: entity:i-424242
 

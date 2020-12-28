@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/mutator_info.py
 
-.. _mutator_info_module:
+.. _sensu.sensu_go.mutator_info_module:
 
 mutator_info -- List Sensu mutators
 ===================================
@@ -38,7 +38,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`mutator_module`
+   - :ref:`sensu.sensu_go.mutator_module`
 
 
 
@@ -116,13 +116,23 @@ namespace (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of Sensu mutators
+objects
+   List of Sensu mutators.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - command: example_mutator.go
+        env_vars: []
+        metadata:
+          annotations: null
+          labels: null
+          name: example-mutator
+          namespace: default
+        runtime_assets: []
+        timeout: 0
 

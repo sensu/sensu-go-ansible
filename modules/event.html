@@ -144,7 +144,7 @@
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -232,7 +232,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="event-manage-sensu-events">
-<span id="event-module"></span><h1>event – Manage Sensu events<a class="headerlink" href="#event-manage-sensu-events" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-event-module"></span><h1>event – Manage Sensu events<a class="headerlink" href="#event-manage-sensu-events" title="Permalink to this headline">¶</a></h1>
 <p>Send a synthetic event to Sensu.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/events/">https://docs.sensu.io/sensu-go/latest/reference/events/</a>.</p>
 <div class="versionadded">
@@ -282,7 +282,7 @@
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Metric events bypass the store and are sent off to the event pipeline and corresponding event handlers. Read more about this at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/events/#metric-only-events">https://docs.sensu.io/sensu-go/latest/reference/events/#metric-only-events</a></p>
+<p>Metric events bypass the store and are sent off to the event pipeline and corresponding event handlers. Read more about this at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/events/#metric-only-events">https://docs.sensu.io/sensu-go/latest/reference/events/#metric-only-events</a>.</p>
 </div>
 </div>
 <div class="section" id="see-also">
@@ -290,7 +290,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="event_info.html#event-info-module"><span class="std std-ref">event_info – List Sensu events</span></a></p></li>
+<li><p><a class="reference internal" href="event_info.html#sensu-sensu-go-event-info-module"><span class="std std-ref">event_info – List Sensu events</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -352,7 +352,7 @@
 <div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
-<dt>check_attributes (optional)</dt><dd><p>Additional check parameters. Find out more at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/events/#check-attributes">https://docs.sensu.io/sensu-go/latest/reference/events/#check-attributes</a></p>
+<dt>check_attributes (optional)</dt><dd><p>Additional check parameters. Find out more at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/events/#check-attributes">https://docs.sensu.io/sensu-go/latest/reference/events/#check-attributes</a>.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: dict</div>
 </div>
@@ -411,7 +411,7 @@
 <div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
-<dt>metric_attributes (optional)</dt><dd><p>Metric attributes. Find out more at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/events/#metric-attributes">https://docs.sensu.io/sensu-go/latest/reference/events/#metric-attributes</a></p>
+<dt>metric_attributes (optional)</dt><dd><p>Metric attributes. Find out more at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/events/#metric-attributes">https://docs.sensu.io/sensu-go/latest/reference/events/#metric-attributes</a>.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: dict</div>
 </div>
@@ -443,8 +443,47 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>object (success), dict, )</dt><dd><p>object representing Sensu event (deprecated)</p>
+<dl>
+<dt>object</dt><dd><p>Object representing Sensu event (deprecated).</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">check</span><span class="p">:</span>
+  <span class="nt">check_hooks</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+  <span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check-cpu.sh -w 75 -c 90</span>
+  <span class="nt">duration</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.07055808</span>
+  <span class="nt">env_vars</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+  <span class="nt">executed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1552594757</span>
+  <span class="nt">handlers</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+  <span class="nt">high_flap_threshold</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+  <span class="nt">history</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">executed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1552594757</span>
+    <span class="nt">status</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+  <span class="nt">interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
+  <span class="nt">metadata</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check-cpu</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+  <span class="nt">occurrences</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+  <span class="nt">occurrences_watermark</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+  <span class="nt">output</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">CPU OK - Usage:3.96</span>
+  <span class="nt">subscriptions</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">linux</span>
+  <span class="nt">timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+  <span class="nt">total_state_change</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+  <span class="nt">ttl</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="nt">entity</span><span class="p">:</span>
+  <span class="nt">deregister</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">deregistration</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+  <span class="nt">entity_class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agent</span>
+  <span class="nt">last_seen</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1552594641</span>
+  <span class="nt">metadata</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu-centos</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3a5948f3-6ffd-4ea2-a41e-334f4a72ca2f</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">sequence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">timestamp</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1552594758</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/socket_handler.py
 
-.. _socket_handler_module:
+.. _sensu.sensu_go.socket_handler_module:
 
 socket_handler -- Manage Sensu TCP/UDP handler
 ==============================================
@@ -48,9 +48,9 @@ See Also
 
 .. seealso::
 
-   - :ref:`handler_info_module`
-   - :ref:`pipe_handler_module`
-   - :ref:`handler_set_module`
+   - :ref:`sensu.sensu_go.handler_info_module`
+   - :ref:`sensu.sensu_go.pipe_handler_module`
+   - :ref:`sensu.sensu_go.handler_set_module`
 
 
 
@@ -174,7 +174,7 @@ state (optional)
   | **choices**: present, absent
 
 timeout (optional)
-  Timeout for handler execution
+  Timeout for handler execution.
 
   | **type**: int
 
@@ -188,13 +188,21 @@ type (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu socket handler
+object
+   Object representing Sensu socket handler.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - metadata:
+          name: udp_handler
+          namespace: default
+        socket:
+          host: 10.0.1.99
+          port: 4444
+        type: udp
 

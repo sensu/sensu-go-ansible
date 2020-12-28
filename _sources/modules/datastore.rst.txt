@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/datastore.py
 
-.. _datastore_module:
+.. _sensu.sensu_go.datastore_module:
 
 datastore -- Manage Sensu external datastore providers
 ======================================================
@@ -45,7 +45,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`datastore_info_module`
+   - :ref:`sensu.sensu_go.datastore_info_module`
 
 
 
@@ -138,13 +138,25 @@ state (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing external datastore provider
+object
+   Object representing external datastore provider.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      batch_buffer: 0
+      batch_size: 1
+      batch_workers: 0
+      dsn: postgresql://user:secret@host:port/dbname
+      enable_round_robin: true
+      max_conn_lifetime: 5m
+      max_idle_conns: 2
+      metadata:
+        name: my-postgres
+      pool_size: 20
+      strict: true
 

@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/namespace_info.py
 
-.. _namespace_info_module:
+.. _sensu.sensu_go.namespace_info_module:
 
 namespace_info -- List Sensu namespaces
 =======================================
@@ -39,7 +39,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`namespace_module`
+   - :ref:`sensu.sensu_go.namespace_module`
 
 
 
@@ -106,13 +106,15 @@ auth (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of Sensu namespaces
+objects
+   List of Sensu namespaces.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - name: default
 

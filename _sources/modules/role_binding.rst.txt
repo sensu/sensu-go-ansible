@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/role_binding.py
 
-.. _role_binding_module:
+.. _sensu.sensu_go.role_binding_module:
 
 role_binding -- Manage Sensu role bindings
 ==========================================
@@ -25,9 +25,9 @@ Examples
        name: dev_and_testing
        role: testers_permissive
        groups:
-           - testers
-           - dev
-           - ops
+         - testers
+         - dev
+         - ops
        users:
          - alice
 
@@ -53,10 +53,10 @@ See Also
 
 .. seealso::
 
-   - :ref:`role_binding_info_module`
-   - :ref:`role_module`
-   - :ref:`cluster_role_module`
-   - :ref:`cluster_role_binding_module`
+   - :ref:`sensu.sensu_go.role_binding_info_module`
+   - :ref:`sensu.sensu_go.role_module`
+   - :ref:`sensu.sensu_go.cluster_role_module`
+   - :ref:`sensu.sensu_go.cluster_role_binding_module`
 
 
 
@@ -129,7 +129,7 @@ cluster_role (optional)
   | **type**: str
 
 groups (optional)
-  List of groups to bind to the role or cluster role
+  List of groups to bind to the role or cluster role.
 
   Note that at least one of *users* and *groups* must be specified when creating a role binding.
 
@@ -165,7 +165,7 @@ state (optional)
   | **choices**: present, absent
 
 users (optional)
-  List of users to bind to the role or cluster role
+  List of users to bind to the role or cluster role.
 
   Note that at least one of *users* and *groups* must be specified when creating a role binding.
 
@@ -173,13 +173,23 @@ users (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu role binding
+object
+   Object representing Sensu role binding.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      metadata:
+        name: event-reader-binding
+        namespace: default
+      role_ref:
+        name: event-reader
+        type: Role
+      subjects:
+      - name: bob
+        type: User
 

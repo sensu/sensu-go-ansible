@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/cluster_role_binding.py
 
-.. _cluster_role_binding_module:
+.. _sensu.sensu_go.cluster_role_binding_module:
 
 cluster_role_binding -- Manage Sensu cluster role bindings
 ==========================================================
@@ -43,9 +43,9 @@ See Also
 
 .. seealso::
 
-   - :ref:`cluster_role_binding_info_module`
-   - :ref:`cluster_role_module`
-   - :ref:`role_binding_module`
+   - :ref:`sensu.sensu_go.cluster_role_binding_info_module`
+   - :ref:`sensu.sensu_go.cluster_role_module`
+   - :ref:`sensu.sensu_go.role_binding_module`
 
 
 
@@ -141,7 +141,7 @@ state (optional)
   | **choices**: present, absent
 
 users (optional)
-  List of users to bind to the cluster role
+  List of users to bind to the cluster role.
 
   Note that at least one of *users* and *groups* must be specified when creating a cluster role binding.
 
@@ -149,13 +149,22 @@ users (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu cluster role binding
+object
+   Object representing Sensu cluster role binding.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      metadata:
+        name: cluster-admin
+      role_ref:
+        name: cluster-admin
+        type: ClusterRole
+      subjects:
+      - name: cluster-admins
+        type: Group
 

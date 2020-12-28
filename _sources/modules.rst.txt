@@ -2,7 +2,10 @@ Modules
 =======
 
 While different modules perform different tasks, their interfaces all follow
-the same pattern as much as possible.
+the same pattern as much as possible. For example, all Sensu Go modules
+support check mode, most of them can have their state set to either
+``present`` or ``absent``, and they identify the resource to operate on using
+the *name* and *namespace* parameters.
 
 The API of each module is composed of two parts. The *auth* parameter contains
 the pieces of information that are related to the Sensu Go backend that the

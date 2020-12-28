@@ -143,7 +143,7 @@
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -231,7 +231,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="role-binding-manage-sensu-role-bindings">
-<span id="role-binding-module"></span><h1>role_binding – Manage Sensu role bindings<a class="headerlink" href="#role-binding-manage-sensu-role-bindings" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-role-binding-module"></span><h1>role_binding – Manage Sensu role bindings<a class="headerlink" href="#role-binding-manage-sensu-role-bindings" title="Permalink to this headline">¶</a></h1>
 <p>Create, update or delete Sensu role binding.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings">https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings</a>.</p>
 <div class="versionadded">
@@ -244,9 +244,9 @@
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dev_and_testing</span>
     <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">testers_permissive</span>
     <span class="nt">groups</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">testers</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">dev</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ops</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">testers</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">dev</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ops</span>
     <span class="nt">users</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">alice</span>
 
@@ -270,10 +270,10 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="role_binding_info.html#role-binding-info-module"><span class="std std-ref">role_binding_info – List Sensu role bindings</span></a></p></li>
-<li><p><a class="reference internal" href="role.html#role-module"><span class="std std-ref">role – Manage Sensu roles</span></a></p></li>
-<li><p><a class="reference internal" href="cluster_role.html#cluster-role-module"><span class="std std-ref">cluster_role – Manage Sensu cluster roles</span></a></p></li>
-<li><p><a class="reference internal" href="cluster_role_binding.html#cluster-role-binding-module"><span class="std std-ref">cluster_role_binding – Manage Sensu cluster role bindings</span></a></p></li>
+<li><p><a class="reference internal" href="role_binding_info.html#sensu-sensu-go-role-binding-info-module"><span class="std std-ref">role_binding_info – List Sensu role bindings</span></a></p></li>
+<li><p><a class="reference internal" href="role.html#sensu-sensu-go-role-module"><span class="std std-ref">role – Manage Sensu roles</span></a></p></li>
+<li><p><a class="reference internal" href="cluster_role.html#sensu-sensu-go-cluster-role-module"><span class="std std-ref">cluster_role – Manage Sensu cluster roles</span></a></p></li>
+<li><p><a class="reference internal" href="cluster_role_binding.html#sensu-sensu-go-cluster-role-binding-module"><span class="std std-ref">cluster_role_binding – Manage Sensu cluster role bindings</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -336,7 +336,7 @@
 <div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
-<dt>groups (optional)</dt><dd><p>List of groups to bind to the role or cluster role</p>
+<dt>groups (optional)</dt><dd><p>List of groups to bind to the role or cluster role.</p>
 <p>Note that at least one of <em>users</em> and <em>groups</em> must be specified when creating a role binding.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: list</div>
@@ -368,7 +368,7 @@
 <div class="line"><strong>choices</strong>: present, absent</div>
 </div>
 </dd>
-<dt>users (optional)</dt><dd><p>List of users to bind to the role or cluster role</p>
+<dt>users (optional)</dt><dd><p>List of users to bind to the role or cluster role.</p>
 <p>Note that at least one of <em>users</em> and <em>groups</em> must be specified when creating a role binding.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: list</div>
@@ -378,8 +378,20 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>object (success), dict, )</dt><dd><p>object representing Sensu role binding</p>
+<dl>
+<dt>object</dt><dd><p>Object representing Sensu role binding.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">event-reader-binding</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">role_ref</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">event-reader</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Role</span>
+<span class="nt">subjects</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bob</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">User</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

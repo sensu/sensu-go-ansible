@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/role.py
 
-.. _role_module:
+.. _sensu.sensu_go.role_module:
 
 role -- Manage Sensu roles
 ==========================
@@ -25,11 +25,11 @@ Examples
        name: readonly
        rules:
          - verbs:
-             - get
-             - list
-           resources:
-             - checks
-             - entities
+         - get
+         - list
+       resources:
+         - checks
+         - entities
 
    - name: Delete a role
      sensu.sensu_go.role:
@@ -45,9 +45,9 @@ See Also
 
 .. seealso::
 
-   - :ref:`role_info_module`
-   - :ref:`cluster_role_module`
-   - :ref:`role_binding_module`
+   - :ref:`sensu.sensu_go.role_info_module`
+   - :ref:`sensu.sensu_go.cluster_role_module`
+   - :ref:`sensu.sensu_go.role_binding_module`
 
 
 
@@ -162,13 +162,26 @@ state (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu role
+object
+   Object representing Sensu role.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      metadata:
+        name: namespaced-resources-all-verbs
+        namespace: default
+      rules:
+      - resource_names: []
+        resources:
+        - assets
+        - checks
+        verbs:
+        - create
+        - update
+        - delete
 

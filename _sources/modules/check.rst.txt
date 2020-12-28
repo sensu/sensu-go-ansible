@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/check.py
 
-.. _check_module:
+.. _sensu.sensu_go.check_module:
 
 check -- Manage Sensu checks
 ============================
@@ -99,7 +99,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`check_info_module`
+   - :ref:`sensu.sensu_go.check_info_module`
 
 
 
@@ -342,13 +342,24 @@ ttl (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu check
+object
+   Object representing Sensu check.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      command: collect.sh
+      handlers:
+      - slack
+      interval: 10
+      metadata:
+        name: check_minimum
+        namespace: default
+      publish: true
+      subscriptions:
+      - system
 

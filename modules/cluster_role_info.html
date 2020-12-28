@@ -143,7 +143,7 @@
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -231,7 +231,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="cluster-role-info-list-sensu-cluster-roles">
-<span id="cluster-role-info-module"></span><h1>cluster_role_info – List Sensu cluster roles<a class="headerlink" href="#cluster-role-info-list-sensu-cluster-roles" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-cluster-role-info-module"></span><h1>cluster_role_info – List Sensu cluster roles<a class="headerlink" href="#cluster-role-info-list-sensu-cluster-roles" title="Permalink to this headline">¶</a></h1>
 <p>Retrieve information about Sensu roles.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles">https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles</a>.</p>
 <div class="versionadded">
@@ -255,7 +255,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="cluster_role.html#cluster-role-module"><span class="std std-ref">cluster_role – Manage Sensu cluster roles</span></a></p></li>
+<li><p><a class="reference internal" href="cluster_role.html#sensu-sensu-go-cluster-role-module"><span class="std std-ref">cluster_role – Manage Sensu cluster roles</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -321,8 +321,22 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>roles (success), list, )</dt><dd><p>list of Sensu cluster roles</p>
+<dl>
+<dt>roles</dt><dd><p>List of Sensu cluster roles.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">metadata</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-role</span>
+  <span class="nt">rules</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">resource_names</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sample-name</span>
+    <span class="nt">resources</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">assets</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">checks</span>
+    <span class="nt">verbs</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">get</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">list</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

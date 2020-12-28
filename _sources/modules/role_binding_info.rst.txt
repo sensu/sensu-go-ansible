@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/role_binding_info.py
 
-.. _role_binding_info_module:
+.. _sensu.sensu_go.role_binding_info_module:
 
 role_binding_info -- List Sensu role bindings
 =============================================
@@ -26,7 +26,7 @@ Examples
 
    - name: Retrieve a single Sensu role binding
      sensu.sensu_go.role_binding_info:
-         name: my-role-binding
+       name: my-role-binding
      register: result
 
 
@@ -38,7 +38,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`role_binding_module`
+   - :ref:`sensu.sensu_go.role_binding_module`
 
 
 
@@ -116,13 +116,23 @@ namespace (optional)
 
 
 
-
-
 Return Values
 -------------
 
-role_bindings (success), list, )
-  list of Sensu role bindings
+role_bindings
+   List of Sensu role bindings.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - metadata:
+          name: event-reader-binding
+          namespace: default
+        role_ref:
+          name: event-reader
+          type: Role
+        subjects:
+        - name: bob
+          type: User
 

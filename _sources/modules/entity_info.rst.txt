@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/entity_info.py
 
-.. _entity_info_module:
+.. _sensu.sensu_go.entity_info_module:
 
 entity_info -- List Sensu entities
 ==================================
@@ -38,7 +38,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`entity_module`
+   - :ref:`sensu.sensu_go.entity_module`
 
 
 
@@ -116,13 +116,52 @@ namespace (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of Sensu entities
+objects
+   List of Sensu entities.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - deregister: false
+        deregistration: {}
+        entity_class: agent
+        last_seen: 1542667231
+        metadata:
+          annotations: null
+          labels: null
+          name: webserver01
+          namespace: default
+        redact:
+        - password
+        - private_key
+        - secret
+        sensu_agent_version: 1.0.0
+        subscriptions:
+        - entity:webserver01
+        system:
+          arch: amd64
+          cloud_provider: null
+          libc_type: glibc
+          network:
+            interfaces:
+            - addresses:
+              - 127.0.0.1/8
+              - ::1/128
+              name: lo
+            - addresses:
+              - 172.28.128.3/24
+              - fe80::a00:27ff:febc:be60/64
+              mac: 08:00:27:bc:be:60
+              name: enp0s8
+          os: linux
+          platform: centos
+          platform_family: rhel
+          platform_version: 7.4.1708
+          vm_role: host
+          vm_system: kvm
+        user: agent
 

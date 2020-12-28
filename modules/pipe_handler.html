@@ -143,7 +143,7 @@
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -231,7 +231,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="pipe-handler-manage-sensu-pipe-handler">
-<span id="pipe-handler-module"></span><h1>pipe_handler – Manage Sensu pipe handler<a class="headerlink" href="#pipe-handler-manage-sensu-pipe-handler" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-pipe-handler-module"></span><h1>pipe_handler – Manage Sensu pipe handler<a class="headerlink" href="#pipe-handler-manage-sensu-pipe-handler" title="Permalink to this headline">¶</a></h1>
 <p>Create, update or delete a Sensu pipe handler.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/handlers/#pipe-handlers">https://docs.sensu.io/sensu-go/latest/reference/handlers/#pipe-handlers</a>.</p>
 <div class="versionadded">
@@ -262,9 +262,9 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="socket_handler.html#socket-handler-module"><span class="std std-ref">socket_handler – Manage Sensu TCP/UDP handler</span></a></p></li>
-<li><p><a class="reference internal" href="handler_info.html#handler-info-module"><span class="std std-ref">handler_info – List Sensu handlers</span></a></p></li>
-<li><p><a class="reference internal" href="handler_set.html#handler-set-module"><span class="std std-ref">handler_set – Manage Sensu handler set</span></a></p></li>
+<li><p><a class="reference internal" href="socket_handler.html#sensu-sensu-go-socket-handler-module"><span class="std std-ref">socket_handler – Manage Sensu TCP/UDP handler</span></a></p></li>
+<li><p><a class="reference internal" href="handler_info.html#sensu-sensu-go-handler-info-module"><span class="std std-ref">handler_info – List Sensu handlers</span></a></p></li>
+<li><p><a class="reference internal" href="handler_set.html#sensu-sensu-go-handler-set-module"><span class="std std-ref">handler_set – Manage Sensu handler set</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -327,7 +327,7 @@
 </dd>
 </dl>
 </dd>
-<dt>command (optional)</dt><dd><p>The handler command to be executed. The event data is passed to the process via STDIN.</p>
+<dt>command (optional)</dt><dd><p>The handler command to be executed. The event data is passed to the process through STDIN.</p>
 <p>Required if <em>state</em> is <code class="docutils literal notranslate"><span class="pre">present</span></code>.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
@@ -366,7 +366,7 @@
 <div class="line"><strong>default</strong>: default</div>
 </div>
 </dd>
-<dt>runtime_assets (optional)</dt><dd><p>List of runtime assets to required to run the handler <code class="docutils literal notranslate"><span class="pre">command</span></code></p>
+<dt>runtime_assets (optional)</dt><dd><p>List of runtime assets to required to run the handler <code class="docutils literal notranslate"><span class="pre">command</span></code>.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: list</div>
 </div>
@@ -404,8 +404,16 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>object (success), dict, )</dt><dd><p>object representing Sensu pipe handler</p>
+<dl>
+<dt>object</dt><dd><p>Object representing Sensu pipe handler.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">command-example</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pipe_handler_minimum</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pipe</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

@@ -143,7 +143,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -231,7 +231,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="silence-manage-sensu-silences">
-<span id="silence-module"></span><h1>silence – Manage Sensu silences<a class="headerlink" href="#silence-manage-sensu-silences" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-silence-module"></span><h1>silence – Manage Sensu silences<a class="headerlink" href="#silence-manage-sensu-silences" title="Permalink to this headline">¶</a></h1>
 <p>Create, update or delete Sensu silence.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/silencing/">https://docs.sensu.io/sensu-go/latest/reference/silencing/</a>.</p>
 <div class="versionadded">
@@ -266,7 +266,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="silence_info.html#silence-info-module"><span class="std std-ref">silence_info – List Sensu silence entries</span></a></p></li>
+<li><p><a class="reference internal" href="silence_info.html#sensu-sensu-go-silence-info-module"><span class="std std-ref">silence_info – List Sensu silence entries</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -334,7 +334,9 @@
 <div class="line"><strong>type</strong>: int</div>
 </div>
 </dd>
-<dt>check (optional)</dt><dd><p>The name of the check the entry should match. If left empty a silencing entry will contain an asterisk in the check position. This indicates that any event where the originating entities subscriptions match the subscription specified in the entry will be marked as silenced, regardless of the check name. - This parameter is required if the <em>subscription</em> parameter is absent.</p>
+<dt>check (optional)</dt><dd><p>The name of the check the entry should match.</p>
+<p>If left empty a silencing entry will contain an asterisk in the check position. This indicates that any event where the originating entities subscriptions match the subscription specified in the entry will be marked as silenced, regardless of the check name.</p>
+<p>This parameter is required if the <em>subscription</em> parameter is absent.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
 </div>
@@ -372,7 +374,9 @@
 <div class="line"><strong>choices</strong>: present, absent</div>
 </div>
 </dd>
-<dt>subscription (optional)</dt><dd><p>The name of the subscription the entry should match. If left empty a silencing entry will contain an asterisk in the subscription position. This indicates that any event with a matching check name will be marked as silenced, regardless of the originating entities subscriptions. Specific entity can also be targeted by taking advantage of per-entity subscription (entity:&lt;entity_name&gt;)</p>
+<dt>subscription (optional)</dt><dd><p>The name of the subscription the entry should match.</p>
+<p>If left empty a silencing entry will contain an asterisk in the subscription position. This indicates that any event with a matching check name will be marked as silenced, regardless of the originating entities subscriptions.</p>
+<p>Specific entity can also be targeted by taking advantage of per-entity subscription (entity:&lt;entity_name&gt;).</p>
 <p>This parameter is required if the <em>check</em> parameter is absent.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
@@ -382,8 +386,23 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>object (success), dict, )</dt><dd><p>object representing Sensu silence</p>
+<dl>
+<dt>object</dt><dd><p>Object representing Sensu silence.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">begin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1542671205</span>
+<span class="nt">check</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">creator</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">admin</span>
+<span class="nt">expire</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-1</span>
+<span class="nt">expire_on_resolve</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+  <span class="nt">labels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">entity:i-424242:*</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">reason</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">subscription</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">entity:i-424242</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/mutator.py
 
-.. _mutator_module:
+.. _sensu.sensu_go.mutator_module:
 
 mutator -- Manage Sensu mutators
 ================================
@@ -45,7 +45,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`mutator_info_module`
+   - :ref:`sensu.sensu_go.mutator_info_module`
 
 
 
@@ -184,13 +184,23 @@ timeout (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu mutator
+object
+   Object representing Sensu mutator.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      command: example_mutator.go
+      env_vars: []
+      metadata:
+        annotations: null
+        labels: null
+        name: example-mutator
+        namespace: default
+      runtime_assets: []
+      timeout: 0
 

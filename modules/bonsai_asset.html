@@ -144,7 +144,7 @@
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -232,9 +232,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="bonsai-asset-add-sensu-assets-from-bonsai">
-<span id="bonsai-asset-module"></span><h1>bonsai_asset – Add Sensu assets from Bonsai<a class="headerlink" href="#bonsai-asset-add-sensu-assets-from-bonsai" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-bonsai-asset-module"></span><h1>bonsai_asset – Add Sensu assets from Bonsai<a class="headerlink" href="#bonsai-asset-add-sensu-assets-from-bonsai" title="Permalink to this headline">¶</a></h1>
 <p>Create or update a Sensu Go asset whose definition is available in the Bonsai, the Sensu asset index.</p>
-<p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/assets/">https://docs.sensu.io/sensu-go/latest/reference/assets/</a> and <a class="reference external" href="https://bonsai.sensu.io/">https://bonsai.sensu.io/</a></p>
+<p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/assets/">https://docs.sensu.io/sensu-go/latest/reference/assets/</a> and <a class="reference external" href="https://bonsai.sensu.io/">https://bonsai.sensu.io/</a>.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 1.0.0.</span></p>
 </div>
@@ -246,18 +246,18 @@
     <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2.2.0-1</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Remove previously added asset</span>
-  <span class="nt">asset</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.asset</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu/monitoring-plugins</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Store Bonsai asset under a different name</span>
-  <span class="nt">sensu.sensu_gobonsai_asset</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.bonsai_asset</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu/monitoring-plugins</span>
     <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2.2.0-1</span>
     <span class="nt">rename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu-monitoring-2.2.0-1</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Display asset info</span>
-  <span class="nt">asset_info</span><span class="p">:</span>
+  <span class="nt">sensu.sensu_go.asset_info</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu-monitoring-2.2.0-1</span>  <span class="c1"># value from rename field</span>
 </pre></div>
 </div>
@@ -267,7 +267,7 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>labels</em> and <em>annotations</em> values are merged with the values obtained from Bonsai. Values passed-in as parameters take precedence over the values obtained from Bonsai.</p>
-<p>To delete an asset, use regular <a class="reference internal" href="asset.html#asset-module"><span class="std std-ref">asset</span></a> module.</p>
+<p>To delete an asset, use regular <a class="reference internal" href="asset.html#sensu-sensu-go-asset-module"><span class="std std-ref">sensu.sensu_go.asset</span></a> module.</p>
 </div>
 </div>
 <div class="section" id="see-also">
@@ -275,8 +275,8 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="asset.html#asset-module"><span class="std std-ref">asset – Manage Sensu assets</span></a></p></li>
-<li><p><a class="reference internal" href="asset_info.html#asset-info-module"><span class="std std-ref">asset_info – List Sensu assets</span></a></p></li>
+<li><p><a class="reference internal" href="asset.html#sensu-sensu-go-asset-module"><span class="std std-ref">asset – Manage Sensu assets</span></a></p></li>
+<li><p><a class="reference internal" href="asset_info.html#sensu-sensu-go-asset-info-module"><span class="std std-ref">asset_info – List Sensu assets</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -372,8 +372,17 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>object (success), dict, )</dt><dd><p>object representing Sensu asset</p>
+<dl>
+<dt>object</dt><dd><p>Object representing Sensu asset.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">builds</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">sha512</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4f926bf4328f...2c58ad9ab40c9e2edc31b288d066b195b21b</span>
+  <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://example.com/asset.tar.gz</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check_script</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

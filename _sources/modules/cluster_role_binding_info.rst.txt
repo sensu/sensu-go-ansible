@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/cluster_role_binding_info.py
 
-.. _cluster_role_binding_info_module:
+.. _sensu.sensu_go.cluster_role_binding_info_module:
 
 cluster_role_binding_info -- List Sensu cluster role bindings
 =============================================================
@@ -38,7 +38,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`cluster_role_binding_module`
+   - :ref:`sensu.sensu_go.cluster_role_binding_module`
 
 
 
@@ -110,13 +110,22 @@ name (optional)
 
 
 
-
-
 Return Values
 -------------
 
-cluster_role_bindings (success), list, )
-  list of Sensu cluster role bindings
+objects
+   List of Sensu cluster role bindings.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - metadata:
+          name: cluster-admin
+        role_ref:
+          name: cluster-admin
+          type: ClusterRole
+        subjects:
+        - name: cluster-admins
+          type: Group
 

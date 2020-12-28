@@ -137,7 +137,7 @@
 <li class="toctree-l3"><a class="reference internal" href="modules/silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules/silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules/socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="modules/tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules/user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules/user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -222,7 +222,10 @@
   <div class="section" id="modules">
 <h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
 <p>While different modules perform different tasks, their interfaces all follow
-the same pattern as much as possible.</p>
+the same pattern as much as possible. For example, all Sensu Go modules
+support check mode, most of them can have their state set to either
+<code class="docutils literal notranslate"><span class="pre">present</span></code> or <code class="docutils literal notranslate"><span class="pre">absent</span></code>, and they identify the resource to operate on using
+the <em>name</em> and <em>namespace</em> parameters.</p>
 <p>The API of each module is composed of two parts. The <em>auth</em> parameter contains
 the pieces of information that are related to the Sensu Go backend that the
 module is connecting to. All other parameters hold the information related to
@@ -413,7 +416,7 @@ certain modules accept and what values they expect those parameters to be.</p>
 <li class="toctree-l1"><a class="reference internal" href="modules/silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/user_info.html">user_info – List Sensu users</a></li>
 </ul>

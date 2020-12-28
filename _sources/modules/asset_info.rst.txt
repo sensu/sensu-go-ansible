@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/asset_info.py
 
-.. _asset_info_module:
+.. _sensu.sensu_go.asset_info_module:
 
 asset_info -- List Sensu assets
 ===============================
@@ -30,7 +30,7 @@ Examples
      register: result
 
    - name: Do something with result
-     debug:
+     ansible.builtin.debug:
        msg: "{{ result.objects.0.metadata.name }}"
 
 
@@ -43,8 +43,8 @@ See Also
 
 .. seealso::
 
-   - :ref:`asset_module`
-   - :ref:`bonsai_asset_module`
+   - :ref:`sensu.sensu_go.asset_module`
+   - :ref:`sensu.sensu_go.bonsai_asset_module`
 
 
 
@@ -122,13 +122,20 @@ namespace (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of Sensu assets
+objects
+   List of Sensu assets.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - builds:
+        - sha512: 4f926bf4328f...2c58ad9ab40c9e2edc31b288d066b195b21b
+          url: http://example.com/asset.tar.gz
+        metadata:
+          name: check_script
+          namespace: default
 

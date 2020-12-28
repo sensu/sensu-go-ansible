@@ -143,7 +143,7 @@
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -231,7 +231,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="mutator-manage-sensu-mutators">
-<span id="mutator-module"></span><h1>mutator – Manage Sensu mutators<a class="headerlink" href="#mutator-manage-sensu-mutators" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-mutator-module"></span><h1>mutator – Manage Sensu mutators<a class="headerlink" href="#mutator-manage-sensu-mutators" title="Permalink to this headline">¶</a></h1>
 <p>Create, update or delete Sensu mutator.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/mutators/">https://docs.sensu.io/sensu-go/latest/reference/mutators/</a>.</p>
 <div class="versionadded">
@@ -262,7 +262,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="mutator_info.html#mutator-info-module"><span class="std std-ref">mutator_info – List Sensu mutators</span></a></p></li>
+<li><p><a class="reference internal" href="mutator_info.html#sensu-sensu-go-mutator-info-module"><span class="std std-ref">mutator_info – List Sensu mutators</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -392,8 +392,20 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>object (success), dict, )</dt><dd><p>object representing Sensu mutator</p>
+<dl>
+<dt>object</dt><dd><p>Object representing Sensu mutator.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_mutator.go</span>
+<span class="nt">env_vars</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">annotations</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+  <span class="nt">labels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example-mutator</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">runtime_assets</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+<span class="nt">timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tessen – Manage Sensu’s Tessen configuration." href="tessen.html" />
+    <link rel="next" title="tessen – Manage Sensu’s Tessen configuration" href="tessen.html" />
     <link rel="prev" title="silence_info – List Sensu silence entries" href="silence_info.html" /> 
 </head>
 
@@ -143,7 +143,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#return-values">Return Values</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -231,7 +231,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="socket-handler-manage-sensu-tcp-udp-handler">
-<span id="socket-handler-module"></span><h1>socket_handler – Manage Sensu TCP/UDP handler<a class="headerlink" href="#socket-handler-manage-sensu-tcp-udp-handler" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-socket-handler-module"></span><h1>socket_handler – Manage Sensu TCP/UDP handler<a class="headerlink" href="#socket-handler-manage-sensu-tcp-udp-handler" title="Permalink to this headline">¶</a></h1>
 <p>Create, update or delete Sensu socket handler.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/handlers/#tcp-udp-handlers">https://docs.sensu.io/sensu-go/latest/reference/handlers/#tcp-udp-handlers</a>.</p>
 <div class="versionadded">
@@ -265,9 +265,9 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="handler_info.html#handler-info-module"><span class="std std-ref">handler_info – List Sensu handlers</span></a></p></li>
-<li><p><a class="reference internal" href="pipe_handler.html#pipe-handler-module"><span class="std std-ref">pipe_handler – Manage Sensu pipe handler</span></a></p></li>
-<li><p><a class="reference internal" href="handler_set.html#handler-set-module"><span class="std std-ref">handler_set – Manage Sensu handler set</span></a></p></li>
+<li><p><a class="reference internal" href="handler_info.html#sensu-sensu-go-handler-info-module"><span class="std std-ref">handler_info – List Sensu handlers</span></a></p></li>
+<li><p><a class="reference internal" href="pipe_handler.html#sensu-sensu-go-pipe-handler-module"><span class="std std-ref">pipe_handler – Manage Sensu pipe handler</span></a></p></li>
+<li><p><a class="reference internal" href="handler_set.html#sensu-sensu-go-handler-set-module"><span class="std std-ref">handler_set – Manage Sensu handler set</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -377,7 +377,7 @@
 <div class="line"><strong>choices</strong>: present, absent</div>
 </div>
 </dd>
-<dt>timeout (optional)</dt><dd><p>Timeout for handler execution</p>
+<dt>timeout (optional)</dt><dd><p>Timeout for handler execution.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: int</div>
 </div>
@@ -393,8 +393,18 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>object (success), dict, )</dt><dd><p>object representing Sensu socket handler</p>
+<dl>
+<dt>object</dt><dd><p>Object representing Sensu socket handler.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">metadata</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">udp_handler</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+  <span class="nt">socket</span><span class="p">:</span>
+    <span class="nt">host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.0.1.99</span>
+    <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4444</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">udp</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>
@@ -408,7 +418,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tessen.html" class="btn btn-neutral float-right" title="tessen – Manage Sensu’s Tessen configuration." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tessen.html" class="btn btn-neutral float-right" title="tessen – Manage Sensu’s Tessen configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="silence_info.html" class="btn btn-neutral float-left" title="silence_info – List Sensu silence entries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

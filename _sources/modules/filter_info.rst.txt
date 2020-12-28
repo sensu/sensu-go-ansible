@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/filter_info.py
 
-.. _filter_info_module:
+.. _sensu.sensu_go.filter_info_module:
 
 filter_info -- List Sensu info
 ==============================
@@ -38,7 +38,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`filter_module`
+   - :ref:`sensu.sensu_go.filter_module`
 
 
 
@@ -116,13 +116,20 @@ namespace (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of Sensu filters
+objects
+   List of Sensu filters.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - action: allow
+        expressions:
+        - event.check.occurrences == 1
+        metadata:
+          name: filter_minimum
+          namespace: default
 

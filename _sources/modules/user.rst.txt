@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/user.py
 
-.. _user_module:
+.. _sensu.sensu_go.user_module:
 
 user -- Manage Sensu users
 ==========================
@@ -50,7 +50,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`user_info_module`
+   - :ref:`sensu.sensu_go.user_info_module`
 
 
 
@@ -147,13 +147,21 @@ state (optional)
 
 
 
-
-
 Return Values
 -------------
 
-object (success), dict, )
-  object representing Sensu user
+object
+   Object representing Sensu user.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      disabled: false
+      groups:
+      - ops
+      - dev
+      password: USER_PASSWORD
+      password_hash: $5f$14$.brXRviMZpbaleSq9kjoUuwm67V/s4IziOLGHjEqxJbzPsreQAyNm
+      username: alice
 

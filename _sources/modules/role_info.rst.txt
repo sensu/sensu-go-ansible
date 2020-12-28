@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/role_info.py
 
-.. _role_info_module:
+.. _sensu.sensu_go.role_info_module:
 
 role_info -- List Sensu roles
 =============================
@@ -38,7 +38,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`role_module`
+   - :ref:`sensu.sensu_go.role_module`
 
 
 
@@ -116,13 +116,26 @@ namespace (optional)
 
 
 
-
-
 Return Values
 -------------
 
-roles (success), list, )
-  list of Sensu roles
+roles
+   List of Sensu roles.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - metadata:
+          name: namespaced-resources-all-verbs
+          namespace: default
+        rules:
+        - resource_names: []
+          resources:
+          - assets
+          - checks
+          verbs:
+          - create
+          - update
+          - delete
 

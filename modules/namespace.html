@@ -143,7 +143,7 @@
 <li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
 <li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
 </ul>
@@ -231,7 +231,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="namespace-manage-sensu-namespaces">
-<span id="namespace-module"></span><h1>namespace – Manage Sensu namespaces<a class="headerlink" href="#namespace-manage-sensu-namespaces" title="Permalink to this headline">¶</a></h1>
+<span id="sensu-sensu-go-namespace-module"></span><h1>namespace – Manage Sensu namespaces<a class="headerlink" href="#namespace-manage-sensu-namespaces" title="Permalink to this headline">¶</a></h1>
 <p>Create, update or delete a Sensu namespace.</p>
 <p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces">https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces</a>.</p>
 <div class="versionadded">
@@ -256,7 +256,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="namespace_info.html#namespace-info-module"><span class="std std-ref">namespace_info – List Sensu namespaces</span></a></p></li>
+<li><p><a class="reference internal" href="namespace_info.html#sensu-sensu-go-namespace-info-module"><span class="std std-ref">namespace_info – List Sensu namespaces</span></a></p></li>
 </ul>
 </div>
 </div>
@@ -331,8 +331,12 @@
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>object (success), dict, )</dt><dd><p>object representing Sensu namespace</p>
+<dl>
+<dt>object</dt><dd><p>Object representing Sensu namespace.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>

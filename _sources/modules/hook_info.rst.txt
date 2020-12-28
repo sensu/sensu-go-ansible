@@ -1,6 +1,6 @@
 :github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/hook_info.py
 
-.. _hook_info_module:
+.. _sensu.sensu_go.hook_info_module:
 
 hook_info -- List Sensu hooks
 =============================
@@ -38,7 +38,7 @@ See Also
 
 .. seealso::
 
-   - :ref:`hook_module`
+   - :ref:`sensu.sensu_go.hook_module`
 
 
 
@@ -116,13 +116,22 @@ namespace (optional)
 
 
 
-
-
 Return Values
 -------------
 
-objects (success), list, )
-  list of Sensu hooks
+objects
+   List of Sensu hooks.
 
+   **sample**:
 
+   .. code-block:: yaml
+
+      - command: sudo systemctl start nginx
+        metadata:
+          annotations: null
+          labels: null
+          name: restart_nginx
+          namespace: default
+        stdin: false
+        timeout: 60
 
