@@ -1,5 +1,18 @@
 ---
 releases:
+  1.7.1:
+    release_date: "2020-12-30"
+    changes:
+      release_summary: |
+        Slow and steady
+
+        There are no major new features in this release, just honest little
+        fixes that should make using Sensu Go Ansible Collection a bit more
+        pleasant.
+      minor_changes:
+        - List version 6.2.0 and 6.1.3 in Windows lookup table.
+        - Add module return value samples.
+
   1.7.0:
     release_date: "2020-12-14"
     changes:
