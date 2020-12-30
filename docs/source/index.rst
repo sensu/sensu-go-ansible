@@ -28,6 +28,7 @@ this collection is also available on `Automation Hub`_.
    :maxdepth: 2
    :caption: Guides
 
+   versioning_sensu_go_installation
    sensu_go_5_6_migration
 
 
