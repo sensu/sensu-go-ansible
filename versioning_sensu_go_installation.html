@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Updating playbooks for Sensu Go 6 &mdash; Sensu Go Ansible Collection  documentation</title>
+  <title>Versioning Sensu Go installation &mdash; Sensu Go Ansible Collection  documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Roles" href="roles.html" />
-    <link rel="prev" title="Versioning Sensu Go installation" href="versioning_sensu_go_installation.html" /> 
+    <link rel="next" title="Updating playbooks for Sensu Go 6" href="sensu_go_5_6_migration.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,8 +90,13 @@
 </ul>
 <p class="caption"><span class="caption-text">Guides</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="versioning_sensu_go_installation.html">Versioning Sensu Go installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Updating playbooks for Sensu Go 6</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Versioning Sensu Go installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#initial-install">Initial install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-existing-installation">Updating existing installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#downgrading-versions">Downgrading versions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sensu_go_5_6_migration.html">Updating playbooks for Sensu Go 6</a></li>
 </ul>
 <p class="caption"><span class="caption-text">References</span></p>
 <ul>
@@ -151,14 +156,14 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Updating playbooks for Sensu Go 6</li>
+      <li>Versioning Sensu Go installation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
             
-              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/sensu_go_5_6_migration.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/versioning_sensu_go_installation.rst" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -172,12 +177,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="updating-playbooks-for-sensu-go-6">
-<h1>Updating playbooks for Sensu Go 6<a class="headerlink" href="#updating-playbooks-for-sensu-go-6" title="Permalink to this headline">¶</a></h1>
-<p>One of the more significant changes in Sensu Go 6 is how we manage agents and
-agent entities. In previous Sensu Go versions, configuration for both agents and
-agent entities resided in the agent’s configuration file. A typical Ansible
-playbook for managing Sensu Go 5 agents looked like this:</p>
+  <div class="section" id="versioning-sensu-go-installation">
+<h1>Versioning Sensu Go installation<a class="headerlink" href="#versioning-sensu-go-installation" title="Permalink to this headline">¶</a></h1>
+<p>When dealing with software installation, we want to pin the versions of our
+components as tightly as possible. In the first part of this guide, we will
+look at how we can pin the Sensu Go version when using Ansible. We will focus
+our attention on updates in the second part of this guide.</p>
+<div class="section" id="initial-install">
+<h2>Initial install<a class="headerlink" href="#initial-install" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="roles/backend.html"><span class="doc">backend</span></a> and <a class="reference internal" href="roles/agent.html"><span class="doc">agent</span></a> roles both
+use the <a class="reference internal" href="roles/install.html"><span class="doc">install</span></a> role for installing required
+components. And the installation Ansible role consults three variables when
+determining what component version to install: <strong>version</strong>, <strong>build</strong>, and
+<strong>channel</strong>.</p>
+<p>In the vast majority of scenarios, we can set the <strong>version</strong> variable and
+leave the build and channel variables set to their default values:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu agents</span>
   <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agents</span>
   <span class="nt">become</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -186,22 +200,17 @@ playbook for managing Sensu Go 5 agents looked like this:</p>
       <span class="nt">include_role</span><span class="p">:</span>
         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.agent</span>
       <span class="nt">vars</span><span class="p">:</span>
-        <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.21.2</span>
-        <span class="nt">agent_config</span><span class="p">:</span>
-          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-agent</span>
-          <span class="nt">backend-url</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ws://backend.host:8081</span>
-          <span class="nt">keepalive-interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
-          <span class="nt">keepalive-timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-          <span class="nt">deregister</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-          <span class="nt">subscriptions</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">linux</span>
+        <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6.1.4</span>
 </pre></div>
 </div>
-<p>In Sensu Go 6, we manage the entity representing the agent via the API, just
-like all other Sensu Go resources. Unfortunately, this means that we must move
-specific configuration options from the <code class="docutils literal notranslate"><span class="pre">agent_config</span></code> variable into a
-separate task in our play for managing monitoring configuration:</p>
+<p>When we run the previous playbook, Ansible will install the latest 6.1.4
+version build from the <a class="reference external" href="https://packagecloud.io/sensu/stable">stable channel</a>. And since stable channel only
+contains one package build per released version, we pinned down the Sensu Go
+version to a single package.</p>
+<p>Unstable versions of Sensu Go can have more than one build associated with
+them. In scenarios where we are dealing with prerelease versions, we can use
+the <strong>build</strong> variable to make installation predictable or use an older
+package build:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu agents</span>
   <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agents</span>
   <span class="nt">become</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -210,36 +219,38 @@ separate task in our play for managing monitoring configuration:</p>
       <span class="nt">include_role</span><span class="p">:</span>
         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.agent</span>
       <span class="nt">vars</span><span class="p">:</span>
-        <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6.0.0</span>
-        <span class="nt">agent_config</span><span class="p">:</span>
-          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-agent</span>
-          <span class="nt">backend-url</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ws://backend.host:8081</span>
-          <span class="nt">keepalive-interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
-          <span class="nt">keepalive-timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Configure monitoring resources</span>
-  <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
-  <span class="nt">tasks</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Add subscriptions to agent entity</span>
-      <span class="nt">sensu.sensu_go.entity</span><span class="p">:</span>
-        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-agent</span>
-        <span class="nt">entity_class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agent</span>
-        <span class="nt">deregister</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-        <span class="nt">subscriptions</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">linux</span>
+        <span class="nt">channel</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">testing</span>
+        <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6.2.0</span>
+        <span class="nt">build</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3881</span>
 </pre></div>
 </div>
-<p>Options that we should move are <strong>annotations</strong>, <strong>deregister</strong>,
-<strong>deregistration-handler</strong>, <strong>labels</strong>, <strong>redact</strong>, and <strong>subscriptions</strong>. We
-can copy over most of the options from one play into another verbatim. The only
-exception is the <strong>deregistration-handler</strong> agent configuration option that
-corresponds to the <strong>deregistration_handler</strong> entity module parameter.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If we leave entity-related configuration options in the agent’s configuration
-file, Sensu Go will use them when creating an entity. Sensu Go will ignore
-any subsequent updates of the configuration file.</p>
+<p>The installation role ignores both the <strong>channel</strong> and the <strong>build</strong>
+variables values when installing the Sensu Go agent on Windows. For the
+time being, Windows users can only install stable versions with the Sensu
+Go agent role.</p>
+</div>
+<p>We can also install the latest available version if we omit the version
+variable or set it to <code class="docutils literal notranslate"><span class="pre">latest</span></code>. But we strongly advise against this approach
+since we may inadvertently update our Sensu Go version when all we wanted to
+do is update our configuration file.</p>
+</div>
+<div class="section" id="updating-existing-installation">
+<h2>Updating existing installation<a class="headerlink" href="#updating-existing-installation" title="Permalink to this headline">¶</a></h2>
+<p>If you think updating our Sensu Go installation is as simple as bumping the
+version number and rerunning the playbook, you are almost right. Ansible will
+update and restart the updated Sensu Go backend or agent services, but it will
+not run any version-specific migration tasks.</p>
+<p>Thankfully, for most updates, restarting services is all that is needed. For
+the rest of the cases, update instructions are usually straightforward. You
+can find them all in the <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/operations/maintain-sensu/upgrade/">Sensu Go documentation</a>.</p>
+</div>
+<div class="section" id="downgrading-versions">
+<h2>Downgrading versions<a class="headerlink" href="#downgrading-versions" title="Permalink to this headline">¶</a></h2>
+<p>The Sensu Go Ansible Collection does not support downgrades. You might be able
+to install an older version of Sensu Go, but there are no guarantees that your
+installation will still work.</p>
 </div>
 </div>
 
@@ -251,10 +262,10 @@ any subsequent updates of the configuration file.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="roles.html" class="btn btn-neutral float-right" title="Roles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="sensu_go_5_6_migration.html" class="btn btn-neutral float-right" title="Updating playbooks for Sensu Go 6" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="versioning_sensu_go_installation.html" class="btn btn-neutral float-left" title="Versioning Sensu Go installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

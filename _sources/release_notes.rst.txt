@@ -1,6 +1,18 @@
 Release notes
 =============
 
+Version 1.7.1 -- Slow and steady
+--------------------------------
+
+There are no major new features in this release, just honest little fixes that
+should make using Sensu Go Ansible Collection a bit more pleasant.
+
+**Bug fixes:**
+
+* List version 6.2.0 and 6.1.3 in Windows lookup table.
+* Add module return value samples.
+
+
 Version 1.7.0 -- Say hello to Amazon Linux and Windows
 ------------------------------------------------------
 
