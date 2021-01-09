@@ -1,6 +1,39 @@
-# Code of Conduct
+# Overview
 
 > Online version of this document is available at https://sensu.io/conduct
+
+As a member of the Sensu community, we ask that you keep the following in mind:
+
+  * Be kind and welcoming to others.
+  * Respect personal space and ask before you enter it. Remember not
+    everyonelikes to be touched or hugged or joked with.
+  * Be mindful of language. Do not disparage others. Listen more than you talk.
+  * Remember that harassment and sexist, racist, comments or behavior are not
+    appropriate in our Community.
+
+Sensu in-person and online events are intended for networking and collaboration
+in the monitoring community. Attendees violating these rules may be asked to
+leave any event we host without a refund at the sole discretion of the event
+organizers. Thank you for helping make this a welcoming place for all.
+
+
+## Important numbers
+
+Conference staff is happy to help participants contact venue security or local
+law enforcement, provide escorts, or otherwise assist those experiencing
+harassment to feel safe for the duration of the event. We value your
+attendance.
+
+If your physical safety or the physical safety of others is at risk, please
+dial or text 911. For other needs, contact the relevant authorities below:
+
+**Code of Conduct team**  
+The Sensu Community team  
+community@sensu.io  
++1 855-997-3678 ext 510
+
+
+# Full Code of Conduct
 
 In order to foster an inclusive, kind, harassment-free, and cooperative
 community, Sensu enforces this code of conduct on our software projects and
