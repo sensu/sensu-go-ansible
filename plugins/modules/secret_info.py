@@ -27,6 +27,7 @@ description:
     U(https://docs.sensu.io/sensu-go/latest/operations/manage-secrets/secrets/).
 version_added: 1.6.0
 extends_documentation_fragment:
+  - sensu.sensu_go.requirements
   - sensu.sensu_go.auth
   - sensu.sensu_go.info
   - sensu.sensu_go.namespace

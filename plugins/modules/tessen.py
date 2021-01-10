@@ -28,6 +28,7 @@ description:
     U(https://docs.sensu.io/sensu-go/latest/reference/tessen/).
 version_added: 1.0.0
 extends_documentation_fragment:
+  - sensu.sensu_go.requirements
   - sensu.sensu_go.auth
 options:
   state:

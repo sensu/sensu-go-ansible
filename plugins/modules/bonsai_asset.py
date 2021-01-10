@@ -28,6 +28,7 @@ description:
     and U(https://bonsai.sensu.io/).
 version_added: 1.0.0
 extends_documentation_fragment:
+  - sensu.sensu_go.requirements
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
   - sensu.sensu_go.namespace
