@@ -165,3 +165,12 @@ def do_secrets_differ(current, desired):
     } != {
         (d["name"], d["secret"]) for d in (desired.get("secrets") or [])
     }
+
+
+def deprecate(module, msg, version):
+    try:
+        module.deprecate(msg, version=version, collection_name="sensu.sensu_go")
+    except TypeError:
+        # Ansible < 2.9.10 does not support collection_name kwarg. Output at
+        # least msg and version of collection when things will stop working.
+        module.deprecate(msg, version=version)

@@ -228,12 +228,12 @@ def main():
     # behavior and should not be used.
     eclass = payload.get('entity_class')
     if eclass and eclass not in ('agent', 'proxy'):
-        module.deprecate(
+        deprecation_msg = (
             'The `entity_class` parameter should be set to either `agent` or '
             '`proxy`. All other values can result in undefined behavior of '
-            'the Sensu Go backend.',
-            version='2.0.0'
+            'the Sensu Go backend.'
         )
+        utils.deprecate(module, deprecation_msg, '2.0.0')
 
     # Agent entities always have entity:{entity_name} subscription enabled
     # even if we pass an empty subscriptions. In order to prevent falsely
