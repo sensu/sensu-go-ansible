@@ -1,20 +1,24 @@
 # Overview
 
-> Online version of this document is available at https://sensu.io/conduct
-
 As a member of the Sensu community, we ask that you keep the following in mind:
 
   * Be kind and welcoming to others.
   * Respect personal space and ask before you enter it. Remember not
-    everyonelikes to be touched or hugged or joked with.
+    everyone likes to be touched or hugged or joked with.
   * Be mindful of language. Do not disparage others. Listen more than you talk.
-  * Remember that harassment and sexist, racist, comments or behavior are not
+  * Remember that harassment and sexist, racist comments or behavior are not
     appropriate in our Community.
 
-Sensu in-person and online events are intended for networking and collaboration
-in the monitoring community. Attendees violating these rules may be asked to
-leave any event we host without a refund at the sole discretion of the event
-organizers. Thank you for helping make this a welcoming place for all.
+Sensu in-person and online events are intended for networking and
+collaboration in the monitoring community. Attendees violating these rules may
+be asked to leave any event we host without a refund at the sole discretion of
+the event organizers.
+
+The same rules apply when participating in other Sensu-related forums and
+mailing lists, contributing to code and documentation, and in private
+correspondence in Sensu-related space.
+
+Thank you for helping make this a welcoming place for all.
 
 
 ## Important numbers
@@ -25,12 +29,18 @@ harassment to feel safe for the duration of the event. We value your
 attendance.
 
 If your physical safety or the physical safety of others is at risk, please
-dial or text 911. For other needs, contact the relevant authorities below:
+dial or text emergency number (911 in Americas, 112 in Europe, see [wiki][]
+page for more numbers). For other needs, contact the relevant authorities
+below:
+
+   [wiki]:
+      https://en.wikipedia.org/wiki/List_of_emergency_telephone_numbers
+      (List of emergency numbers)
 
 **Code of Conduct team**  
 The Sensu Community team  
 community@sensu.io  
-+1 855-997-3678 ext 510
+[+1 855-997-3678 ext 510](tel:+18559973678,,510)
 
 
 # Full Code of Conduct
@@ -39,8 +49,9 @@ In order to foster an inclusive, kind, harassment-free, and cooperative
 community, Sensu enforces this code of conduct on our software projects and
 events. To make clear what is expected, all delegates/attendees, speakers,
 exhibitors, organizers, and volunteers at any Sensu activity are required to
-read and follow this Code of Conduct. Organizers will enforce this code
-throughout the event.
+read and follow this Code of Conduct. Same rules apply to online activities
+such as opening pull requests, submitting issues, and posting content on Sensu
+forums.
 
 
 ## Our Pledge
@@ -65,8 +76,9 @@ Booth staff (including volunteers) should not use sexualized
 clothing/uniforms/costumes, or otherwise create a sexualized environment.
 
 If a participant engages in behavior that violates this code of conduct, the
-event organizers will take any action they deem appropriate, including warning
-the offender or expulsion from the event with no refund.
+event organizers, project maintainers, or forum administrators will take any
+action they deem appropriate, including warning the offender, expulsion from
+the event with no refund, or blocking access to repository.
 
 
 ## Our Standards
@@ -99,9 +111,9 @@ including presentations.
 
 ## Our Responsibilities
 
-Project contributors are responsible for clarifying the standards of
-acceptable behavior and are expected to take appropriate and fair corrective
-action in response to any instances of unacceptable behavior.
+Project contributors (including maintainers) are responsible for clarifying
+the standards of acceptable behavior and are expected to take appropriate and
+fair corrective action in response to any instances of unacceptable behavior.
 
 Project contributors have the right and responsibility to remove, edit, or
 reject comments, commits, code, wiki edits, issues, and other contributions
@@ -134,8 +146,10 @@ Kindness is about providing people what they need. It's best to start by
 listening to others more than you speak. From there, it is all about providing
 people with a sense that they are welcome. Here are some ideas of how to do
 that: invite someone to your lunch table; smile at an attendee; introduce
-yourself to someone new; and sit with folks you've never met. Encourage others
-to share.
+yourself to someone new; and sit with folks you've never met; answer forum
+questions politely and link to relevant documentation; help first time
+contributors follow developer guides; say thank you when code contribution is
+accepted. Encourage others to share.
 
 
 ### Respect personal space
@@ -156,8 +170,9 @@ meet them, offer to do so consistently regardless of gender.
 ### Be respectful
 
 Not all of us will agree all the time, but disagreement is no excuse for poor
-behavior and poor manners. We do not tolerate harassment of event participants
-in any form.
+behavior and poor manners. This is doubly important in online communication
+where it is easy to forget that we are interaction with another human being.
+We do not tolerate harassment of event participants in any form.
 
 Harassment includes: offensive verbal comments related to gender, gender
 identity, sexual orientation, disability, physical appearance, body size,
