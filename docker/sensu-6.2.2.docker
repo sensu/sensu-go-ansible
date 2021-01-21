@@ -1,4 +1,4 @@
-FROM sensu/sensu:6.2.0
+FROM sensu/sensu:6.2.2
 RUN apk update \
     && apk add --no-cache python3 py3-bcrypt py3-six py3-cffi bash
 CMD [ \
