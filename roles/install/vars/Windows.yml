@@ -1,6 +1,18 @@
 ---
 _msi_lookup:
-  6.2.0: &latest
+  6.2.2: &latest
+    version: 6.2.2
+    build: 3967
+    product_codes:
+      x64: "{C0EB65CB-ED89-4657-B61C-FC9B74A205D6}"
+      x86: "{94375831-C0E6-4CED-8E4A-1BCC9308A087}"
+  6.2.1:
+    version: 6.2.1
+    build: 3945
+    product_codes:
+      x64: "{58442272-4509-4F29-B010-68827FBB8AF9}"
+      x86: "{6E079E5F-5F87-4A2B-AC78-3D7A7CDEF873}"
+  6.2.0:
     version: 6.2.0
     build: 3888
     product_codes:
