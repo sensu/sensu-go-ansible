@@ -113,7 +113,6 @@
           - result.object.begin == 1893452500
           - result.object.subscription == 'entity:mail-server'
           - result.object.check == 'some-check'
-          - not result.object.expire
           - not result.object.expire_on_resolve
 
     - name: Create a second silence
