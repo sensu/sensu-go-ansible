@@ -1,5 +1,18 @@
 ---
 releases:
+  1.7.2:
+    release_date: "2021-01-21"
+    changes:
+      release_summary: |
+        Be kind
+
+        The main thing in this release is a small adjustment of our code of
+        conduct that is a bit more generic and less event-focused.
+      minor_changes:
+        - Specify minimal python version for modules.
+        - Update code of conduct.
+        - List version 6.2.1 and 6.2.2 in Windows lookup table.
+
   1.7.1:
     release_date: "2020-12-30"
     changes:

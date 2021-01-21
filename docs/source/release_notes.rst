@@ -1,6 +1,19 @@
 Release notes
 =============
 
+Version 1.7.2 -- Be kind
+------------------------
+
+The main thing in this release is a small adjustment of our code of conduct
+that is a bit more generic and less event-focused.
+
+**Bug fixes:**
+
+* List version 6.2.1 and 6.2.2 in Windows lookup table.
+* Specify minimal python version for modules.
+* Update code of conduct.
+
+
 Version 1.7.1 -- Slow and steady
 --------------------------------
 
