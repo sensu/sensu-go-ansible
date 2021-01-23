@@ -184,23 +184,23 @@ class TestSync:
         client.put.return_value = http.Response(201, '')
 
         changed, result = user.sync(
-            None, client, '/path', {'my': 'data'}, False
+            None, client, '/path', {'password': 'data'}, False
         )
 
         assert changed is True
         assert {'new': 'data'} == result
-        client.put.assert_called_once_with('/path', {'my': 'data'})
+        client.put.assert_called_once_with('/path', {'password': 'data'})
 
     def test_no_current_object_check(self, mocker):
         client = mocker.Mock()
         client.get.return_value = http.Response(200, '{"new": "data"}')
 
         changed, result = user.sync(
-            None, client, '/path', {'my': 'data'}, True
+            None, client, '/path', {'password': 'data'}, True
         )
 
         assert changed is True
-        assert {'my': 'data'} == result
+        assert {} == result
         client.put.assert_not_called()
 
     def test_password_update(self, mocker):

@@ -101,6 +101,14 @@ except ImportError:
     BCRYPT_IMPORT_ERROR = traceback.format_exc()
 
 
+def _simulate_backend_response(payload):
+    # Backend does not return back any password-related information for now.
+    masked_keys = ('password',)
+    return {
+        k: v for k, v in payload.items() if k not in masked_keys
+    }
+
+
 def update_password(client, path, username, password, check_mode):
     # Hit the auth testing API and try to validate the credentials. If the API
     # says they are invalid, we need to update them.
@@ -153,7 +161,7 @@ def sync(remote_object, client, path, payload, check_mode):
     # Create new user (either enabled or disabled)
     if remote_object is None:
         if check_mode:
-            return True, payload
+            return True, _simulate_backend_response(payload)
         utils.put(client, path, payload)
         return True, utils.get(client, path)
 
@@ -186,8 +194,7 @@ def sync(remote_object, client, path, payload, check_mode):
         # Backend does not return back passwords, so we should follow the
         # example set by the backend API.
         return changed, dict(
-            remote_object,
-            **{k: v for k, v in payload.items() if k != 'password'}
+            remote_object, **_simulate_backend_response(payload)
         )
 
     return changed, utils.get(client, path)
