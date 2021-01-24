@@ -45,8 +45,27 @@ options:
   password:
     description:
       - Password for the user.
-      - Required if user with a desired name does not exist yet on the backend.
+      - Required if user with a desired name does not exist yet on the backend
+        and I(password_hash) is not set.
+      - If both I(password) and I(password_hash) are set, I(password_hash) is
+        ignored and calculated from the I(password) if required.
     type: str
+  password_hash:
+    description:
+      - Bcrypt password hash for the user.
+      - Use C(sensuctl user hash-password PASSWORD) to generate a hash.
+      - Required if user with a desired name does not exist yet on the backend
+        and I(password) is not set.
+      - If both I(password) and I(password_hash) are set, I(password_hash) is
+        ignored and calculated from the I(password) if required.
+      - Sensu Go < 5.21.0 does not support creating/updating users using
+        hashed passwords. Use I(password) parameter if you need to manage such
+        Sensu Go installations.
+      - At the moment, change detection does not work properly when using
+        password hashes because the Sensu Go backend does not expose enough
+        information via its API.
+    type: str
+    version_added: 1.8.0
   groups:
     description:
       - List of groups user belongs to.
@@ -64,6 +83,13 @@ EXAMPLES = '''
     groups:
       - dev
       - prod
+
+- name: Use pre-hashed password
+  sensu.sensu_go.user:
+    auth:
+      url: http://localhost:8080
+    name: awesome_username
+    password_hash: $5f$14$.brXRviMZpbaleSq9kjoUuwm67V/s4IziOLGHjEqxJbzPsreQAyNm
 
 - name: Deactivate a user
   sensu.sensu_go.user:
@@ -103,7 +129,7 @@ except ImportError:
 
 def _simulate_backend_response(payload):
     # Backend does not return back any password-related information for now.
-    masked_keys = ('password',)
+    masked_keys = ('password', 'password_hash')
     return {
         k: v for k, v in payload.items() if k not in masked_keys
     }
@@ -125,6 +151,24 @@ def update_password(client, path, username, password, check_mode):
             utils.put(client, path + '/reset_password', dict(
                 username=username, password_hash=hash.decode('ascii'),
             ))
+
+    return True
+
+
+def update_password_hash(client, path, username, password_hash, check_mode):
+    # Some older Sensu Go versions do not have support for password hashes.
+    if client.version < "5.21.0":
+        raise errors.SensuError(
+            "Sensu Go < 5.21.0 does not support password hashes"
+        )
+
+    # Insert change detection here once we can receive password hash from the
+    # backend. Up until then, we always update passwords.
+
+    if not check_mode:
+        utils.put(client, path + '/reset_password', dict(
+            username=username, password_hash=password_hash,
+        ))
 
     return True
 
@@ -172,9 +216,25 @@ def sync(remote_object, client, path, payload, check_mode):
     # use field-specific API endpoints to update the user data.
 
     changed = False
+
+    # We only use password hash if we do not have a password. In practice,
+    # this means that users should not set both password and password_hash. We
+    # do not enforce this by making those two parameters mutually exclusive
+    # because in the future (2.0.0 version of collection), we intend to move
+    # password hashing into action plugin and supply both the password and its
+    # hash. Why? Because installing bcrypt on control node is way friendlier
+    # compared to installing bcrypt on every host that runs our user module.
+    #
+    # It is true that most of the time, control node == target node in our
+    # cases, but not always.
     if 'password' in payload:
         changed = update_password(
             client, path, payload['username'], payload['password'],
+            check_mode,
+        ) or changed
+    elif 'password_hash' in payload:
+        changed = update_password_hash(
+            client, path, payload['username'], payload['password_hash'],
             check_mode,
         ) or changed
 
@@ -212,6 +272,9 @@ def main():
             password=dict(
                 no_log=True
             ),
+            password_hash=dict(
+                no_log=False,  # Showing hashes is perfectly OK
+            ),
             groups=dict(
                 type='list', elements='str',
             )
@@ -235,10 +298,18 @@ def main():
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
-    if remote_object is None and module.params['password'] is None:
-        module.fail_json(msg='Cannot create new user without a password')
+    if (
+        remote_object is None
+        and module.params['password'] is None
+        and module.params['password_hash'] is None
+    ):
+        module.fail_json(
+            msg='Cannot create new user without a password or a hash'
+        )
 
-    payload = arguments.get_spec_payload(module.params, 'password', 'groups')
+    payload = arguments.get_spec_payload(
+        module.params, 'password', 'password_hash', 'groups',
+    )
     payload['username'] = module.params['name']
     payload['disabled'] = module.params['state'] == 'disabled'
 

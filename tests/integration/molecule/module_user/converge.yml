@@ -153,3 +153,46 @@
     - assert:
         that:
           - result.objects == []
+
+    - name: Create a user with password hash (check mode)
+      user: &hash_pass_user
+        name: hash_pass_user
+        password_hash: $5f$14$.brXRviMZpbaleSq9kjoUuwm67V/s4IziOLGHjEqxJbzPsreQAyNm
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.object.username == "hash_pass_user"
+
+    - name: Make sure nothing changed
+      user_info:
+        name: hash_pass_user
+      register: result
+    - assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Create a user with password hash
+      user: *hash_pass_user
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.object.username == "hash_pass_user"
+
+    - name: Make sure new user appeared
+      user_info:
+        name: hash_pass_user
+      register: result
+    - assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.username == "hash_pass_user"
+
+    - name: Create a user with password hash (failed idempotence for hash)
+      user: *hash_pass_user
+      register: result
+    - assert:
+        that:
+          - result is changed

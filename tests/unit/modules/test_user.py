@@ -74,6 +74,46 @@ class TestUpdatePassword:
         client.put.assert_not_called()
 
 
+class TestUpdatePasswordHash:
+    @pytest.mark.parametrize('check', [False, True])
+    def test_sensu_go_older_than_5_21_0(self, mocker, check):
+        client = mocker.Mock()
+        client.version = version.StrictVersion("5.20.0")
+
+        with pytest.raises(errors.SensuError):
+            user.update_password_hash(client, '/path', 'user', 'hash', check)
+
+        client.put.assert_not_called()
+
+    def test_sensu_go_newer_than_5_21_0(self, mocker):
+        client = mocker.Mock()
+        client.version = version.StrictVersion("5.21.0")
+        client.put.return_value = http.Response(201, '')
+
+        changed = user.update_password_hash(
+            client, '/path', 'user', 'hash', False,
+        )
+
+        assert changed is True
+        client.put.assert_called_once()
+
+        path, payload = client.put.call_args[0]
+        assert path == '/path/reset_password'
+        assert payload['username'] == 'user'
+        assert payload['password_hash'] == 'hash'
+
+    def test_sensu_go_newer_than_5_21_0_check_mode(self, mocker):
+        client = mocker.Mock()
+        client.version = version.StrictVersion("5.21.0")
+
+        changed = user.update_password_hash(
+            client, '/path', 'user', 'pass', True,
+        )
+
+        assert changed is True
+        client.put.assert_not_called()
+
+
 class TestUpdateGroups:
     @pytest.mark.parametrize('check', [False, True])
     def test_update_groups_no_change(self, mocker, check):
@@ -196,7 +236,7 @@ class TestSync:
         client.get.return_value = http.Response(200, '{"new": "data"}')
 
         changed, result = user.sync(
-            None, client, '/path', {'password': 'data'}, True
+            None, client, '/path', {'password_hash': 'data'}, True
         )
 
         assert changed is True
@@ -240,6 +280,52 @@ class TestSync:
         p_mock.assert_called_once()
         g_mock.assert_not_called()
         s_mock.assert_not_called()
+
+    def test_password_hash_update(self, mocker):
+        client = mocker.Mock()
+        client.get.return_value = http.Response(200, '{"new": "data"}')
+        mock = mocker.patch.object(user, 'update_password_hash')
+        mock.return_value = True
+
+        changed, result = user.sync(
+            dict(old='data'), client, '/path',
+            dict(username='user', password_hash='pass'), False
+        )
+
+        assert changed is True
+        assert dict(new='data') == result
+        mock.assert_called_once()
+
+    def test_password_hash_update_check_mode(self, mocker):
+        client = mocker.Mock()
+        client.get.return_value = http.Response(200, '{"new": "data"}')
+        mock = mocker.patch.object(user, 'update_password_hash')
+        mock.return_value = True
+
+        changed, result = user.sync(
+            dict(old='data'), client, '/path',
+            dict(username='user', password_hash='pass'), True
+        )
+
+        assert changed is True
+        assert dict(old='data', username='user') == result
+        mock.assert_called_once()
+
+    def test_when_password_is_set_we_ignore_hash(self, mocker):
+        client = mocker.Mock()
+        client.get.return_value = http.Response(200, '{"new": "data"}')
+        p_mock = mocker.patch.object(user, 'update_password')
+        p_mock.return_value = True
+        h_mock = mocker.patch.object(user, 'update_password_hash')
+
+        user.sync(
+            dict(old='data'), client, '/path',
+            dict(username='user', password='pass', password_hash='hash'),
+            False
+        )
+
+        p_mock.assert_called_once()
+        h_mock.assert_not_called()
 
     def test_groups_update(self, mocker):
         client = mocker.Mock()
