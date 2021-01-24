@@ -12,6 +12,8 @@ from . import errors, http
 
 
 class Client:
+    BAD_VERSION = version.StrictVersion("9999.99.99")
+
     def __init__(self, address, username, password, api_key, verify, ca_path):
         self.address = address.rstrip("/")
         self.username = username
@@ -45,9 +47,14 @@ class Client:
                 raise errors.SensuError(
                     "Version API did not return backend version",
                 )
-            self._version = version.StrictVersion(
-                resp.json["sensu_backend"].split("#")[0]
-            )
+            try:
+                self._version = version.StrictVersion(
+                    resp.json["sensu_backend"].split("#")[0]
+                )
+            except ValueError:
+                # Backend has no version compiled in - we are probably running
+                # againts self-compiled version from git.
+                self._version = self.BAD_VERSION
 
         return self._version
 

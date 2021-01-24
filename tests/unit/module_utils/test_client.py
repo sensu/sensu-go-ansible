@@ -114,6 +114,14 @@ class TestVersion:
         with pytest.raises(errors.SensuError, match="backend"):
             c.version
 
+    def test_invalid_version(self, mocker):
+        c = client.Client("http://example.com/", "u", "p", None, True, None)
+        mocker.patch.object(c, "get").return_value = http.Response(
+            200, '{"sensu_backend":"devel"}',
+        )
+
+        assert c.version == c.BAD_VERSION
+
 
 class TestRequest:
     def test_request_payload_token(self, mocker):
