@@ -37,6 +37,13 @@ Examples
          - dev
          - prod
 
+   - name: Use pre-hashed password
+     sensu.sensu_go.user:
+       auth:
+         url: http://localhost:8080
+       name: awesome_username
+       password_hash: $5f$14$.brXRviMZpbaleSq9kjoUuwm67V/s4IziOLGHjEqxJbzPsreQAyNm
+
    - name: Deactivate a user
      sensu.sensu_go.user:
        name: awesome_username
@@ -133,7 +140,24 @@ name (required)
 password (optional)
   Password for the user.
 
-  Required if user with a desired name does not exist yet on the backend.
+  Required if user with a desired name does not exist yet on the backend and *password_hash* is not set.
+
+  If both *password* and *password_hash* are set, *password_hash* is ignored and calculated from the *password* if required.
+
+  | **type**: str
+
+password_hash (optional)
+  Bcrypt password hash for the user.
+
+  Use ``sensuctl user hash-password PASSWORD`` to generate a hash.
+
+  Required if user with a desired name does not exist yet on the backend and *password* is not set.
+
+  If both *password* and *password_hash* are set, *password_hash* is ignored and calculated from the *password* if required.
+
+  Sensu Go < 5.21.0 does not support creating/updating users using hashed passwords. Use *password* parameter if you need to manage such Sensu Go installations.
+
+  At the moment, change detection does not work properly when using password hashes because the Sensu Go backend does not expose enough information via its API.
 
   | **type**: str
 

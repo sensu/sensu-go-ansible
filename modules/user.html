@@ -264,6 +264,13 @@
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">dev</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">prod</span>
 
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Use pre-hashed password</span>
+  <span class="nt">sensu.sensu_go.user</span><span class="p">:</span>
+    <span class="nt">auth</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:8080</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">awesome_username</span>
+    <span class="nt">password_hash</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$5f$14$.brXRviMZpbaleSq9kjoUuwm67V/s4IziOLGHjEqxJbzPsreQAyNm</span>
+
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Deactivate a user</span>
   <span class="nt">sensu.sensu_go.user</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">awesome_username</span>
@@ -346,7 +353,18 @@
 </div>
 </dd>
 <dt>password (optional)</dt><dd><p>Password for the user.</p>
-<p>Required if user with a desired name does not exist yet on the backend.</p>
+<p>Required if user with a desired name does not exist yet on the backend and <em>password_hash</em> is not set.</p>
+<p>If both <em>password</em> and <em>password_hash</em> are set, <em>password_hash</em> is ignored and calculated from the <em>password</em> if required.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>password_hash (optional)</dt><dd><p>Bcrypt password hash for the user.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">sensuctl</span> <span class="pre">user</span> <span class="pre">hash-password</span> <span class="pre">PASSWORD</span></code> to generate a hash.</p>
+<p>Required if user with a desired name does not exist yet on the backend and <em>password</em> is not set.</p>
+<p>If both <em>password</em> and <em>password_hash</em> are set, <em>password_hash</em> is ignored and calculated from the <em>password</em> if required.</p>
+<p>Sensu Go &lt; 5.21.0 does not support creating/updating users using hashed passwords. Use <em>password</em> parameter if you need to manage such Sensu Go installations.</p>
+<p>At the moment, change detection does not work properly when using password hashes because the Sensu Go backend does not expose enough information via its API.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
 </div>

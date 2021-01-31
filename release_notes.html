@@ -107,6 +107,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="release_policy.html">Release policy</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-8-0-supporting-hashed-user-passwords">Version 1.8.0 – Supporting hashed user passwords</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-7-2-be-kind">Version 1.7.2 – Be kind</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-7-1-slow-and-steady">Version 1.7.1 – Slow and steady</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-7-0-say-hello-to-amazon-linux-and-windows">Version 1.7.0 – Say hello to Amazon Linux and Windows</a></li>
@@ -195,6 +196,20 @@
             
   <div class="section" id="release-notes">
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-8-0-supporting-hashed-user-passwords">
+<h2>Version 1.8.0 – Supporting hashed user passwords<a class="headerlink" href="#version-1-8-0-supporting-hashed-user-passwords" title="Permalink to this headline">¶</a></h2>
+<p>Starting with this release, Sensu Go users can use password hashes directly
+when manipulating role-based access control resources.</p>
+<p><strong>New features:</strong></p>
+<ul class="simple">
+<li><p>Add support for hashed password in user module.</p></li>
+</ul>
+<p><strong>Bug fixes:</strong></p>
+<ul class="simple">
+<li><p>Mimic actual responses when user module runs in check mode.</p></li>
+<li><p>Make it possible to use modules on Sensu Go backends with no version number.</p></li>
+</ul>
+</div>
 <div class="section" id="version-1-7-2-be-kind">
 <h2>Version 1.7.2 – Be kind<a class="headerlink" href="#version-1-7-2-be-kind" title="Permalink to this headline">¶</a></h2>
 <p>The main thing in this release is a small adjustment of our code of conduct

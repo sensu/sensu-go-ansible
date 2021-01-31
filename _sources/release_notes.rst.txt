@@ -1,6 +1,22 @@
 Release notes
 =============
 
+Version 1.8.0 -- Supporting hashed user passwords
+-------------------------------------------------
+
+Starting with this release, Sensu Go users can use password hashes directly
+when manipulating role-based access control resources.
+
+**New features:**
+
+* Add support for hashed password in user module.
+
+**Bug fixes:**
+
+* Mimic actual responses when user module runs in check mode.
+* Make it possible to use modules on Sensu Go backends with no version number.
+
+
 Version 1.7.2 -- Be kind
 ------------------------
 
