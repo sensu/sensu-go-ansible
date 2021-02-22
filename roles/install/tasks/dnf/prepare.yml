@@ -16,16 +16,3 @@
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: '300'
 
-- name: Add yum source repository
-  yum_repository:
-    name: sensu_{{ channel }}-source
-    description: sensu_{{ channel }}-source
-    file: sensu
-    baseurl: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/{{ os }}/{{ dist }}/SRPMS
-    gpgkey: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/gpgkey
-    gpgcheck: no
-    repo_gpgcheck: yes
-    enabled: yes
-    sslverify: yes
-    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
-    metadata_expire: '300'
