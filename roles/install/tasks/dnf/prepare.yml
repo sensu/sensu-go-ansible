@@ -15,4 +15,3 @@
     sslverify: yes
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: '300'
-

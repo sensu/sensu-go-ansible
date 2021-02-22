@@ -40,4 +40,3 @@
     repo: deb https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/{{ os }}/ {{ dist }} main
     filename: /etc/apt/sources.list.d/sensu_{{ channel }}
     validate_certs: yes
-
