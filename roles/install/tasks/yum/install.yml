@@ -6,4 +6,5 @@
   yum:
     name: "{{ 'yum' | sensu.sensu_go.package_name(item, version, build) }}"
     state: latest  # noqa 403
+    allow_downgrade: "{{ allow_downgrade }}"
   loop: "{{ components }}"
