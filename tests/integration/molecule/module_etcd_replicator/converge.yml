@@ -1,0 +1,181 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Make sure we start clean
+      sensu.sensu_go.etcd_replicator_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is success
+          - result.objects | length == 0
+
+    - name: Create new replicator (check mode)
+      sensu.sensu_go.etcd_replicator: &replicator
+        name: cluster-role-replicator
+        ca_cert: /etc/sensu/certs/ca.pem
+        cert: /etc/sensu/certs/cert.pem
+        key: /etc/sensu/certs/key.pem
+        url: https://sensu.alpha.example.com:2379
+        resource: ClusterRole
+      check_mode: true
+      register: result
+    - ansible.builtin.assert: &replicator-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == "cluster-role-replicator"
+          - result.object.resource == "ClusterRole"
+          - result.object.insecure is false
+          - result.object.cert == "/etc/sensu/certs/cert.pem"
+
+    - name: Make sure things are still clean
+      sensu.sensu_go.etcd_replicator_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Create new replicator
+      sensu.sensu_go.etcd_replicator: *replicator
+      register: result
+    - ansible.builtin.debug:
+        var: result
+    - ansible.builtin.assert: *replicator-assertions
+
+    - name: Make sure replicator is present on the backend
+      sensu.sensu_go.etcd_replicator_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "cluster-role-replicator"
+          - result.objects.0.resource == "ClusterRole"
+          - result.objects.0.insecure is false
+          - result.objects.0.cert == "/etc/sensu/certs/cert.pem"
+
+    - name: Create new replicator (idempotence)
+      sensu.sensu_go.etcd_replicator: *replicator
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Update existing replicator (check mode)
+      sensu.sensu_go.etcd_replicator: &update
+        name: cluster-role-replicator
+        insecure: true
+        url:
+          - http://sensu.alpha.example.com:2379
+        resource: ClusterRole
+      check_mode: true
+      register: result
+    - ansible.builtin.assert: &update-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == "cluster-role-replicator"
+          - result.object.resource == "ClusterRole"
+          - result.object.insecure is true
+
+    - name: Make sure replicator did not change
+      sensu.sensu_go.etcd_replicator_info:
+        name: cluster-role-replicator
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.insecure is false
+
+    - name: Update existing replicator
+      sensu.sensu_go.etcd_replicator: *update
+      register: result
+    - ansible.builtin.assert: *update-assertions
+
+    - name: Make sure replicator is updated
+      sensu.sensu_go.etcd_replicator_info:
+        name: cluster-role-replicator
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "cluster-role-replicator"
+          - result.objects.0.resource == "ClusterRole"
+          - result.objects.0.insecure is true
+
+    - name: Update existing replicator (idempotence)
+      sensu.sensu_go.etcd_replicator: *update
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Create additional replicator
+      sensu.sensu_go.etcd_replicator:
+        name: new-replicator
+        insecure: true
+        url: http://dummy.url
+        resource: Role
+        namespace: default
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == "new-replicator"
+          - result.object.insecure is true
+          - result.object.resource == "Role"
+          - result.object.namespace == "default"
+
+    - name: Make sure we have two replicators now
+      sensu.sensu_go.etcd_replicator_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 2
+
+    - name: Delete replicator (check mode)
+      sensu.sensu_go.etcd_replicator: &delete
+        name: cluster-role-replicator
+        state: absent
+      check_mode: true
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure we still have two replicators
+      sensu.sensu_go.etcd_replicator_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 2
+
+    - name: Delete replicator
+      sensu.sensu_go.etcd_replicator: *delete
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Now we have only one replicator
+      sensu.sensu_go.etcd_replicator_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "new-replicator"
+
+    - name: And the cluster role replicator is no more
+      sensu.sensu_go.etcd_replicator_info:
+        name: cluster-role-replicator
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Delete replicator (idempotency)
+      sensu.sensu_go.etcd_replicator: *delete
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
