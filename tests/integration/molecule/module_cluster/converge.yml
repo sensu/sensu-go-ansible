@@ -1,0 +1,171 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  environment:
+    SENSU_ANSIBLE_DEBUG: "true"
+
+  tasks:
+    - name: Make sure we start clean
+      sensu.sensu_go.cluster_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is success
+          - result.objects | length == 0
+
+    - name: Create new cluster (check mode)
+      sensu.sensu_go.cluster: &cluster
+        name: alpha-cluster
+        api_urls: http://10.10.0.1:8080
+      check_mode: true
+      register: result
+    - ansible.builtin.assert: &cluster-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == "alpha-cluster"
+          - result.object.api_urls == ["http://10.10.0.1:8080"]
+
+    - name: Make sure things are still clean
+      sensu.sensu_go.cluster_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Create new cluster
+      sensu.sensu_go.cluster: *cluster
+      register: result
+    - ansible.builtin.debug:
+        var: result
+    - ansible.builtin.assert: *cluster-assertions
+
+    - name: Make sure cluster is present on the backend
+      sensu.sensu_go.cluster_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "alpha-cluster"
+          - result.objects.0.api_urls == ["http://10.10.0.1:8080"]
+
+    - name: Create new cluster (idempotence)
+      sensu.sensu_go.cluster: *cluster
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Update existing cluster (check mode)
+      sensu.sensu_go.cluster: &update
+        name: alpha-cluster
+        api_urls:
+          - http://10.10.0.2:8080
+      check_mode: true
+      register: result
+    - ansible.builtin.assert: &update-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == "alpha-cluster"
+          - result.object.api_urls == ["http://10.10.0.2:8080"]
+
+    - name: Make sure cluster did not change
+      sensu.sensu_go.cluster_info:
+        name: alpha-cluster
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.api_urls == ["http://10.10.0.1:8080"]
+
+    - name: Update existing cluster
+      sensu.sensu_go.cluster: *update
+      register: result
+    - ansible.builtin.assert: *update-assertions
+
+    - name: Make sure cluster is updated
+      sensu.sensu_go.cluster_info:
+        name: alpha-cluster
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "alpha-cluster"
+          - result.objects.0.api_urls == ["http://10.10.0.2:8080"]
+
+    - name: Update existing cluster (idempotence)
+      sensu.sensu_go.cluster: *update
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Create additional cluster
+      sensu.sensu_go.cluster:
+        name: beta-cluster
+        api_urls:
+          - https://10.20.0.1:8080
+          - https://10.20.0.2:8080
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == "beta-cluster"
+          - result.object.api_urls == [
+                "https://10.20.0.1:8080",
+                "https://10.20.0.2:8080",
+            ]
+
+    - name: Make sure we have two replicators now
+      sensu.sensu_go.cluster_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 2
+
+    - name: Delete cluster (check mode)
+      sensu.sensu_go.cluster: &delete
+        name: alpha-cluster
+        state: absent
+      check_mode: true
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure we still have two replicators
+      sensu.sensu_go.cluster_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 2
+
+    - name: Delete cluster
+      sensu.sensu_go.cluster: *delete
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Now we have only one cluster
+      sensu.sensu_go.cluster_info:
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "beta-cluster"
+
+    - name: And the first cluster is no more
+      sensu.sensu_go.cluster_info:
+        name: alpha-cluster
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Delete cluster (idempotency)
+      sensu.sensu_go.cluster: *delete
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
