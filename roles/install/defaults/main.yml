@@ -6,7 +6,6 @@ packagecloud_auth: ""
 channel: stable
 version: latest
 build: latest
-allow_downgrade: no
 components:
   - sensu-go-backend
   - sensu-go-agent
