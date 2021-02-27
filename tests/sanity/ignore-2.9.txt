@@ -55,3 +55,4 @@ plugins/module_utils/arguments.py import-2.6!skip
 plugins/module_utils/bonsai.py import-2.6!skip
 plugins/module_utils/role_utils.py import-2.6!skip
 plugins/module_utils/utils.py import-2.6!skip
+tools/windows-versions.py replace-urlopen # Maintainer tools should not be bound by the general collection constraints

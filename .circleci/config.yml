@@ -62,6 +62,14 @@ workflows:
               # ansible is PyPI version specification for Ansible
               ansible: [ "2.9.*", "2.10.*" ]
 
+  windows_version_check:
+    triggers:
+      - schedule:
+          cron: "12 3 * * 0,2,4"
+          filters: { branches: { only: [ master ] } }
+    jobs:
+      - windows_version_check
+
 jobs:
   sanity_test:
     parameters:
@@ -162,6 +170,14 @@ jobs:
                 path: test_results
             - store_artifacts:
                 path: test_results
+
+  windows_version_check:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - run: pip install pyyaml
+      - run: make check_windows_versions
 
 commands:
   wrapper:

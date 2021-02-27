@@ -71,3 +71,11 @@ docs:  ## Build collection documentation
 clean:  ## Remove all auto-generated files
 	$(MAKE) -C docs -f Makefile.custom clean
 	rm -rf tests/output test_results
+
+.PHONY: check_windows_versions
+check_windows_versions:  ## Check if our and upstream versions drifed apart
+	tools/windows-versions.py check roles/install/vars/Windows.yml
+
+.PHONY: update_windows_versions
+update_windows_versions:  ## Update Windows versions in variable file
+	tools/windows-versions.py update roles/install/vars/Windows.yml

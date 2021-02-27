@@ -56,3 +56,4 @@ plugins/modules/tessen.py import-2.6!skip
 plugins/modules/user.py import-2.6!skip
 plugins/modules/user_info.py import-2.6!skip
 tests/unit/module_utils/test_utils.py pylint:ansible-deprecated-no-collection-name # sanity misdetects this as module deprecation call
+tools/windows-versions.py replace-urlopen # Maintainer tools should not be bound by the general collection constraints
