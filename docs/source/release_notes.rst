@@ -1,6 +1,25 @@
 Release notes
 =============
 
+Version 1.9.0 -- Multi-cluster visibility with federation
+---------------------------------------------------------
+
+Two new module pairs allow Sensu Go users to configure federation from the
+comfort of their Ansible playbooks.
+
+**New features:**
+
+* Add modules for managing etcd replicatiors, which form the basis of the Sensu
+  Go federation.
+* Add modules for managing Sensu Go clusters.
+* Update list of available Sensu Go agent packages for Windows installations.
+
+**Bug fixes:**
+
+* Allow downgrading Sensu Go packages on Linux distributions that use yum or
+  dnf for package management.
+
+
 Version 1.8.0 -- Supporting hashed user passwords
 -------------------------------------------------
 

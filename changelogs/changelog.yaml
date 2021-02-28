@@ -1,5 +1,36 @@
 ---
 releases:
+  1.9.0:
+    release_date: "2021-02-28"
+    changes:
+      release_summary: |
+        Multi-cluster visibility with federation
+
+        Two new module pairs allow Sensu Go users to configure federation from
+        the comfort of their Ansible playbooks.
+      minor_changes:
+        - Add modules for managing etcd replicatiors, which form the basis of
+          the Sensu Go federation.
+        - Add modules for managing Sensu Go clusters.
+        - Update list of available Sensu Go agent packages for Windows
+          installations.
+      bugfixes:
+        - Allow downgrading Sensu Go packages on Linux distributions that use
+          yum or dnf for package management.
+    modules:
+      - name: cluster
+        description: Manage Sensu Go clusters
+        namespace: ""
+      - name: cluster_info
+        description: List available Sensu Go clusters
+        namespace: ""
+      - name: etcd_replicator
+        description: Manage Sensu Go etcd replicators
+        namespace: ""
+      - name: etcd_replicator_info
+        description: List Sensu Go etcd replicators
+        namespace: ""
+
   1.8.0:
     release_date: "2021-01-26"
     changes:
