@@ -39,7 +39,6 @@ sanity:  ## Run sanity tests
 .PHONY: units
 units:  ## Run unit tests
 	pip install -r collection.requirements
-	./fix-pytest-ini.py
 	-ansible-test coverage erase # On first run, there is nothing to erase.
 	ansible-test units --python $(python_version) --coverage --requirements
 	ansible-test coverage html
