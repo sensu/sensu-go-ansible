@@ -2,7 +2,15 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import sys
+
+import pytest
+
 from ansible_collections.sensu.sensu_go.plugins.filter import backends
+
+pytestmark = pytest.mark.skipif(
+    sys.version_info < (2, 7), reason="requires python2.7 or higher"
+)
 
 
 class TestBackends:

@@ -2,6 +2,8 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import sys
+
 import pytest
 
 from ansible.playbook.task import Task
@@ -10,6 +12,10 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
     bonsai, errors,
 )
 from ansible_collections.sensu.sensu_go.plugins.action import bonsai_asset
+
+pytestmark = pytest.mark.skipif(
+    sys.version_info < (2, 7), reason="requires python2.7 or higher"
+)
 
 
 class TestValidate:

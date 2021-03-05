@@ -2,6 +2,8 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import sys
+
 import pytest
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
@@ -11,6 +13,10 @@ from ansible_collections.sensu.sensu_go.plugins.modules import datastore
 
 from .common.utils import (
     AnsibleExitJson, AnsibleFailJson, ModuleTestCase, set_module_args,
+)
+
+pytestmark = pytest.mark.skipif(
+    sys.version_info < (2, 7), reason="requires python2.7 or higher"
 )
 
 

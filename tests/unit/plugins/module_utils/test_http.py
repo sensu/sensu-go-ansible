@@ -7,6 +7,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import ssl
+import sys
 
 import pytest
 
@@ -14,6 +15,10 @@ from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 
 from ansible_collections.sensu.sensu_go.plugins.module_utils import (
     errors, http,
+)
+
+pytestmark = pytest.mark.skipif(
+    sys.version_info < (2, 7), reason="requires python2.7 or higher"
 )
 
 
