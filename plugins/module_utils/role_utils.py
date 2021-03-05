@@ -52,13 +52,13 @@ def _do_subjects_differ(a, b):
 
 
 def _rule_set(rules):
-    return {
+    return set(
         (
             frozenset(r.get('verbs', []) or []),
             frozenset(r.get('resources', []) or []),
             frozenset(r.get('resource_names', []) or [])
         ) for r in rules
-    }
+    )
 
 
 def _do_rules_differ(current_rules, desired_rules):

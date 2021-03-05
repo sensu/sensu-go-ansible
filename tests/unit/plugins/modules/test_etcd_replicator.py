@@ -93,7 +93,7 @@ class TestEtcdReplicator(ModuleTestCase):
             url="url",
             resource="resource",
         )
-        set_module_args(**{k: v for k, v in all_args.items() if k != skip})
+        set_module_args(**dict((k, v) for k, v in all_args.items() if k != skip))
 
         with pytest.raises(AnsibleFailJson):
             etcd_replicator.main()
@@ -109,7 +109,7 @@ class TestEtcdReplicator(ModuleTestCase):
             url="url",
             resource="resource",
         )
-        set_module_args(**{k: v for k, v in all_args.items() if k != skip})
+        set_module_args(**dict((k, v) for k, v in all_args.items() if k != skip))
 
         with pytest.raises(AnsibleFailJson):
             etcd_replicator.main()

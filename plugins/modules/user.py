@@ -130,9 +130,9 @@ except ImportError:
 def _simulate_backend_response(payload):
     # Backend does not return back any password-related information for now.
     masked_keys = ('password', 'password_hash')
-    return {
-        k: v for k, v in payload.items() if k not in masked_keys
-    }
+    return dict(
+        (k, v) for k, v in payload.items() if k not in masked_keys
+    )
 
 
 def update_password(client, path, username, password, check_mode):

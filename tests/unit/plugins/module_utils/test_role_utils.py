@@ -113,9 +113,9 @@ class TestDoRoleBindingsDiffer:
 
 class TestRuleSets:
     def test_all_keys_none(self):
-        assert role_utils._rule_set([{}]) == {
-            (frozenset(), frozenset(), frozenset())
-        }
+        assert role_utils._rule_set([{}]) == set(
+            ((frozenset(), frozenset(), frozenset()),)
+        )
 
     def test_rules_multiple(self):
         assert role_utils._rule_set([{
@@ -126,18 +126,18 @@ class TestRuleSets:
             'verbs': ['list', 'delete'],
             'resources': ['entities', 'checks'],
             'resource_names': None
-        }]) == {
+        }]) == set((
             (frozenset(['delete', 'list']), frozenset(['checks', 'entities']), frozenset()),
             (frozenset(['get', 'list']), frozenset(['checks', 'entities']), frozenset())
-        }
+        ))
 
     def test_missing_key(self):
         assert role_utils._rule_set([{
             'verbs': ['list', 'get'],
             'resources': ['entities', 'checks'],
-        }]) == {
-            (frozenset(['get', 'list']), frozenset(['checks', 'entities']), frozenset())
-        }
+        }]) == set(
+            ((frozenset(['get', 'list']), frozenset(['checks', 'entities']), frozenset()),)
+        )
 
 
 class TestDoRulesDiffer:

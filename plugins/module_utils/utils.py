@@ -160,11 +160,11 @@ def convert_v1_to_v2_response(response):
 
 
 def do_secrets_differ(current, desired):
-    return {
+    return set(
         (c["name"], c["secret"]) for c in (current.get("secrets") or [])
-    } != {
+    ) != set(
         (d["name"], d["secret"]) for d in (desired.get("secrets") or [])
-    }
+    )
 
 
 def deprecate(module, msg, version):

@@ -52,7 +52,7 @@ class TestGetAvailableAssetVersions:
 
         result = bonsai.get_available_asset_versions("namespace", "name")
 
-        assert {"1.2.3", "1.2.4", "1.2.5"} == result
+        assert set(("1.2.3", "1.2.4", "1.2.5")) == result
         assert get.call_args[0] == ("namespace/name",)
 
     @pytest.mark.parametrize("data", [
@@ -96,7 +96,7 @@ class TestGetAssetVersionBuilds:
 class TestGetAssetParameters:
     def test_valid_all_data(self, mocker):
         versions = mocker.patch.object(bonsai, "get_available_asset_versions")
-        versions.return_value = {"t", "u", "v"}
+        versions.return_value = set(("t", "u", "v"))
         builds = mocker.patch.object(bonsai, "get_asset_version_builds")
         builds.return_value = dict(
             metadata=dict(
@@ -118,7 +118,7 @@ class TestGetAssetParameters:
 
     def test_valid_minimal_data(self, mocker):
         versions = mocker.patch.object(bonsai, "get_available_asset_versions")
-        versions.return_value = {"t", "u", "v"}
+        versions.return_value = set(("t", "u", "v"))
         builds = mocker.patch.object(bonsai, "get_asset_version_builds")
         builds.return_value = dict(
             spec=dict(builds=[1, 2, 3]),
@@ -140,7 +140,7 @@ class TestGetAssetParameters:
 
     def test_invalid_version(self, mocker):
         versions = mocker.patch.object(bonsai, "get_available_asset_versions")
-        versions.return_value = {"t", "u"}
+        versions.return_value = set(("t", "u"))
 
         with pytest.raises(errors.BonsaiError, match="Version"):
             bonsai.get_asset_parameters("x/y", "v")

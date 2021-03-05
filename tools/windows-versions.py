@@ -73,10 +73,10 @@ def _fetch_available_versions():
 
 
 def _load_versions_from_vars(vars):
-    return {
+    return set(
         (tuple(int(c) for c in item["version"].split(".")) + (item["build"],))
         for item in vars["_msi_lookup"].values()
-    }
+    )
 
 
 def _sync_versions(vars, available_versions, cache_dir):

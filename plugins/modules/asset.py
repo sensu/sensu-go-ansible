@@ -122,12 +122,12 @@ def validate_module_params(params):
 
 
 def _build_set(builds):
-    return {(
+    return set((
         b.get('sha512'),
         b.get('url'),
         frozenset((b.get('headers', {}) or {}).items()),
         frozenset(b.get('filters', []) or []),
-    ) for b in builds}
+    ) for b in builds)
 
 
 def _do_builds_differ(current, desired):

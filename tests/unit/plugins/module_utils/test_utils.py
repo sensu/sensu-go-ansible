@@ -342,7 +342,7 @@ class TestDictToKeyValueString:
     def test_conversion(self):
         result = utils.dict_to_key_value_strings({"a": 0, 1: "b"})
 
-        assert {"a=0", "1=b"} == set(result)
+        assert set(("a=0", "1=b")) == set(result)
 
 
 class TestBuildUrlPath:

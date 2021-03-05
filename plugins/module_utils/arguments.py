@@ -74,20 +74,20 @@ SHARED_SPECS = dict(
 
 
 def get_spec(*param_names):
-    return {p: SHARED_SPECS[p] for p in param_names}
+    return dict((p, SHARED_SPECS[p]) for p in param_names)
 
 
 def get_spec_payload(source, *wanted_params):
-    return {
-        k: source[k] for k in wanted_params if source.get(k) is not None
-    }
+    return dict(
+        (k, source[k]) for k in wanted_params if source.get(k) is not None
+    )
 
 
 def get_renamed_spec_payload(source, param_mapping):
-    return {
-        n: source[k] for k, n in param_mapping.items()
+    return dict(
+        (n, source[k]) for k, n in param_mapping.items()
         if source.get(k) is not None
-    }
+    )
 
 
 def get_mutation_payload(source, *wanted_params):
@@ -105,9 +105,9 @@ def get_mutation_payload(source, *wanted_params):
 
     for kind in "labels", "annotations":
         if source.get(kind):
-            payload["metadata"][kind] = {
-                k: str(v) for k, v in source[kind].items()
-            }
+            payload["metadata"][kind] = dict(
+                (k, str(v)) for k, v in source[kind].items()
+            )
     return payload
 
 

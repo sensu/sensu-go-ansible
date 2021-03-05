@@ -60,7 +60,7 @@ class TestCluster(ModuleTestCase):
     def test_missing_required_param_present(self, mocker, skip):
         sync_mock = mocker.patch.object(utils, "sync_v1")
         all_args = dict(name="demo", api_urls="url")
-        set_module_args(**{k: v for k, v in all_args.items() if k != skip})
+        set_module_args(**dict((k, v) for k, v in all_args.items() if k != skip))
 
         with pytest.raises(AnsibleFailJson):
             cluster.main()

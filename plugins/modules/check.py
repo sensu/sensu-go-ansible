@@ -286,10 +286,10 @@ def do_check_hooks_differ(current, desired):
         return False
 
     current = utils.single_item_dicts_to_dict(current.get('check_hooks') or [])
-    current = {k: set(v) for k, v in current.items()}
+    current = dict((k, set(v)) for k, v in current.items())
 
     desired = utils.single_item_dicts_to_dict(desired['check_hooks'])
-    desired = {k: set(v) for k, v in desired.items()}
+    desired = dict((k, set(v)) for k, v in desired.items())
 
     return current != desired
 

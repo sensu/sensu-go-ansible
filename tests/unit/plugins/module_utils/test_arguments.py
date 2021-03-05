@@ -13,16 +13,16 @@ class TestGetSpec:
         "auth", "state", "name", "labels", "annotations",
     ])
     def test_valid_parameter(self, param):
-        assert set(arguments.get_spec(param).keys()) == {param}
+        assert set(arguments.get_spec(param).keys()) == set((param,))
 
     def test_invalid_parameter(self):
         with pytest.raises(KeyError):
             arguments.get_spec("bad_parameter_name")
 
     def test_multiple_parameters(self):
-        assert set(arguments.get_spec("auth", "name", "labels").keys()) == {
-            "auth", "name", "labels",
-        }
+        assert set(arguments.get_spec("auth", "name", "labels").keys()) == set(
+            ("auth", "name", "labels")
+        )
 
 
 class TestGetSpecPayload:
