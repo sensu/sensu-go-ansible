@@ -5,38 +5,27 @@ workflows:
   main_workflow:
     jobs:
       - sanity_test:
-          matrix:
+          matrix: &matrix
             parameters:
-              # python parameter is a circleci/python image tag
-              python: [ "2.7", "3.6", "3.7", "3.8" ]
-              # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.*" ]
+              # ansible is branch name in ansible/ansible git repo
+              ansible:
+                - stable-2.9
+                - stable-2.10
 
       - unit_test:
-          matrix:
-            parameters:
-              # python parameter is a circleci/python image tag
-              python: [ "2.7", "3.6", "3.7", "3.8" ]
-              # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.*" ]
+          matrix: *matrix
 
       - integration_test_git:
           requires:
             - sanity_test
             - unit_test
-          matrix:
-            parameters:
-              # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.*" ]
+          matrix: *matrix
 
       - integration_test_galaxy:
           filters: { branches: { only: [ stable ] } }
           requires:
             - integration_test_git
-          matrix:
-            parameters:
-              # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.*" ]
+          matrix: *matrix
 
   daily_master:
     triggers:
@@ -45,10 +34,7 @@ workflows:
           filters: { branches: { only: [ master ] } }
     jobs:
       - integration_test_git:
-          matrix:
-            parameters:
-              # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.*" ]
+          matrix: *matrix
 
   daily_released:
     triggers:
@@ -57,10 +43,7 @@ workflows:
           filters: { branches: { only: [ stable ] } }
     jobs:
       - integration_test_galaxy:
-          matrix:
-            parameters:
-              # ansible is PyPI version specification for Ansible
-              ansible: [ "2.9.*", "2.10.*" ]
+          matrix: *matrix
 
   windows_version_check:
     triggers:
@@ -73,18 +56,14 @@ workflows:
 jobs:
   sanity_test:
     parameters:
-      python:
-        description: Python docker image tag
-        type: string
       ansible:
         description: Ansible version to use
         type: string
-    docker:
-      - image: "circleci/python:<< parameters.python >>"
+    machine: &ci-machine
+      image: ubuntu-2004:202010-01
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
-          python: << parameters.python >>
           ansible: << parameters.ansible >>
           kind: sanity
           test_commands:
@@ -92,18 +71,13 @@ jobs:
 
   unit_test:
     parameters:
-      python:
-        description: Python docker image tag
-        type: string
       ansible:
         description: Ansible version to use
         type: string
-    docker:
-      - image: "circleci/python:<< parameters.python >>"
+    machine: *ci-machine
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
-          python: << parameters.python >>
           ansible: << parameters.ansible >>
           kind: sanity
           test_commands:
@@ -120,15 +94,12 @@ jobs:
       ansible:
         description: Ansible version to use
         type: string
-    machine:
-      image: ubuntu-2004:202010-01
+    machine: *ci-machine
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
-          python: "3.8"
           ansible: << parameters.ansible >>
           kind: integration
-          venv_cmd: python3 -m venv
           test_commands:
             - run: ansible-galaxy collection install community.docker
             - run:
@@ -148,15 +119,12 @@ jobs:
       ansible:
         description: Ansible version to use
         type: string
-    machine:
-      image: ubuntu-2004:202010-01
+    machine: *ci-machine
     working_directory: ~/sensu_go
     steps:
       - wrapper:
-          python: "3.8"
           ansible: << parameters.ansible >>
           kind: integration
-          venv_cmd: python3 -m venv
           test_commands:
             - run: |
                 ansible-galaxy collection install \
@@ -185,9 +153,6 @@ commands:
   wrapper:
     description: Wrapper command that takes care of venv caching
     parameters:
-      python:
-        description: Python version (used for cache restore)
-        type: string
       ansible:
         description: Ansible version to install
         type: string
@@ -197,10 +162,6 @@ commands:
       test_commands:
         description: Test commands to execute
         type: steps
-      venv_cmd:
-        description: Virtual environment creation command
-        type: string
-        default: virtualenv
     steps:
       - checkout: { path: . }
       - run:
@@ -208,23 +169,21 @@ commands:
           command: |
             rm -f cache-id.txt
             echo "week $(date +%V)" >> cache-id.txt
-            echo "python << parameters.python >>" >> cache-id.txt
             echo "ansible << parameters.ansible >>" >> cache-id.txt
             echo "kind << parameters.kind >>" >> cache-id.txt
-            echo "venv_cmd << parameters.venv_cmd >>" >> cache-id.txt
             echo "cache busting string 1" >> cache-id.txt
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
           name: Create virtual environment
-          command: << parameters.venv_cmd >> ${HOME}/venv
+          command: python3 -m venv ${HOME}/venv
       - run:
           name: Activate virtualenv
           command: |
             echo 'export PATH=${HOME}/venv/bin:$PATH' >> $BASH_ENV
       - run:
           name: Install Ansible
-          command: pip install -U "ansible==<< parameters.ansible >>"
+          command: pip install -U https://github.com/ansible/ansible/archive/<< parameters.ansible >>.tar.gz --disable-pip-version-check
       - steps: << parameters.test_commands >>
       - save_cache:
           key: '{{ checksum "cache-id.txt" }}'
