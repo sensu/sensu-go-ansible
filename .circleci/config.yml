@@ -45,6 +45,26 @@ workflows:
       - integration_test_galaxy:
           matrix: *matrix
 
+  cron_ansible_devel:
+    triggers:
+      - schedule:
+          cron: "12 5 * * 2"
+          filters: { branches: { only: [ master ] } }
+    jobs:
+      - sanity_test:
+          matrix: &devel-matrix
+            parameters:
+              ansible: [ devel ]
+
+      - unit_test:
+          matrix: *devel-matrix
+
+      - integration_test_git:
+          requires:
+            - sanity_test
+            - unit_test
+          matrix: *devel-matrix
+
   windows_version_check:
     triggers:
       - schedule:
