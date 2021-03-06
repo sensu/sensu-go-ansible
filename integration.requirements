@@ -1,5 +1,6 @@
-molecule[test] ~= 3.1.5
-molecule-docker < 0.3
+molecule ~= 3.2.3
+# Temporary fix until molecule-docker can only support Ansible >= 2.9
+git+https://github.com/xlab-steampunk/molecule-docker.git@temp-fixes#egg=molecule-docker
 pytest
-pytest-molecule ~= 1.3.3
-selinux
+# Temporary fix until pytest-molecule is updated to work with ansible-core
+git+https://github.com/xlab-steampunk/pytest-molecule.git@temp-fixes#egg=pytest-molecule

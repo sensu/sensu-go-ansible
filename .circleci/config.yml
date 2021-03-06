@@ -130,6 +130,7 @@ jobs:
           kind: integration
           venv_cmd: python3 -m venv
           test_commands:
+            - run: ansible-galaxy collection install community.docker
             - run:
                 name: Display scheduled scenarios
                 command: |
@@ -160,6 +161,7 @@ jobs:
             - run: |
                 ansible-galaxy collection install \
                   sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
+            - run: ansible-galaxy collection install community.docker
             - run:
                 name: Display scheduled scenarios
                 command: |
