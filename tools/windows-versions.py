@@ -111,7 +111,8 @@ def _sync_versions(vars, available_versions, cache_dir):
                 print("Reusing " + filename)
 
             process = subprocess.run(
-                ("msiinfo", "export", str(file), "Property"), capture_output=True
+                ("msiinfo", "export", str(file), "Property"), capture_output=True,
+                check=True
             )
             for line in process.stdout.splitlines():
                 field, value = line.split(b"\t")
