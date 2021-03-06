@@ -33,15 +33,16 @@ sanity:  ## Run sanity tests
 	pip install -r sanity.requirements -r collection.requirements
 	flake8
 	if which ansible-lint 2> /dev/null; then ansible-lint -p roles/*; fi
-	ansible-test sanity --python $(python_version) --requirements
+	ansible-test sanity --docker
 	./tests/sanity/validate-role-metadata.py roles/*
 
 .PHONY: units
 units:  ## Run unit tests
 	pip install -r collection.requirements
 	-ansible-test coverage erase # On first run, there is nothing to erase.
-	ansible-test units --python $(python_version) --coverage --requirements
-	ansible-test coverage html
+	ansible-test units --docker --coverage
+	ansible-test coverage html --requirements
+	ansible-test coverage report --omit 'tests/*' --show-missing
 
 .PHONY: integration
 integration:  ## Run integration tests
