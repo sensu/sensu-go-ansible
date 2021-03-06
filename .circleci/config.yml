@@ -27,19 +27,19 @@ workflows:
             - integration_test_git
           matrix: *matrix
 
-  daily_master:
+  cron_master:
     triggers:
       - schedule:
-          cron: "12 4 * * *"
+          cron: "12 5 * * 0,3"
           filters: { branches: { only: [ master ] } }
     jobs:
       - integration_test_git:
           matrix: *matrix
 
-  daily_released:
+  cron_released:
     triggers:
       - schedule:
-          cron: "12 5 * * *"
+          cron: "12 5 * * 1,4"
           filters: { branches: { only: [ stable ] } }
     jobs:
       - integration_test_galaxy:
