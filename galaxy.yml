@@ -19,3 +19,6 @@ repository: https://github.com/sensu/sensu-go-ansible
 issues: https://github.com/sensu/sensu-go-ansible/issues
 documentation: https://sensu.github.io/sensu-go-ansible/
 homepage: https://sensu.github.io/sensu-go-ansible/
+
+dependencies:
+  "ansible.windows": "*"  # Agent installation on Windows

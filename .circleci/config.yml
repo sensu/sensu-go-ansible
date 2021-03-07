@@ -121,7 +121,7 @@ jobs:
           ansible: << parameters.ansible >>
           kind: integration
           test_commands:
-            - run: ansible-galaxy collection install community.docker
+            - run: ansible-galaxy collection install community.docker ansible.windows
             - run:
                 name: Display scheduled scenarios
                 command: |
