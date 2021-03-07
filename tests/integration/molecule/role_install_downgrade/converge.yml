@@ -1,0 +1,39 @@
+---
+- name: Test downgrade
+  hosts: all
+
+  tasks:
+    - name: Install initial version components
+      include_role:
+        name: sensu.sensu_go.install
+      vars:
+        components:
+          - sensu-go-agent
+        version: 6.2.5
+
+    - name: Make sure components are installed
+      command:
+        cmd: sensu-agent version
+      register: result
+    - assert:
+        # quiet: true
+        that:
+          - result.stdout is search("6.2.5")
+
+    - name: Downgrade components
+      include_role:
+        name: sensu.sensu_go.install
+        tasks_from: packages
+      vars:
+        components:
+          - sensu-go-agent
+        version: 6.1.4
+
+    - name: Make sure components were downgraded
+      command:
+        cmd: sensu-agent version
+      register: result
+    - assert:
+        quiet: true
+        that:
+          - result.stdout is search("6.1.4")

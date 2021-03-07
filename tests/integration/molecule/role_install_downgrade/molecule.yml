@@ -1,0 +1,19 @@
+---
+platforms:
+  # dnf test
+  - name: centos-8
+    image: quay.io/xlab-steampunk/sensu-go-tests-centos:8
+    pre_build_image: true
+    pull: true
+
+  # yum test
+  - name: redhat-7
+    image: quay.io/xlab-steampunk/sensu-go-tests-redhat:7
+    pre_build_image: true
+    pull: true
+
+  # apt test
+  - name: debian-10
+    image: quay.io/xlab-steampunk/sensu-go-tests-debian:10
+    pre_build_image: true
+    pull: true

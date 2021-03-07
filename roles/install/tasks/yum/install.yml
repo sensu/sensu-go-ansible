@@ -4,6 +4,6 @@
 - name: Install component
   yum:
     name: "{{ 'yum' | sensu.sensu_go.package_name(item, version, build) }}"
-    state: latest  # noqa package-latest
+    state: "{{ (version == 'latest') | ternary('latest', 'present') }}"
     allow_downgrade: true
   loop: "{{ components }}"
