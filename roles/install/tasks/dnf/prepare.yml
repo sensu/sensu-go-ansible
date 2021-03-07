@@ -9,10 +9,10 @@
     file: sensu
     baseurl: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/{{ os }}/{{ dist }}/$basearch
     gpgkey: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/gpgkey
-    gpgcheck: no
-    repo_gpgcheck: yes
-    enabled: yes
-    sslverify: yes
+    gpgcheck: false
+    repo_gpgcheck: true
+    enabled: true
+    sslverify: true
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: '300'
 
@@ -23,9 +23,9 @@
     file: sensu
     baseurl: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/{{ os }}/{{ dist }}/SRPMS
     gpgkey: https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/gpgkey
-    gpgcheck: no
-    repo_gpgcheck: yes
-    enabled: yes
-    sslverify: yes
+    gpgcheck: false
+    repo_gpgcheck: true
+    enabled: true
+    sslverify: true
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     metadata_expire: '300'

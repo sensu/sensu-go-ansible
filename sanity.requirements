@@ -2,3 +2,4 @@
 # Temporary fix for ansible-core version string change
 ansible-lint == 5.0.3a0; python_version >= "3.6"
 flake8
+yamllint

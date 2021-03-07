@@ -39,10 +39,10 @@
   apt_repository:
     repo: deb https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/{{ os }}/ {{ dist }} main
     filename: /etc/apt/sources.list.d/sensu_{{ channel }}
-    validate_certs: yes
+    validate_certs: true
 
 - name: Add apt source repository
   apt_repository:
     repo: deb-src https://{{ packagecloud_auth }}packagecloud.io/sensu/{{ channel }}/{{ os }}/ {{ dist }} main
     filename: /etc/apt/sources.list.d/sensu_{{ channel }}
-    validate_certs: yes
+    validate_certs: true

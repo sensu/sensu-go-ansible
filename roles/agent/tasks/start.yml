@@ -3,7 +3,7 @@
   service:
     name: sensu-agent
     state: started
-    enabled: yes
+    enabled: true
   when: ansible_facts.os_family != "Windows"
 
 - name: Start sensu-agent (Windows)

@@ -3,7 +3,7 @@
   service:
     name: sensu-backend
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Check for sensu-backend init command
   command:
