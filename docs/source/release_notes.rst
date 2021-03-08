@@ -1,6 +1,21 @@
 Release notes
 =============
 
+Version 1.9.1 -- Containerize all the things
+--------------------------------------------
+
+There are two main reasons for this release. We made sure the Sensu Go Ansible
+Collection works with development version of Ansible (upcoming ansible-core
+2.11). And we added enough metadata to the collection that ansible-builder can
+create an execution environment with the Sensu Go Ansible Collection without
+having to manually specify dependencies.
+
+**Bug fixes:**
+
+* Add ansible.windows dependency that we forgot to add when we introducted the
+  Sensu Go agent installation on Windows.
+
+
 Version 1.9.0 -- Multi-cluster visibility with federation
 ---------------------------------------------------------
 

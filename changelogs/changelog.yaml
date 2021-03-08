@@ -1,5 +1,20 @@
 ---
 releases:
+  1.9.1:
+    release_date: "2021-03-08"
+    changes:
+      release_summary: |
+        Containerize all the things
+
+        There are two main reasons for this release. We made sure the Sensu Go
+        Ansible Collection works with development version of Ansible (upcoming
+        ansible-core 2.11). And we added enough metadata to the collection that
+        ansible-builder can create an execution environment with the Sensu Go
+        Ansible Collection without having to manually specify dependencies.
+      bugfixes:
+        - Add ansible.windows dependency that we forgot to add when we
+          introducted the Sensu Go agent installation on Windows.
+
   1.9.0:
     release_date: "2021-02-28"
     changes:
