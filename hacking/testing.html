@@ -105,7 +105,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../hacking.html">Developing Sensu Go Ansible Collection</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="setup.html">Preparing a development environment</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Testing Sensu Go Ansible Collection</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#sanity-tests">Sanity tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#static-analysis">Static analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#unit-tests">Unit tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#integration-tests">Integration tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#continuous-integration">Continuous integration</a></li>
@@ -203,23 +203,32 @@ test suite to make sure collection’s source code</p>
 <li><p>works with supported versions of Sensu Go, and</p></li>
 <li><p>works with supported versions of Python.</p></li>
 </ol>
-<div class="section" id="sanity-tests">
-<h2>Sanity tests<a class="headerlink" href="#sanity-tests" title="Permalink to this headline">¶</a></h2>
-<p>We use <code class="docutils literal notranslate"><span class="pre">ansible-test</span> <span class="pre">sanity</span></code> command to run wide variety of static analysis
-tools over our source code. This command, among other things, makes sure that
-our module documentation does not get out-of-sync with the argument
-specification; that our code is python 2 and 3 compatible; and that we follow
-the standard source code formatting conventions.</p>
-<p>We can run the sanity test by running:</p>
+<div class="section" id="static-analysis">
+<h2>Static analysis<a class="headerlink" href="#static-analysis" title="Permalink to this headline">¶</a></h2>
+<p>We use a wide variety of linters and static code analysis tools to ensure our
+code base stays healthy. To run all checks, we can execute the following
+command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(venv) $ make sanity
 </pre></div>
 </div>
-<p>This command will take care of detecting our python version and running
-<code class="docutils literal notranslate"><span class="pre">ansible-test</span> <span class="pre">sanity</span></code> test with the right parameters.</p>
-<p>We do not have to write those tests ourselves since they come bundled with
-<code class="docutils literal notranslate"><span class="pre">ansible-test</span></code> command. All we have to do is to run them regularly. Our CI
-setup also runs them on each push to GitHub, making sure that upstream source
-code is clean at all times.</p>
+<p>This command will take care of installing requirements and running them.</p>
+<p>The tools we use are:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">flake8</span></code> for making sure our python code is nice and tidy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ansible-lint</span></code> to make sure our Ansible roles follow the best practices.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ansible-test</span> <span class="pre">sanity</span></code> for ensuring our modules and plugins will work on a</dt><dd><p>wide varienty of platforms.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>A custom script that makes sure roles metadata is in sync with Ansible</dt><dd><p>Galaxy.</p>
+</dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
 </div>
 <div class="section" id="unit-tests">
 <h2>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h2>
@@ -228,7 +237,7 @@ and various Ansible plugins that are part of the Sensu Go collection.</p>
 <p>Unit tests live in the <code class="docutils literal notranslate"><span class="pre">tests/unit</span></code> directory and mirror the structure of
 the code. For example, unit tests for the code in the
 <code class="docutils literal notranslate"><span class="pre">plugins/modules/asset.py</span></code> are stored in the
-<code class="docutils literal notranslate"><span class="pre">tests/unit/modules/test_asset.py</span></code> file. When we add new code to the
+<code class="docutils literal notranslate"><span class="pre">tests/unit/plugins/modules/test_asset.py</span></code> file. When we add new code to the
 collection, we must also include the tests for this piece of code in the same
 git commit.</p>
 <p>We group our tests using classes. Each function or method gets its own
@@ -239,14 +248,14 @@ execute:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(venv) $ make units
 </pre></div>
 </div>
-<p>to run them. This convenience <code class="docutils literal notranslate"><span class="pre">make</span></code> rule will again select the appropriate
-python version and run the unit tests. Additionally, it will also generate a
-code coverage report and place it in the
-<code class="docutils literal notranslate"><span class="pre">tests/output/reports/coverage/index.html</span></code> HTML file.</p>
+<p>to run them. This convenience <code class="docutils literal notranslate"><span class="pre">make</span></code> rule will all of our unit tests in a
+dedicated docker container againts all Python versions that Ansible supports on
+managed nodes. Additionally, it will also generate a code coverage report and
+place it in the <code class="docutils literal notranslate"><span class="pre">tests/output/reports/coverage/index.html</span></code> HTML file.</p>
 <p>Our CI process runs unit tests on each push to GitHub. And while developers
-usually run the tests only against one version of Ansible and python, CI tools
-run them against all supported versions, making sure our code is ready to be
-used on a variety of systems.</p>
+usually run the tests only against one version of Ansible, CI tools run them
+against all supported versions, making sure our code is ready to be used on a
+variety of systems.</p>
 </div>
 <div class="section" id="integration-tests">
 <h2>Integration tests<a class="headerlink" href="#integration-tests" title="Permalink to this headline">¶</a></h2>

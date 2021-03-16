@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>asset – Manage Sensu assets &mdash; Sensu Go Ansible Collection  documentation</title>
+  <title>etcd_replicator – Manage Sensu Go etcd replicators &mdash; Sensu Go Ansible Collection  documentation</title>
   
 
   
@@ -38,8 +38,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="asset_info – List Sensu assets" href="asset_info.html" />
-    <link rel="prev" title="Modules" href="../modules.html" /> 
+    <link rel="next" title="etcd_replicator_info – List available Sensu Go etcd replicators" href="etcd_replicator_info.html" />
+    <link rel="prev" title="entity_info – List Sensu entities" href="entity_info.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -102,14 +102,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../modules.html#authentication-parameters">Authentication parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../modules.html#managing-sensu-go-resources">Managing Sensu Go resources</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../modules.html#module-reference">Module reference</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">asset – Manage Sensu assets</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#return-values">Return Values</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="asset.html">asset – Manage Sensu assets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="asset_info.html">asset_info – List Sensu assets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bonsai_asset.html">bonsai_asset – Add Sensu assets from Bonsai</a></li>
 <li class="toctree-l3"><a class="reference internal" href="check.html">check – Manage Sensu checks</a></li>
@@ -124,7 +117,14 @@
 <li class="toctree-l3"><a class="reference internal" href="datastore_info.html">datastore_info – List external Sensu datastore providers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="entity.html">entity – Manage Sensu entities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="entity_info.html">entity_info – List Sensu entities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="etcd_replicator.html">etcd_replicator – Manage Sensu Go etcd replicators</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">etcd_replicator – Manage Sensu Go etcd replicators</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#return-values">Return Values</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="etcd_replicator_info.html">etcd_replicator_info – List available Sensu Go etcd replicators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="event.html">event – Manage Sensu events</a></li>
 <li class="toctree-l3"><a class="reference internal" href="event_info.html">event_info – List Sensu events</a></li>
@@ -219,7 +219,7 @@
         
           <li><a href="../modules.html">Modules</a> &raquo;</li>
         
-      <li>asset – Manage Sensu assets</li>
+      <li>etcd_replicator – Manage Sensu Go etcd replicators</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -227,7 +227,7 @@
           
             
               <!-- User defined GitHub URL -->
-              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/asset.py" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/etcd_replicator.py" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -241,12 +241,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="asset-manage-sensu-assets">
-<span id="sensu-sensu-go-asset-module"></span><h1>asset – Manage Sensu assets<a class="headerlink" href="#asset-manage-sensu-assets" title="Permalink to this headline">¶</a></h1>
-<p>Create, update or delete Sensu Go asset.</p>
-<p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/assets/">https://docs.sensu.io/sensu-go/latest/reference/assets/</a>.</p>
+  <div class="section" id="etcd-replicator-manage-sensu-go-etcd-replicators">
+<span id="sensu-sensu-go-etcd-replicator-module"></span><h1>etcd_replicator – Manage Sensu Go etcd replicators<a class="headerlink" href="#etcd-replicator-manage-sensu-go-etcd-replicators" title="Permalink to this headline">¶</a></h1>
+<p>Create, update or delete Sensu etcd replicator.</p>
+<p>For more information, refer to the Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/operations/deploy-sensu/etcdreplicators/">https://docs.sensu.io/sensu-go/latest/operations/deploy-sensu/etcdreplicators/</a>.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.0.0.</span></p>
+<p><span class="versionmodified added">New in version 1.9.0.</span></p>
 </div>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
@@ -257,26 +257,40 @@
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a multiple-build asset</span>
-  <span class="nt">sensu.sensu_go.asset</span><span class="p">:</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu-plugins-cpu-checks</span>
-    <span class="nt">builds</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_centos_linux_amd64.tar.gz</span>
-        <span class="nt">sha512</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">518e7c17cf670393045bff4af318e1d35955bfde166e9ceec2b469109252f79043ed133241c4dc96501b6636a1ec5e008ea9ce055d1609865635d4f004d7187b</span>
-        <span class="nt">filters</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">entity.system.os == &#39;linux&#39;</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">entity.system.arch == &#39;amd64&#39;</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">entity.system.platform == &#39;rhel&#39;</span>
-      <span class="p p-Indicator">-</span> <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://assets.bonsai.sensu.io/68546e739d96fd695655b77b35b5aabfbabeb056/sensu-plugins-cpu-checks_4.0.0_alpine_linux_amd64.tar.gz</span>
-        <span class="nt">sha512</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">b2da25ecd7642e6de41fde37d674fe19dcb6ee3d680e145e32289f7cfc352e6b5f9413ee9b701d61faeaa47b399aa30b25885dbc1ca432c4061c8823774c28f3</span>
-        <span class="nt">filters</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">entity.system.os == &#39;linux&#39;</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">entity.system.arch == &#39;amd64&#39;</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">entity.system.platform == &#39;alpine&#39;</span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a minimal replicator</span>
+  <span class="nt">sensu.sensu_go.etcd_replicator</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster_role_replicator</span>
+    <span class="nt">ca_cert</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/sensu/certs/ca.pem</span>
+    <span class="nt">cert</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/sensu/certs/cert.pem</span>
+    <span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/sensu/certs/key.pem</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://sensu.alpha.example.com:2379</span>
+    <span class="nt">resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
 
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Delete an asset</span>
-  <span class="nt">sensu.sensu_go.asset</span><span class="p">:</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sensu-plugins-cpu-check</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create an insecure minimal replicator</span>
+  <span class="nt">sensu.sensu_go.etcd_replicator</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">role_replicator</span>
+    <span class="nt">insecure</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">url</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">https://sensu.beta.example.com:2379</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">https://sensu.gamma.example.com:2379</span>
+    <span class="nt">resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Role</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a replicator with all parameters set</span>
+  <span class="nt">sensu.sensu_go.etcd_replicator</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">role_binding_replicator</span>
+    <span class="nt">ca_cert</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/sensu/certs/ca.pem</span>
+    <span class="nt">cert</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/sensu/certs/cert.pem</span>
+    <span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/sensu/certs/key.pem</span>
+    <span class="nt">insecure</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://127.0.0.1:2379</span>
+    <span class="nt">api_version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">core/v2</span>
+    <span class="nt">resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RoleBinding</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+    <span class="nt">replication_interval_seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Delete a replicator</span>
+  <span class="nt">sensu.sensu_go.etcd_replicator</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_replicator</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
 </pre></div>
 </div>
@@ -286,18 +300,16 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="asset_info.html#sensu-sensu-go-asset-info-module"><span class="std std-ref">asset_info – List Sensu assets</span></a></p></li>
-<li><p><a class="reference internal" href="bonsai_asset.html#sensu-sensu-go-bonsai-asset-module"><span class="std std-ref">bonsai_asset – Add Sensu assets from Bonsai</span></a></p></li>
+<li><p><a class="reference internal" href="etcd_replicator_info.html#sensu-sensu-go-etcd-replicator-info-module"><span class="std std-ref">etcd_replicator_info – List available Sensu Go etcd replicators</span></a></p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="parameters">
 <h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
-<dt>annotations (optional)</dt><dd><p>Custom metadata fields with fewer restrictions, as key/value pairs.</p>
-<p>These are preserved by Sensu but not accessible as tokens or identifiers, and are mainly intended for use with external tools.</p>
+<dt>api_version (optional)</dt><dd><p>Sensu API version of the resource to replicate.</p>
 <div class="line-block">
-<div class="line"><strong>type</strong>: dict</div>
+<div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
 <dt>auth (optional)</dt><dd><p>Authentication parameters. Can define each of them with ENV as well.</p>
@@ -350,37 +362,28 @@
 </dd>
 </dl>
 </dd>
-<dt>builds (optional)</dt><dd><p>A list of asset builds used to define multiple artefacts which provide the named asset.</p>
-<p>Required if <em>state</em> is <code class="docutils literal notranslate"><span class="pre">present</span></code>.</p>
-<div class="line-block">
-<div class="line"><strong>type</strong>: list</div>
-</div>
-<dl>
-<dt>filters (optional)</dt><dd><p>A set of Sensu query expressions used to determine if the asset should be installed.</p>
-<div class="line-block">
-<div class="line"><strong>type</strong>: list</div>
-</div>
-</dd>
-<dt>headers (optional)</dt><dd><p>Additional headers to send when retrieving the asset, e.g. for authorization.</p>
-<div class="line-block">
-<div class="line"><strong>type</strong>: dict</div>
-</div>
-</dd>
-<dt>sha512 (required)</dt><dd><p>The checksum of the asset.</p>
+<dt>ca_cert (optional)</dt><dd><p>Path to an the PEM-format CA certificate to use for TLS client authentication.</p>
+<p>Required if <em>insecure</em> is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
-<dt>url (required)</dt><dd><p>The URL location of the asset.</p>
+<dt>cert (optional)</dt><dd><p>Path to the PEM-format certificate to use for TLS client authentication. This certificate is required for secure client communication.</p>
+<p>Required if <em>insecure</em> is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
-</dl>
-</dd>
-<dt>labels (optional)</dt><dd><p>Custom metadata fields that can be accessed within Sensu, as key/value pairs.</p>
+<dt>insecure (optional)</dt><dd><p>Disable transport security.</p>
+<p>Only set to <code class="docutils literal notranslate"><span class="pre">true</span></code> in sandbox and experimental environments.</p>
 <div class="line-block">
-<div class="line"><strong>type</strong>: dict</div>
+<div class="line"><strong>type</strong>: bool</div>
+</div>
+</dd>
+<dt>key (optional)</dt><dd><p>Path to the PEM-format key file associated with the cert to use for TLS client authentication. This key and its corresponding certificate are required for secure client communication.</p>
+<p>Required if <em>insecure</em> is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
 <dt>name (required)</dt><dd><p>The Sensu resource’s name. This name (in combination with the namespace where applicable) uniquely identifies the resource that Ansible operates on.</p>
@@ -390,10 +393,22 @@
 <div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
-<dt>namespace (optional)</dt><dd><p>RBAC namespace to operate in. If this is not set the value of the SENSU_NAMESPACE environment variable will be used.</p>
+<dt>namespace (optional)</dt><dd><p>Namespace to constrain replication to.</p>
+<p>If you do not include namespace, all namespaces for a given resource are replicated.</p>
 <div class="line-block">
 <div class="line"><strong>type</strong>: str</div>
-<div class="line"><strong>default</strong>: default</div>
+</div>
+</dd>
+<dt>replication_interval (optional)</dt><dd><p>Interval at which the resource will be replicated. In seconds.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: int</div>
+</div>
+</dd>
+<dt>resource (optional)</dt><dd><p>Name of the resource to replicate.</p>
+<p>List of all resources is available at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/operations/control-access/rbac/#resources">https://docs.sensu.io/sensu-go/latest/operations/control-access/rbac/#resources</a>.</p>
+<p>Required if <em>state</em> is <code class="docutils literal notranslate"><span class="pre">present</span></code>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
 </div>
 </dd>
 <dt>state (optional)</dt><dd><p>Target state of the Sensu object.</p>
@@ -403,19 +418,31 @@
 <div class="line"><strong>choices</strong>: present, absent</div>
 </div>
 </dd>
+<dt>url (optional)</dt><dd><p>Destination cluster URLs.</p>
+<p>Required if <em>state</em> is <code class="docutils literal notranslate"><span class="pre">present</span></code>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: list</div>
+</div>
+</dd>
 </dl>
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
 <dl>
-<dt>object</dt><dd><p>Object representing Sensu asset.</p>
+<dt>object</dt><dd><p>Object representing Sensu etcd replicator.</p>
 <p><strong>sample</strong>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">builds</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="nt">sha512</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4f926bf4328f...2c58ad9ab40c9e2edc31b288d066b195b21b</span>
-  <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://example.com/asset.tar.gz</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">api_version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">core/v2</span>
+<span class="nt">ca_cert</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/sensu/certs/ca.pem</span>
+<span class="nt">cert</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/sensu/certs/cert.pem</span>
+<span class="nt">insecure</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/etc/sensu/certs/key.pem</span>
 <span class="nt">metadata</span><span class="p">:</span>
-  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check_script</span>
-  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+  <span class="nt">created_by</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">admin</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-role-replicator</span>
+<span class="nt">namespace</span><span class="p">:</span> <span class="s">&#39;&#39;</span>
+<span class="nt">replication_interval_seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="nt">resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
+<span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://sensu.alpha.example.com:2379</span>
 </pre></div>
 </div>
 </dd>
@@ -429,8 +456,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="asset_info.html" class="btn btn-neutral float-right" title="asset_info – List Sensu assets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../modules.html" class="btn btn-neutral float-left" title="Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="etcd_replicator_info.html" class="btn btn-neutral float-right" title="etcd_replicator_info – List available Sensu Go etcd replicators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="entity_info.html" class="btn btn-neutral float-left" title="entity_info – List Sensu entities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

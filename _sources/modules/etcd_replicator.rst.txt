@@ -1,0 +1,240 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/etcd_replicator.py
+
+.. _sensu.sensu_go.etcd_replicator_module:
+
+etcd_replicator -- Manage Sensu Go etcd replicators
+===================================================
+
+Create, update or delete Sensu etcd replicator.
+
+For more information, refer to the Sensu documentation at https://docs.sensu.io/sensu-go/latest/operations/deploy-sensu/etcdreplicators/.
+
+
+.. versionadded:: 1.9.0
+
+Requirements
+------------
+
+The below requirements are needed on the host that executes this module:
+
+- python >= 2.7
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Create a minimal replicator
+     sensu.sensu_go.etcd_replicator:
+       name: cluster_role_replicator
+       ca_cert: /etc/sensu/certs/ca.pem
+       cert: /etc/sensu/certs/cert.pem
+       key: /etc/sensu/certs/key.pem
+       url: https://sensu.alpha.example.com:2379
+       resource: ClusterRole
+
+   - name: Create an insecure minimal replicator
+     sensu.sensu_go.etcd_replicator:
+       name: role_replicator
+       insecure: true
+       url:
+         - https://sensu.beta.example.com:2379
+         - https://sensu.gamma.example.com:2379
+       resource: Role
+
+   - name: Create a replicator with all parameters set
+     sensu.sensu_go.etcd_replicator:
+       name: role_binding_replicator
+       ca_cert: /etc/sensu/certs/ca.pem
+       cert: /etc/sensu/certs/cert.pem
+       key: /etc/sensu/certs/key.pem
+       insecure: false
+       url: https://127.0.0.1:2379
+       api_version: core/v2
+       resource: RoleBinding
+       namespace: default
+       replication_interval_seconds: 30
+
+   - name: Delete a replicator
+     sensu.sensu_go.etcd_replicator:
+       name: my_replicator
+       state: absent
+
+
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`sensu.sensu_go.etcd_replicator_info_module`
+
+
+
+Parameters
+----------
+
+api_version (optional)
+  Sensu API version of the resource to replicate.
+
+  | **type**: str
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  api_key (optional)
+    The API key that should be used when authenticating. If this is not set, the value of the SENSU_API_KEY environment variable will be checked.
+
+    This replaces *auth.user* and *auth.password* parameters.
+
+    For more information about the API key, refer to the official Sensu documentation at https://docs.sensu.io/sensu-go/latest/guides/use-apikey-feature/.
+
+    | **type**: str
+
+  ca_path (optional)
+    Path to the CA bundle that should be used to validate the backend certificate.
+
+    If this parameter is not set, module will use the CA bundle that python is using.
+
+    It is also possible to set this parameter via the *SENSU_CA_PATH* environment variable.
+
+    | **type**: path
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    This parameter is ignored if the *auth.api_key* parameter is set.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    This parameter is ignored if the *auth.api_key* parameter is set.
+
+    | **type**: str
+    | **default**: admin
+
+  verify (optional)
+    Flag that controls the certificate validation.
+
+    If you are using self-signed certificates, you can set this parameter to ``false``.
+
+    ONLY USE THIS PARAMETER IN DEVELOPMENT SCENARIOS! In you use self-signed certificates in production, see the *auth.ca_path* parameter.
+
+    It is also possible to set this parameter via the *SENSU_VERIFY* environment variable.
+
+    | **type**: bool
+    | **default**: True
+
+
+ca_cert (optional)
+  Path to an the PEM-format CA certificate to use for TLS client authentication.
+
+  Required if *insecure* is ``false``.
+
+  | **type**: str
+
+cert (optional)
+  Path to the PEM-format certificate to use for TLS client authentication. This certificate is required for secure client communication.
+
+  Required if *insecure* is ``false``.
+
+  | **type**: str
+
+insecure (optional)
+  Disable transport security.
+
+  Only set to ``true`` in sandbox and experimental environments.
+
+  | **type**: bool
+
+key (optional)
+  Path to the PEM-format key file associated with the cert to use for TLS client authentication. This key and its corresponding certificate are required for secure client communication.
+
+  Required if *insecure* is ``false``.
+
+  | **type**: str
+
+name (required)
+  The Sensu resource's name. This name (in combination with the namespace where applicable) uniquely identifies the resource that Ansible operates on.
+
+  If the resource with selected name already exists, Ansible module will update it to match the specification in the task.
+
+  Consult the *name* metadata attribute specification in the upstream docs on https://docs.sensu.io/sensu-go/latest/reference/ for more details about valid names and other restrictions.
+
+  | **type**: str
+
+namespace (optional)
+  Namespace to constrain replication to.
+
+  If you do not include namespace, all namespaces for a given resource are replicated.
+
+  | **type**: str
+
+replication_interval (optional)
+  Interval at which the resource will be replicated. In seconds.
+
+  | **type**: int
+
+resource (optional)
+  Name of the resource to replicate.
+
+  List of all resources is available at https://docs.sensu.io/sensu-go/latest/operations/control-access/rbac/#resources.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+url (optional)
+  Destination cluster URLs.
+
+  Required if *state* is ``present``.
+
+  | **type**: list
+
+
+
+Return Values
+-------------
+
+object
+   Object representing Sensu etcd replicator.
+
+   **sample**:
+
+   .. code-block:: yaml
+
+      api_version: core/v2
+      ca_cert: /etc/sensu/certs/ca.pem
+      cert: /etc/sensu/certs/cert.pem
+      insecure: false
+      key: /etc/sensu/certs/key.pem
+      metadata:
+        created_by: admin
+        name: cluster-role-replicator
+      namespace: ''
+      replication_interval_seconds: 30
+      resource: ClusterRole
+      url: https://sensu.alpha.example.com:2379
+

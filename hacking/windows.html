@@ -108,7 +108,8 @@
 <li class="toctree-l2"><a class="reference internal" href="docker-images.html">Preparing docker images for integration tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="documentation.html">Documenting Sensu Go Ansible collection</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Windows things</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#adding-new-sensu-go-version">Adding new Sensu Go version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-sensu-go-version-manually">Adding new Sensu Go version manually</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automating-version-sync">Automating version sync</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="releases.html">Releasing the Sensu Go Ansible Collection</a></li>
@@ -196,8 +197,8 @@
 to since there is no package manager to delegate installation to and services
 behave a bit differently. Here is a collection of things that might come in
 handy when working with installation and agent role.</p>
-<div class="section" id="adding-new-sensu-go-version">
-<h2>Adding new Sensu Go version<a class="headerlink" href="#adding-new-sensu-go-version" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="adding-new-sensu-go-version-manually">
+<h2>Adding new Sensu Go version manually<a class="headerlink" href="#adding-new-sensu-go-version-manually" title="Permalink to this headline">¶</a></h2>
 <p>As already state, Windows has no built-in package manager backed by a
 repository, which means we have to do a bit more work when installing
 packages. And this is why our installation role contains a few pieces of
@@ -214,6 +215,55 @@ editor, would be very much interested in a PowerShell script).</p></li>
 <li><p>Add a new entry to the roles/install/vars/Windows.yml file.</p></li>
 </ol>
 </div></blockquote>
+</div>
+<div class="section" id="automating-version-sync">
+<h2>Automating version sync<a class="headerlink" href="#automating-version-sync" title="Permalink to this headline">¶</a></h2>
+<p>Because manually extracting the product code from the msi archive is not
+something we would like to devote our lives to, we created a script that knows
+how to do two things:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>It can check if the variable file is missing any upstream versions.</p></li>
+<li><p>It can automatically update the Windows variable file.</p></li>
+</ol>
+</div></blockquote>
+<p>To check for the missing versions in out current file, we can run the following
+command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tools/windows-versions.py check roles/install/vars/Windows.yml
+The following versions are missing: 6.2.3.3986, 6.2.4.4013, 6.2.5.4040
+The following versions are obsolete: 5.20.0.12118, 5.20.1.12427
+</pre></div>
+</div>
+<p>This command will check if our variable file contains any outdated versions and
+if it is missing any new versions Sensu released since our last update. The
+command also exits with a non-zero status if action is required, which is great
+for CI/CD usage.</p>
+<p>We also added the common invocation to the Makefile, which makes running check
+as simple as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make check_windows_versions
+</pre></div>
+</div>
+<p>Once we know our variables and upstream availability diverged, we can run the
+update command to get things back in sync:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tools/windows-versions.py update roles/install/vars/Windows.yml
+</pre></div>
+</div>
+<p>This command will download any missing packages, extract product codes from
+them, and update the variable file. By default, temporary files are put ino the
+<code class="docutils literal notranslate"><span class="pre">/tmp</span></code> directory, but this is configurable via the <code class="docutils literal notranslate"><span class="pre">--cache</span></code> command-line
+switch.</p>
+<p>As with the check command, we also added the common invocation to the Makefile,
+which allows us to update the variable file with a simple make run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make update_windows_versions
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The update process needs <code class="docutils literal notranslate"><span class="pre">msiinfo</span></code> executable. The package should be
+available for most mainstream Linux distributions.</p>
+</div>
+<p>Once the update is over, we must commit the changes to the variable file and we
+are done.</p>
 </div>
 </div>
 
