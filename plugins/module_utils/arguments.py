@@ -31,6 +31,7 @@ SHARED_SPECS = dict(
             ),
             api_key=dict(
                 fallback=(env_fallback, ["SENSU_API_KEY"]),
+                no_log=True,
             ),
             verify=dict(
                 default=True,
@@ -65,9 +66,10 @@ SHARED_SPECS = dict(
     secrets=dict(
         type="list",
         elements="dict",
+        no_log=False,
         options=dict(
             name=dict(type="str", required=True),
-            secret=dict(type="str", required=True),
+            secret=dict(type="str", required=True, no_log=False),
         ),
     ),
 )

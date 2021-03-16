@@ -205,7 +205,7 @@ def main():
                 "auth", "name", "state",
             ),
             address=dict(),
-            token=dict(),
+            token=dict(no_log=True),
             version=dict(
                 choices=["v1", "v2"],
             ),
@@ -227,7 +227,7 @@ def main():
                     ca_cert=dict(),
                     cname=dict(),
                     client_cert=dict(),
-                    client_key=dict(),
+                    client_key=dict(no_log=False),
                 )
             )
         )

@@ -161,7 +161,7 @@ def main():
             arguments.get_spec("auth", "name", "state"),
             ca_cert=dict(type="str"),
             cert=dict(type="str"),
-            key=dict(type="str"),
+            key=dict(type="str", no_log=False),
             insecure=dict(type="bool", default=False),
             url=dict(type="list", elements="str"),
             api_version=dict(type="str"),

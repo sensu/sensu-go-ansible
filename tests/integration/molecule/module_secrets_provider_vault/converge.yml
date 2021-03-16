@@ -62,7 +62,6 @@
           - result is changed
           - result.object.metadata.name == 'my-vault'
           - result.object.client.address == 'https://my-vault.com'
-          - result.object.client.token == 'VAULT_TOKEN'
           - result.object.client.version == 'v1'
 
     - name: Make sure vault provider was not created when running in check mode
@@ -123,7 +122,6 @@
         that:
           - result is changed
           - result.object.client.address == 'https://my-new-vault.com'
-          - result.object.client.token == 'ANOTHER_VAULT_TOKEN'
           - result.object.client.version == 'v2'
           - result.object.client.timeout == '5s'
           - result.object.client.max_retries == 1
@@ -142,7 +140,6 @@
         that:
           - result.objects.0.metadata.name == 'my-vault'
           - result.objects.0.client.address == 'https://my-vault.com'
-          - result.objects.0.client.token == 'VAULT_TOKEN'
           - result.objects.0.client.version == 'v1'
           - result.objects.0.client.tls == None
 
@@ -162,7 +159,6 @@
     - ansible.builtin.assert:
         that:
           - result.objects.0.client.address == 'https://my-new-vault.com'
-          - result.objects.0.client.token == 'ANOTHER_VAULT_TOKEN'
           - result.objects.0.client.version == 'v2'
           - result.objects.0.client.timeout == '5s'
           - result.objects.0.client.max_retries == 1
@@ -202,7 +198,6 @@
           - result is changed
           - result.object.metadata.name == 'my-other-vault'
           - result.object.client.address == 'https://my-other-vault.com'
-          - result.object.client.token == 'OTHER_VAULT_TOKEN'
           - result.object.client.version == 'v1'
           - result.object.client.timeout == '30s'
           - result.object.client.max_retries == 1
