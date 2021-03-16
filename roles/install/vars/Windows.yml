@@ -41,6 +41,12 @@ _msi_lookup:
       x64: '{FA45624F-0296-444B-8864-BC26EC5775F1}'
       x86: '{57F5C867-44FE-465A-8C76-AF516BBF7A83}'
     version: 5.21.3
+  5.21.4:
+    build: 71057
+    product_codes:
+      x64: '{63311D12-2A46-4971-80DA-3847459F6DB8}'
+      x86: '{120691DA-EB4D-4AF3-B908-192AAEBFAA26}'
+    version: 5.21.4
   6.0.0:
     build: 3003
     product_codes:
