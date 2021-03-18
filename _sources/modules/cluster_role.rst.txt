@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: Create a cluster role
      sensu.sensu_go.cluster_role:
        name: readonly
@@ -41,7 +40,6 @@ Examples
      sensu.sensu_go.cluster_role:
        name: readonly
        state: absent
-
 
 
 

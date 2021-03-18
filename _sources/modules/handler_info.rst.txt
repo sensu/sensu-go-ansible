@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: List all Sensu handlers
      sensu.sensu_go.handler_info:
      register: result
@@ -34,7 +33,6 @@ Examples
      sensu.sensu_go.handler_info:
        name: my-handler
      register: result
-
 
 
 

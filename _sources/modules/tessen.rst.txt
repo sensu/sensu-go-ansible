@@ -25,12 +25,10 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: Disable Tessen
      sensu.sensu_go.tessen:
        state: disabled
      register: result
-
 
 
 

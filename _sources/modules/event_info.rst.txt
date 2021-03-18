@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: List Sensu events
      sensu.sensu_go.event_info:
      register: result
@@ -40,7 +39,6 @@ Examples
        entity: api.example.com
        check: check-cpu
      register: result
-
 
 
 

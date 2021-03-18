@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: Check executing command every 30 seconds
      sensu.sensu_go.check:
        name: check
@@ -95,7 +94,6 @@ Examples
      sensu.sensu_go.check:
        name: my-check
        state: absent
-
 
 
 

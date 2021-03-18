@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: Create a small cluster
      sensu.sensu_go.cluster:
        name: small-cluster
@@ -43,7 +42,6 @@ Examples
      sensu.sensu_go.cluster:
        name: small-cluster
        state: absent
-
 
 
 

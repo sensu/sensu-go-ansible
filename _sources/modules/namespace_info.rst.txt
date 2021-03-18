@@ -25,11 +25,9 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: List Sensu namespaces
      sensu.sensu_go.namespace_info:
      register: result
-
 
 
 Notes

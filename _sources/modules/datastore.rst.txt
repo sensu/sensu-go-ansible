@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: Add external datastore
      sensu.sensu_go.datastore:
        name: my-postgres
@@ -35,7 +34,6 @@ Examples
      sensu.sensu_go.datastore:
        name: my-postgres
        state: absent
-
 
 
 Notes

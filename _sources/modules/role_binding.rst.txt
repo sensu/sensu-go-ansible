@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: Create a role binding
      sensu.sensu_go.role_binding:
        name: dev_and_testing
@@ -49,7 +48,6 @@ Examples
      sensu.sensu_go.role_binding:
        name: org-admins
        state: absent
-
 
 
 

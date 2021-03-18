@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: List all Sensu silence entries
      sensu.sensu_go.silence_info:
      register: result
@@ -35,7 +34,6 @@ Examples
        subscription: proxy
        check: awesome_check
      register: result
-
 
 
 

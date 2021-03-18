@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: List all Sensu cluster roles
      sensu.sensu_go.cluster_role_info:
      register: result
@@ -34,7 +33,6 @@ Examples
      sensu.sensu_go.cluster_role_info:
        name: my-custer-role
      register: result
-
 
 
 

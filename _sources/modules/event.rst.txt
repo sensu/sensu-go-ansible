@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: Create an event
      sensu.sensu_go.event:
        auth:
@@ -61,7 +60,6 @@ Examples
                  value: 57
              timestamp: 1552506033
              value: 0.004
-
 
 
 Notes

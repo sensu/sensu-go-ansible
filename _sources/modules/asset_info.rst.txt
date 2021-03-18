@@ -25,7 +25,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-   
    - name: List all Sensu assets
      sensu.sensu_go.asset_info:
      register: result
@@ -38,8 +37,6 @@ Examples
    - name: Do something with result
      ansible.builtin.debug:
        msg: "{{ result.objects.0.metadata.name }}"
-
-
 
 
 
