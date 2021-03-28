@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Setup InfluxDB handler
      sensu.sensu_go.pipe_handler:
        name: influx-db
@@ -40,6 +41,7 @@ Examples
      sensu.sensu_go.pipe_handler:
        name: influx-db
        state: absent
+
 
 
 

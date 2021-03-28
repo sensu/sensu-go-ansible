@@ -26,6 +26,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Create a user
      sensu.sensu_go.user:
        auth:
@@ -47,6 +48,7 @@ Examples
      sensu.sensu_go.user:
        name: awesome_username
        state: disabled
+
 
 
 

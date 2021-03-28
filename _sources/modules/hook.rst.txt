@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Rudimentary auto-remediation hook
      sensu.sensu_go.hook:
        auth:
@@ -47,6 +48,7 @@ Examples
      sensu.sensu_go.hook:
        name: process_tree
        state: absent
+
 
 
 

@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Silence a specific check
      sensu.sensu_go.silence:
        subscription: proxy
@@ -44,6 +45,7 @@ Examples
      sensu.sensu_go.silence:
        subscription: entity:important-entity
        state: absent
+
 
 
 

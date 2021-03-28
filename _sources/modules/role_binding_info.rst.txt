@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: List all Sensu role bindings
      sensu.sensu_go.role_binding_info:
      register: result
@@ -33,6 +34,7 @@ Examples
      sensu.sensu_go.role_binding_info:
        name: my-role-binding
      register: result
+
 
 
 

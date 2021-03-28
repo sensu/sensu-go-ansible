@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Create a role
      sensu.sensu_go.role:
        name: readonly
@@ -40,6 +41,7 @@ Examples
      sensu.sensu_go.role:
        name: readonly
        state: absent
+
 
 
 

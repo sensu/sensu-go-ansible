@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: List all Sensu entities
      sensu.sensu_go.entity_info:
      register: result
@@ -33,6 +34,7 @@ Examples
      sensu.sensu_go.entity_info:
        name: my-entity
      register: result
+
 
 
 

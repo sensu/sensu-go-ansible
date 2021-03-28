@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Create an entity
      sensu.sensu_go.entity:
        auth:
@@ -61,6 +62,7 @@ Examples
      sensu.sensu_go.entity:
        name: entity
        state: absent
+
 
 
 

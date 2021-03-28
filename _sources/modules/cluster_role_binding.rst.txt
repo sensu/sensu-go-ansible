@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Create a cluster role binding
      sensu.sensu_go.cluster_role_binding:
        name: all-cluster-admins
@@ -38,6 +39,7 @@ Examples
      sensu.sensu_go.cluster_role_binding:
        name: all-cluster-admins
        state: absent
+
 
 
 

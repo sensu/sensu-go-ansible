@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Create a new namespace
      sensu.sensu_go.namespace:
        name: production
@@ -34,6 +35,7 @@ Examples
      sensu.sensu_go.namespace:
        name: staging
        state: absent
+
 
 
 

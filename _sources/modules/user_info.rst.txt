@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: List Sensu users
      sensu.sensu_go.user_info:
      register: result
@@ -33,6 +34,7 @@ Examples
      sensu.sensu_go.user_info:
        name: my-user
      register: result
+
 
 
 

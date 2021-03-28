@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Make sure specific version of asset is installed
      sensu.sensu_go.bonsai_asset:
        name: sensu/monitoring-plugins
@@ -44,6 +45,7 @@ Examples
    - name: Display asset info
      sensu.sensu_go.asset_info:
        name: sensu-monitoring-2.2.0-1  # value from rename field
+
 
 
 Notes

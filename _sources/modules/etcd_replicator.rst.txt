@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Create a minimal replicator
      sensu.sensu_go.etcd_replicator:
        name: cluster_role_replicator
@@ -60,6 +61,7 @@ Examples
      sensu.sensu_go.etcd_replicator:
        name: my_replicator
        state: absent
+
 
 
 

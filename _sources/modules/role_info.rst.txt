@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: List all Sensu roles
      sensu.sensu_go.role_info:
      register: result
@@ -33,6 +34,7 @@ Examples
      sensu.sensu_go.role_info:
        name: my-role
      register: result
+
 
 
 

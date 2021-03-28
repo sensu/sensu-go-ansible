@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: TCP handler
      sensu.sensu_go.socket_handler:
        name: tcp_handler
@@ -43,6 +44,7 @@ Examples
      sensu.sensu_go.socket_handler:
        name: udp_handler
        state: absent
+
 
 
 

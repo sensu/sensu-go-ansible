@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Create a mutator
      sensu.sensu_go.mutator:
        name: mutator
@@ -40,6 +41,7 @@ Examples
      sensu.sensu_go.mutator:
        name: mutator
        state: absent
+
 
 
 

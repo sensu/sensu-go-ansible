@@ -25,6 +25,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
+   
    - name: Create a multiple-build asset
      sensu.sensu_go.asset:
        name: sensu-plugins-cpu-checks
@@ -46,6 +47,7 @@ Examples
      sensu.sensu_go.asset:
        name: sensu-plugins-cpu-check
        state: absent
+
 
 
 
