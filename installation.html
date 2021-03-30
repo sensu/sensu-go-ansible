@@ -92,6 +92,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#installing-from-ansible-galaxy">Installing from Ansible Galaxy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-from-automation-hub">Installing from Automation Hub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-from-a-local-file">Installing from a local file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-the-windows-ansible-collection">Installing the Windows Ansible Collection</a></li>
 </ul>
 </li>
 </ul>
@@ -249,6 +250,18 @@ Go collection by running:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-galaxy collection install path/to/sensu-sensu_go-1.0.0.tar.gz
 </pre></div>
 </div>
+</div>
+<div class="section" id="installing-the-windows-ansible-collection">
+<h2>Installing the Windows Ansible Collection<a class="headerlink" href="#installing-the-windows-ansible-collection" title="Permalink to this headline">¶</a></h2>
+<p>If we are using Ansible Base or Ansible Core, we need to install the
+<cite>ansible.windows</cite> Ansible Collection manually:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ansible-galaxy collection install ansible.windows
+</pre></div>
+</div>
+<p>Why is this manual step needed? While it is technically possible to declare
+collection dependencies, this may pose a problem for Automation Hub users.
+The Windows Ansible Collection is not yet certified, so we had to make it an
+optional dependency for the time being.</p>
 </div>
 </div>
 
