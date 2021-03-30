@@ -1,14 +1,5 @@
-Development: [![Development status][development-img]][development-jobs] |
-Stable: [![Stable status][stable-img]][stable-jobs]
-
-   [development-img]:
-      https://circleci.com/gh/sensu/sensu-go-ansible/tree/master.svg?style=shield
-   [development-jobs]:
-      https://app.circleci.com/pipelines/github/sensu/sensu-go-ansible?branch=master
-   [stable-img]:
-      https://circleci.com/gh/sensu/sensu-go-ansible/tree/stable.svg?style=shield
-   [stable-jobs]:
-      https://app.circleci.com/pipelines/github/sensu/sensu-go-ansible?branch=stable
+Development: [![Development status](https://circleci.com/gh/sensu/sensu-go-ansible/tree/master.svg?style=shield)](https://app.circleci.com/pipelines/github/sensu/sensu-go-ansible?branch=master) |
+Stable: [![Stable status](https://circleci.com/gh/sensu/sensu-go-ansible/tree/stable.svg?style=shield)](https://app.circleci.com/pipelines/github/sensu/sensu-go-ansible?branch=stable)
 
 
 # Sensu Go Ansible Collection
