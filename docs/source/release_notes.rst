@@ -7,7 +7,7 @@ Version 1.9.2 -- A fresh batch of updates
 For this release, we only updated the list of available Sensu Go agent versions
 for Windows.
 
-** New features:**
+**New features:**
 
 * Update list of available Sensu Go agent packages for Windows installations
   (added 5.21.4, 5.21.5, 6.2.5, and 6.2.6).
