@@ -78,3 +78,17 @@ Go collection by running::
 
 .. _releases page:
    https://github.com/sensu/sensu-go-ansible/releases
+
+
+Installing the Windows Ansible Collection
+-----------------------------------------
+
+If we are using Ansible Base or Ansible Core, we need to install the
+`ansible.windows` Ansible Collection manually::
+
+   $ ansible-galaxy collection install ansible.windows
+
+Why is this manual step needed? While it is technically possible to declare
+collection dependencies, this may pose a problem for Automation Hub users.
+The Windows Ansible Collection is not yet certified, so we had to make it an
+optional dependency for the time being.
