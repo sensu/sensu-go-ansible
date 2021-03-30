@@ -1,6 +1,18 @@
 Release notes
 =============
 
+Version 1.9.3 -- Opening Windows
+--------------------------------
+
+The only change in this release is removal of the ``ansible.windows``
+dependency. This should allow users that only use certified
+collections to install and use the collection.
+
+**New features:**
+
+* Remove Windows Ansible Collection dependency.
+
+
 Version 1.9.2 -- A fresh batch of updates
 -----------------------------------------
 

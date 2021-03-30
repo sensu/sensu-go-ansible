@@ -1,5 +1,17 @@
 ---
 releases:
+  1.9.3:
+    release_date: "2021-03-30"
+    changes:
+      release_summary: |
+        Opening Windows
+
+        The only change in this release is removal of the ``ansible.windows``
+        dependency. This should allow users that only use certified collections
+        to install and use the collection.
+      minor_hanges:
+        - Remove Windows Ansible Collection dependency.
+
   1.9.2:
     release_date: "2021-03-28"
     changes:
