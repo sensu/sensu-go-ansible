@@ -1,5 +1,17 @@
 ---
 releases:
+  1.9.4:
+    release_date: "2021-03-30"
+    changes:
+      release_summary: |
+        Opening Windows for real
+
+        This is a bugfix release that makes sure Sensu Go Ansible Collection
+        can operate even in the absence of the Windows Ansible Collection
+        (assuming we do not want to manage agents on Windows hosts, that is).
+      bugfixes:
+        - Make sure we lazy-load Windows-related content.
+
   1.9.3:
     release_date: "2021-03-30"
     changes:
