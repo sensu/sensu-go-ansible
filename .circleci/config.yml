@@ -115,23 +115,15 @@ jobs:
         description: Ansible version to use
         type: string
     machine: *ci-machine
-    working_directory: ~/ansible_collections/sensu/sensu_go
+    working_directory: ~/sensu_go
     steps:
       - wrapper:
           ansible: << parameters.ansible >>
           kind: integration
           test_commands:
-            - run: ansible-galaxy collection install community.docker ansible.windows
-            - run:
-                name: Display scheduled scenarios
-                command: |
-                  circleci tests glob "tests/integration/molecule/*/molecule.yml" \
-                   | circleci tests split --split-by=timings
-            - run: make integration_ci
-            - store_test_results:
-                path: test_results
-            - store_artifacts:
-                path: test_results
+            - run: ansible-galaxy collection build
+            - run: ansible-galaxy collection install sensu-sensu_go-*.tar.gz
+            - run_integration_tests
 
   integration_test_galaxy:
     parallelism: 6
@@ -149,17 +141,7 @@ jobs:
             - run: |
                 ansible-galaxy collection install \
                   sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
-            - run: ansible-galaxy collection install community.docker
-            - run:
-                name: Display scheduled scenarios
-                command: |
-                  circleci tests glob "tests/integration/molecule/*/molecule.yml" \
-                   | circleci tests split --split-by=timings
-            - run: make integration_ci
-            - store_test_results:
-                path: test_results
-            - store_artifacts:
-                path: test_results
+            - run_integration_tests
 
   windows_version_check:
     docker:
@@ -170,6 +152,21 @@ jobs:
       - run: make check_windows_versions
 
 commands:
+  run_integration_tests:
+    description: Run integration tests
+    steps:
+      - run: ansible-galaxy collection install community.docker
+      - run:
+          name: Display scheduled scenarios
+          command: |
+            circleci tests glob "tests/integration/molecule/*/molecule.yml" \
+             | circleci tests split --split-by=timings
+      - run: make integration_ci
+      - store_test_results:
+          path: test_results
+      - store_artifacts:
+          path: test_results
+
   wrapper:
     description: Wrapper command that takes care of venv caching
     parameters:
