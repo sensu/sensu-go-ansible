@@ -11,6 +11,7 @@ workflows:
               ansible:
                 - stable-2.9
                 - stable-2.10
+                - stable-2.11
 
       - unit_test:
           matrix: *matrix
@@ -48,7 +49,7 @@ workflows:
   cron_ansible_devel:
     triggers:
       - schedule:
-          cron: "12 5 * * 2"
+          cron: "12 5 * * 2,5"
           filters: { branches: { only: [ master ] } }
     jobs:
       - sanity_test:
