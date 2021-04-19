@@ -1,0 +1,358 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Fetch all LDAP auth providers and verify the presence
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0  
+
+    - name: Fail when trying to create a LDAP auth provider with missing required params
+      sensu.sensu_go.ldap_auth_provider:
+        auth:
+          url: http://localhost:8080
+        name: openldap
+      register: result
+      ignore_errors: true
+
+    - ansible.builtin.assert:
+        that:
+          - result is failed
+          - "'state is present but all of the following are missing' in result.msg"
+
+    - name: Create LDAP auth provider with minimal params (check mode)
+      sensu.sensu_go.ldap_auth_provider: &create-provider
+        state: present
+        name: openldap
+        servers: 
+          - host: 127.0.0.1
+            group_search:
+              base_dn: dc=acme,dc=org
+            user_search:
+              base_dn: dc=acme,dc=org
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert: &create-provider-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == 'openldap'
+          - result.object.servers.0.host == '127.0.0.1'
+          - result.object.servers.0.group_search.base_dn == 'dc=acme,dc=org'
+          - result.object.servers.0.user_search.base_dn == 'dc=acme,dc=org'
+
+    - name: Make sure LDAP auth provider was not created when running in check mode
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Create LDAP auth provider with minimal params
+      sensu.sensu_go.ldap_auth_provider: *create-provider
+      register: result
+
+    - ansible.builtin.assert: *create-provider-assertions
+
+    - name: Make sure LDAP auth provider was created
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: openldap
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'openldap'
+
+    - name: Idempotence check for LDAP auth provider creation with minimal params
+      sensu.sensu_go.ldap_auth_provider: *create-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Update LDAP auth provider (check mode)
+      sensu.sensu_go.ldap_auth_provider: &update-provider
+        state: present
+        name: openldap
+        servers: 
+          - host: 127.0.0.1
+            group_search:
+              base_dn: dc=acme,dc=org
+            user_search:
+              base_dn: dc=acme,dc=org
+        groups_prefix: dev
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert: &update-provider-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == 'openldap'
+          - result.object.servers.0.host == '127.0.0.1'
+          - result.object.servers.0.group_search.base_dn == 'dc=acme,dc=org'
+          - result.object.servers.0.user_search.base_dn == 'dc=acme,dc=org'
+          - result.object.groups_prefix == 'dev'
+
+    - name: Make sure LDAP auth provider was not updated in check mode
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: openldap
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects.0.metadata.name == 'openldap'
+          - result.objects.0.servers.0.host == '127.0.0.1'
+          - result.objects.0.servers.0.group_search.base_dn == 'dc=acme,dc=org'
+          - result.objects.0.servers.0.user_search.base_dn == 'dc=acme,dc=org'
+          - result.objects.0.groups_prefix == ''
+
+    - name: Update LDAP auth provider
+      sensu.sensu_go.ldap_auth_provider: *update-provider
+      register: result
+
+    - ansible.builtin.assert: *update-provider-assertions
+
+    - name: Make sure LDAP auth provider was updated
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: openldap
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects.0.metadata.name == 'openldap'
+          - result.objects.0.servers.0.host == '127.0.0.1'
+          - result.objects.0.servers.0.group_search.base_dn == 'dc=acme,dc=org'
+          - result.objects.0.servers.0.user_search.base_dn == 'dc=acme,dc=org'
+          - result.objects.0.groups_prefix == 'dev'
+
+    - name: Idempotence check for LDAP auth provider modification
+      sensu.sensu_go.ldap_auth_provider:  *update-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Add LDAP auth provider server to existing one (check mode)
+      sensu.sensu_go.ldap_auth_provider: &create-extra-provider
+        state: present
+        name: openldap
+        servers:
+          - host: 127.0.0.1
+            group_search:
+              base_dn: dc=acme,dc=org
+            user_search:
+              base_dn: dc=acme,dc=org
+          - host: 127.0.0.2
+            group_search:
+              base_dn: dc=acme,dc=org
+            user_search:
+              base_dn: dc=acme,dc=org
+        groups_prefix: dev
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert: &create-extra-provider-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == 'openldap'
+          - result.object.servers.0.host == '127.0.0.1'
+          - result.object.servers.1.host == '127.0.0.2'
+          - result.object.servers.1.group_search.base_dn == 'dc=acme,dc=org'
+          - result.object.servers.1.user_search.base_dn == 'dc=acme,dc=org'
+
+    - name: Make sure extra LDAP auth provider was not created when running in check mode
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.servers | length == 1
+
+    - name: Create an extra LDAP auth provider
+      sensu.sensu_go.ldap_auth_provider: *create-extra-provider
+      register: result
+
+    - ansible.builtin.assert: *create-extra-provider-assertions
+
+    - name: Make sure extra LDAP auth provider was created
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: openldap
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.servers | length == 2
+          - result.objects.0.metadata.name == 'openldap'
+
+    - name: Idempotence check for extra LDAP auth provider creation
+      sensu.sensu_go.ldap_auth_provider: *create-extra-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Create a LDAP auth provider with all params
+      sensu.sensu_go.ldap_auth_provider: &create-provider-all-params
+        auth:
+          url: http://localhost:8080
+        state: present
+        name: other-openldap
+        servers: 
+          - host: 127.0.0.1
+            port: 636
+            insecure: false
+            security: tls
+            trusted_ca_file: /path/to/trusted-certificate-authorities.pem
+            client_cert_file: /path/to/ssl/cert.pem
+            client_key_file: /path/to/ssl/key.pem
+            binding:
+              user_dn: cn=binder,dc=acme,dc=org
+              password: ldap_password
+            group_search:
+              base_dn: dc=acme,dc=org
+              attribute: member
+              name_attribute: cn
+              object_class: groupOfNames
+            user_search:
+              base_dn: dc=acme,dc=org
+              attribute: uid
+              name_attribute: cn
+              object_class: person
+        groups_prefix: dev
+        username_prefix: ldap
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'other-openldap'
+          - result.object.servers.0.host == '127.0.0.1'
+          - result.object.servers.0.port == 636
+          - result.object.servers.0.insecure == false
+          - result.object.servers.0.security == 'tls'
+          - result.object.servers.0.trusted_ca_file == '/path/to/trusted-certificate-authorities.pem'
+          - result.object.servers.0.client_cert_file == '/path/to/ssl/cert.pem'
+          - result.object.servers.0.client_key_file == '/path/to/ssl/key.pem'
+          - result.object.servers.0.binding.user_dn == 'cn=binder,dc=acme,dc=org'
+          - result.object.servers.0.binding.password == 'VALUE_SPECIFIED_IN_NO_LOG_PARAMETER'
+          - result.object.servers.0.group_search.base_dn == 'dc=acme,dc=org'
+          - result.object.servers.0.group_search.attribute == 'member'
+          - result.object.servers.0.group_search.name_attribute == 'cn'
+          - result.object.servers.0.group_search.object_class == 'groupOfNames'
+          - result.object.servers.0.user_search.base_dn == 'dc=acme,dc=org'
+          - result.object.servers.0.user_search.attribute == 'uid'
+          - result.object.servers.0.user_search.name_attribute == 'cn'
+          - result.object.servers.0.user_search.object_class == 'person'
+          - result.object.groups_prefix == 'dev'
+          - result.object.username_prefix == 'ldap'
+
+    - name: Idempotence check for LDAP auth provider creation with all params
+      sensu.sensu_go.ldap_auth_provider: *create-provider-all-params
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Delete LDAP auth provider (check mode)
+      sensu.sensu_go.ldap_auth_provider: &delete-provider
+        auth:
+          url: http://localhost:8080
+        name: openldap
+        state: absent
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure LDAP auth provider was not deleted when running in check mode
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: openldap
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+
+    - name: Delete LDAP auth provider
+      sensu.sensu_go.ldap_auth_provider: *delete-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure LDAP auth provider was deleted
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: openldap
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects == []
+
+    - name: Check if still any LDAP auth providers exist
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+
+    - name: Delete LDAP auth provider
+      sensu.sensu_go.ldap_auth_provider:
+        auth:
+          url: http://localhost:8080
+        name: other-openldap
+        state: absent
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Delete a non-existent LDAP auth provider
+      sensu.sensu_go.ldap_auth_provider:
+        auth:
+          url: http://localhost:8080
+        name: i-dont-exist
+        state: absent
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
