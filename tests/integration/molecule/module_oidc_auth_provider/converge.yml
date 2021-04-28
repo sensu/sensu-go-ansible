@@ -1,0 +1,276 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Fetch all auth providers and verify the presence
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0  
+
+    - name: Fail when trying to create a OIDC auth provider with missing required params
+      sensu.sensu_go.oidc_auth_provider:
+        auth:
+          url: http://localhost:8080
+        name: oidc_name
+      register: result
+      ignore_errors: true
+
+    - ansible.builtin.assert:
+        that:
+          - result is failed
+          - "'state is present but all of the following are missing' in result.msg"
+
+    - name: Create OIDC auth provider with minimal params (check mode)
+      sensu.sensu_go.oidc_auth_provider: &create-provider
+        state: present
+        name: oidc_name
+        client_id: a8e43af034e7f2608780
+        client_secret: b63968394be6ed2edb61c93847ee792f31bf6216
+        server: https://oidc.example.com:9031
+        username_claim: email
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert: &create-provider-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == 'oidc_name'
+          - result.object.client_id == 'a8e43af034e7f2608780'
+          - "'client_secret' not in result.object"
+          - result.object.server == 'https://oidc.example.com:9031'
+          - result.object.username_claim == 'email'
+
+    - name: Make sure OIDC auth provider was not created when running in check mode
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 0
+
+    - name: Create OIDC auth provider with minimal params
+      sensu.sensu_go.oidc_auth_provider: *create-provider
+      register: result
+
+    - ansible.builtin.assert: *create-provider-assertions
+
+    - name: Make sure OIDC auth provider was created
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: oidc_name
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == 'oidc_name'
+
+    - name: Idempotence check for OIDC auth provider creation with minimal params
+      sensu.sensu_go.oidc_auth_provider: *create-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Update OIDC auth provider (check mode)
+      sensu.sensu_go.oidc_auth_provider: &update-provider
+        state: present
+        name: oidc_name
+        additional_scopes:
+          - groups
+          - email
+          - username
+        client_id: a8e43af034e7f2608780
+        client_secret: b63968394be6ed2edb61c93847ee792f31bf6216
+        server: https://oidc.example.com:9031
+        username_claim: email
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert: &update-provider-assertions
+        that:
+          - result is changed
+          - result.object.metadata.name == 'oidc_name'
+          - result.object.additional_scopes == ['groups', 'email', 'username']
+          - result.object.client_id == 'a8e43af034e7f2608780'
+          - "'client_secret' not in result.object"
+          - result.object.server == 'https://oidc.example.com:9031'
+          - result.object.username_claim == 'email'
+
+    - name: Make sure OIDC auth provider was not updated in check mode
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: oidc_name
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects.0.metadata.name == 'oidc_name'
+          - result.objects.0.additional_scopes == ['openid']
+          - result.objects.0.client_id == 'a8e43af034e7f2608780'
+          #- "'client_secret' not in result.objects.0"
+          - result.objects.0.server == 'https://oidc.example.com:9031'
+          - result.objects.0.username_claim == 'email'
+
+    - name: Update OIDC auth provider
+      sensu.sensu_go.oidc_auth_provider: *update-provider
+      register: result
+
+    - ansible.builtin.assert: *update-provider-assertions
+
+    - name: Make sure OIDC auth provider was updated
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: oidc_name
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects.0.metadata.name == 'oidc_name'
+          - result.objects.0.additional_scopes == ['groups', 'email', 'username']
+          - result.objects.0.client_id == 'a8e43af034e7f2608780'
+          #- "'client_secret' not in result.objects.0"
+          - result.objects.0.server == 'https://oidc.example.com:9031'
+          - result.objects.0.username_claim == 'email'
+
+    - name: Idempotence check for OIDC auth provider modification
+      sensu.sensu_go.oidc_auth_provider:  *update-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Create a OIDC auth provider with all params
+      sensu.sensu_go.oidc_auth_provider: &create-provider-all-params
+        auth:
+          url: http://localhost:8080
+        state: present
+        name: other-oidc_name
+        additional_scopes:
+          - groups
+          - email
+          - username
+        client_id: a8e43af034e7f2608780
+        client_secret: b63968394be6ed2edb61c93847ee792f31bf6216
+        disable_offline_access: false
+        redirect_uri: http://127.0.0.1:8080/api/enterprise/authentication/v2/oidc/callback
+        server: https://oidc.example.com:9031
+        groups_claim: groups
+        groups_prefix: 'oidc:'
+        username_claim: email
+        username_prefix: 'oidc:'
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == 'other-oidc_name'
+          - result.object.additional_scopes == ['groups', 'email', 'username']
+          - result.object.client_id == 'a8e43af034e7f2608780'
+          - "'client_secret' not in result.object"
+          - result.object.disable_offline_access == false
+          - result.object.redirect_uri == 'http://127.0.0.1:8080/api/enterprise/authentication/v2/oidc/callback'
+          - result.object.server == 'https://oidc.example.com:9031'
+          - result.object.groups_claim == 'groups'
+          - result.object.groups_prefix == 'oidc:'
+          - result.object.username_claim == 'email'
+          - result.object.username_prefix == 'oidc:'
+
+    - name: Idempotence check for OIDC auth provider creation with all params
+      sensu.sensu_go.oidc_auth_provider: *create-provider-all-params
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
+
+    - name: Delete OIDC auth provider (check mode)
+      sensu.sensu_go.oidc_auth_provider: &delete-provider
+        auth:
+          url: http://localhost:8080
+        name: oidc_name
+        state: absent
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure OIDC auth provider was not deleted when running in check mode
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: oidc_name
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+
+    - name: Delete OIDC auth provider
+      sensu.sensu_go.oidc_auth_provider: *delete-provider
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Make sure OIDC auth provider was deleted
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+        name: oidc_name
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects == []
+
+    - name: Check if still any OIDC auth providers exist
+      sensu.sensu_go.auth_provider_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result.objects | length == 1
+
+    - name: Delete OIDC auth provider
+      sensu.sensu_go.oidc_auth_provider:
+        auth:
+          url: http://localhost:8080
+        name: other-oidc_name
+        state: absent
+      check_mode: true
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is changed
+
+    - name: Delete a non-existent OIDC auth provider
+      sensu.sensu_go.oidc_auth_provider:
+        auth:
+          url: http://localhost:8080
+        name: i-dont-exist
+        state: absent
+      register: result
+
+    - ansible.builtin.assert:
+        that:
+          - result is not changed
