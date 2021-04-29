@@ -22,7 +22,7 @@ pytestmark = pytest.mark.skipif(
 class TestAuthProviderInfo(ModuleTestCase):
     def test_get_all_auth_providers(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
-        get_mock.return_value = [dict(spec=1), dict(spec=2)]
+        get_mock.return_value = [dict(spec=dict(a=1)), dict(spec=dict(b=2))]
         set_module_args()
 
         with pytest.raises(AnsibleExitJson) as context:
@@ -30,11 +30,11 @@ class TestAuthProviderInfo(ModuleTestCase):
 
         _client, path = get_mock.call_args[0]
         assert path == "/api/enterprise/authentication/v2/authproviders"
-        assert context.value.args[0]["objects"] == [1, 2]
+        assert context.value.args[0]["objects"] == [dict(a=1), dict(b=2)]
 
     def test_get_single_auth_provider(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
-        get_mock.return_value = dict(spec=4)
+        get_mock.return_value = dict(spec=dict(a=1))
         set_module_args(name="sample-auth-provider")
 
         with pytest.raises(AnsibleExitJson) as context:
@@ -42,7 +42,7 @@ class TestAuthProviderInfo(ModuleTestCase):
 
         _client, path = get_mock.call_args[0]
         assert path == "/api/enterprise/authentication/v2/authproviders/sample-auth-provider"
-        assert context.value.args[0]["objects"] == [4]
+        assert context.value.args[0]["objects"] == [dict(a=1)]
 
     def test_missing_single_auth_provider(self, mocker):
         get_mock = mocker.patch.object(utils, "get")
