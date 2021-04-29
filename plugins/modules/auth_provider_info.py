@@ -5,6 +5,7 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -67,7 +68,6 @@ objects:
       groups_prefix: ''
       servers:
         binding:
-          password: 'YOUR_PASSWORD'
           user_dn: 'cn=binder,dc=acme,dc=org'
         client_cert_file: ''
         client_key_file: ''
@@ -98,6 +98,17 @@ API_GROUP = "enterprise"
 API_VERSION = "authentication/v2"
 
 
+def remove_item(result):
+    for server in result.get("servers", []):
+        if server["binding"] and "password" in server["binding"]:
+            del server["binding"]["password"]
+
+    if "client_secret" in result:
+        del result["client_secret"]
+
+    return result
+
+
 def main():
     module = AnsibleModule(
         supports_check_mode=True,
@@ -109,7 +120,11 @@ def main():
 
     client = arguments.get_sensu_client(module.params["auth"])
     path = utils.build_url_path(
-        API_GROUP, API_VERSION, None, "authproviders", module.params["name"],
+        API_GROUP,
+        API_VERSION,
+        None,
+        "authproviders",
+        module.params["name"],
     )
 
     try:
@@ -118,9 +133,10 @@ def main():
         module.fail_json(msg=str(e))
 
     # We simulate the behavior of v2 API here and only return the spec.
-    module.exit_json(changed=False, objects=[
-        utils.convert_v1_to_v2_response(p) for p in providers
-    ])
+    module.exit_json(
+        changed=False,
+        objects=[remove_item(utils.convert_v1_to_v2_response(p)) for p in providers],
+    )
 
 
 if __name__ == "__main__":
