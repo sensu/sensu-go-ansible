@@ -259,7 +259,7 @@
           - result.object.servers.0.client_cert_file == '/path/to/ssl/cert.pem'
           - result.object.servers.0.client_key_file == '/path/to/ssl/key.pem'
           - result.object.servers.0.binding.user_dn == 'cn=binder,dc=acme,dc=org'
-          - result.object.servers.0.binding.password == 'VALUE_SPECIFIED_IN_NO_LOG_PARAMETER'
+          - "'password' not in result.object.servers.0.binding"
           - result.object.servers.0.group_search.base_dn == 'dc=acme,dc=org'
           - result.object.servers.0.group_search.attribute == 'member'
           - result.object.servers.0.group_search.name_attribute == 'cn'
