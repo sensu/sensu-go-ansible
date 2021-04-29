@@ -208,7 +208,6 @@ object:
       default_upn_domain: 'example.org'
       binding:
         user_dn: 'cn=binder,dc=acme,dc=org'
-        password: 'YOUR_PASSWORD'
       group_search:
         base_dn: 'dc=acme,dc=org'
         attribute: 'member'
@@ -230,6 +229,15 @@ from ..module_utils import arguments, errors, utils
 
 API_GROUP = "enterprise"
 API_VERSION = "authentication/v2"
+
+
+def remove_item(result):
+    if result:
+        for server in result["servers"]:
+            if server["binding"] and "password" in server["binding"]:
+                del server["binding"]["password"]
+
+    return result
 
 
 def _filter(payload):
@@ -379,7 +387,7 @@ def main():
         changed, ad_provider = utils.sync_v1(
             module.params["state"], client, path, payload, module.check_mode, do_differ
         )
-        module.exit_json(changed=changed, object=ad_provider)
+        module.exit_json(changed=changed, object=remove_item(ad_provider))
     except errors.Error as e:
         module.fail_json(msg=str(e))
 
