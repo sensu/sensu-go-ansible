@@ -1,5 +1,31 @@
 ---
 releases:
+  1.10.0:
+    release_date: "2021-05-04"
+    changes:
+      release_summary: |
+        Authentication, authentication on the wall, Who has Access to Them All?
+
+        New modules allow Sensu Go users to configure authentication within
+        their Ansible playbooks. The users can authenticate via external
+        authentication providers such as Lightweight Directory Access Protocol (LDAP),
+        Active Directory (AD), or OpenID Connect 1.0 protocol (OIDC).
+      minor_changes:
+        - Add modules for managing Sensu Go authentication providers.
+    modules:
+      - name: ad_auth_provider
+        description: Manage Sensu AD authentication provider
+        namespace: ""
+      - name: ldap_auth_provider
+        description: Manage Sensu LDAP authentication provider
+        namespace: ""
+      - name: oidc_auth_provider
+        description: Manage Sensu OIDC authentication provider
+        namespace: ""
+      - name: auth_provider_info
+        description: List Sensu authentication providers
+        namespace: ""
+
   1.9.4:
     release_date: "2021-03-30"
     changes:

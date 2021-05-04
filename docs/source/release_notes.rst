@@ -1,6 +1,19 @@
 Release notes
 =============
 
+Version 1.10.0 -- Authentication, authentication on the wall, Who has Access to Them All?
+-----------------------------------------------------------------------------------------
+
+New modules allow Sensu Go users to configure authentication within
+their Ansible playbooks. The users can authenticate via external
+authentication providers such as Lightweight Directory Access Protocol (LDAP),
+Active Directory (AD), or OpenID Connect 1.0 protocol (OIDC).
+
+**New features:**
+
+* Add modules for managing Sensu Go authentication providers.
+
+
 Version 1.9.4 -- Opening Windows for real
 -----------------------------------------
 
