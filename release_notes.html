@@ -107,6 +107,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="release_policy.html">Release policy</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-10-0-authentication-authentication-on-the-wall-who-has-access-to-them-all">Version 1.10.0 – Authentication, authentication on the wall, Who has Access to Them All?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-9-4-opening-windows-for-real">Version 1.9.4 – Opening Windows for real</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-9-3-opening-windows">Version 1.9.3 – Opening Windows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-9-2-a-fresh-batch-of-updates">Version 1.9.2 – A fresh batch of updates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-9-1-containerize-all-the-things">Version 1.9.1 – Containerize all the things</a></li>
@@ -200,6 +202,27 @@
             
   <div class="section" id="release-notes">
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-10-0-authentication-authentication-on-the-wall-who-has-access-to-them-all">
+<h2>Version 1.10.0 – Authentication, authentication on the wall, Who has Access to Them All?<a class="headerlink" href="#version-1-10-0-authentication-authentication-on-the-wall-who-has-access-to-them-all" title="Permalink to this headline">¶</a></h2>
+<p>New modules allow Sensu Go users to configure authentication within
+their Ansible playbooks. The users can authenticate via external
+authentication providers such as Lightweight Directory Access Protocol (LDAP),
+Active Directory (AD), or OpenID Connect 1.0 protocol (OIDC).</p>
+<p><strong>New features:</strong></p>
+<ul class="simple">
+<li><p>Add modules for managing Sensu Go authentication providers.</p></li>
+</ul>
+</div>
+<div class="section" id="version-1-9-4-opening-windows-for-real">
+<h2>Version 1.9.4 – Opening Windows for real<a class="headerlink" href="#version-1-9-4-opening-windows-for-real" title="Permalink to this headline">¶</a></h2>
+<p>This is a bugfix release that makes sure Sensu Go Ansible Collection can
+operate even in the absence of the Windows Ansible Collection (assuming we do
+not want to manage agents on Windows hosts, that is).</p>
+<p><strong>Bug fixes:</strong></p>
+<ul class="simple">
+<li><p>Make sure we lazy-load Windows-related content.</p></li>
+</ul>
+</div>
 <div class="section" id="version-1-9-3-opening-windows">
 <h2>Version 1.9.3 – Opening Windows<a class="headerlink" href="#version-1-9-3-opening-windows" title="Permalink to this headline">¶</a></h2>
 <p>The only change in this release is removal of the <code class="docutils literal notranslate"><span class="pre">ansible.windows</span></code>

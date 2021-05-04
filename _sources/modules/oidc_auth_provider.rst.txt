@@ -1,0 +1,234 @@
+:github_url: https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/oidc_auth_provider.py
+
+.. _sensu.sensu_go.oidc_auth_provider_module:
+
+oidc_auth_provider -- Manage Sensu OIDC authentication provider
+===============================================================
+
+Create, update or delete a Sensu Go OIDC authentication provider.
+
+For more information, refer to the Sensu Go documentation at https://docs.sensu.io/sensu-go/latest/operations/control-access/oidc-auth/.
+
+
+.. versionadded:: 1.10.0
+
+Requirements
+------------
+
+The below requirements are needed on the host that executes this module:
+
+- python >= 2.7
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+   
+   - name: Create a OIDC auth provider
+     sensu.sensu_go.oidc_auth_provider:
+       state: present
+       name: oidc_name
+       additional_scopes:
+           - groups
+           - email
+       client_id: a8e43af034e7f2608780
+       client_secret: b63968394be6ed2edb61c93847ee792f31bf6216
+       disable_offline_access: false
+       redirect_uri: http://127.0.0.1:8080/api/enterprise/authentication/v2/oidc/callback
+       server: https://oidc.example.com:9031
+       groups_claim: groups
+       groups_prefix: 'oidc:'
+       username_claim: email
+       username_prefix: 'oidc:'
+
+   - name: Delete a OIDC auth provider
+     sensu.sensu_go.oidc_auth_provider:
+       name: oidc_name
+       state: absent
+
+
+
+Notes
+-----
+
+.. note::
+   Supported only on Sensu Go versions >= 6.
+
+
+
+See Also
+--------
+
+.. seealso::
+
+   - :ref:`sensu.sensu_go.auth_provider_info_module`
+   - :ref:`sensu.sensu_go.ldap_auth_provider_module`
+   - :ref:`sensu.sensu_go.ad_auth_provider_module`
+
+
+
+Parameters
+----------
+
+additional_scopes (optional)
+  Scopes to include in the claims.
+
+  | **type**: list
+  | **default**: openid
+
+auth (optional)
+  Authentication parameters. Can define each of them with ENV as well.
+
+  | **type**: dict
+
+  api_key (optional)
+    The API key that should be used when authenticating. If this is not set, the value of the SENSU_API_KEY environment variable will be checked.
+
+    This replaces *auth.user* and *auth.password* parameters.
+
+    For more information about the API key, refer to the official Sensu documentation at https://docs.sensu.io/sensu-go/latest/guides/use-apikey-feature/.
+
+    | **type**: str
+
+  ca_path (optional)
+    Path to the CA bundle that should be used to validate the backend certificate.
+
+    If this parameter is not set, module will use the CA bundle that python is using.
+
+    It is also possible to set this parameter via the *SENSU_CA_PATH* environment variable.
+
+    | **type**: path
+
+  password (optional)
+    The Sensu user's password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.
+
+    This parameter is ignored if the *auth.api_key* parameter is set.
+
+    | **type**: str
+    | **default**: P@ssw0rd!
+
+  url (optional)
+    Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.
+
+    | **type**: str
+    | **default**: http://localhost:8080
+
+  user (optional)
+    The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.
+
+    This parameter is ignored if the *auth.api_key* parameter is set.
+
+    | **type**: str
+    | **default**: admin
+
+  verify (optional)
+    Flag that controls the certificate validation.
+
+    If you are using self-signed certificates, you can set this parameter to ``false``.
+
+    ONLY USE THIS PARAMETER IN DEVELOPMENT SCENARIOS! In you use self-signed certificates in production, see the *auth.ca_path* parameter.
+
+    It is also possible to set this parameter via the *SENSU_VERIFY* environment variable.
+
+    | **type**: bool
+    | **default**: True
+
+
+client_id (optional)
+  The OIDC provider application Client ID.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+client_secret (optional)
+  The OIDC provider application Client Secret.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+disable_offline_access (optional)
+  If ``true``, the OIDC provider cannot include the offline_access scope in the authentication request. Otherwise, ``false``.
+
+  | **type**: bool
+
+groups_claim (optional)
+  The claim to use to form the associated RBAC groups.
+
+  | **type**: str
+
+groups_prefix (optional)
+  The prefix added to all OIDC groups.
+
+  | **type**: str
+
+name (required)
+  The Sensu resource's name. This name (in combination with the namespace where applicable) uniquely identifies the resource that Ansible operates on.
+
+  If the resource with selected name already exists, Ansible module will update it to match the specification in the task.
+
+  Consult the *name* metadata attribute specification in the upstream docs on https://docs.sensu.io/sensu-go/latest/reference/ for more details about valid names and other restrictions.
+
+  | **type**: str
+
+redirect_uri (optional)
+  Redirect URL to provide to the OIDC provider.
+
+  | **type**: str
+
+server (optional)
+  The location of the OIDC server you wish to authenticate against.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+state (optional)
+  Target state of the Sensu object.
+
+  | **type**: str
+  | **default**: present
+  | **choices**: present, absent
+
+username_claim (optional)
+  The claim to use to form the final RBAC user name.
+
+  Required if *state* is ``present``.
+
+  | **type**: str
+
+username_prefix (optional)
+  The prefix added to all OIDC usernames.
+
+  | **type**: str
+
+
+
+Return Values
+-------------
+
+object
+   Object representing Sensu OIDC authentication provider.
+
+   **sample**:
+
+   .. code-block:: yaml
+
+      additional_scopes:
+      - groups
+      - email
+      client_id: a8e43af034e7f2608780
+      disable_offline_access: false
+      groups_claim: groups
+      groups_prefix: 'oidc:'
+      metadata:
+        created_by: admin
+        name: oidc_name
+      redirect_uri: http://sensu-backend.example.com:8080/api/enterprise/authentication/v2/oidc/callback
+      server: https://oidc.example.com:9031
+      username_claim: email
+      username_prefix: 'oidc:'
+

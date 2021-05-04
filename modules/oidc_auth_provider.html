@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>oidc_auth_provider – Manage Sensu OIDC authentication provider &mdash; Sensu Go Ansible Collection  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pipe_handler – Manage Sensu pipe handler" href="pipe_handler.html" />
+    <link rel="prev" title="namespace_info – List Sensu namespaces" href="namespace_info.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Sensu Go Ansible Collection
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart-sensu-go-6.html">Quickstart for Sensu Go 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart-sensu-go-5.html">Quickstart for Sensu Go 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../versioning_sensu_go_installation.html">Versioning Sensu Go installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sensu_go_5_6_migration.html">Updating playbooks for Sensu Go 6</a></li>
+</ul>
+<p class="caption"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../roles.html">Roles</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#authentication-parameters">Authentication parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#managing-sensu-go-resources">Managing Sensu Go resources</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../modules.html#module-reference">Module reference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ad_auth_provider.html">ad_auth_provider – Manage Sensu AD authentication provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset.html">asset – Manage Sensu assets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asset_info.html">asset_info – List Sensu assets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth_provider_info.html">auth_provider_info – List Sensu authentication providers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bonsai_asset.html">bonsai_asset – Add Sensu assets from Bonsai</a></li>
+<li class="toctree-l3"><a class="reference internal" href="check.html">check – Manage Sensu checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="check_info.html">check_info – List Sensu checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cluster.html">cluster – Manage Sensu Go clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cluster_info.html">cluster_info – List available Sensu Go clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cluster_role.html">cluster_role – Manage Sensu cluster roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cluster_role_binding.html">cluster_role_binding – Manage Sensu cluster role bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cluster_role_binding_info.html">cluster_role_binding_info – List Sensu cluster role bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cluster_role_info.html">cluster_role_info – List Sensu cluster roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datastore.html">datastore – Manage Sensu external datastore providers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datastore_info.html">datastore_info – List external Sensu datastore providers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entity.html">entity – Manage Sensu entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entity_info.html">entity_info – List Sensu entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="etcd_replicator.html">etcd_replicator – Manage Sensu Go etcd replicators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="etcd_replicator_info.html">etcd_replicator_info – List available Sensu Go etcd replicators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event.html">event – Manage Sensu events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_info.html">event_info – List Sensu events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="filter.html">filter – Manage Sensu filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="filter_info.html">filter_info – List Sensu info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handler_info.html">handler_info – List Sensu handlers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="handler_set.html">handler_set – Manage Sensu handler set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hook.html">hook – Manage Sensu hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hook_info.html">hook_info – List Sensu hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ldap_auth_provider.html">ldap_auth_provider – Manage Sensu LDAP authentication provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mutator.html">mutator – Manage Sensu mutators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mutator_info.html">mutator_info – List Sensu mutators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="namespace.html">namespace – Manage Sensu namespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="namespace_info.html">namespace_info – List Sensu namespaces</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">oidc_auth_provider – Manage Sensu OIDC authentication provider</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#notes">Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#return-values">Return Values</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pipe_handler.html">pipe_handler – Manage Sensu pipe handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="role.html">role – Manage Sensu roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="role_binding.html">role_binding – Manage Sensu role bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="role_binding_info.html">role_binding_info – List Sensu role bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="role_info.html">role_info – List Sensu roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secret.html">secret – Manage Sensu Go secrets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secret_info.html">secret_info – List available Sensu Go secrets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secrets_provider_env.html">secrets_provider_env – Manage Sensu Env secrets provider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secrets_provider_info.html">secrets_provider_info – List Sensu secrets providers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secrets_provider_vault.html">secrets_provider_vault – Manage Sensu VaultProvider secrets providers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silence.html">silence – Manage Sensu silences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="silence_info.html">silence_info – List Sensu silence entries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="socket_handler.html">socket_handler – Manage Sensu TCP/UDP handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tessen.html">tessen – Manage Sensu’s Tessen configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user.html">user – Manage Sensu users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_info.html">user_info – List Sensu users</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Hacker's guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../hacking.html">Developing Sensu Go Ansible Collection</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Appendices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../release_policy.html">Release policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sensu Go Ansible Collection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../modules.html">Modules</a> &raquo;</li>
+        
+      <li>oidc_auth_provider – Manage Sensu OIDC authentication provider</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/sensu/sensu-go-ansible/blob/master/plugins/modules/oidc_auth_provider.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="oidc-auth-provider-manage-sensu-oidc-authentication-provider">
+<span id="sensu-sensu-go-oidc-auth-provider-module"></span><h1>oidc_auth_provider – Manage Sensu OIDC authentication provider<a class="headerlink" href="#oidc-auth-provider-manage-sensu-oidc-authentication-provider" title="Permalink to this headline">¶</a></h1>
+<p>Create, update or delete a Sensu Go OIDC authentication provider.</p>
+<p>For more information, refer to the Sensu Go documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/operations/control-access/oidc-auth/">https://docs.sensu.io/sensu-go/latest/operations/control-access/oidc-auth/</a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.10.0.</span></p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>The below requirements are needed on the host that executes this module:</p>
+<ul class="simple">
+<li><p>python &gt;= 2.7</p></li>
+</ul>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a OIDC auth provider</span>
+  <span class="nt">sensu.sensu_go.oidc_auth_provider</span><span class="p">:</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">oidc_name</span>
+    <span class="nt">additional_scopes</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">groups</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">email</span>
+    <span class="nt">client_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">a8e43af034e7f2608780</span>
+    <span class="nt">client_secret</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">b63968394be6ed2edb61c93847ee792f31bf6216</span>
+    <span class="nt">disable_offline_access</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class="nt">redirect_uri</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://127.0.0.1:8080/api/enterprise/authentication/v2/oidc/callback</span>
+    <span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://oidc.example.com:9031</span>
+    <span class="nt">groups_claim</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">groups</span>
+    <span class="nt">groups_prefix</span><span class="p">:</span> <span class="s">&#39;oidc:&#39;</span>
+    <span class="nt">username_claim</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">email</span>
+    <span class="nt">username_prefix</span><span class="p">:</span> <span class="s">&#39;oidc:&#39;</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Delete a OIDC auth provider</span>
+  <span class="nt">sensu.sensu_go.oidc_auth_provider</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">oidc_name</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Supported only on Sensu Go versions &gt;= 6.</p>
+</div>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="auth_provider_info.html#sensu-sensu-go-auth-provider-info-module"><span class="std std-ref">auth_provider_info – List Sensu authentication providers</span></a></p></li>
+<li><p><a class="reference internal" href="ldap_auth_provider.html#sensu-sensu-go-ldap-auth-provider-module"><span class="std std-ref">ldap_auth_provider – Manage Sensu LDAP authentication provider</span></a></p></li>
+<li><p><a class="reference internal" href="ad_auth_provider.html#sensu-sensu-go-ad-auth-provider-module"><span class="std std-ref">ad_auth_provider – Manage Sensu AD authentication provider</span></a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>additional_scopes (optional)</dt><dd><p>Scopes to include in the claims.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: list</div>
+<div class="line"><strong>default</strong>: openid</div>
+</div>
+</dd>
+<dt>auth (optional)</dt><dd><p>Authentication parameters. Can define each of them with ENV as well.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: dict</div>
+</div>
+<dl>
+<dt>api_key (optional)</dt><dd><p>The API key that should be used when authenticating. If this is not set, the value of the SENSU_API_KEY environment variable will be checked.</p>
+<p>This replaces <em>auth.user</em> and <em>auth.password</em> parameters.</p>
+<p>For more information about the API key, refer to the official Sensu documentation at <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/guides/use-apikey-feature/">https://docs.sensu.io/sensu-go/latest/guides/use-apikey-feature/</a>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>ca_path (optional)</dt><dd><p>Path to the CA bundle that should be used to validate the backend certificate.</p>
+<p>If this parameter is not set, module will use the CA bundle that python is using.</p>
+<p>It is also possible to set this parameter via the <em>SENSU_CA_PATH</em> environment variable.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: path</div>
+</div>
+</dd>
+<dt>password (optional)</dt><dd><p>The Sensu user’s password. If this is not set the value of the SENSU_PASSWORD environment variable will be checked.</p>
+<p>This parameter is ignored if the <em>auth.api_key</em> parameter is set.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: <a class="reference external" href="mailto:P&#37;&#52;&#48;ssw0rd">P<span>&#64;</span>ssw0rd</a>!</div>
+</div>
+</dd>
+<dt>url (optional)</dt><dd><p>Location of the Sensu backend API. If this is not set the value of the SENSU_URL environment variable will be checked.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: <a class="reference external" href="http://localhost:8080">http://localhost:8080</a></div>
+</div>
+</dd>
+<dt>user (optional)</dt><dd><p>The username to use for connecting to the Sensu API. If this is not set the value of the SENSU_USER environment variable will be checked.</p>
+<p>This parameter is ignored if the <em>auth.api_key</em> parameter is set.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: admin</div>
+</div>
+</dd>
+<dt>verify (optional)</dt><dd><p>Flag that controls the certificate validation.</p>
+<p>If you are using self-signed certificates, you can set this parameter to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<p>ONLY USE THIS PARAMETER IN DEVELOPMENT SCENARIOS! In you use self-signed certificates in production, see the <em>auth.ca_path</em> parameter.</p>
+<p>It is also possible to set this parameter via the <em>SENSU_VERIFY</em> environment variable.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: bool</div>
+<div class="line"><strong>default</strong>: True</div>
+</div>
+</dd>
+</dl>
+</dd>
+<dt>client_id (optional)</dt><dd><p>The OIDC provider application Client ID.</p>
+<p>Required if <em>state</em> is <code class="docutils literal notranslate"><span class="pre">present</span></code>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>client_secret (optional)</dt><dd><p>The OIDC provider application Client Secret.</p>
+<p>Required if <em>state</em> is <code class="docutils literal notranslate"><span class="pre">present</span></code>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>disable_offline_access (optional)</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the OIDC provider cannot include the offline_access scope in the authentication request. Otherwise, <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: bool</div>
+</div>
+</dd>
+<dt>groups_claim (optional)</dt><dd><p>The claim to use to form the associated RBAC groups.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>groups_prefix (optional)</dt><dd><p>The prefix added to all OIDC groups.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>name (required)</dt><dd><p>The Sensu resource’s name. This name (in combination with the namespace where applicable) uniquely identifies the resource that Ansible operates on.</p>
+<p>If the resource with selected name already exists, Ansible module will update it to match the specification in the task.</p>
+<p>Consult the <em>name</em> metadata attribute specification in the upstream docs on <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/">https://docs.sensu.io/sensu-go/latest/reference/</a> for more details about valid names and other restrictions.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>redirect_uri (optional)</dt><dd><p>Redirect URL to provide to the OIDC provider.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>server (optional)</dt><dd><p>The location of the OIDC server you wish to authenticate against.</p>
+<p>Required if <em>state</em> is <code class="docutils literal notranslate"><span class="pre">present</span></code>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>state (optional)</dt><dd><p>Target state of the Sensu object.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+<div class="line"><strong>default</strong>: present</div>
+<div class="line"><strong>choices</strong>: present, absent</div>
+</div>
+</dd>
+<dt>username_claim (optional)</dt><dd><p>The claim to use to form the final RBAC user name.</p>
+<p>Required if <em>state</em> is <code class="docutils literal notranslate"><span class="pre">present</span></code>.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+<dt>username_prefix (optional)</dt><dd><p>The prefix added to all OIDC usernames.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: str</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="return-values">
+<h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>object</dt><dd><p>Object representing Sensu OIDC authentication provider.</p>
+<p><strong>sample</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">additional_scopes</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">groups</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">email</span>
+<span class="nt">client_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">a8e43af034e7f2608780</span>
+<span class="nt">disable_offline_access</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">groups_claim</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">groups</span>
+<span class="nt">groups_prefix</span><span class="p">:</span> <span class="s">&#39;oidc:&#39;</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">created_by</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">admin</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">oidc_name</span>
+<span class="nt">redirect_uri</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://sensu-backend.example.com:8080/api/enterprise/authentication/v2/oidc/callback</span>
+<span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://oidc.example.com:9031</span>
+<span class="nt">username_claim</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">email</span>
+<span class="nt">username_prefix</span><span class="p">:</span> <span class="s">&#39;oidc:&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pipe_handler.html" class="btn btn-neutral float-right" title="pipe_handler – Manage Sensu pipe handler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="namespace_info.html" class="btn btn-neutral float-left" title="namespace_info – List Sensu namespaces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2019, XLAB Steampunk.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
