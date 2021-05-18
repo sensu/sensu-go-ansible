@@ -38,7 +38,9 @@ extends_documentation_fragment:
   - sensu.sensu_go.info
 
 seealso:
-  - module: sensu.sensu_go.auth_provider
+  - module: sensu.sensu_go.ad_auth_provider
+  - module: sensu.sensu_go.ldap_auth_provider
+  - module: sensu.sensu_go.oidc_auth_provider
 """
 
 EXAMPLES = """
