@@ -1,6 +1,21 @@
 Release notes
 =============
 
+Version 1.11.0 -- Validate all the things!
+------------------------------------------
+
+If you ever thought to yourself, "Ansible does not yell enough at me," we have
+some great news. The Sensu Go Ansible Collection gained role argument
+specifications, making it possible to validate variable values before executing
+a role. You are welcome ;)
+
+**New features:**
+
+* Add argument specification to the install role.
+* Add argument specification to the backend role.
+* Add argument specification to the agent role.
+
+
 Version 1.10.0 -- Authentication, authentication on the wall, Who has Access to Them All?
 -----------------------------------------------------------------------------------------
 
