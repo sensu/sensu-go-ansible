@@ -1,5 +1,18 @@
 ---
 releases:
+  1.11.1:
+    release_date: "2021-05-27"
+    changes:
+      release_summary: |
+        Sensu Go 6.3.0 is here
+
+        For this release, we only updated the list of available Sensu Go agent
+        versions for Windows, and made sure collection works with the latest
+        Sensu Go version.
+      minor_hanges:
+        - Update list of available Sensu Go agent packages for Windows
+          installations (added 6.3.0).
+
   1.11.0:
     release_date: "2021-05-18"
     changes:
