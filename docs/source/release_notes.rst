@@ -1,6 +1,18 @@
 Release notes
 =============
 
+Version 1.11.1 -- Sensu Go 6.3.0 is here
+----------------------------------------
+
+For this release, we only updated the list of available Sensu Go agent versions
+for Windows, and made sure collection works with the latest Sensu Go version.
+
+**New features:**
+
+* Update list of available Sensu Go agent packages for Windows installations
+  (added 6.3.0).
+
+
 Version 1.11.0 -- Validate all the things!
 ------------------------------------------
 
