@@ -12,7 +12,7 @@ docker files should have a name in the format of ``<name>-<tag>.docker``.
 To build and publish our image, we can run the *docker/build.sh* script::
 
    $ cd docker
-   $ ./build.sh sensu-5.21.0
+   $ ./build.sh sensu-5.21.0.docker
 
 Note that the command will add a *sensu-go-tests-* prefix to all images. In
 the previous example, the build script will build the
