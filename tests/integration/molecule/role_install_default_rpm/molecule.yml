@@ -28,3 +28,8 @@ platforms:
     image: quay.io/xlab-steampunk/sensu-go-tests-amazon:2
     pre_build_image: true
     pull: true
+
+  - name: oracle-8
+    image: quay.io/xlab-steampunk/sensu-go-tests-oracle:8
+    pre_build_image: true
+    pull: true
