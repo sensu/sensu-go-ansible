@@ -1,6 +1,6 @@
 platforms:
-  - name: v5.20.2
-    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:5.20.2
+  - name: v6.4.0
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.4.0
     groups: [ has_api_key_support ]
     pre_build_image: true
     pull: true
