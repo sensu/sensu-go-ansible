@@ -1,4 +1,7 @@
 ---
+markers:
+  - xfail  # This test fails because Sensu Go 6.4.0 broke backend init
+
 scenario:
   test_sequence:
     - destroy
