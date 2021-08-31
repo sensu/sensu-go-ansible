@@ -1,6 +1,21 @@
 Release notes
 =============
 
+Version 1.12.0 -- Keeping up with the updates
+---------------------------------------------
+
+In this release, community contributed support for the OracleLinux. We added a
+few tests to catch if things break in the future and this is about it. And
+while we were at work, we also added support for Sensu Go 6.4.0 and 6.4.1 on
+Windows.
+
+**New features:**
+
+* Add support for OracleLinux.
+* Add Sensu Go 6.4.0 Windows metadata.
+* Add Sensu Go 6.4.1 Windows metadata.
+
+
 Version 1.11.1 -- Sensu Go 6.3.0 is here
 ----------------------------------------
 
