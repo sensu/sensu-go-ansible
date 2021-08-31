@@ -48,8 +48,8 @@ See Also
 
 .. seealso::
 
-   - :ref:`sensu.sensu_go.ldap_auth_provider_module`
    - :ref:`sensu.sensu_go.ad_auth_provider_module`
+   - :ref:`sensu.sensu_go.ldap_auth_provider_module`
    - :ref:`sensu.sensu_go.oidc_auth_provider_module`
 
 
