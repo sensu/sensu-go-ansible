@@ -1,0 +1,2 @@
+tests/unit/plugins/module_utils/test_utils.py pylint:ansible-deprecated-no-collection-name # sanity misdetects this as module deprecation call
+tools/windows-versions.py replace-urlopen # Maintainer tools should not be bound by the general collection constraints
