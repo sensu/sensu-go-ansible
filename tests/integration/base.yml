@@ -22,8 +22,8 @@ platforms:
     pre_build_image: true
     pull: true
     override_command: false
-  - name: v6.5.2
-    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.5.2
+  - name: v6.5.5
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.5.5
     pre_build_image: true
     pull: true
     override_command: false
