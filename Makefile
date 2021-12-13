@@ -65,6 +65,7 @@ integration_ci:  ## Run integration tests on CircleCI
 
 .PHONY: docs
 docs:  ## Build collection documentation
+	pip install -r docs.requirements
 	$(MAKE) -C docs -f Makefile.custom docs
 
 .PHONY: clean
