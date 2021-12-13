@@ -161,10 +161,64 @@ _msi_lookup:
       x64: '{B7C0E062-27D8-47D8-96F8-8BDD2578C5A0}'
       x86: '{DA9B4B1C-F34D-4CD6-83BB-DA8548557746}'
     version: 6.4.2
-  6.4.3: &id001
+  6.4.3:
     build: 5016
     product_codes:
       x64: '{D7382F5C-386B-45CB-9BFB-078E4BA8D8D4}'
       x86: '{77A43C9E-1687-4079-BD98-AF429593762A}'
     version: 6.4.3
+  6.5.0:
+    build: 5266
+    product_codes:
+      x64: '{2E3DC5F9-1ADB-48CF-B1CF-1E3489E5FCF8}'
+      x86: '{B3618CC4-EBF2-416E-9A81-5E0B63454DD6}'
+    version: 6.5.0
+  6.5.1:
+    build: 5325
+    product_codes:
+      x64: '{07149975-D964-4627-9E8B-539AF7364027}'
+      x86: '{D0AF74F6-2F34-4F71-8AF8-85A4BBFB167B}'
+    version: 6.5.1
+  6.5.2:
+    build: 5376
+    product_codes:
+      x64: '{7F8FBFFA-D5CB-4A6A-8F9E-30BE77A96D68}'
+      x86: '{4EB2E813-73E6-4C6E-B6E5-6E6F54B3D407}'
+    version: 6.5.2
+  6.5.3:
+    build: 5384
+    product_codes:
+      x64: '{BC81192F-CB3F-40AF-B40B-176BF3BF14FE}'
+      x86: '{92F6EBAE-ED6B-4C5A-BABF-8EC7B1EC05A5}'
+    version: 6.5.3
+  6.5.4:
+    build: 5391
+    product_codes:
+      x64: '{F3191296-456C-4841-BD00-9C738B858435}'
+      x86: '{4FD7E30E-F441-42F1-A3BB-3C98C73DBDA4}'
+    version: 6.5.4
+  6.5.5:
+    build: 5456
+    product_codes:
+      x64: '{6B117FCD-C3A4-43C3-94B2-19AD71D2DA16}'
+      x86: '{81EEF28C-C5BA-4F67-A24C-04B5AD534459}'
+    version: 6.5.5
+  6.6.0:
+    build: 5502
+    product_codes:
+      x64: '{18C14F3B-A115-4CDD-A571-EFDA8ED6BFB5}'
+      x86: '{18D7558F-A977-4ECC-BA48-88E901B8ABB9}'
+    version: 6.6.0
+  6.6.1:
+    build: 5514
+    product_codes:
+      x64: '{F9FEE5BE-91EE-45BC-AED4-B647A8E4AD08}'
+      x86: '{C4BDBBA0-4EBE-471F-BF7E-704C24C33197}'
+    version: 6.6.1
+  6.6.2: &id001
+    build: 5538
+    product_codes:
+      x64: '{C9AB16C4-34E5-4237-A577-8941A96AFDF7}'
+      x86: '{662D43FF-8EE5-48CB-A2FD-9F2FE1C18CBB}'
+    version: 6.6.2
   latest: *id001
