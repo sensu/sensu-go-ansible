@@ -60,8 +60,8 @@ objects:
     - metadata:
         name: beta-cluster
       api_urls:
-        - "http:s//10.20.0.1:8080"
-        - "http:s//10.20.0.2:8080"
+        - "https://10.20.0.1:8080"
+        - "https://10.20.0.2:8080"
 """
 
 from ansible.module_utils.basic import AnsibleModule
