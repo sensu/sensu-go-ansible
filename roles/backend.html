@@ -1,67 +1,34 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sensu Go backend role &mdash; Sensu Go Ansible Collection  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Sensu Go install role" href="install.html" />
     <link rel="prev" title="Sensu Go agent role" href="agent.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> Sensu Go Ansible Collection
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -69,29 +36,19 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Using Sensu Go Ansible Collection</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart-sensu-go-6.html">Quickstart for Sensu Go 6</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart-sensu-go-5.html">Quickstart for Sensu Go 5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Guides</span></p>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../versioning_sensu_go_installation.html">Versioning Sensu Go installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sensu_go_5_6_migration.html">Updating playbooks for Sensu Go 6</a></li>
 </ul>
-<p class="caption"><span class="caption-text">References</span></p>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../roles.html">Roles</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="agent.html">Sensu Go agent role</a></li>
@@ -112,89 +69,48 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Hacker's guides</span></p>
+<p class="caption" role="heading"><span class="caption-text">Hacker's guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../hacking.html">Developing Sensu Go Ansible Collection</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Appendices</span></p>
+<p class="caption" role="heading"><span class="caption-text">Appendices</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../release_policy.html">Release policy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">Sensu Go Ansible Collection</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../roles.html">Roles</a> &raquo;</li>
-        
       <li>Sensu Go backend role</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-            
-            
               <a href="https://github.com/sensu/sensu-go-ansible/blob/master/docs/source/roles/backend.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="sensu-go-backend-role">
-<h1>Sensu Go backend role<a class="headerlink" href="#sensu-go-backend-role" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="sensu-go-backend-role">
+<h1>Sensu Go backend role<a class="headerlink" href="#sensu-go-backend-role" title="Permalink to this headline"></a></h1>
 <p>This role installs, configures and starts the <code class="docutils literal notranslate"><span class="pre">sensu-backend</span></code> service.</p>
-<div class="section" id="example-playbook">
-<h2>Example playbook<a class="headerlink" href="#example-playbook" title="Permalink to this headline">¶</a></h2>
+<section id="example-playbook">
+<h2>Example playbook<a class="headerlink" href="#example-playbook" title="Permalink to this headline"></a></h2>
 <p>The most basic
-<a class="reference download internal" download="" href="../_downloads/28b6551b258f4149f8fae840b0bd5477/backend.yaml"><code class="xref download docutils literal notranslate"><span class="pre">backend</span> <span class="pre">playbook</span></code></a> looks like
+<a class="reference download internal" download="" href="../_downloads/5368e1fbb49146fe605e62028c5584b8/backend.yaml"><code class="xref download docutils literal notranslate"><span class="pre">backend</span> <span class="pre">playbook</span></code></a> looks like
 this:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu backend</span>
   <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">backends</span>
@@ -208,9 +124,9 @@ this:</p>
 <p>This playbook will install the latest stable version of the Sensu Go backend
 and configure it. We can customize the backend’s configuration by adding more
 options to the <em>backend_config</em> variable.</p>
-</div>
-<div class="section" id="backend-configuration-options">
-<h2>Backend configuration options<a class="headerlink" href="#backend-configuration-options" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="backend-configuration-options">
+<h2>Backend configuration options<a class="headerlink" href="#backend-configuration-options" title="Permalink to this headline"></a></h2>
 <p>The <em>backend_config</em> variable can contain any option that is valid for the
 Sensu Go backend version we are installing. All valid options are listed in
 the <a class="reference external" href="https://docs.sensu.io/sensu-go/latest/reference/backend/#configuration">official Sensu documentation</a>.</p>
@@ -251,9 +167,9 @@ first time.</p></td>
 </table>
 <p>On Sensu Go version below 5.16, these two variables have no effect since
 default admin credentials are baked into the Sensu Go backend.</p>
-</div>
-<div class="section" id="securing-sensu-go-backend">
-<h2>Securing Sensu Go backend<a class="headerlink" href="#securing-sensu-go-backend" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="securing-sensu-go-backend">
+<h2>Securing Sensu Go backend<a class="headerlink" href="#securing-sensu-go-backend" title="Permalink to this headline"></a></h2>
 <p>This role enables users to establish secure end-to-end communications of the
 components that comprise the Sensu Go backend. The user needs to supply the
 paths to the PKI files by placing the appropriate public and private key files
@@ -266,8 +182,8 @@ supplied. If even a single file is missing or not defined, the play will
 fail. If none of the variables within a subsection is defined, those
 services will be configured without the secure communication.</p>
 </div>
-<div class="section" id="etcd-peer-communication">
-<h3>Etcd peer communication<a class="headerlink" href="#etcd-peer-communication" title="Permalink to this headline">¶</a></h3>
+<section id="etcd-peer-communication">
+<h3>Etcd peer communication<a class="headerlink" href="#etcd-peer-communication" title="Permalink to this headline"></a></h3>
 <p>To secure the etcd communication, create the appropriate files for the PKI
 and define <strong>all</strong> of the following variables:</p>
 <table class="colwidths-given docutils align-default">
@@ -314,9 +230,9 @@ sending requests to other peers.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="backend-api">
-<h3>Backend API<a class="headerlink" href="#backend-api" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="backend-api">
+<h3>Backend API<a class="headerlink" href="#backend-api" title="Permalink to this headline"></a></h3>
 <p>To secure the Sensu Go backend API communication, create the appropriate files
 for the PKI and define <strong>all</strong> of the following variables:</p>
 <table class="colwidths-given docutils align-default">
@@ -348,9 +264,9 @@ certificates.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="dashboard">
-<h3>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="dashboard">
+<h3>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline"></a></h3>
 <p>To secure the Sensu dashboard communication, create the appropriate files for the
 PKI and define <strong>all</strong> of the following variables:</p>
 <table class="colwidths-given docutils align-default">
@@ -379,10 +295,10 @@ Must be unencrypted.</p></td>
 </table>
 <p>The role will automatically configure the dashboard endpoint to use HTTPS,
 e.g.: <cite>https://localhost:3000</cite>.</p>
-</div>
-</div>
-<div class="section" id="tested-platforms-ci-cd">
-<h2>Tested Platforms (CI/CD)<a class="headerlink" href="#tested-platforms-ci-cd" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="tested-platforms-ci-cd">
+<h2>Tested Platforms (CI/CD)<a class="headerlink" href="#tested-platforms-ci-cd" title="Permalink to this headline"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 13%" />
@@ -411,56 +327,38 @@ e.g.: <cite>https://localhost:3000</cite>.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="install.html" class="btn btn-neutral float-right" title="Sensu Go install role" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="agent.html" class="btn btn-neutral float-left" title="Sensu Go agent role" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="agent.html" class="btn btn-neutral float-left" title="Sensu Go agent role" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="install.html" class="btn btn-neutral float-right" title="Sensu Go install role" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2019, XLAB Steampunk
-
-    </p>
+    <p>&#169; Copyright 2019, XLAB Steampunk.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
