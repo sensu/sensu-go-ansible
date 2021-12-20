@@ -1,6 +1,16 @@
 Release notes
 =============
 
+Version 1.12.1 -- Sensu Go 6.6.0
+--------------------------------
+
+Added support for sensu 6.5.5 and 6.6.2 on windows.
+
+**New features:**
+
+* Add Sensu Go 6.5.5 Windows metadata
+* Add Sensu Go 6.6.2 Windows metadata
+
 Version 1.12.0 -- Keeping up with the updates
 ---------------------------------------------
 
