@@ -45,6 +45,13 @@ options:
       - The name that will be used when adding the asset to Sensu.
       - If not present, value of the I(name) parameter will be used.
     type: str
+  on_remote:
+    description:
+      - If set to C(true), module will download asset defnition on remote host.
+      - If not set or set to C(false), ansible downloads asset definition
+        on control node.
+    type: bool
+    version_added: 1.13.0
 notes:
   - I(labels) and I(annotations) values are merged with the values obtained
     from Bonsai. Values passed-in as parameters take precedence over the
@@ -90,3 +97,35 @@ object:
       - sha512: 4f926bf4328f...2c58ad9ab40c9e2edc31b288d066b195b21b
         url: http://example.com/asset.tar.gz
 """
+
+from ansible.module_utils.basic import AnsibleModule
+
+from ..module_utils import bonsai, errors
+
+
+def main():
+    module = AnsibleModule(
+        supports_check_mode=True,
+        argument_spec=dict(
+            name=dict(
+                type="str",
+                required=True,
+            ),
+            version=dict(
+                type="str",
+                required=True,
+            ),
+        ),
+    )
+
+    try:
+        asset = bonsai.get_asset_parameters(
+            module.params["name"], module.params["version"],
+        )
+        module.exit_json(changed=False, asset=asset)
+    except errors.Error as e:
+        module.fail_json(changed=False, msg=str(e))
+
+
+if __name__ == "__main__":
+    main()

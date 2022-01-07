@@ -27,9 +27,10 @@ def validate(name, args, required, typ):
 
 class ActionModule(ActionBase):
 
-    _VALID_ARGS = frozenset(
-        ("auth", "name", "version", "namespace", "rename", "labels", "annotations")
-    )
+    _VALID_ARGS = frozenset((
+        "auth", "name", "version", "namespace", "rename", "labels",
+        "annotations", "on_remote",
+    ))
 
     def run(self, _tmp=None, task_vars=None):
         self._supports_check_mode = True
@@ -43,7 +44,13 @@ class ActionModule(ActionBase):
 
         try:
             self.validate_arguments(self._task.args)
-            asset_args = self.build_asset_args(self._task.args)
+            asset = self.download_asset_definition(
+                self._task.args.get("on_remote", False),
+                self._task.args["name"],
+                self._task.args["version"],
+                task_vars,
+            )
+            asset_args = self.build_asset_args(self._task.args, asset)
             return merge_hash(
                 result,
                 self._execute_module(
@@ -73,12 +80,24 @@ class ActionModule(ActionBase):
         validate("rename", args, required=False, typ=(str, text_type))
         validate("labels", args, required=False, typ=dict)
         validate("annotations", args, required=False, typ=dict)
+        validate("on_remote", args, required=False, typ=bool)
+
+    def download_asset_definition(self, on_remote, name, version, task_vars):
+        if not on_remote:
+            return bonsai.get_asset_parameters(name, version)
+
+        args = dict(name=name, version=version)
+        result = self._execute_module(
+            module_name="sensu.sensu_go.bonsai_asset", module_args=args,
+            task_vars=task_vars, wrap_async=False,
+        )
+        if result.get("failed", False):
+            raise errors.Error(result["msg"])
+
+        return result["asset"]
 
     @staticmethod
-    def build_asset_args(args):
-        bonsai_args = bonsai.get_asset_parameters(
-            args["name"], args["version"],
-        )
+    def build_asset_args(args, bonsai_args):
         asset_args = dict(
             name=args.get("rename", args["name"]),
             state="present",
