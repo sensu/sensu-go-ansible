@@ -11,6 +11,7 @@
           url: http://localhost:8080
         name: sensu/monitoring-plugins
         version: 2.2.0-1
+        on_remote: true
       register: result
 
     - assert:

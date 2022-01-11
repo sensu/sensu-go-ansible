@@ -1,1 +1,2 @@
+plugins/modules/bonsai_asset.py validate-modules:nonexistent-parameter-documented # This is not a real module, more helper for the asset module
 tools/windows-versions.py replace-urlopen # Maintainer tools should not be bound by the general collection constraints
