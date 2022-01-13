@@ -1,6 +1,16 @@
 Release notes
 =============
 
+Version 1.13.0 -- Work even if there is bad internet connection
+---------------------------------------------------------------
+
+**New features:**
+
+In case that controller node have worse internet connection than remote node,
+user can decide that bonsai asset definitions are downloaded to remote node. 
+
+* Add argument remote_on inside bonsai_asset module
+
 Version 1.12.1 -- Sensu Go 6.6.0
 --------------------------------
 

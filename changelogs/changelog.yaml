@@ -1,5 +1,17 @@
 ---
 releases:
+  1.13.0:
+    release-date: "2022-01-13"
+    changes:
+      release_summary: |
+        Work even if there is bad internet connection
+
+        User can now decide if bonsai asset defintions should be download to
+        remote or controlling mode. Decision should depend on quality of internet
+        connection on each node.
+      minor_changes:
+        - Added argument remote_on inside bonsai_asset module
+
   1.12.1:
     release-date: "2021-12-20"
     changes:
