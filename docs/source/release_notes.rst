@@ -1,7 +1,7 @@
 Release notes
 =============
 
-Version 1.13.0 -- Bonsai asset definitions can be downloaded on controller and remote nodes
+Version 1.13.0 -- Bonsai asset definitions can be downloaded on controller or remote nodes
 ---------------------------------------------------------------
 
 **New features:**
