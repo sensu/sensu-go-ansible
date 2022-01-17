@@ -4,7 +4,7 @@ releases:
     release_date: "2022-01-17"
     changes:
       release_summary: |
-        Bonsai asset definitions can be downloaded on controller and remote nodes 
+        Bonsai asset definitions can be downloaded on controller or remote nodes 
 
         A user can decide if Bonsai asset definitions should be downloaded to
         remote nodes or the controller node. This is useful, but not limited to,
