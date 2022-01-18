@@ -135,8 +135,8 @@ objects
         metadata:
           name: alpha-cluster
       - api_urls:
-        - http:s//10.20.0.1:8080
-        - http:s//10.20.0.2:8080
+        - https://10.20.0.1:8080
+        - https://10.20.0.2:8080
         metadata:
           name: beta-cluster
 

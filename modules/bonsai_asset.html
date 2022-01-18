@@ -286,6 +286,12 @@
 <div class="line"><strong>default</strong>: default</div>
 </div>
 </dd>
+<dt>on_remote (optional)</dt><dd><p>If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, module will download asset defnition on remote host.</p>
+<p>If not set or set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, ansible downloads asset definition on control node.</p>
+<div class="line-block">
+<div class="line"><strong>type</strong>: bool</div>
+</div>
+</dd>
 <dt>rename (optional)</dt><dd><p>The name that will be used when adding the asset to Sensu.</p>
 <p>If not present, value of the <em>name</em> parameter will be used.</p>
 <div class="line-block">

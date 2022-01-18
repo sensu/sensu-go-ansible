@@ -156,6 +156,13 @@ namespace (optional)
   | **type**: str
   | **default**: default
 
+on_remote (optional)
+  If set to ``true``, module will download asset defnition on remote host.
+
+  If not set or set to ``false``, ansible downloads asset definition on control node.
+
+  | **type**: bool
+
 rename (optional)
   The name that will be used when adding the asset to Sensu.
 
