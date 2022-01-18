@@ -4,12 +4,12 @@ Release notes
 Version 1.13.0 -- Bonsai asset definitions can be downloaded on controller or remote nodes
 ------------------------------------------------------------------------------------------
 
-**New features:**
-
 A user can decide to download the Bonsai asset definitions on either the 
 controller node (previous functionality) or remote nodes (new functionality). 
 A use case mandating such a need is when the controller node's Internet
 connection is unstable or worse than the connection of the remote nodes.
+
+**New features:**
 
 * Add argument remote_on inside bonsai_asset module
 
