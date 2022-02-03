@@ -16,7 +16,7 @@ connection is unstable or worse than the connection of the remote nodes.
 Version 1.12.1 -- Sensu Go 6.6.0
 --------------------------------
 
-Added support for sensu 6.5.5 and 6.6.2 on windows.
+Added support for Sensu Go 6.5.5 and 6.6.2 on Windows.
 
 **New features:**
 
