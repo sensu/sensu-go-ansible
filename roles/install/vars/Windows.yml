@@ -227,10 +227,16 @@ _msi_lookup:
       x64: '{88B71CB7-6A41-4E69-BA91-D347238E21E5}'
       x86: '{EDE79B95-0050-4F5A-97E7-9D2061D87834}'
     version: 6.6.3
-  6.6.4: &id001
+  6.6.4:
     build: 5671
     product_codes:
       x64: '{91005E61-CA07-48F8-8CC1-01C26DDDF149}'
       x86: '{800EDA49-0544-42D7-BD70-47CCE3E51DDB}'
     version: 6.6.4
+  6.6.5: &id001
+    build: 5744
+    product_codes:
+      x64: '{C5551A82-3FC5-4657-8B3D-220DB7C3702C}'
+      x86: '{F0522F39-FA16-480F-8970-0C019020101B}'
+    version: 6.6.5
   latest: *id001
