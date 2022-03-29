@@ -33,6 +33,11 @@ class Response:
         if self._json is None:
             try:
                 self._json = json.loads(self.data)
+            except TypeError:  # Handle python 3.5 returning bytes
+                try:
+                    self._json = json.loads(self.data.decode('utf-8'))
+                except ValueError:
+                    self._json = None
             except ValueError:  # Cannot use JSONDecodeError here (python 2)
                 self._json = None
 
