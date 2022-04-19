@@ -1,5 +1,13 @@
 ---
 releases:
+  1.13.1:
+    release_date: "2022-04-19"
+    changes:
+      release_summary: |
+        Support for latest Ansible
+      minor_changes:
+        - Added support for ansible 2.13
+        - Removed support for CentOS 8
   1.13.0:
     release_date: "2022-01-17"
     changes:

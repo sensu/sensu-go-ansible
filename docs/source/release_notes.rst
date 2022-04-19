@@ -1,6 +1,16 @@
 Release notes
 =============
 
+Version 1.13.1 -- Support for latest Ansible
+--------------------------------
+
+Added support for Ansible 2.13.
+
+**New features:**
+
+* Added support for ansible 2.13
+* Removed support for CentOS 8
+
 Version 1.13.0 -- Bonsai asset definitions can be downloaded on controller or remote nodes
 ------------------------------------------------------------------------------------------
 
