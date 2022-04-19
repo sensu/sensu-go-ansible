@@ -2,7 +2,7 @@ Release notes
 =============
 
 Version 1.13.1 -- Support for latest Ansible
---------------------------------
+--------------------------------------------
 
 Added support for Ansible 2.13.
 
