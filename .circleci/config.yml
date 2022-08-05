@@ -83,7 +83,7 @@ jobs:
         description: Ansible version to use
         type: string
     machine: &ci-machine
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2004:2022.04.1
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
@@ -148,7 +148,7 @@ jobs:
 
   windows_version_check:
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.10.6
     steps:
       - checkout
       - run: pip install pyyaml
