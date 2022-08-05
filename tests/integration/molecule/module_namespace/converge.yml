@@ -5,6 +5,16 @@
   hosts: all
   gather_facts: no
   tasks:
+    - name: Fetch all namespaces
+      namespace_info:
+        auth:
+          url: http://localhost:8080
+      register: default_state
+
+    - name: store starting length
+      set_fact:
+        starting_length: "{{ default_state.objects | length }}"
+
     - name: Create namespace
       namespace:
         auth:
@@ -42,8 +52,10 @@
 
     - assert:
         that:
-          - result.objects | length == 3
+          - result.objects | length == expected_length | int
           - result.objects.1.name == 'dev'
+      vars:
+        expected_length: "{{ starting_length|int + 2 }}"
 
     - name: Delete namespace
       namespace:
@@ -60,5 +72,7 @@
 
     - assert:
         that:
-          - result.objects | length == 2
+          - result.objects | length == expected_length | int
           - result.objects.1.name == 'production'
+      vars:
+        expected_length: "{{ starting_length|int + 1 }}"
