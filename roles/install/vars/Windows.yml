@@ -269,10 +269,40 @@ _msi_lookup:
       x64: '{69DF3F6E-15BE-43B7-A93C-A144810DDCCD}'
       x86: '{078E09A5-9812-4554-96A3-6CE4B102F42A}'
     version: 6.7.3
-  6.7.4: &id001
+  6.7.4:
     build: 6494
     product_codes:
       x64: '{FB58C77E-1309-4B73-9EFD-F93FBD9E8E4B}'
       x86: '{89EB2F14-1D6F-4B8B-965C-FEFE68ADAC8B}'
     version: 6.7.4
+  6.7.5:
+    build: 6587
+    product_codes:
+      x64: '{1E0F61D7-7B12-4A40-935E-7275EBC90DC4}'
+      x86: '{60DF07C3-4A9A-4AE9-A3FB-00E5D5C6D88E}'
+    version: 6.7.5
+  6.8.0:
+    build: 6692
+    product_codes:
+      x64: '{254A257F-4B06-47F1-82DF-C2291F9F4CAF}'
+      x86: '{3249DC61-714C-4330-9F8B-8051BEB230A9}'
+    version: 6.8.0
+  6.8.1:
+    build: 6707
+    product_codes:
+      x64: '{FDB49575-1A6F-47CE-9BE5-6546ED2F496E}'
+      x86: '{8BB46F78-460D-4CD9-A0F3-FE9872D4C1EE}'
+    version: 6.8.1
+  6.8.2:
+    build: 6788
+    product_codes:
+      x64: '{E77E67DF-46EA-4EEA-8510-BFA0C547D671}'
+      x86: '{5C066D3A-53D7-476A-B93C-588ADC38106A}'
+    version: 6.8.2
+  6.9.0: &id001
+    build: 6863
+    product_codes:
+      x64: '{31CC4B1A-1BF5-443C-B719-88E23D2605E3}'
+      x86: '{C2E7439E-3F4D-46AB-9275-5F313F40F30F}'
+    version: 6.9.0
   latest: *id001
