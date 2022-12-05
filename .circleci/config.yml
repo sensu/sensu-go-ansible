@@ -14,7 +14,6 @@ workflows:
                 - stable-2.11
                 - stable-2.12
                 - stable-2.13
-                - stable-2.14
 
       - unit_test:
           matrix: *matrix
@@ -84,7 +83,7 @@ jobs:
         description: Ansible version to use
         type: string
     machine: &ci-machine
-      image: ubuntu-2204:202210.2
+      image: ubuntu-2004:202010-01
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
@@ -195,6 +194,9 @@ commands:
             echo "cache busting string 2" >> cache-id.txt
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
+      - run:
+          name: Remove cached 
+          command: rm -rf venv && python3 -m venv venv
       - run:
           name: Create virtual environment
           command: python3 -m venv ${HOME}/venv
