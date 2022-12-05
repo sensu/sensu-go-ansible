@@ -2,86 +2,63 @@ Certificate:
     Data:
         Version: 3 (0x2)
         Serial Number:
-            a0:13:00:67:13:31:d4:25:47:fa:1a:48:2b:76:a9:7f
+            23:ef:94:10:3a:90:3a:7c:d3:0f:fd:89:d3:cd:fc:3f:8e:cc:89:21
         Signature Algorithm: sha256WithRSAEncryption
-        Issuer: CN=Sensu-test CA
+        Issuer: CN = Sensu-test CA
         Validity
-            Not Before: Nov  6 17:22:42 2019 GMT
-            Not After : Oct 21 17:22:42 2022 GMT
-        Subject: CN=sensu-api
+            Not Before: Dec  5 10:53:19 2022 GMT
+            Not After : Dec  4 10:53:19 2025 GMT
+        Subject: CN = sensu-api
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
-                RSA Public-Key: (2048 bit)
+                Public-Key: (2048 bit)
                 Modulus:
-                    00:c4:16:71:d3:3b:08:26:1e:81:60:96:6e:9c:75:
-                    ec:58:f2:dc:8f:22:e7:c8:64:b9:52:55:11:51:d5:
-                    eb:d7:ae:7f:48:81:25:ea:4e:66:33:ee:be:73:25:
-                    84:ed:02:a6:f5:5f:d4:c0:2b:a6:d3:ae:c7:41:64:
-                    2c:5e:4b:6c:12:92:64:53:41:4a:59:b6:ef:d2:88:
-                    24:96:26:30:e3:98:25:45:c6:59:c4:e6:33:2c:a2:
-                    38:25:ce:f5:d5:d2:ba:39:68:1b:ec:f1:77:e6:e1:
-                    20:19:40:e5:ed:8c:bc:44:40:ce:0c:26:7d:86:60:
-                    0d:19:1f:31:59:85:a5:6a:d2:41:c8:1c:d6:7e:7b:
-                    d1:1f:d4:35:2e:c2:c8:f6:da:03:39:54:0e:e6:8c:
-                    1b:26:e4:e6:3c:1f:88:64:c7:4f:46:89:70:6c:5b:
-                    26:ee:f2:a3:26:93:ac:00:4f:5d:d3:8b:5f:19:cc:
-                    53:f8:68:6b:61:fe:20:ba:b5:af:8a:9c:04:ea:bd:
-                    25:2c:e5:bf:7d:89:f3:d0:8d:90:79:7e:62:0e:88:
-                    47:cc:cf:94:26:00:76:c9:c1:93:85:a5:1b:19:5e:
-                    34:73:3a:eb:23:72:23:03:d6:83:29:26:4c:5d:4f:
-                    ad:7d:1c:1f:e7:85:c3:d4:4e:0a:b2:1f:68:c4:67:
-                    19:c3
+                    00:b6:42:41:f3:09:f9:85:a8:5b:b3:07:de:4f:34:
+                    64:66:a9:68:ef:57:c5:37:6f:b4:cb:90:d1:5b:fe:
+                    ed:54:ba:4c:66:87:42:17:13:ae:de:6f:8e:ee:6a:
+                    39:8d:be:9d:9c:f2:a6:43:e1:2b:8e:ff:89:fe:a0:
+                    4b:82:c9:b2:67:97:9f:e9:d6:1b:bb:00:1d:19:8a:
+                    54:eb:bd:3c:1e:c6:cb:fa:12:a8:22:ee:85:a8:4b:
+                    24:fd:63:4d:40:71:49:60:1c:1e:76:66:66:27:8a:
+                    c7:45:1b:0f:1a:ea:70:96:49:17:78:d1:d4:78:99:
+                    a7:ec:9d:52:44:b7:56:13:1c:65:d0:ba:38:e8:c9:
+                    92:66:87:35:ca:23:41:f6:36:17:0d:27:18:eb:04:
+                    1f:82:31:24:50:81:f3:dd:2e:8b:10:6d:da:c6:e6:
+                    90:59:5c:88:fd:05:2c:59:d3:4f:32:17:41:22:b9:
+                    bb:4e:47:a4:fd:ec:7a:c0:72:c3:91:f0:2e:2b:53:
+                    11:3a:bb:fc:9e:89:37:8c:04:56:37:77:e4:be:fc:
+                    3e:70:fc:c8:2a:6d:3e:ef:26:f0:f2:bb:80:18:7e:
+                    11:48:ca:8a:41:fa:09:85:2e:83:f7:5b:eb:4e:e9:
+                    cd:d0:ad:72:54:21:df:7a:b8:e0:b4:52:25:cd:0a:
+                    81:5b
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
-            X509v3 Basic Constraints:
+            X509v3 Authority Key Identifier: 
+                3C:54:28:3F:CE:12:7E:04:92:BB:9D:FD:B7:F0:4E:E5:58:A3:1A:A3
+            X509v3 Basic Constraints: 
                 CA:FALSE
-            X509v3 Subject Key Identifier:
-                E8:97:A6:14:2C:C4:75:73:3A:9B:AD:8D:91:3E:1D:6C:7E:C0:C1:9D
-            X509v3 Authority Key Identifier:
-                keyid:65:6F:35:7D:11:0B:0B:FD:3B:CF:E6:3B:95:FA:35:6B:80:0D:27:E9
-                DirName:/CN=Sensu-test CA
-                serial:2D:E8:6C:6F:A5:0E:7D:63:A8:B1:0B:3D:86:1D:2E:D0:62:5F:21:47
-
-            X509v3 Extended Key Usage:
+            X509v3 Extended Key Usage: 
                 TLS Web Server Authentication
-            X509v3 Key Usage:
+            X509v3 Key Usage: 
                 Digital Signature, Key Encipherment
-            X509v3 Subject Alternative Name:
-                IP Address:176.16.117.105
+            X509v3 Subject Alternative Name: 
+                DirName:/CN=Sensu-test CA, IP Address:176.16.117.105
+            X509v3 Subject Key Identifier: 
+                EB:07:E1:23:BB:F0:7D:E9:B0:E7:E2:0E:81:01:60:99:09:EE:4E:A8
     Signature Algorithm: sha256WithRSAEncryption
-         13:92:90:3f:2e:08:d3:e7:ce:77:4d:fe:db:d0:75:ed:4f:ca:
-         ab:6e:2a:8c:6d:05:1d:b2:d0:be:2f:ab:f5:ff:84:71:e0:24:
-         93:92:89:2a:e4:14:ef:1c:dc:d3:e7:f1:6e:44:cc:35:b9:90:
-         9b:c4:c3:18:64:97:bb:70:67:22:59:94:cd:c0:f3:f2:85:7c:
-         f6:d0:97:e2:f5:4a:fa:6a:0a:94:19:b3:de:90:84:1c:49:12:
-         9c:f7:29:93:51:07:9f:84:61:36:19:86:02:6e:7f:8f:1c:e2:
-         86:93:8b:cb:04:f4:54:b6:9b:22:ee:c3:bb:ab:6f:7d:f8:ae:
-         9e:6b:71:e1:f7:4b:73:21:a2:f4:d3:44:1e:20:f5:55:10:9b:
-         ce:24:33:24:5f:21:a3:d3:75:c3:76:0d:b5:35:b3:95:d9:da:
-         97:ed:15:9e:3e:6e:df:0f:a3:2a:10:e4:f9:49:b8:b2:f2:b2:
-         99:e3:99:12:88:20:5c:2f:ad:1a:d6:e7:f1:29:e4:4d:e3:fb:
-         30:72:1a:1b:53:69:ac:40:f7:a5:84:8d:12:e9:6f:78:a6:b9:
-         c0:b5:28:28:64:88:c9:da:69:d0:8e:6b:e9:7c:56:9f:68:ad:
-         09:76:e0:a3:26:21:86:65:ff:7b:15:89:12:41:83:52:04:5d:
-         61:b4:88:25
------BEGIN CERTIFICATE-----
-MIIDbTCCAlWgAwIBAgIRAKATAGcTMdQlR/oaSCt2qX8wDQYJKoZIhvcNAQELBQAw
-GDEWMBQGA1UEAwwNU2Vuc3UtdGVzdCBDQTAeFw0xOTExMDYxNzIyNDJaFw0yMjEw
-MjExNzIyNDJaMBQxEjAQBgNVBAMMCXNlbnN1LWFwaTCCASIwDQYJKoZIhvcNAQEB
-BQADggEPADCCAQoCggEBAMQWcdM7CCYegWCWbpx17Fjy3I8i58hkuVJVEVHV69eu
-f0iBJepOZjPuvnMlhO0CpvVf1MArptOux0FkLF5LbBKSZFNBSlm279KIJJYmMOOY
-JUXGWcTmMyyiOCXO9dXSujloG+zxd+bhIBlA5e2MvERAzgwmfYZgDRkfMVmFpWrS
-Qcgc1n570R/UNS7CyPbaAzlUDuaMGybk5jwfiGTHT0aJcGxbJu7yoyaTrABPXdOL
-XxnMU/hoa2H+ILq1r4qcBOq9JSzlv32J89CNkHl+Yg6IR8zPlCYAdsnBk4WlGxle
-NHM66yNyIwPWgykmTF1PrX0cH+eFw9ROCrIfaMRnGcMCAwEAAaOBtTCBsjAJBgNV
-HRMEAjAAMB0GA1UdDgQWBBTol6YULMR1czqbrY2RPh1sfsDBnTBTBgNVHSMETDBK
-gBRlbzV9EQsL/TvP5juV+jVrgA0n6aEcpBowGDEWMBQGA1UEAwwNU2Vuc3UtdGVz
-dCBDQYIULehsb6UOfWOosQs9hh0u0GJfIUcwEwYDVR0lBAwwCgYIKwYBBQUHAwEw
-CwYDVR0PBAQDAgWgMA8GA1UdEQQIMAaHBLAQdWkwDQYJKoZIhvcNAQELBQADggEB
-ABOSkD8uCNPnzndN/tvQde1PyqtuKoxtBR2y0L4vq/X/hHHgJJOSiSrkFO8c3NPn
-8W5EzDW5kJvEwxhkl7twZyJZlM3A8/KFfPbQl+L1SvpqCpQZs96QhBxJEpz3KZNR
-B5+EYTYZhgJuf48c4oaTi8sE9FS2myLuw7urb334rp5rceH3S3MhovTTRB4g9VUQ
-m84kMyRfIaPTdcN2DbU1s5XZ2pftFZ4+bt8PoyoQ5PlJuLLyspnjmRKIIFwvrRrW
-5/Ep5E3j+zByGhtTaaxA96WEjRLpb3imucC1KChkiMnaadCOa+l8Vp9orQl24KMm
-IYZl/3sViRJBg1IEXWG0iCU=
------END CERTIFICATE-----
+    Signature Value:
+        65:0d:1c:46:b9:fa:74:d2:4f:e1:74:92:60:e0:17:c5:e0:65:
+        38:4b:a5:52:25:79:0d:83:ca:e0:92:a1:2e:01:30:b0:de:9c:
+        5a:05:59:52:36:b0:0b:7e:b2:d8:16:ab:b1:72:c4:d6:78:32:
+        68:db:22:19:41:13:68:23:1e:10:d4:d2:27:9d:0a:18:21:f8:
+        ea:3c:f2:2f:a4:51:19:bc:02:6f:b5:ec:cf:a6:80:9a:a3:15:
+        b1:21:d0:6d:0a:35:8a:d5:4d:6a:4c:ab:69:b9:03:eb:23:d2:
+        59:c7:39:4d:1c:7a:48:a2:16:b4:e3:08:0c:c3:30:a8:9e:ba:
+        d5:a4:9f:c6:72:98:0e:d8:71:53:b8:ea:a7:a0:30:fc:b8:6c:
+        c5:cd:19:37:bf:98:6d:48:fd:7d:52:5e:5f:ad:8c:da:9e:7c:
+        65:cf:7b:d6:df:0f:b3:72:a1:31:fd:f3:51:9e:73:e5:9f:29:
+        3c:4f:6f:5b:06:75:0d:99:37:5f:d4:73:27:bd:92:ee:e1:e1:
+        5d:19:3a:78:38:4a:05:eb:62:3f:ad:b6:df:14:e9:b1:36:f9:
+        4e:e1:6c:69:fc:1f:a6:b2:f8:6b:50:8a:cb:67:8c:17:9e:d8:
+        5a:93:cd:ce:0b:21:e1:71:61:0a:05:28:e9:83:4d:e1:a8:6e:
+        b6:b7:2e:c9
