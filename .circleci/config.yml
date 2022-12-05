@@ -84,7 +84,7 @@ jobs:
         description: Ansible version to use
         type: string
     machine: &ci-machine
-      image: ubuntu-2204:2022.10.2
+      image: ubuntu-2204:current
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
