@@ -195,15 +195,6 @@ commands:
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
-          name: Create & Activate virtualenv
-          command: |
-            which python3       
-      - run:
-          name: Create & Activate virtualenv
-          command: |
-            /opt/circleci/.pyenv/shims/python3 -m venv ${HOME}/venv
-            . ${HOME}/venv/bin/activate
-      - run:
           name: Install Ansible
           command: pip install -U https://github.com/ansible/ansible/archive/<< parameters.ansible >>.tar.gz --disable-pip-version-check
       - steps: << parameters.test_commands >>
