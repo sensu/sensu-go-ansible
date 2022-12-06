@@ -204,7 +204,7 @@ commands:
       - run:
           name: Activate virtualenv
           command: |
-            echo 'export PATH=${HOME}/venv/bin:$PATH' >> $BASH_ENV
+            . ${HOME}/venv/bin/activate
       - run:
           name: Install Ansible
           command: pip install -U https://github.com/ansible/ansible/archive/<< parameters.ansible >>.tar.gz --disable-pip-version-check
