@@ -199,7 +199,8 @@ commands:
           command: ls -R -lha ${HOME}/venv/
       - run:
           name: Create virtual environment
-          command: python3 -m venv ${HOME}/venv
+          command: |  
+            python3 -m venv ${HOME}/venv
       - run:
           name: Activate virtualenv
           command: |
