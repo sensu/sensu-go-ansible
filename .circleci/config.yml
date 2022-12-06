@@ -149,7 +149,7 @@ jobs:
 
   windows_version_check:
     docker:
-      - image: cimg/python:3.10.6
+      - image: cimg/python:3.11.0
     steps:
       - checkout
       - run: pip install pyyaml
