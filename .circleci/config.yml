@@ -197,6 +197,10 @@ commands:
       - run:
           name: Create & Activate virtualenv
           command: |
+            which python3       
+      - run:
+          name: Create & Activate virtualenv
+          command: |
             python3 -m venv ${HOME}/venv
             . ${HOME}/venv/bin/activate
       - run:
