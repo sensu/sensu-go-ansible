@@ -195,14 +195,11 @@ commands:
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
-          name: Check python3 version
-          command: python3 -V
-      - run:
-          name: Upgrade python3-venv
-          command: pip3 install --upgrade virtualenv
+          name: ls
+          command: ls -lha ${HOME}
       - run:
           name: Create virtual environment
-          command: python -m venv ${HOME}/venv
+          command: python3 -m venv ${HOME}/venv
       - run:
           name: Activate virtualenv
           command: |
