@@ -30,7 +30,7 @@ help:
 
 .PHONY: sanity
 sanity:  ## Run sanity tests
-	pip install -r sanity.requirements -r collection.requirements
+	pip3 install -r sanity.requirements -r collection.requirements
 	flake8
 	if which ansible-lint 2> /dev/null; then ansible-lint -p roles/*; fi
 	ansible-test sanity --docker
@@ -38,7 +38,7 @@ sanity:  ## Run sanity tests
 
 .PHONY: units
 units:  ## Run unit tests
-	pip install -r collection.requirements
+	pip3 install -r collection.requirements
 	-ansible-test coverage erase # On first run, there is nothing to erase.
 	ansible-test units --docker --coverage
 	ansible-test coverage html --requirements
@@ -46,7 +46,7 @@ units:  ## Run unit tests
 
 .PHONY: integration
 integration:  ## Run integration tests
-	pip install -r integration.requirements -r collection.requirements
+	pip3 install -r integration.requirements -r collection.requirements
 	pytest -s --molecule-base-config=base.yml tests/integration/molecule
 
 .PHONY: $(molecule_scenarios)
@@ -55,7 +55,7 @@ $(molecule_scenarios):
 
 .PHONY: integration_ci
 integration_ci:  ## Run integration tests on CircleCI
-	pip install -r integration.requirements -r collection.requirements
+	pip3 install -r integration.requirements -r collection.requirements
 	mkdir -p test_results/integration
 	pytest -s \
 	  --junitxml=test_results/integration/junit.xml \
@@ -65,7 +65,7 @@ integration_ci:  ## Run integration tests on CircleCI
 
 .PHONY: docs
 docs:  ## Build collection documentation
-	pip install -r docs.requirements
+	pip3 install -r docs.requirements
 	$(MAKE) -C docs -f Makefile.custom docs
 
 .PHONY: clean
