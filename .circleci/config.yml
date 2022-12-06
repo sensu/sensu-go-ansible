@@ -14,7 +14,6 @@ workflows:
                 - stable-2.11
                 - stable-2.12
                 - stable-2.13
-                - stable-2.14
 
       - unit_test:
           matrix: *matrix
@@ -84,7 +83,7 @@ jobs:
         description: Ansible version to use
         type: string
     machine: &ci-machine
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2204:2022.10.2
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
@@ -149,7 +148,7 @@ jobs:
 
   windows_version_check:
     docker:
-      - image: cimg/python:3.11.0
+      - image: cimg/python:3.10.6
     steps:
       - checkout
       - run: pip install pyyaml
