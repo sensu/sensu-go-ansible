@@ -198,11 +198,11 @@ commands:
           name: Check python3 version
           command: python3 -V
       - run:
-          name: Upgrade virtualenv
+          name: Upgrade python3-venv
           command: pip install --upgrade virtualenv
       - run:
           name: Create virtual environment
-          command: virtualenv -p python3 venv ${HOME}/venv
+          command: virtualenv -p python3 -m venv ${HOME}/venv
       - run:
           name: Activate virtualenv
           command: |
