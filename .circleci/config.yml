@@ -196,7 +196,7 @@ commands:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
           name: ls
-          command: ls -lha ${HOME}
+          command: ls -R -lha ${HOME}/venv/
       - run:
           name: Create virtual environment
           command: python3 -m venv ${HOME}/venv
