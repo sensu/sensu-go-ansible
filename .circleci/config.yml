@@ -195,11 +195,7 @@ commands:
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
-          name: Create virtual environment
-          command: |  
-            python3 -m venv ${HOME}/venv
-      - run:
-          name: Activate virtualenv
+          name: Create & Activate virtualenv
           command: |
             python3 -m venv ${HOME}/venv
             . ${HOME}/venv/bin/activate
