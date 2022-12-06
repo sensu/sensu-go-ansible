@@ -153,7 +153,7 @@ jobs:
       - checkout
       - run: pip install pyyaml
       - run: make check_windows_versions
-
+      - run: sudo apt install -y python3-venv
 commands:
   run_integration_tests:
     description: Run integration tests
