@@ -199,7 +199,7 @@ commands:
           command: python3 -V
       - run:
           name: Upgrade python3-venv
-          command: pip install --upgrade virtualenv
+          command: pip3 install --upgrade virtualenv
       - run:
           name: Create virtual environment
           command: python3 -m venv ${HOME}/venv
