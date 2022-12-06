@@ -91,7 +91,6 @@ jobs:
           kind: sanity
           test_commands:
             - run: make sanity
-            - run: sudo apt install -y python3-venv
 
   unit_test:
     parameters:
@@ -195,6 +194,9 @@ commands:
             echo "cache busting string 2" >> cache-id.txt
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
+      - run:
+          name: Install python3-venv
+          command: sudo apt install -y python3-venv
       - run:
           name: Create virtual environment
           command: python3 -m venv ${HOME}/venv
