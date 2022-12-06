@@ -202,7 +202,7 @@ commands:
           command: pip install --upgrade virtualenv
       - run:
           name: Create virtual environment
-          command: virtualenv -p python3 -m venv ${HOME}/venv
+          command: python3 -m venv ${HOME}/venv
       - run:
           name: Activate virtualenv
           command: |
