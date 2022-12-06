@@ -192,6 +192,7 @@ commands:
             echo "ansible << parameters.ansible >>" >> cache-id.txt
             echo "kind << parameters.kind >>" >> cache-id.txt
             echo "cache busting string 2" >> cache-id.txt
+            echo "ubuntu ubuntu-2204:2022.10.2" >> cache-id.txt 
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
