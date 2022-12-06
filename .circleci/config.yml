@@ -201,7 +201,7 @@ commands:
       - run:
           name: Create & Activate virtualenv
           command: |
-            python3 -m venv ${HOME}/venv
+            /opt/circleci/.pyenv/shims/python3 -m venv ${HOME}/venv
             . ${HOME}/venv/bin/activate
       - run:
           name: Install Ansible
