@@ -10,8 +10,7 @@ import sys
 
 import yaml
 
-import urllib.requests
-import urllib.parse
+import urllib.request
 
 
 def _get_arg_parser():

@@ -35,7 +35,7 @@ sanity:  ## Run sanity tests
 	flake8
 	if which ansible-lint 2> /dev/null; then ansible-lint -p roles/*; fi
 	ansible-test sanity --docker
-	./tests/sanity/validate-role-metadata.py roles/*
+	python3 ./tests/sanity/validate-role-metadata.py roles/*
 
 .PHONY: units
 units:  ## Run unit tests
