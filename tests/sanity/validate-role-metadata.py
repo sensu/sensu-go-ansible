@@ -10,7 +10,8 @@ import sys
 
 import yaml
 
-from ansible.module_utils.urls import open_url
+import urllib.request
+import urllib.parse
 
 
 def _get_arg_parser():
@@ -20,13 +21,14 @@ def _get_arg_parser():
 
 
 def _validate_role_platforms(platforms):
-    url = "https://galaxy.ansible.com/api/v1/platforms/?name={0}&release={1}"
-
+    base_url = "https://galaxy.ansible.com/api/v1/platforms/?name={0}&release={1}"
     msgs = []
     for platform in platforms:
         for release in platform["versions"]:
-            resp = open_url(url.format(platform["name"], release))
-            if len(json.loads(resp.read())["results"]) != 1:
+            url = base_url.format(platform["name"], release)
+            f = urllib.request.urlopen(url)
+
+            if len(json.loads(f.read().decode('utf-8'))["results"]) != 1:
                 msgs.append(("ERROR", "Invalid platform '{0} {1}'".format(
                     platform["name"], release,
                 )))
