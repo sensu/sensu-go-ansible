@@ -10,7 +10,7 @@ import sys
 
 import yaml
 
-import urllib.request
+import urllib.requests
 import urllib.parse
 
 
