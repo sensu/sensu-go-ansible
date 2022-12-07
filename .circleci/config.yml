@@ -153,7 +153,7 @@ jobs:
       - image: cimg/python:3.10.6
     steps:
       - checkout
-      - run: pip install pyyaml
+      - run: pip3 install pyyaml
       - run: make check_windows_versions
 
 commands:
@@ -198,7 +198,7 @@ commands:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
           name: Install Ansible
-          command: pip install -U https://github.com/ansible/ansible/archive/<< parameters.ansible >>.tar.gz --disable-pip-version-check
+          command: pip3 install -U https://github.com/ansible/ansible/archive/<< parameters.ansible >>.tar.gz --disable-pip-version-check
       - steps: << parameters.test_commands >>
       - save_cache:
           key: '{{ checksum "cache-id.txt" }}'
