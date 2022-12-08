@@ -4,3 +4,13 @@
     name: sensu-backend
     state: restarted
   when: manage_sensu_backend_service | default(False)
+  
+- name: Run journalct -xe
+  command:
+    cmd: journalct -xe
+  register: journalct_output
+  changed_when: false
+
+- name: Print journalct -xe
+  ansible.builtin.debug:
+    var: journalct_output
