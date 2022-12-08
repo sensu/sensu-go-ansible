@@ -6,6 +6,12 @@
     enabled: true
   failed_when: false
 
+- name: Print log content of snesu logs
+  debug:
+    var: item
+  with_file:
+    - /var/log/sensu/sensu-backend.log
+
 - name: Systemctl status sensu-backend
   command:
     cmd: systemctl status sensu-backend
