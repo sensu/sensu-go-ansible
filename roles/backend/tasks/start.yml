@@ -5,6 +5,7 @@
     state: started
     enabled: true
   failed_when: false 
+  changed_when: false
 
 - name: Log journalctl -xe
   command:
