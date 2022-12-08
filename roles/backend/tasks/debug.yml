@@ -1,7 +1,7 @@
 ---
 - name: Run journalct -xe
   command:
-    cmd: journalct -xe
+    cmd: journalctl -xe
   register: journalct_output
   changed_when: false
 
