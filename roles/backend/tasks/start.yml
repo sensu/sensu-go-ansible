@@ -4,15 +4,15 @@
     name: sensu-backend
     state: started
     enabled: true
-  failed_when: false 
+  ignore_errors: true
+
+- name: Systemctl status sensu-backend
+  command:
+    cmd: systemctl stauts sensu-backend
+  register: systemctl_output
   changed_when: false
 
-- name: Log journalctl -xe
-  command:
-    cmd: systemctl status sensu-backend
-  register: systemctl_output
-
-- name: Print return information from journalctl
+- name: Print command output
   ansible.builtin.debug:
     var: systemctl_output
 
