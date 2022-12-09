@@ -1,16 +1,4 @@
 ---
-- name: Print IP Addr
-  ansible.builtin.debug:
-    var: ansible_all_ipv4_addresses
-
-- name: Get public IP
-  community.general.ipify_facts:
-    register: public_ip
-
-- name: Print Public IP
-  ansible.builtin.debug:
-    var: public_ip
-
 - name: Start sensu-backend
   service:
     name: sensu-backend
