@@ -6,21 +6,6 @@
     enabled: true
   failed_when: false
 
-- name: Read sensu log
-  slurp:
-    src: /var/log/sensu/sensu-backend.log
-  register: sensu_log
-
-- name: Print sensu log
-  debug:
-    var: sensu_log
-
-- name: Systemctl status sensu-backend
-  command:
-    cmd: systemctl status sensu-backend
-  register: systemctl_output
-  changed_when: false
-
 - name: Print command output
   ansible.builtin.debug:
     var: systemctl_output
