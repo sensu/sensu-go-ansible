@@ -6,11 +6,14 @@
     enabled: true
   failed_when: false
 
-- name: Print log content of snesu logs
+- name: Read sensu log
+  slurp:
+    src: /var/log/sensu/sensu-backend.log
+  register: sensu_log
+
+- name: Print sensu log
   debug:
-    var: item
-  with_file:
-    - /var/log/sensu/sensu-backend.log
+    var: sensu_log
 
 - name: Systemctl status sensu-backend
   command:
