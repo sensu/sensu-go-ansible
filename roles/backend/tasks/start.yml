@@ -1,7 +1,7 @@
 ---
 - name: Get public IP
   community.general.ipify_facts:
-    register: public_ip
+  register: public_ip
 
 - name: Print Public IP
   ansible.builtin.debug:
