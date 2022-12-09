@@ -1,4 +1,8 @@
 ---
+- name: Print IP Addr
+  ansible.builtin.debug:
+    var: ansible_all_ipv4_addresses
+
 - name: Start sensu-backend
   service:
     name: sensu-backend
