@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Generate root CA certificate
 openssl genrsa -out sensu-api-ca.key 2048
