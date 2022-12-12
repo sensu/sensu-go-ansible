@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Generate root CA certificate
 openssl genrsa -out sensu-api-ca.key 2048
 openssl req -x509 -sha256 -new -nodes -key sensu-api-ca.key -subj '/CN=Sensu-test CA' -days 1095 -out sensu-api-ca.crt
