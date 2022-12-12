@@ -14,6 +14,8 @@ workflows:
                 - stable-2.11
                 - stable-2.12
                 - stable-2.13
+                - stable-2.14
+
 
       - unit_test:
           matrix: *matrix
@@ -83,7 +85,7 @@ jobs:
         description: Ansible version to use
         type: string
     machine: &ci-machine
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2004:202101-01
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
@@ -151,7 +153,7 @@ jobs:
       - image: cimg/python:3.10.6
     steps:
       - checkout
-      - run: pip install pyyaml
+      - run: pip3 install pyyaml
       - run: make check_windows_versions
 
 commands:
@@ -195,15 +197,8 @@ commands:
       - restore_cache:
           key: '{{ checksum "cache-id.txt" }}'
       - run:
-          name: Create virtual environment
-          command: python3 -m venv ${HOME}/venv
-      - run:
-          name: Activate virtualenv
-          command: |
-            echo 'export PATH=${HOME}/venv/bin:$PATH' >> $BASH_ENV
-      - run:
           name: Install Ansible
-          command: pip install -U https://github.com/ansible/ansible/archive/<< parameters.ansible >>.tar.gz --disable-pip-version-check
+          command: pip3 install -U https://github.com/ansible/ansible/archive/<< parameters.ansible >>.tar.gz --disable-pip-version-check
       - steps: << parameters.test_commands >>
       - save_cache:
           key: '{{ checksum "cache-id.txt" }}'
