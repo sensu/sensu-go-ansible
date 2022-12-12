@@ -4,4 +4,3 @@
     name: sensu-backend
     state: restarted
   when: manage_sensu_backend_service | default(False)
-  failed_when: false

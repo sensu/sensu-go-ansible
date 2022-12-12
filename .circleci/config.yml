@@ -159,7 +159,6 @@ commands:
     description: Run integration tests
     steps:
       - run: ansible-galaxy collection install community.docker
-      - run: ansible-galaxy collection install community.general
       - run:
           name: Display scheduled scenarios
           command: |

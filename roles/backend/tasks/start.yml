@@ -1,22 +1,9 @@
 ---
-- name: Get public IP
-  community.general.ipify_facts:
-  register: public_ip
-
-- name: Print Public IP
-  ansible.builtin.debug:
-    var: public_ip
-
 - name: Start sensu-backend
   service:
     name: sensu-backend
     state: started
     enabled: true
-  failed_when: false
-
-- name: Print command output
-  ansible.builtin.debug:
-    var: systemctl_output
 
 - name: Check for sensu-backend init command
   command:
