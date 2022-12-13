@@ -16,4 +16,5 @@ options:
       - These are preserved by Sensu but not accessible as tokens or
         identifiers, and are mainly intended for use with external tools.
     type: dict
+    default: {}
 """
