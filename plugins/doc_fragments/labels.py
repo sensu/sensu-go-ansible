@@ -15,4 +15,5 @@ options:
       - Custom metadata fields that can be accessed within Sensu, as key/value
         pairs.
     type: dict
+    default: {}
 """
