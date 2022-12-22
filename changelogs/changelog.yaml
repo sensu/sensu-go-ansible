@@ -1,5 +1,13 @@
 ---
 releases:
+  1.13.2:
+    release_date: "2022-12-22"
+    changes:
+      release_summary: |
+        Support for latest Ansible and Rocky and Alma linux
+      minor_changes:
+        - Added support for ansible 2.14
+        - Added support for Rocky and Alma linux
   1.13.1:
     release_date: "2022-04-19"
     changes:

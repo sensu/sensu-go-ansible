@@ -1,5 +1,13 @@
 Release notes
 =============
+Version 1.13.2 -- Support for latest Ansible
+--------------------------------------------
+Added support for Ansible 2.14. Added support for Alma and Rocky linux
+
+**New features:**
+
+* Added support for ansible 2.14
+* Added support for Alma and Rocky linux
 
 Version 1.13.1 -- Support for latest Ansible
 --------------------------------------------
