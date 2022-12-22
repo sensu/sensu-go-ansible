@@ -1,0 +1,4 @@
+plugins/modules/bonsai_asset.py validate-modules:nonexistent-parameter-documented # This is not a real module, more helper for the asset module
+tests/unit/plugins/module_utils/test_utils.py pylint:ansible-deprecated-no-collection-name # sanity misdetects this as module deprecation call
+tools/windows-versions.py replace-urlopen # Maintainer tools should not be bound by the general collection constraints
+tests/sanity/validate-role-metadata.py replace-urlopen # Maintainer tools should not be bound by the general collection constraints
