@@ -13,7 +13,7 @@ platforms:
     image: quay.io/xlab-steampunk/sensu-go-tests-centos:7
     pre_build_image: true
     pull: true
-    groups: [ agents ]
+    groups: [agents]
     override_command: false
     privileged: true
     volumes:

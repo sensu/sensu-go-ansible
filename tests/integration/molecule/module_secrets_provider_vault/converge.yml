@@ -1,7 +1,7 @@
 ---
 - name: Pre-converge step - ensure presence of valid PEM files for TLS configuration
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     # As part of configuring TLS for the vault secrets provider, we need
     # to specify paths to CA cert and client cert/key files.
@@ -19,7 +19,7 @@
 
 - name: Converge
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Fetch all secrets providers and verify the presence of the
         default env provider
@@ -167,7 +167,7 @@
           - result.objects.0.client.tls.ca_cert == '/tmp/ca.crt'
 
     - name: Idempotence check for vault provider modification
-      sensu.sensu_go.secrets_provider_vault:  *update-provider
+      sensu.sensu_go.secrets_provider_vault: *update-provider
       register: result
 
     - ansible.builtin.assert:

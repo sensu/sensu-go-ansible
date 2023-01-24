@@ -1,6 +1,7 @@
 ---
 - name: Include distro-specific vars ({{ ansible_distribution }})
-  include_vars: file='{{ ansible_distribution }}.yml'
+  include_vars:
+    file: '{{ ansible_distribution }}.yml'
 
 - name: Update apt cache (ensure we have package index)
   apt:

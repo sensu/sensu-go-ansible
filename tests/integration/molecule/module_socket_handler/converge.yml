@@ -3,7 +3,7 @@
   collections:
     - sensu.sensu_go
   hosts: all
-  gather_facts: no
+  gather_facts: true
   tasks:
     - name: Create socket handler with missing required parameters
       socket_handler:

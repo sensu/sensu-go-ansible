@@ -9,7 +9,7 @@
         tasks_from: configure
       vars:
         backend_config:
-          debug: no
+          debug: false
           log-level: debug
           api-listen-address: "[::]:4430"
 
@@ -34,7 +34,7 @@
         tasks_from: configure
       vars:
         backend_config:
-          debug: yes
+          debug: true
           log-level: debug
           state-dir: /tmp/different/state
           deregistration-handler: /tmp/handler.sh

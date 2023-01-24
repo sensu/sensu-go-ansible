@@ -23,6 +23,7 @@ argument_specs:
     short_description: Start Sensu Go agent
     description:
       - Start the Sensu Go agent service.
+    options: {}
 
   main:
     short_description: Install, configure, and start Sensu Go agent

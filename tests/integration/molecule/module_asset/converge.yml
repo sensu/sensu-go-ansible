@@ -1,7 +1,7 @@
 ---
 - name: Setup sensuctl
   hosts: all
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Configure sensuctl
@@ -19,7 +19,7 @@
   collections:
     - sensu.sensu_go
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Create an asset with missing required parameters
       asset:

@@ -3,7 +3,7 @@
   collections:
     - sensu.sensu_go
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Retrieve empty list of external datastores
       datastore_info:
