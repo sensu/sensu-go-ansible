@@ -1,29 +1,39 @@
 DOCUMENTATION:
   name: package_name
   author: Tadej Borovsak (@tadeboro)
-  version_added: '....'
-  short_description: Decode a base64 string
+  version_added: '1.13.2'
+  short_description: Format package name
   description:
-    - Base64 decoding function.
-    - The return value is a string.
-    - Trying to store a binary blob in a string most likely corrupts the binary. To base64 decode a binary blob,
-      use the ``base64`` command  and pipe the encoded data through standard input.
-      For example, in the ansible.builtin.shell`` module, ``cmd="base64 --decode > myfile.bin" stdin="{{ encoded }}"``.
+    - Package name format function.
+    - The return value is a string respresenting package name and build version.
   positional: _input
   options:
     _input:
-      description: A base64 string to decode.
+      description: Package type.
+      choices: [ apt, yum ]
+      type: string
+      required: true
+    name:
+      description: Package name.
+      type: string
+      required: true
+    version:
+      description: Package version.
+      type: string
+      required: true
+    build:
+      description: Package build.
       type: string
       required: true
 
 EXAMPLES: |
-  # b64 decode a string
-  lola: "{{ 'bG9sYQ==' | b64decode }}"
+  # Apt package
+  {{ 'apt' | sensu.sensu_go.package_name(name, version, build) }}
 
-  # b64 decode the content of 'b64stuff' variable
-  stuff: "{{ b64stuff | b64encode }}"
+  # Yum package
+  {{ 'yum' | sensu.sensu_go.package_name(name, version, build) }}
 
 RETURN:
   _value:
-    description: The contents of the base64 encoded string.
+    description: Package name, version and build as a formatted string.
     type: string

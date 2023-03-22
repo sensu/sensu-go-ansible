@@ -1,7 +1,7 @@
 DOCUMENTATION:
   name: backends
   author: Tadej Borovsak (@tadeboro)
-  version_added: '....'
+  version_added: '1.13.2'
   short_description: Format websocket connection for backends hosts from inventory.
   description:
     - Socket connection format function.
@@ -20,7 +20,7 @@ DOCUMENTATION:
 
 EXAMPLES: |
   # Filter backends from ansible inventory and format a list of websocket connection addresses.
-  {{ hostvars | backends(groups) }}
+  {{ hostvars | sensu.sensu_go.backends(groups) }}
 
   # groups:
     backends:
