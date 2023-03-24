@@ -36,11 +36,13 @@ DOCUMENTATION = '''
 '''
 
 EXAMPLES = '''
-  # Apt package
-  {{ 'apt' | sensu.sensu_go.package_name(name, version, build) }}
+  - name: Install apt component
+    apt:
+      name: "{{ 'apt' | sensu.sensu_go.package_name(name, version, build) }}"
 
-  # Yum package
-  {{ 'yum' | sensu.sensu_go.package_name(name, version, build) }}
+  - name: Install yum component
+    yum:
+      name: "{{ 'yum' | sensu.sensu_go.package_name(name, version, build) }}"
 '''
 
 RETURN = '''

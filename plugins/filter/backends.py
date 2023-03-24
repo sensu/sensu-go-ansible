@@ -28,23 +28,9 @@ DOCUMENTATION = '''
 '''
 
 EXAMPLES = '''
-  # Filter backends from ansible inventory and format a list of websocket connection addresses.
-  {{ hostvars | sensu.sensu_go.backends(groups) }}
-
-  # groups:
-    backends:
-      hosts:
-        192.168.1.4
-        192.168.1.25
-    agents:
-      hosts:
-        192.168.2.5
-  
-  # hostvars:
-    hostvars = {
-      "192.168.1.4": {"inventory_hostname": "192.168.1.4"},
-      "192.168.1.25": {"inventory_hostname": "192.168.1.25"},
-    }
+  - name: Filter backends from ansible inventory and format a list of websocket connection addresses
+    ansible.builtin.debug:
+      msg: "{{ hostvars | sensu.sensu_go.backends(groups) }}"
 '''
 
 RETURN = '''
