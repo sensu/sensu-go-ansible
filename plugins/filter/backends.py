@@ -6,6 +6,53 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+DOCUMENTATION = '''
+  name: backends
+  author: Tadej Borovsak (@tadeboro)
+  version_added: 1.13.2
+  short_description: Format websocket connection for backends hosts from inventory.
+  description:
+    - Socket connection format function.
+    - Filter backends hosts from ansible inventory groups.
+    - The return value is a list of websocket connection addresses.
+  positional: _input
+  options:
+    _input:
+      description: Inventory host variables (hostvars).
+      type: dict
+      required: true
+    groups:
+      description: List of ansible inventory groups.
+      type: list
+      required: true
+'''
+
+EXAMPLES = '''
+  # Filter backends from ansible inventory and format a list of websocket connection addresses.
+  {{ hostvars | sensu.sensu_go.backends(groups) }}
+
+  # groups:
+    backends:
+      hosts:
+        192.168.1.4
+        192.168.1.25
+    agents:
+      hosts:
+        192.168.2.5
+  
+  # hostvars:
+    hostvars = {
+      "192.168.1.4": {"inventory_hostname": "192.168.1.4"},
+      "192.168.1.25": {"inventory_hostname": "192.168.1.25"},
+    }
+'''
+
+RETURN = '''
+  _value:
+    description: List of websocket connection addresses.
+    type: list
+'''
+
 
 def _format_backend(vars):
     if "api_key_file" in vars:

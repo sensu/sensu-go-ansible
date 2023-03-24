@@ -6,6 +6,49 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+DOCUMENTATION = '''
+  name: package_name
+  author: Tadej Borovsak (@tadeboro)
+  version_added: 1.13.2
+  short_description: Format package name
+  description:
+    - Package name format function.
+    - The return value is a string respresenting package name and build version.
+  positional: _input
+  options:
+    _input:
+      description: Package type.
+      choices: [ apt, yum ]
+      type: string
+      required: true
+    name:
+      description: Package name.
+      type: string
+      required: true
+    version:
+      description: Package version.
+      type: string
+      required: true
+    build:
+      description: Package build.
+      type: string
+      required: true
+'''
+
+EXAMPLES = '''
+  # Apt package
+  {{ 'apt' | sensu.sensu_go.package_name(name, version, build) }}
+
+  # Yum package
+  {{ 'yum' | sensu.sensu_go.package_name(name, version, build) }}
+'''
+
+RETURN = '''
+  _value:
+    description: Package name, version and build as a formatted string.
+    type: string
+'''
+
 
 def _apt_package_name(name, version, build):
     if version == "latest":
