@@ -43,6 +43,47 @@ options:
       - The maximum number of connections to hold in the PostgreSQL connection
         pool.
     type: int
+  max_conn_lifetime:
+    description:
+      - Maximum time a connection can persist before being destroyed.
+    type: str
+  max_idle_conns:
+    description:
+      - Maximum number of number of idle connections to retain.
+    type: int
+    default: 2
+  batch_workers:
+    description:
+      - Number of Goroutines sending data to PostgreSQL, as specified in the PostgreSQL configuration.
+      - Set to current PostgreSQL pool size as default.
+    type: int
+  batch_buffer:
+    description:
+      - Maximum number of requests to buffer in memory.
+    type: int
+    default: 0
+  batch_size:
+    description:
+      - Number of requests in each PostgreSQL write transaction, as specified in the PostgreSQL configuration.
+    type: int
+    default: 1
+  enable_round_robin:
+    description:
+      - Enables round robin scheduling on PostgreSQL.
+      - Any existing round robin scheduling will stop and migrate to PostgreSQL as entities check in with keepalives.
+      - Sensu will gradually delete the existing etcd scheduler state as keepalives on the etcd scheduler keys expire over time.
+    type: bool
+    default: false
+  strict:
+    description:
+      - When the PostgresConfig resource is created, configuration validation will include connecting to the PostgreSQL database
+        and executing a query to confirm whether the connected user has permission to create database tables.
+      - Sensu-backend will try to connect to PostgreSQL indefinitely at 5-second intervals instead of reverting to etcd after 3 attempts.
+      - We recommend setting strict to true in most cases. If the connection fails or the user does not have permission to
+        create database tables, resource configuration will fail and the configuration will not be persisted.
+        This extended configuration is useful for debugging when you are not sure whether the configuration is correct or the database is working properly.
+    type: bool
+    default: false
 notes:
   - Currently, only one external datastore can be active at a time. The module
     will fail to perform its operation if this would break that invariant.
@@ -140,7 +181,33 @@ def main():
             dsn=dict(),
             pool_size=dict(
                 type="int",
-            )
+            ),
+            max_conn_lifetime=dict(
+                type="str",
+            ),
+            max_idle_conns=dict(
+                type="int",
+                default=2,
+            ),
+            batch_workers=dict(
+                type="int",
+            ),
+            batch_buffer=dict(
+                type="int",
+                default=0,
+            ),
+            batch_size=dict(
+                type="int",
+                default=1,
+            ),
+            enable_round_robin=dict(
+                type="bool",
+                default=False,
+            ),
+            strict=dict(
+                type="bool",
+                default=False,
+            ),
         ),
     )
 
