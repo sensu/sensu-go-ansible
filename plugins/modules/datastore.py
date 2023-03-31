@@ -81,7 +81,8 @@ options:
       - Sensu-backend will try to connect to PostgreSQL indefinitely at 5-second intervals instead of reverting to etcd after 3 attempts.
       - We recommend setting strict to true in most cases. If the connection fails or the user does not have permission to
         create database tables, resource configuration will fail and the configuration will not be persisted.
-        This extended configuration is useful for debugging when you are not sure whether the configuration is correct or the database is working properly.
+        This extended configuration is useful for debugging when you are not sure whether the configuration
+        is correct or the database is working properly.
     type: bool
     default: false
 notes:
