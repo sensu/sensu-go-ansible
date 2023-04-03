@@ -1,3 +1,1 @@
----
-os: el
-dist: '{{ ansible_distribution_version.split(".")[0] }}'
+Alma.yml
