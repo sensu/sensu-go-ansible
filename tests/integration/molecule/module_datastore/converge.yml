@@ -130,7 +130,7 @@
           - result.object.batch_buffer == 1
           - result.object.batch_size == 2
           - result.object.enable_round_robin is true
-          - result.object.strict is true
+          - result.object.strict is false
 
     - name: Check for idempotence
       datastore: *idempotence_2
@@ -158,7 +158,7 @@
           - result.objects.0.batch_buffer == 1
           - result.objects.0.batch_size == 2
           - result.objects.0.enable_round_robin is true
-          - result.objects.0.strict is true
+          - result.objects.0.strict is false
 
     - name: Remove external datastore
       datastore:
