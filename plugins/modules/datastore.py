@@ -100,6 +100,13 @@ EXAMPLES = '''
   sensu.sensu_go.datastore:
     name: my-postgres
     state: absent
+
+- name: Add external datastore with pool_size and max_conn_lifetime specified
+  sensu.sensu_go.datastore:
+    name: my-postgres
+    dsn: postgresql://user:secret@host:port/dbname
+    pool_size: 1
+    max_conn_lifetime: "5m30s"
 '''
 
 RETURN = '''
@@ -182,6 +189,7 @@ def main():
             dsn=dict(),
             pool_size=dict(
                 type="int",
+                default=0,
             ),
             max_conn_lifetime=dict(
                 type="str",
@@ -211,7 +219,6 @@ def main():
             ),
         ),
     )
-
     client = arguments.get_sensu_client(module.params["auth"])
     list_path = utils.build_url_path(API_GROUP, API_VERSION, None, "provider")
     resource_path = utils.build_url_path(
@@ -221,9 +228,9 @@ def main():
         type="PostgresConfig",
         api_version=API_VERSION,
         metadata=dict(name=module.params["name"]),
-        spec=arguments.get_spec_payload(module.params, "dsn", "pool_size"),
+        spec=arguments.get_spec_payload(module.params, "dsn", "pool_size", "max_conn_lifetime", "max_idle_conns", "batch_workers",
+                                        "batch_buffer", "batch_size", "enable_round_robin", "strict"),
     )
-
     try:
         changed, datastore = sync(
             module.params["state"], client, list_path, resource_path, payload,
