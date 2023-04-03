@@ -147,7 +147,11 @@ def update_password(client, path, username, password, check_mode):
                 username=username, password=password,
             ))
         else:
-            hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            # Raise exception if BCRYPT library is not present on host.
+            if HAS_BCRYPT:
+                hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            else:
+                raise errors.RequirementsError("Missing bcrypt library.")
             utils.put(client, path + '/reset_password', dict(
                 username=username, password_hash=hash.decode('ascii'),
             ))
