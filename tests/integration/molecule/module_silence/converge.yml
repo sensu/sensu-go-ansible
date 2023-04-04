@@ -3,13 +3,13 @@
   collections:
     - sensu.sensu_go
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Create silence without parameters
       silence:
         auth:
           url: http://localhost:8080
-      ignore_errors: True
+      ignore_errors: true
       register: result
 
     - assert:
@@ -75,7 +75,7 @@
         # expiring and getting dropped on the floor by the backend.
         begin: 1893452400
         expire: 120
-        expire_on_resolve: True
+        expire_on_resolve: true
         reason: updating mail server
       register: result
 

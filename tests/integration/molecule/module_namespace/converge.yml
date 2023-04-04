@@ -3,7 +3,7 @@
   collections:
     - sensu.sensu_go
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Fetch all namespaces
       namespace_info:
@@ -55,7 +55,7 @@
           - result.objects | length == expected_length | int
           - result.objects.1.name == 'dev'
       vars:
-        expected_length: "{{ starting_length|int + 2 }}"
+        expected_length: "{{ starting_length | int + 2 }}"
 
     - name: Delete namespace
       namespace:
@@ -75,4 +75,4 @@
           - result.objects | length == expected_length | int
           - result.objects.1.name == 'production'
       vars:
-        expected_length: "{{ starting_length|int + 1 }}"
+        expected_length: "{{ starting_length | int + 1 }}"

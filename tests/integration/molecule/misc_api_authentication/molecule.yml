@@ -1,13 +1,13 @@
 platforms:
   - name: v6.4.1
     image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.4.1
-    groups: [ has_api_key_support ]
+    groups: [has_api_key_support]
     pre_build_image: true
     pull: true
     override_command: false
   - name: v5.14.2
     image: quay.io/xlab-steampunk/sensu-go-tests-sensu:5.14.2
-    groups: [ no_api_key_support ]
+    groups: [no_api_key_support]
     pre_build_image: true
     pull: true
     override_command: false

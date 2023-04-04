@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Fetch all secrets providers and verify the presence of the
             default env provider

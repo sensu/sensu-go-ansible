@@ -3,7 +3,7 @@
   collections:
     - sensu.sensu_go
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Create entity with minimal parameters
       entity:
@@ -55,7 +55,7 @@
                 addresses:
                   - 93.184.216.34/24
         last_seen: 1522798317
-        deregister: yes
+        deregister: true
         deregistration_handler: email-handler
         redact:
           - password
@@ -102,7 +102,7 @@
                 addresses:
                   - 93.184.216.34/24
         last_seen: 1522798317
-        deregister: yes
+        deregister: true
         deregistration_handler: email-handler
         redact:
           - password

@@ -1,7 +1,7 @@
 ---
 - name: Prepare new backend
   hosts: has_api_key_support
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Create a regular user
@@ -13,14 +13,14 @@
       sensu.sensu_go.role:
         name: test_role
         rules:
-          - verbs: [ list ]
-            resources: [ assets ]
+          - verbs: [list]
+            resources: [assets]
 
     - name: Allow user to list entities
       sensu.sensu_go.role_binding:
         name: test_binding
         role: test_role
-        users: [ test_user ]
+        users: [test_user]
 
     - name: Configure sensuctl
       command:
@@ -59,7 +59,7 @@
   hosts: has_api_key_support
   collections:
     - sensu.sensu_go
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Fail with invalid password
@@ -201,7 +201,7 @@
 
 - name: Prepare old backend
   hosts: no_api_key_support
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Configure sensuctl
@@ -226,7 +226,7 @@
   hosts: no_api_key_support
   collections:
     - sensu.sensu_go
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Fail with invalid password

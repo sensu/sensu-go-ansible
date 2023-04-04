@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Fetch all LDAP auth providers and verify the presence
       sensu.sensu_go.auth_provider_info:
@@ -11,7 +11,7 @@
 
     - ansible.builtin.assert:
         that:
-          - result.objects | length == 0  
+          - result.objects | length == 0
 
     - name: Fail when trying to create a LDAP auth provider with missing required params
       sensu.sensu_go.ldap_auth_provider:
@@ -30,7 +30,7 @@
       sensu.sensu_go.ldap_auth_provider: &create-provider
         state: present
         name: openldap
-        servers: 
+        servers:
           - host: 127.0.0.1
             group_search:
               base_dn: dc=acme,dc=org
@@ -87,7 +87,7 @@
       sensu.sensu_go.ldap_auth_provider: &update-provider
         state: present
         name: openldap
-        servers: 
+        servers:
           - host: 127.0.0.1
             group_search:
               base_dn: dc=acme,dc=org
@@ -143,7 +143,7 @@
           - result.objects.0.groups_prefix == 'dev'
 
     - name: Idempotence check for LDAP auth provider modification
-      sensu.sensu_go.ldap_auth_provider:  *update-provider
+      sensu.sensu_go.ldap_auth_provider: *update-provider
       register: result
 
     - ansible.builtin.assert:
@@ -222,7 +222,7 @@
           url: http://localhost:8080
         state: present
         name: other-openldap
-        servers: 
+        servers:
           - host: 127.0.0.1
             port: 636
             insecure: false
