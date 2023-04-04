@@ -79,6 +79,39 @@ class TestUpdatePassword:
         client.validate_auth_data.assert_called_once_with('user', 'pass')
         client.put.assert_not_called()
 
+    @pytest.mark.parametrize(
+        # bcrypt_present                   ... is bcrypt library present (True/False).
+        # expected_exception               ... is missing requirements exception expected.
+        # expected_result                  ... expected update_password return.
+        (
+            "bcrypt_present",
+            "expected_exception",
+            "expected_result",
+        ),
+        [
+            # bcrypt present
+            (True, False, True),
+            # bcrypt not present
+            (False, True, None),
+        ],
+    )
+    def test_missing_bcrypt_library(self, mocker, bcrypt_present, expected_exception, expected_result):
+        # Mock HAS_BCRYPT global variable
+        mocker.patch("ansible_collections.sensu.sensu_go.plugins.modules.user.HAS_BCRYPT", bcrypt_present)
+
+        # Mock client
+        client = mocker.Mock()
+        client.validate_auth_data.return_value = False
+        client.version = version.StrictVersion("5.21.1")
+        client.put.return_value = http.Response(201, '')
+
+        if expected_exception:
+            with pytest.raises(errors.RequirementsError):
+                user.update_password(client, "", "", "", False)
+        else:
+            result = user.update_password(client, "", "", "", False)
+            assert result is expected_result
+
 
 class TestUpdatePasswordHash:
     @pytest.mark.parametrize('check', [False, True])
@@ -506,14 +539,24 @@ class TestUser(ModuleTestCase):
             user.main()
 
     def test_failure_on_missing_bcrypt_5_21_0_or_newer(self, mocker):
+        # Check that there is no missing library exception during user creation
         mocker.patch.object(arguments, 'get_sensu_client').return_value = (
             mocker.MagicMock(version='5.22.3')
         )
+        sync_mock = mocker.patch.object(user, 'sync')
+        sync_mock.return_value = True, {}
+
+        mocker.patch.object(utils, 'get').return_value = None
         mocker.patch.object(user, 'HAS_BCRYPT', False)
+
         set_module_args(
             name='test_user',
             password='password'
         )
 
-        with pytest.raises(AnsibleFailJson, match='bcrypt'):
+        with pytest.raises(AnsibleExitJson):
             user.main()
+        result, _client, path, payload, check_mode = sync_mock.call_args[0]
+
+        assert result is None
+        assert payload == dict(password="password", username="test_user", disabled=False)

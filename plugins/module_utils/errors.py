@@ -23,5 +23,9 @@ class SensuError(Error):
     """ Error that signals problems with Sensu Go web API. """
 
 
+class RequirementsError(Error):
+    """ Error that signals problems with missing requirements. """
+
+
 class BonsaiError(Error):
     """ Error that signals problems with Bonsai assets. """

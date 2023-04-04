@@ -147,7 +147,11 @@ def update_password(client, path, username, password, check_mode):
                 username=username, password=password,
             ))
         else:
-            hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            # Raise exception if BCRYPT library is not present on host.
+            if HAS_BCRYPT:
+                hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            else:
+                raise errors.RequirementsError(missing_required_lib('bcrypt'))
             utils.put(client, path + '/reset_password', dict(
                 username=username, password_hash=hash.decode('ascii'),
             ))
@@ -283,15 +287,6 @@ def main():
 
     client = arguments.get_sensu_client(module.params['auth'])
     path = utils.build_core_v2_path(None, 'users', module.params['name'])
-
-    try:
-        if not HAS_BCRYPT and client.version >= "5.21.0":
-            module.fail_json(
-                msg=missing_required_lib('bcrypt'),
-                exception=BCRYPT_IMPORT_ERROR,
-            )
-    except errors.SensuError as e:
-        module.fail_json(msg=str(e))
 
     try:
         remote_object = utils.get(client, path)
