@@ -32,7 +32,7 @@ the Sensu Go backend:
    value stored in the *SENSU_API_KEY*.
 
 .. _API key:
-   https://docs.sensu.io/sensu-go/latest/guides/use-apikey-feature/
+   https://docs.sensu.io/sensu-go/latest/operations/control-access/use-apikeys/
 
 .. note::
 
