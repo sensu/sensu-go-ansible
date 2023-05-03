@@ -23,7 +23,7 @@ short_description: List Sensu handlers
 description:
   - Retrieve information about Sensu handlers.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/).
+    U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-process/handlers/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

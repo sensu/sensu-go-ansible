@@ -25,7 +25,7 @@ short_description: List Sensu assets
 description:
   - Retrieve information about Sensu Go assets.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/assets/).
+    U(https://docs.sensu.io/sensu-go/latest/plugins/assets/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

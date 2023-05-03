@@ -25,7 +25,7 @@ short_description: List Sensu hooks
 description:
   - Retrieve information about Sensu hooks.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/hooks/).
+    U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-schedule/hooks/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

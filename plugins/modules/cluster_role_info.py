@@ -26,7 +26,7 @@ short_description: List Sensu cluster roles
 description:
   - Retrieve information about Sensu roles.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#roles-and-cluster-roles).
+    U(https://docs.sensu.io/sensu-go/latest/operations/control-access/rbac/#cluster-roles).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

@@ -25,7 +25,7 @@ short_description: Manage Sensu's Tessen configuration
 description:
   - Enable or disable Tessen service.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/tessen/).
+    U(https://docs.sensu.io/sensu-go/latest/operations/monitor-sensu/tessen/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

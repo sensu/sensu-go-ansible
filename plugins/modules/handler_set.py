@@ -23,7 +23,7 @@ short_description: Manage Sensu handler set
 description:
   - Create, update or delete Sensu handler set.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/#handler-sets).
+    U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-process/handlers/#handler-sets).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

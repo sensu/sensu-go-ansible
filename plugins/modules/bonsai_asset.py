@@ -24,7 +24,7 @@ description:
   - Create or update a Sensu Go asset whose definition is available in the
     Bonsai, the Sensu asset index.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/assets/)
+    U(https://docs.sensu.io/sensu-go/latest/plugins/assets/)
     and U(https://bonsai.sensu.io/).
 version_added: 1.0.0
 extends_documentation_fragment:

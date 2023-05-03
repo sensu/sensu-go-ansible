@@ -25,7 +25,7 @@ short_description: Manage Sensu events
 description:
   - Send a synthetic event to Sensu.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/events/).
+    U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-events/events/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements
@@ -36,7 +36,7 @@ seealso:
 notes:
   - Metric events bypass the store and are sent off to the event pipeline and corresponding event
     handlers. Read more about this at
-    U(https://docs.sensu.io/sensu-go/latest/reference/events/#metric-only-events).
+    U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-events/events/#example-metrics-only-event).
 options:
   timestamp:
     description:
@@ -56,7 +56,7 @@ options:
     type: dict
     description:
       - Additional check parameters. Find out more at
-        U(https://docs.sensu.io/sensu-go/latest/reference/events/#check-attributes).
+        U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-events/events/#check-attributes).
     suboptions:
       duration:
         description:
@@ -97,23 +97,6 @@ options:
         description:
           - The total state change percentage for the check's history.
         type: int
-  metric_attributes:
-    type: dict
-    description:
-      - Metric attributes. Find out more at
-        U(https://docs.sensu.io/sensu-go/latest/reference/events/#metric-attributes).
-    suboptions:
-      handlers:
-        description:
-          - An array of Sensu handlers to use for events created by the check.
-            Each array item must be a string.
-        type: list
-        elements: str
-      points:
-        description:
-          - Metric data points including a name, timestamp, value, and tags.
-        type: list
-        elements: dict
 '''
 
 EXAMPLES = '''

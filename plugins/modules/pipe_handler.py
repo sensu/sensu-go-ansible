@@ -23,7 +23,7 @@ short_description: Manage Sensu pipe handler
 description:
   - Create, update or delete a Sensu pipe handler.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/handlers/#pipe-handlers).
+    U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-process/handlers/#pipe-handlers).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements
