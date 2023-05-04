@@ -114,23 +114,6 @@ options:
           - Metric data points including a name, timestamp, value, and tags.
         type: list
         elements: dict
-  metric_attributes:
-    type: dict
-    description:
-      - Metric attributes. Find out more at
-        U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-events/events/#metrics-attribute).
-    suboptions:
-      handlers:
-        description:
-          - An array of Sensu handlers to use for events created by the check.
-            Each array item must be a string.
-        type: list
-        elements: str
-      points:
-        description:
-          - Metric data points including a name, timestamp, value, and tags.
-        type: list
-        elements: dict
 '''
 
 EXAMPLES = '''
