@@ -33,3 +33,8 @@ platforms:
     image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:18.04
     pre_build_image: true
     pull: true
+
+  - name: ubuntu-20.04
+    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:20.04
+    pre_build_image: true
+    pull: true
