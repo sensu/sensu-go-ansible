@@ -57,6 +57,7 @@ $(molecule_scenarios):
 .PHONY: integration_ci
 integration_ci:  ## Run integration tests on CircleCI
 	pip3 install -r integration.requirements -r collection.requirements
+	ansible-galaxy install -r molecule.yml
 	mkdir -p test_results/integration
 	pytest -s \
 	  --junitxml=test_results/integration/junit.xml \
