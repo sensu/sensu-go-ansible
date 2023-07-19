@@ -1,0 +1,23 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  environment:
+    SENSU_URL: http://localhost:8080
+  tasks:
+    - name: Create pipeline with minimal parameters
+      mutator:
+        auth:
+          url: SENSU_URL
+        workflow:
+          - name: this_wf
+            handler:
+              name: this_handler
+              type: handler
+      register: result
+
+    - assert:
+        that:
+          - result is changed
