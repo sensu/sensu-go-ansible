@@ -181,7 +181,6 @@ def do_differ(current, desired):
 def handle_mutator_api_and_type(payload_mutator):
     payload_mutator["type"] = MUTATOR_TYPE[payload_mutator["type"]]
     payload_mutator["api_version"] = API_VERSION["v2"]
-    return payload_mutator
 
 
 def handle_filter_api_and_type(payload_filters, workflow):
@@ -190,7 +189,6 @@ def handle_filter_api_and_type(payload_filters, workflow):
         payload_filters[filter_count]["type"] = FILTER_TYPE[filter["type"]]
         payload_filters[filter_count]["api_version"] = API_VERSION["v2"]
         filter_count += 1
-    return payload_filters
 
 
 def handle_handler_api_and_type(payload_handler):
@@ -199,7 +197,6 @@ def handle_handler_api_and_type(payload_handler):
     else:
         payload_handler["api_version"] = API_VERSION["v2"]
     payload_handler["type"] = HANDLER_TYPE[payload_handler["type"]]
-    return payload_handler
 
 
 def handle_api_version_and_types(module, payload):
@@ -217,7 +214,6 @@ def handle_api_version_and_types(module, payload):
             handle_filter_api_and_type(
                 payload["workflows"][payload_count]["filters"], workflow)
         payload_count += 1
-    return payload
 
 
 def main():
@@ -303,7 +299,7 @@ def main():
         module.params, 'workflows'
     )
     if module.params["state"] == "present":
-        payload = handle_api_version_and_types(module, payload)
+        handle_api_version_and_types(module, payload)
     try:
         changed, handler = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,
