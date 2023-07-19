@@ -1,0 +1,68 @@
+---
+- name: Example - how to generate private keys and sign certificates with openSSL and upload to HyperCore server
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Get all pipelines
+      sensu.sensu_go.pipeline_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - name: Show uploaded certificate info
+      ansible.builtin.debug:
+        var: result
+
+    - name: Get specific
+      sensu.sensu_go.pipeline_info:
+        auth:
+          url: http://localhost:8080
+        name: this_pipeline
+      register: result
+
+    - name: Show uploaded certificate info
+      ansible.builtin.debug:
+        var: result
+
+    - name: Example using fail and when together
+      ansible.builtin.fail:
+        msg: The system may not be provisioned according to the CMDB status.
+      when: cmdb_status != "to-be-staged"
+
+    - name: Create a handler set
+      sensu.sensu_go.handler_set:
+        name: notify_all_the_things_a
+        handlers:
+          - blablas
+          - tcp_handler
+          - udp_handler
+
+    - name: Create a filter
+      sensu.sensu_go.filter:
+        name: this_filter
+        action: deny
+        expressions:
+          - event.check.interval == 10
+          - event.check.occurrences == 1
+        runtime_assets: awesomeness
+      register: result
+
+    - name: Show uploaded certificate info
+      ansible.builtin.debug:
+        var: result
+
+    - name: Delete a filter
+      sensu.sensu_go.filter:
+        name: this_filter
+        state: absent
+
+    - name: Get all filters
+      sensu.sensu_go.filter_info:
+        auth:
+          url: http://localhost:8080
+      register: result
+
+    - name: Show uploaded certificate info
+      ansible.builtin.debug:
+        var: result
