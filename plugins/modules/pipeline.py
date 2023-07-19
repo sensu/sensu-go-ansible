@@ -12,6 +12,10 @@ ANSIBLE_METADATA = {
     "status": ["stableinterface"],
     "supported_by": "certified",
 }
+API_VERSION = dict(v1="pipeline/v1", v2="core/v2")
+HANDLER_TYPE = dict(handler="Handler", tcp_stream_handler="TCPStreamHandler", sumo_logic_metrics_handler="SumoLogicMetricsHandler")
+MUTATOR_TYPE = dict(mutator="Mutator")
+FILTER_TYPE = dict(event_filter="EventFilter")
 
 DOCUMENTATION = '''
 module: pipeline
@@ -24,14 +28,11 @@ description:
     U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-process/pipelines/).
 version_added: 1.0.0
 extends_documentation_fragment:
-  - sensu.sensu_go.requirements
   - sensu.sensu_go.auth
   - sensu.sensu_go.name
   - sensu.sensu_go.namespace
   - sensu.sensu_go.state
   - sensu.sensu_go.labels
-  - sensu.sensu_go.annotations
-  - sensu.sensu_go.secrets
 seealso:
   - module: sensu.sensu_go.socket_handler
   - module: sensu.sensu_go.handler_info
@@ -41,65 +42,128 @@ seealso:
   - module: sensu.sensu_go.mutator
   - module: sensu.sensu_go.mutator_info
 options:
-  command:
+  workflows:
     description:
-      - The handler command to be executed. The event data is passed to the
-        process through STDIN.
-      - Required if I(state) is C(present).
-    type: str
-  filters:
-    description:
-      - List of filters to use when determining whether to pass the check result to this handler.
+      - Array of workflows (by names) to use when filtering, mutating, and handling observability events with a pipeline.
     type: list
-    elements: str
-  mutator:
-    description:
-      - Mutator to call for transforming the check result before passing it to this handler.
-    type: str
-  timeout:
-    description:
-      - Timeout for handler execution.
-    type: int
-  env_vars:
-    description:
-      - A mapping of environment variable names and values to use with command execution.
-    type: dict
-  runtime_assets:
-    description:
-      - List of runtime assets to required to run the handler C(command).
-    type: list
-    elements: str
+    elements: dict
+    suboptions:
+      name:
+        description:
+          - Name of the Sensu pipeline workflow.
+        type: str
+        required: true
+      filters:
+        description:
+          - Reference for the Sensu event filters to use when filtering events for the pipeline.
+          - Each pipeline workflow can reference more than one event filter.
+          - If a workflow has more than one filter, Sensu applies the filters in a series, starting with the filter that is listed first.
+        type: list
+        elements: dict
+        suboptions:
+          name:
+            description:
+              - Name of the Sensu event filter to use for the workflow.
+              - You can use the built-in event filters, as well as your existing event filters, in pipeline workflows.
+            type: str
+            required: true
+          type:
+            description:
+              - The sensuctl create resource type for the event filter.
+              - Event filters should always be type EventFilter.
+            type: str
+            default: event_filter
+            choices: [ event_filter ]
+      mutator:
+        description:
+          - Reference for the Sensu mutator to use to mutate event data for the workflow.
+          - Each pipeline workflow can reference only one mutator.
+        type: dict
+        suboptions:
+          name:
+            description:
+              - Name of the Sensu mutator to use for the workflow.
+              - You can use your existing mutators in pipeline workflows.
+            type: str
+            required: true
+          type:
+            description:
+              - The sensuctl create resource type for the mutator.
+              - Mutators should always be type Mutator.
+            type: str
+            default: mutator
+            choices: [ mutator ]
+      handler:
+        description:
+          - Reference for the Sensu handler to use for event processing in the workflow.
+          - Each pipeline workflow must reference one handler.
+          - Pipelines ignore any filters and mutators specified in handler definitions.
+        type: dict
+        required: true
+        suboptions:
+          name:
+            description:
+              - Name of the Sensu handler to use for the workflow.
+              - You can use your existing handlers in pipeline workflows.
+              - Pipelines ignore any filters and mutators specified in handler definitions.
+            type: str
+            required: true
+          type:
+            description:
+              - The sensuctl create resource type for the handler.
+            type: str
+            required: true
+            choices: [ handler, tcp_stream_handler, sumo_logic_metrics_handler ]
 '''
 
 EXAMPLES = '''
-- name: Setup InfluxDB handler
-  sensu.sensu_go.pipe_handler:
-    name: influx-db
-    command: sensu-influxdb-handler -d sensu
-    env_vars:
-      INFLUXDB_ADDR: http://influxdb.default.svc.cluster.local:8086
-      INFLUXDB_USER: sensu
-      INFLUXDB_PASS: password
-    runtime_assets:
-      - sensu-influxdb-handler
+- name: Create a pipeline
+  sensu.sensu_go.pipeline:
+    name: this_pipeline
+    workflows:
+      - name: this-wf
+        handler:
+          name: this_handler
+          type: tcp_stream_handler
+        filters:
+          - name: this_filter
+          - name: this_filter_2
+        mutator:
+          name: this_mutator
 
-- name: Delete  handler
-  sensu.sensu_go.pipe_handler:
-    name: influx-db
+- name: Delete pipeline
+  sensu.sensu_go.pipeline:
+    name: this_pipeline
     state: absent
 '''
 
 RETURN = '''
 object:
-  description: Object representing Sensu pipe handler.
+  description: Object representing Sensu pipeline.
   returned: success
   type: dict
   sample:
     metadata:
-      name: pipe_handler_minimum
+      created_by: admin
+      name: this_pipeline
       namespace: default
-    command: command-example
-    type: pipe
+    workflows:
+      - filters:
+          - api_version: core/v2
+            name: this_filter
+            type: EventFilter
+          - api_version: core/v2
+            name: this_filter_2
+            type: EventFilter
+        handler:
+          api_version: pipeline/v1
+          name: this_handler
+          type: TCPStreamHandler
+        mutator:
+          api_version: core/v2
+          name: this_mutator
+          type: Mutator
+        name: this-wf
 '''
 
 from ansible.module_utils.basic import AnsibleModule
@@ -109,52 +173,137 @@ from ..module_utils import arguments, errors, utils
 
 def do_differ(current, desired):
     return (
-        utils.do_differ(current, desired, "secrets") or
+        utils.do_differ(current, desired, "pipelines") or
         utils.do_secrets_differ(current, desired)
     )
 
 
+def handle_mutator_api_and_type(payload_mutator):
+    payload_mutator["type"] = MUTATOR_TYPE[payload_mutator["type"]]
+    payload_mutator["api_version"] = API_VERSION["v2"]
+    return payload_mutator
+
+
+def handle_filter_api_and_type(payload_filters, workflow):
+    filter_count = 0
+    for filter in workflow["filters"]:
+        payload_filters[filter_count]["type"] = FILTER_TYPE[filter["type"]]
+        payload_filters[filter_count]["api_version"] = API_VERSION["v2"]
+        filter_count += 1
+    return payload_filters
+
+
+def handle_handler_api_and_type(payload_handler):
+    if payload_handler["type"] in ["tcp_stream_handler", "sumo_logic_metrics_handler"]:
+        payload_handler["api_version"] = API_VERSION["v1"]
+    else:
+        payload_handler["api_version"] = API_VERSION["v2"]
+    payload_handler["type"] = HANDLER_TYPE[payload_handler["type"]]
+    return payload_handler
+
+
+def handle_api_version_and_types(module, payload):
+    payload_count = 0
+    for workflow in module.params["workflows"]:
+        # HANDLER
+        handle_handler_api_and_type(payload["workflows"][payload_count]["handler"])
+
+        # MUTATOR
+        if payload["workflows"][payload_count].get("mutator"):
+            handle_mutator_api_and_type(payload["workflows"][payload_count]["mutator"])
+
+        # FILTERS
+        if payload["workflows"][payload_count].get("filters"):
+            handle_filter_api_and_type(
+                payload["workflows"][payload_count]["filters"], workflow)
+        payload_count += 1
+    return payload
+
+
 def main():
     required_if = [
-        ('state', 'present', ['command'])
+        ('state', 'present', ['workflows'])
     ]
     module = AnsibleModule(
-        supports_check_mode=True,
         required_if=required_if,
+        supports_check_mode=True,
         argument_spec=dict(
             arguments.get_spec(
-                "auth", "name", "state", "labels", "annotations", "namespace",
-                "secrets",
+                "auth", "name", "state", "namespace", "labels",
             ),
-            command=dict(),
-            filters=dict(
-                type='list', elements='str',
-            ),
-            mutator=dict(),
-            timeout=dict(
-                type='int'
-            ),
-            env_vars=dict(
-                type='dict'
-            ),
-            runtime_assets=dict(
-                type='list', elements='str',
+            workflows=dict(
+                type="list",
+                elements="dict",
+                options=dict(
+                    name=dict(
+                        type="str",
+                        required=True,
+                    ),
+                    filters=dict(
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            name=dict(
+                                type="str",
+                                required=True,
+                            ),
+                            type=dict(
+                                type="str",
+                                default="event_filter",
+                                choices=[
+                                    "event_filter",
+                                ],
+                            ),
+                        ),
+                    ),
+                    mutator=dict(
+                        type="dict",
+                        options=dict(
+                            name=dict(
+                                type="str",
+                                required=True,
+                            ),
+                            type=dict(
+                                type="str",
+                                default="mutator",
+                                choices=[
+                                    "mutator",
+                                ],
+                            ),
+                        ),
+                    ),
+                    handler=dict(
+                        type="dict",
+                        required=True,
+                        options=dict(
+                            name=dict(
+                                type="str",
+                                required=True,
+                            ),
+                            type=dict(
+                                type="str",
+                                required=True,
+                                choices=[
+                                    "handler",
+                                    "tcp_stream_handler",
+                                    "sumo_logic_metrics_handler"
+                                ],
+                            ),
+                        ),
+                    ),
+                ),
             ),
         ),
     )
-
     client = arguments.get_sensu_client(module.params['auth'])
     path = utils.build_core_v2_path(
-        module.params['namespace'], 'handlers', module.params['name'],
+        module.params['namespace'], 'pipelines', module.params['name'],
     )
     payload = arguments.get_mutation_payload(
-        module.params, 'command', 'filters', 'mutator', 'timeout',
-        'runtime_assets', 'secrets',
+        module.params, 'workflows'
     )
-    payload['type'] = 'pipe'
-    if module.params['env_vars']:
-        payload['env_vars'] = utils.dict_to_key_value_strings(module.params['env_vars'])
-
+    if module.params["state"] == "present":
+        payload = handle_api_version_and_types(module, payload)
     try:
         changed, handler = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,
