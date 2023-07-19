@@ -40,7 +40,6 @@ options:
   name:
     description:
       - Name of a specific pipeline.
-      - .
     type: str
 '''
 
