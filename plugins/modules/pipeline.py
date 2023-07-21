@@ -205,13 +205,17 @@ def handle_api_version_and_types(module, payload):
         handle_handler_api_and_type(payload["workflows"][payload_count]["handler"])
 
         # MUTATOR
-        if payload["workflows"][payload_count].get("mutator"):
+        if workflow.get("mutator"):
             handle_mutator_api_and_type(payload["workflows"][payload_count]["mutator"])
+        elif "mutator" in payload["workflows"][payload_count]:
+            payload["workflows"][payload_count].pop("mutator")
 
         # FILTERS
-        if payload["workflows"][payload_count].get("filters"):
+        if workflow.get("filters"):
             handle_filter_api_and_type(
                 payload["workflows"][payload_count]["filters"], workflow)
+        elif "filters" in payload["workflows"][payload_count]:
+            payload["workflows"][payload_count].pop("filters")
         payload_count += 1
 
 
