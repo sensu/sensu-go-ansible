@@ -32,4 +32,4 @@
         url: http://localhost:8080/auth
         url_username: admin
         url_password: P@ssw0rd!
-        force_basic_auth: yes
+        force_basic_auth: true

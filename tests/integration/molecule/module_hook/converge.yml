@@ -3,7 +3,7 @@
   collections:
     - sensu.sensu_go
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Create hook with minimal parameters
       hook:
@@ -40,7 +40,7 @@
         name: hook
         command: /bin/true
         timeout: 30
-        stdin: yes
+        stdin: true
         runtime_assets:
           - ruby2.4
       register: result
@@ -61,7 +61,7 @@
         name: hook
         command: /bin/true
         timeout: 30
-        stdin: yes
+        stdin: true
         runtime_assets:
           - ruby2.4
       register: result

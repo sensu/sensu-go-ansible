@@ -1,7 +1,7 @@
 ---
 - name: Pre-converge secure backend config step
   hosts: backends
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Set dummy backend PKI variables
       set_fact:
@@ -49,7 +49,7 @@
 
 - name: Default configuration
   hosts: agents
-  gather_facts: no
+  gather_facts: false
   roles:
     - sensu.sensu_go.agent
 

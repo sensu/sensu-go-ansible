@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Fetch all auth providers and verify the presence
       sensu.sensu_go.auth_provider_info:
@@ -11,7 +11,7 @@
 
     - ansible.builtin.assert:
         that:
-          - result.objects | length == 0  
+          - result.objects | length == 0
 
     - name: Fail when trying to create a OIDC auth provider with missing required params
       sensu.sensu_go.oidc_auth_provider:
@@ -146,7 +146,7 @@
           - result.objects.0.username_claim == 'email'
 
     - name: Idempotence check for OIDC auth provider modification
-      sensu.sensu_go.oidc_auth_provider:  *update-provider
+      sensu.sensu_go.oidc_auth_provider: *update-provider
       register: result
 
     - ansible.builtin.assert:

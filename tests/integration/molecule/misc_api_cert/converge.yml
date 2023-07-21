@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Test connection using no verification

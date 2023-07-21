@@ -3,7 +3,7 @@
   collections:
     - sensu.sensu_go
   hosts: all
-  gather_facts: no
+  gather_facts: false
   environment:
     SENSU_URL: http://localhost:8080
 
@@ -42,7 +42,7 @@
     - name: Add disabled user to some groups
       user:
         name: awesome_username
-        groups: [ a, b, c ]
+        groups: [a, b, c]
         state: disabled
       register: result
 

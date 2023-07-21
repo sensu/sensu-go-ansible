@@ -2,7 +2,7 @@ galaxy_info:
   author: XLAB Steampunk <steampunk@xlab.si>
   description: Configure Sensu Go agent
   license: GPL-3.0-or-later
-  min_ansible_version: 2.8
+  min_ansible_version: "2.8"
 
   platforms:
     - name: EL

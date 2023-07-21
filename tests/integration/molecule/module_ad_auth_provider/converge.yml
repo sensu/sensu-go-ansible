@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Fetch all AD auth providers and verify the presence
       sensu.sensu_go.auth_provider_info:
@@ -143,7 +143,7 @@
           - result.objects.0.groups_prefix == 'dev'
 
     - name: Idempotence check for AD auth provider modification
-      sensu.sensu_go.ad_auth_provider:  *update-provider
+      sensu.sensu_go.ad_auth_provider: *update-provider
       register: result
 
     - ansible.builtin.assert:
