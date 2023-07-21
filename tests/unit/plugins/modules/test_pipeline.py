@@ -25,14 +25,6 @@ class TestDoDiffer:
             dict(name="demo"),
             dict(name="demo"),
         ),
-        (  # No diff in params, no diff in secrets
-            dict(name="demo", secrets=[
-                dict(name="n1", secret="s1"), dict(name="n2", secret="s2"),
-            ]),
-            dict(name="demo", secrets=[
-                dict(name="n2", secret="s2"), dict(name="n1", secret="s1"),
-            ]),
-        ),
     ])
     def test_no_difference(self, current, desired):
         assert pipeline.do_differ(current, desired) is False
@@ -56,17 +48,64 @@ class TestDoDiffer:
 
 
 class TestHandle(ModuleTestCase):
-    def test_handle_api_version_and_types(self):
-        pass
+    def test_handle_api_version_and_types(self, mocker):
+        module = mocker.patch('ansible.module_utils.basic.AnsibleModule')
+        module.params = dict(workflows=[dict(handler=dict(name="test_handler", type="handler"))])
+        payload = dict(workflows=[dict(handler=dict(name="test_handler", type="handler"))])
+        pipeline.handle_api_version_and_types(module, payload)
+        expected = dict(
+            workflows=[dict(
+                handler=dict(name="test_handler", type="Handler", api_version="core/v2")
+            )]
+        )
+        assert module.params != payload
+        assert payload == expected
 
-    def test_handle_handler_api_and_type(self):
-        pass
+    @pytest.mark.parametrize("payload_handler, expected", [
+        (
+            dict(name="test_handler", type="handler"),
+            dict(name="test_handler", type="Handler", api_version="core/v2"),
+        ),
+        (
+            dict(name="test_handler", type="tcp_stream_handler"),
+            dict(name="test_handler", type="TCPStreamHandler", api_version="pipeline/v1"),
+        ),
+        (
+            dict(name="test_handler", type="sumo_logic_metrics_handler"),
+            dict(name="test_handler", type="SumoLogicMetricsHandler", api_version="pipeline/v1"),
+        ),
+    ])
+    def test_handle_handler_api_and_type(self, payload_handler, expected):
+        pipeline.handle_handler_api_and_type(payload_handler)
+        assert payload_handler == expected
 
-    def test_handle_mutator_api_and_type(self):
-        pass
+    @pytest.mark.parametrize("payload_mutator, expected", [
+        (
+            dict(name="test_mutator", type="mutator"),
+            dict(name="test_mutator", type="Mutator", api_version="core/v2"),
+        ),
+    ])
+    def test_handle_mutator_api_and_type(self, payload_mutator, expected):
+        pipeline.handle_mutator_api_and_type(payload_mutator)
+        assert payload_mutator == expected
 
-    def test_handle_filter_api_and_type(self):
-        pass
+    @pytest.mark.parametrize("workflow, payload_filters, expected", [
+        (
+            dict(filters=[dict(name="test_filter", type="event_filter")]),
+            [dict(name="test_filter", type="event_filter")],
+            [dict(name="test_filter", type="EventFilter", api_version="core/v2")],
+        ),
+        (
+            dict(filters=[dict(name="test_filter", type="event_filter"),
+                          dict(name="test_filter_2", type="event_filter")]),
+            [dict(name="test_filter", type="event_filter"), dict(name="test_filter_2", type="event_filter")],
+            [dict(name="test_filter", type="EventFilter", api_version="core/v2"),
+                dict(name="test_filter_2", type="EventFilter", api_version="core/v2")],
+        ),
+    ])
+    def test_handle_filter_api_and_type(self, workflow, payload_filters, expected):
+        pipeline.handle_filter_api_and_type(payload_filters, workflow)
+        assert payload_filters == expected
 
 
 class TestPipeline(ModuleTestCase):
@@ -74,8 +113,8 @@ class TestPipeline(ModuleTestCase):
         sync_mock = mocker.patch.object(utils, 'sync')
         sync_mock.return_value = True, {}
         set_module_args(
-            name='test_mutator',
-            command='/bin/true',
+            name='test_pipeline',
+            workflows=[dict(name='test_wf', handler=dict(name='test_handler', type='handler'))]
         )
 
         with pytest.raises(AnsibleExitJson):
@@ -83,11 +122,13 @@ class TestPipeline(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _d = sync_mock.call_args[0]
         assert state == 'present'
-        assert path == '/api/core/v2/namespaces/default/mutators/test_mutator'
+        assert path == '/api/core/v2/namespaces/default/pipelines/test_pipeline'
         assert payload == dict(
-            command='/bin/true',
+            workflows=[dict(
+                name='test_wf', handler=dict(
+                    name='test_handler', type='Handler', api_version='core/v2'), filters=None, mutator=None)],
             metadata=dict(
-                name='test_mutator',
+                name='test_pipeline',
                 namespace='default',
             ),
         )
@@ -97,15 +138,15 @@ class TestPipeline(ModuleTestCase):
         sync_mock = mocker.patch.object(utils, 'sync')
         sync_mock.return_value = True, {}
         set_module_args(
-            name='test_mutator',
+            name='test_pipeline',
             namespace='my',
             state='absent',
-            command='/bin/true',
-            timeout=30,
-            runtime_assets='awesomeness',
-            labels={'region': 'us-west-1'},
-            annotations={'playbook': 12345},
-            secrets=[dict(name="a", secret="b")],
+            workflows=[dict(name='test_wf', handler=dict(name='test_handler', type='handler'),
+                            filters=[dict(name='test_filter', type='event_filter')],
+                            mutator=dict(name='test_mutator', type='mutator')
+                            )
+                       ],
+            labels={'region': 'us-west-1'}
         )
 
         with pytest.raises(AnsibleExitJson):
@@ -113,18 +154,17 @@ class TestPipeline(ModuleTestCase):
 
         state, _client, path, payload, check_mode, _d = sync_mock.call_args[0]
         assert state == 'absent'
-        assert path == '/api/core/v2/namespaces/my/mutators/test_mutator'
+        assert path == '/api/core/v2/namespaces/my/pipelines/test_pipeline'
         assert payload == dict(
-            command='/bin/true',
-            timeout=30,
-            runtime_assets=['awesomeness'],
             metadata=dict(
-                name='test_mutator',
+                name='test_pipeline',
                 namespace='my',
                 labels={'region': 'us-west-1'},
-                annotations={'playbook': '12345'},
             ),
-            secrets=[dict(name="a", secret="b")],
+            workflows=[dict(name='test_wf', handler=dict(name='test_handler', type='handler'),
+                            filters=[dict(name='test_filter', type='event_filter')],
+                            mutator=dict(name='test_mutator', type='mutator')
+                            )]
         )
         assert check_mode is False
 
@@ -133,7 +173,6 @@ class TestPipeline(ModuleTestCase):
         sync_mock.side_effect = errors.Error('Bad error')
         set_module_args(
             name='test_pipeline',
-            command='/bion/true'
         )
 
         with pytest.raises(AnsibleFailJson):
