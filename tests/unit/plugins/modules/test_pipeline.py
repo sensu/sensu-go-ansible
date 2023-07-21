@@ -126,7 +126,7 @@ class TestPipeline(ModuleTestCase):
         assert payload == dict(
             workflows=[dict(
                 name='test_wf', handler=dict(
-                    name='test_handler', type='Handler', api_version='core/v2'), filters=None, mutator=None)],
+                    name='test_handler', type='Handler', api_version='core/v2'))],
             metadata=dict(
                 name='test_pipeline',
                 namespace='default',
