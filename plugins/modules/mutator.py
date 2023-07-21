@@ -140,6 +140,8 @@ def main():
     )
     if module.params['env_vars']:
         payload['env_vars'] = utils.dict_to_key_value_strings(module.params['env_vars'])
+    else:
+        pass
     try:
         changed, mutator = utils.sync(
             module.params['state'], client, path, payload, module.check_mode,
