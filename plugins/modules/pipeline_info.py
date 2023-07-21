@@ -22,7 +22,7 @@ description:
   - Retrieve information about Sensu Go pipelines.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-process/pipelines/).
-version_added: 1.0.0
+version_added: 1.14.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements
   - sensu.sensu_go.auth
