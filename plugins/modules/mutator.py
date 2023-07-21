@@ -23,7 +23,7 @@ author:
   - Tadej Borovsak (@tadeboro)
 short_description: Manage Sensu mutators
 description:
-  - Create, update or delete Sensu mutator.
+  - Created, update or delete Sensu mutator.
   - For more information, refer to the Sensu documentation at
     U(https://docs.sensu.io/sensu-go/latest/reference/mutators/).
 version_added: 1.0.0
