@@ -173,8 +173,7 @@ from ..module_utils import arguments, errors, utils
 
 def do_differ(current, desired):
     return (
-        utils.do_differ(current, desired, "pipelines") or
-        utils.do_secrets_differ(current, desired)
+        utils.do_differ(current, desired, "pipelines")
     )
 
 
