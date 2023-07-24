@@ -1,0 +1,502 @@
+---
+- name: Converge
+  collections:
+    - sensu.sensu_go
+  hosts: all
+  gather_facts: no
+  vars:
+    SENSU_URL: http://localhost:8080
+  tasks:
+    - name: Create pipeline with minimal parameters
+      pipeline:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test
+        workflows:
+          - name: this_wf
+            handler:
+              name: this_handler
+              type: handler
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == "pipeline_integration_test"
+          - result.object.metadata.namespace == "default"
+          - result.object.metadata.created_by == "admin"
+          - result.object.workflows | length == 1
+          - result.object.workflows.0.name == "this_wf"
+          - result.object.workflows.0.handler.name == "this_handler"
+          - result.object.workflows.0.handler.type == "Handler" 
+
+    - name: Get data with info module - test info module
+      pipeline_info:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test
+      register: result
+    - assert:
+        that:
+          - result is not changed
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "pipeline_integration_test"
+          - result.objects.0.metadata.namespace == "default"
+          - result.objects.0.metadata.created_by == "admin"
+          - result.objects.0.workflows | length == 1
+          - result.objects.0.workflows.0.name == "this_wf"
+          - result.objects.0.workflows.0.handler.name == "this_handler"
+          - result.objects.0.workflows.0.handler.type == "Handler" 
+
+    - name: Create pipeline with minimal parameters - IDEMPOTENCE
+      pipeline:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test
+        workflows:
+          - name: this_wf
+            handler:
+              name: this_handler
+              type: handler
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Check that idempotence didn't change anything
+      pipeline_info:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test
+      register: result
+    - assert:
+        that:
+          - result is not changed
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "pipeline_integration_test"
+          - result.objects.0.metadata.namespace == "default"
+          - result.objects.0.metadata.created_by == "admin"
+          - result.objects.0.workflows | length == 1
+          - result.objects.0.workflows.0.name == "this_wf"
+          - result.objects.0.workflows.0.handler.name == "this_handler"
+          - result.objects.0.workflows.0.handler.type == "Handler" 
+
+    - name: Create pipeline with all parameters
+      pipeline:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test_2
+        workflows:
+          - name: this_wf
+            handler:
+              name: this_handler
+              type: handler
+            filters:
+              - name: this_filter_1
+              - name: this_filter_2
+            mutator:
+              name: this_mutator
+          - name: this_wf_2
+            handler:
+              name: this_handler
+              type: handler
+            filters:
+              - name: this_filter_1
+              - name: this_filter_2
+            mutator:
+              name: this_mutator
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == "pipeline_integration_test_2"
+          - result.object.metadata.namespace == "default"
+          - result.object.metadata.created_by == "admin"
+          - result.object.workflows | length == 2
+          - result.object.workflows.0.name == "this_wf"
+          - result.object.workflows.0.handler.name == "this_handler"
+          - result.object.workflows.0.handler.type == "Handler"
+          - result.object.workflows.0.filters | length == 2
+          - result.object.workflows.0.filters.0.name == "this_filter_1"
+          - result.object.workflows.0.filters.0.type == "EventFilter"
+          - result.object.workflows.0.filters.1.name == "this_filter_2"
+          - result.object.workflows.0.filters.1.type == "EventFilter"
+          - result.object.workflows.0.mutator.name == "this_mutator"
+          - result.object.workflows.0.mutator.type == "Mutator"
+          - result.object.workflows.1.name == "this_wf_2"
+          - result.object.workflows.1.handler.name == "this_handler"
+          - result.object.workflows.1.handler.type == "Handler"
+          - result.object.workflows.1.filters | length == 2
+          - result.object.workflows.1.filters.0.name == "this_filter_1"
+          - result.object.workflows.1.filters.0.type == "EventFilter"
+          - result.object.workflows.1.filters.1.name == "this_filter_2"
+          - result.object.workflows.1.filters.1.type == "EventFilter"
+          - result.object.workflows.1.mutator.name == "this_mutator"
+          - result.object.workflows.1.mutator.type == "Mutator"
+
+    - name: Get data with info module - test two pipelines
+      pipeline_info:
+        auth:
+          url: "{{ SENSU_URL }}"
+      register: result
+    - name: Show uploaded certificate info
+      ansible.builtin.debug:
+        var: result
+    - assert:
+        that:
+          - result is not changed
+          - result.objects | length == 2
+          - result.objects.0.metadata.name == "pipeline_integration_test"
+          - result.objects.0.metadata.namespace == "default"
+          - result.objects.0.metadata.created_by == "admin"
+          - result.objects.0.workflows | length == 1
+          - result.objects.0.workflows.0.name == "this_wf"
+          - result.objects.0.workflows.0.handler.name == "this_handler"
+          - result.objects.0.workflows.0.handler.type == "Handler" 
+          - result.objects.1.metadata.name == "pipeline_integration_test_2"
+          - result.objects.1.metadata.namespace == "default"
+          - result.objects.1.metadata.created_by == "admin"
+          - result.objects.1.workflows | length == 2
+          - result.objects.1.workflows.0.name == "this_wf"
+          - result.objects.1.workflows.0.handler.name == "this_handler"
+          - result.objects.1.workflows.0.handler.type == "Handler"
+          - result.objects.1.workflows.0.filters | length == 2
+          - result.objects.1.workflows.0.filters.0.name == "this_filter_1"
+          - result.objects.1.workflows.0.filters.0.type == "EventFilter"
+          - result.objects.1.workflows.0.filters.1.name == "this_filter_2"
+          - result.objects.1.workflows.0.filters.1.type == "EventFilter"
+          - result.objects.1.workflows.0.mutator.name == "this_mutator"
+          - result.objects.1.workflows.0.mutator.type == "Mutator"
+          - result.objects.1.workflows.1.name == "this_wf_2"
+          - result.objects.1.workflows.1.handler.name == "this_handler"
+          - result.objects.1.workflows.1.handler.type == "Handler"
+          - result.objects.1.workflows.1.filters | length == 2
+          - result.objects.1.workflows.1.filters.0.name == "this_filter_1"
+          - result.objects.1.workflows.1.filters.0.type == "EventFilter"
+          - result.objects.1.workflows.1.filters.1.name == "this_filter_2"
+          - result.objects.1.workflows.1.filters.1.type == "EventFilter"
+          - result.objects.1.workflows.1.mutator.name == "this_mutator"
+          - result.objects.1.workflows.1.mutator.type == "Mutator"
+
+    - name: Create pipeline with all parameters - IDEMPOTENCE
+      pipeline:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test_2
+        workflows:
+          - name: this_wf
+            handler:
+              name: this_handler
+              type: handler
+            filters:
+              - name: this_filter_1
+              - name: this_filter_2
+            mutator:
+              name: this_mutator
+          - name: this_wf_2
+            handler:
+              name: this_handler
+              type: handler
+            filters:
+              - name: this_filter_1
+              - name: this_filter_2
+            mutator:
+              name: this_mutator
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Check that idempotence didn't change anything - test two pipelines
+      pipeline_info:
+        auth:
+          url: "{{ SENSU_URL }}"
+      register: result
+    - assert:
+        that:
+          - result is not changed
+          - result.objects | length == 2
+          - result.objects.0.metadata.name == "pipeline_integration_test"
+          - result.objects.0.metadata.namespace == "default"
+          - result.objects.0.metadata.created_by == "admin"
+          - result.objects.0.workflows | length == 1
+          - result.objects.0.workflows.0.name == "this_wf"
+          - result.objects.0.workflows.0.handler.name == "this_handler"
+          - result.objects.0.workflows.0.handler.type == "Handler" 
+          - result.objects.1.metadata.name == "pipeline_integration_test_2"
+          - result.objects.1.metadata.namespace == "default"
+          - result.objects.1.metadata.created_by == "admin"
+          - result.objects.1.workflows | length == 2
+          - result.objects.1.workflows.0.name == "this_wf"
+          - result.objects.1.workflows.0.handler.name == "this_handler"
+          - result.objects.1.workflows.0.handler.type == "Handler"
+          - result.objects.1.workflows.0.filters | length == 2
+          - result.objects.1.workflows.0.filters.0.name == "this_filter_1"
+          - result.objects.1.workflows.0.filters.0.type == "EventFilter"
+          - result.objects.1.workflows.0.filters.1.name == "this_filter_2"
+          - result.objects.1.workflows.0.filters.1.type == "EventFilter"
+          - result.objects.1.workflows.0.mutator.name == "this_mutator"
+          - result.objects.1.workflows.0.mutator.type == "Mutator"
+          - result.objects.1.workflows.1.name == "this_wf_2"
+          - result.objects.1.workflows.1.handler.name == "this_handler"
+          - result.objects.1.workflows.1.handler.type == "Handler"
+          - result.objects.1.workflows.1.filters | length == 2
+          - result.objects.1.workflows.1.filters.0.name == "this_filter_1"
+          - result.objects.1.workflows.1.filters.0.type == "EventFilter"
+          - result.objects.1.workflows.1.filters.1.name == "this_filter_2"
+          - result.objects.1.workflows.1.filters.1.type == "EventFilter"
+          - result.objects.1.workflows.1.mutator.name == "this_mutator"
+          - result.objects.1.workflows.1.mutator.type == "Mutator"
+
+    - name: Change filter name on 2nd pipeline
+      pipeline:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test_2
+        workflows:
+          - name: this_wf
+            handler:
+              name: this_handler
+              type: handler
+            filters:
+              - name: this_filter_1
+              - name: this_filter_2_changed
+            mutator:
+              name: this_mutator
+          - name: this_wf_2
+            handler:
+              name: this_handler
+              type: handler
+            filters:
+              - name: this_filter_1
+              - name: this_filter_2
+            mutator:
+              name: this_mutator
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.object.metadata.name == "pipeline_integration_test_2"
+          - result.object.metadata.namespace == "default"
+          - result.object.metadata.created_by == "admin"
+          - result.object.workflows | length == 2
+          - result.object.workflows.0.name == "this_wf"
+          - result.object.workflows.0.handler.name == "this_handler"
+          - result.object.workflows.0.handler.type == "Handler"
+          - result.object.workflows.0.filters | length == 2
+          - result.object.workflows.0.filters.0.name == "this_filter_1"
+          - result.object.workflows.0.filters.0.type == "EventFilter"
+          - result.object.workflows.0.filters.1.name == "this_filter_2_changed"
+          - result.object.workflows.0.filters.1.type == "EventFilter"
+          - result.object.workflows.0.mutator.name == "this_mutator"
+          - result.object.workflows.0.mutator.type == "Mutator"
+          - result.object.workflows.1.name == "this_wf_2"
+          - result.object.workflows.1.handler.name == "this_handler"
+          - result.object.workflows.1.handler.type == "Handler"
+          - result.object.workflows.1.filters | length == 2
+          - result.object.workflows.1.filters.0.name == "this_filter_1"
+          - result.object.workflows.1.filters.0.type == "EventFilter"
+          - result.object.workflows.1.filters.1.name == "this_filter_2"
+          - result.object.workflows.1.filters.1.type == "EventFilter"
+          - result.object.workflows.1.mutator.name == "this_mutator"
+          - result.object.workflows.1.mutator.type == "Mutator"
+
+    - name: Get data with info module - test change
+      pipeline_info:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test_2
+      register: result
+    - name: Show uploaded certificate info
+      ansible.builtin.debug:
+        var: result
+    - assert:
+        that:
+          - result is not changed
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "pipeline_integration_test_2"
+          - result.objects.0.metadata.namespace == "default"
+          - result.objects.0.metadata.created_by == "admin"
+          - result.objects.0.workflows | length == 2
+          - result.objects.0.workflows.0.name == "this_wf"
+          - result.objects.0.workflows.0.handler.name == "this_handler"
+          - result.objects.0.workflows.0.handler.type == "Handler"
+          - result.objects.0.workflows.0.filters | length == 2
+          - result.objects.0.workflows.0.filters.0.name == "this_filter_1"
+          - result.objects.0.workflows.0.filters.0.type == "EventFilter"
+          - result.objects.0.workflows.0.filters.1.name == "this_filter_2_changed"
+          - result.objects.0.workflows.0.filters.1.type == "EventFilter"
+          - result.objects.0.workflows.0.mutator.name == "this_mutator"
+          - result.objects.0.workflows.0.mutator.type == "Mutator"
+          - result.objects.0.workflows.1.name == "this_wf_2"
+          - result.objects.0.workflows.1.handler.name == "this_handler"
+          - result.objects.0.workflows.1.handler.type == "Handler"
+          - result.objects.0.workflows.1.filters | length == 2
+          - result.objects.0.workflows.1.filters.0.name == "this_filter_1"
+          - result.objects.0.workflows.1.filters.0.type == "EventFilter"
+          - result.objects.0.workflows.1.filters.1.name == "this_filter_2"
+          - result.objects.0.workflows.1.filters.1.type == "EventFilter"
+          - result.objects.0.workflows.1.mutator.name == "this_mutator"
+          - result.objects.0.workflows.1.mutator.type == "Mutator"
+
+    - name: Change filter name on 2nd pipeline - IDEMPOTENCE
+      pipeline:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test_2
+        workflows:
+          - name: this_wf
+            handler:
+              name: this_handler
+              type: handler
+            filters:
+              - name: this_filter_1
+              - name: this_filter_2_changed
+            mutator:
+              name: this_mutator
+          - name: this_wf_2
+            handler:
+              name: this_handler
+              type: handler
+            filters:
+              - name: this_filter_1
+              - name: this_filter_2
+            mutator:
+              name: this_mutator
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Check that idempotence didn't change anything
+      pipeline_info:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test_2
+      register: result
+    - name: Show uploaded certificate info
+      ansible.builtin.debug:
+        var: result
+    - assert:
+        that:
+          - result is not changed
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "pipeline_integration_test_2"
+          - result.objects.0.metadata.namespace == "default"
+          - result.objects.0.metadata.created_by == "admin"
+          - result.objects.0.workflows | length == 2
+          - result.objects.0.workflows.0.name == "this_wf"
+          - result.objects.0.workflows.0.handler.name == "this_handler"
+          - result.objects.0.workflows.0.handler.type == "Handler"
+          - result.objects.0.workflows.0.filters | length == 2
+          - result.objects.0.workflows.0.filters.0.name == "this_filter_1"
+          - result.objects.0.workflows.0.filters.0.type == "EventFilter"
+          - result.objects.0.workflows.0.filters.1.name == "this_filter_2_changed"
+          - result.objects.0.workflows.0.filters.1.type == "EventFilter"
+          - result.objects.0.workflows.0.mutator.name == "this_mutator"
+          - result.objects.0.workflows.0.mutator.type == "Mutator"
+          - result.objects.0.workflows.1.name == "this_wf_2"
+          - result.objects.0.workflows.1.handler.name == "this_handler"
+          - result.objects.0.workflows.1.handler.type == "Handler"
+          - result.objects.0.workflows.1.filters | length == 2
+          - result.objects.0.workflows.1.filters.0.name == "this_filter_1"
+          - result.objects.0.workflows.1.filters.0.type == "EventFilter"
+          - result.objects.0.workflows.1.filters.1.name == "this_filter_2"
+          - result.objects.0.workflows.1.filters.1.type == "EventFilter"
+          - result.objects.0.workflows.1.mutator.name == "this_mutator"
+          - result.objects.0.workflows.1.mutator.type == "Mutator"
+
+    - name: Delete first pipeline
+      pipeline:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test
+        state: absent
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Get data with info module - check delete
+      pipeline_info:
+        auth:
+          url: "{{ SENSU_URL }}"
+      register: result
+    - name: Show uploaded certificate info
+      ansible.builtin.debug:
+        var: result
+    - assert:
+        that:
+          - result is not changed
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "pipeline_integration_test_2"
+          - result.objects.0.metadata.namespace == "default"
+          - result.objects.0.metadata.created_by == "admin"
+          - result.objects.0.workflows | length == 2
+          - result.objects.0.workflows.0.name == "this_wf"
+          - result.objects.0.workflows.0.handler.name == "this_handler"
+          - result.objects.0.workflows.0.handler.type == "Handler"
+          - result.objects.0.workflows.0.filters | length == 2
+          - result.objects.0.workflows.0.filters.0.name == "this_filter_1"
+          - result.objects.0.workflows.0.filters.0.type == "EventFilter"
+          - result.objects.0.workflows.0.filters.1.name == "this_filter_2_changed"
+          - result.objects.0.workflows.0.filters.1.type == "EventFilter"
+          - result.objects.0.workflows.0.mutator.name == "this_mutator"
+          - result.objects.0.workflows.0.mutator.type == "Mutator"
+          - result.objects.0.workflows.1.name == "this_wf_2"
+          - result.objects.0.workflows.1.handler.name == "this_handler"
+          - result.objects.0.workflows.1.handler.type == "Handler"
+          - result.objects.0.workflows.1.filters | length == 2
+          - result.objects.0.workflows.1.filters.0.name == "this_filter_1"
+          - result.objects.0.workflows.1.filters.0.type == "EventFilter"
+          - result.objects.0.workflows.1.filters.1.name == "this_filter_2"
+          - result.objects.0.workflows.1.filters.1.type == "EventFilter"
+          - result.objects.0.workflows.1.mutator.name == "this_mutator"
+          - result.objects.0.workflows.1.mutator.type == "Mutator"
+
+    - name: Delete first pipeline - IDEMPOTENCE
+      pipeline:
+        auth:
+          url: "{{ SENSU_URL }}"
+        name: pipeline_integration_test
+        state: absent
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Check that idempotence didn't change anything
+      pipeline_info:
+        auth:
+          url: "{{ SENSU_URL }}"
+      register: result
+    - name: Show uploaded certificate info
+      ansible.builtin.debug:
+        var: result
+    - assert:
+        that:
+          - result is not changed
+          - result.objects | length == 1
+          - result.objects.0.metadata.name == "pipeline_integration_test_2"
+          - result.objects.0.metadata.namespace == "default"
+          - result.objects.0.metadata.created_by == "admin"
+          - result.objects.0.workflows | length == 2
+          - result.objects.0.workflows.0.name == "this_wf"
+          - result.objects.0.workflows.0.handler.name == "this_handler"
+          - result.objects.0.workflows.0.handler.type == "Handler"
+          - result.objects.0.workflows.0.filters | length == 2
+          - result.objects.0.workflows.0.filters.0.name == "this_filter_1"
+          - result.objects.0.workflows.0.filters.0.type == "EventFilter"
+          - result.objects.0.workflows.0.filters.1.name == "this_filter_2_changed"
+          - result.objects.0.workflows.0.filters.1.type == "EventFilter"
+          - result.objects.0.workflows.0.mutator.name == "this_mutator"
+          - result.objects.0.workflows.0.mutator.type == "Mutator"
+          - result.objects.0.workflows.1.name == "this_wf_2"
+          - result.objects.0.workflows.1.handler.name == "this_handler"
+          - result.objects.0.workflows.1.handler.type == "Handler"
+          - result.objects.0.workflows.1.filters | length == 2
+          - result.objects.0.workflows.1.filters.0.name == "this_filter_1"
+          - result.objects.0.workflows.1.filters.0.type == "EventFilter"
+          - result.objects.0.workflows.1.filters.1.name == "this_filter_2"
+          - result.objects.0.workflows.1.filters.1.type == "EventFilter"
+          - result.objects.0.workflows.1.mutator.name == "this_mutator"
+          - result.objects.0.workflows.1.mutator.type == "Mutator"
