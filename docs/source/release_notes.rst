@@ -1,5 +1,21 @@
 Release notes
 =============
+Version 1.14.0 -- New pipeline module added, smaller changes to datastore and user module
+--------------------------------------------
+Added support for Ansible 2.14. Added support for Alma and Rocky linux
+
+**New features:**
+
+* Added Docker file configurations for Ubuntu 20.04 and 22.04.
+* Added aditional parameters for Postgres resource to datastore module.
+* Added symlink for AlmaLinux.yml for alma linux 9 support.
+* Added docs for backends and package_name filter.
+* Added pipeline_info and pipeline module
+
+**Bug fixes:**
+
+* Added bcrypt check to user module.
+
 Version 1.13.2 -- Support for latest Ansible
 --------------------------------------------
 Added support for Ansible 2.14. Added support for Alma and Rocky linux
