@@ -89,6 +89,12 @@ _msi_lookup:
       x64: '{88C67A03-5C68-4BD9-9B63-EF953A3E7C3B}'
       x86: '{D496DB94-29CB-403C-A6B3-479474DA966B}'
     version: 6.1.4
+  6.10.0: &id001
+    build: 7172
+    product_codes:
+      x64: '{AAF706E6-6712-406F-86C6-F01E2BA2390E}'
+      x86: '{6CBA1C4F-9174-4F8C-B307-506324AF7D26}'
+    version: 6.10.0
   6.2.0:
     build: 3888
     product_codes:
@@ -311,7 +317,7 @@ _msi_lookup:
       x64: '{1A371BB5-43CC-42E3-9294-7B5A9FED5594}'
       x86: '{DFE77283-A52D-43AE-A156-3DAA47E72F69}'
     version: 6.9.1
-  6.9.2: &id001
+  6.9.2:
     build: 7020
     product_codes:
       x64: '{97A48CA8-D3E3-4602-B8E0-F505D9DDBF0F}'
