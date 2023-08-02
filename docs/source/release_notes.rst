@@ -2,7 +2,8 @@ Release notes
 =============
 Version 1.14.0 -- New pipeline module added, smaller changes to datastore and user module
 --------------------------------------------
-Added support for Ansible 2.14. Added support for Alma and Rocky linux
+
+Added pipeline module, smaller changes to datastore and user module
 
 **New features:**
 
