@@ -1,5 +1,24 @@
 ---
 releases:
+  1.14.0:
+    release_date: "2023-08-02"
+    changes:
+      release_summary: |
+        New pipeline module added, manages Sensu pipelines.
+        Smaller changes to datastore and user module.
+      minor_changes:
+        - Added Docker file configurations for Ubuntu 20.04 and 22.04
+        - Added bcrypt check to user module
+        - Added aditional parameters for Postgres resource to datastore module
+        - Added symlink for AlmaLinux.yml for alma linux 9 support
+        - Added docs for backends and package_name filter
+    modules:
+      - name: pipeline
+        description: Manage Sensu pipelines.
+        namespace: ""
+      - name: pipeline_info
+        description: List Sensu pipelines.
+        namespace: ""
   1.13.2:
     release_date: "2022-12-22"
     changes:
