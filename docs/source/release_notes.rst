@@ -2,7 +2,6 @@ Release notes
 =============
 Version 1.14.0 -- New pipeline module added, smaller changes to datastore and user module
 --------------------------------------------
-
 Added pipeline module, smaller changes to datastore and user module, solved bcrypt check bug
 
 **New features:**
