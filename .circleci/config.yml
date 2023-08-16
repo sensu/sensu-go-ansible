@@ -83,7 +83,7 @@ jobs:
         description: Ansible version to use
         type: string
     machine: &ci-machine
-      image: << parameters.image >>
+      image: ${{ matrix.image }}
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
