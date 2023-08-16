@@ -67,6 +67,7 @@ workflows:
           matrix: &devel-matrix
             parameters:
               ansible: [ devel ]
+              image_ubuntu: [ devel ]
 
       - unit_test:
           matrix: *devel-matrix
