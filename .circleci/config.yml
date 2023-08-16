@@ -22,7 +22,6 @@ workflows:
               - stable-2.13
                 ubuntu-2204:2023.07.2
 
-
       - unit_test:
           matrix: *matrix
 
@@ -38,51 +37,6 @@ workflows:
             - integration_test_git
           matrix: *matrix
 
-  cron_master:
-    triggers:
-      - schedule:
-          cron: "12 5 * * 0,3"
-          filters: { branches: { only: [ master ] } }
-    jobs:
-      - integration_test_git:
-          matrix: *matrix
-
-  cron_released:
-    triggers:
-      - schedule:
-          cron: "12 5 * * 1,4"
-          filters: { branches: { only: [ stable ] } }
-    jobs:
-      - integration_test_galaxy:
-          matrix: *matrix
-
-  cron_ansible_devel:
-    triggers:
-      - schedule:
-          cron: "12 5 * * 2,5"
-          filters: { branches: { only: [ master ] } }
-    jobs:
-      - sanity_test:
-          matrix: &devel-matrix
-            parameters:
-              ansible: [ devel ]
-
-      - unit_test:
-          matrix: *devel-matrix
-
-      - integration_test_git:
-          requires:
-            - sanity_test
-            - unit_test
-          matrix: *devel-matrix
-
-  windows_version_check:
-    triggers:
-      - schedule:
-          cron: "12 3 * * 0,2,4"
-          filters: { branches: { only: [ master ] } }
-    jobs:
-      - windows_version_check
 
 jobs:
   sanity_test:
