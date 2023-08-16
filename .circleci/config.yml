@@ -100,7 +100,7 @@ jobs:
           kind: sanity
           test_commands:
             - run: pip3 install -r sanity.requirements -r collection.requirements
-            - run: python --version
+            - run: python3 --version
             - run: ansible --version
             - run: ansible-lint --version
             - run: ansible-lint -p roles/*
