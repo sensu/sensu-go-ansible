@@ -58,10 +58,6 @@ workflows:
           matrix: *matrix
 
   cron_ansible_devel:
-    triggers:
-      - schedule:
-          cron: "12 5 * * 2,5"
-          filters: { branches: { only: [ master ] } }
     jobs:
       - sanity_test:
           matrix: &devel-matrix
