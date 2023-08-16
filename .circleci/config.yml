@@ -102,6 +102,7 @@ jobs:
             - run: pip3 install -r sanity.requirements -r collection.requirements
             - run: python --version
             - run: ansible --version
+            - run: ansible-lint --version
             - run: ansible-lint -p roles/*
             - run: make sanity
 
