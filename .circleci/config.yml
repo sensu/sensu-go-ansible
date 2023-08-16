@@ -27,6 +27,12 @@ workflows:
       - unit_test:
           matrix: *matrix
 
+      - integration_test_git:
+          requires:
+            - sanity_test
+            - unit_test
+          matrix: *matrix
+
 jobs:
   sanity_test:
     parameters:
@@ -67,6 +73,26 @@ jobs:
                 destination: coverage-report
             - store_test_results:
                 path: tests/output/junit
+
+  integration_test_git:
+    parallelism: 6
+    parameters:
+      ansible:
+        description: Ansible version to use
+        type: string
+      image_ubuntu:
+        description: Ubuntu image
+        type: string
+    machine: *ci-machine
+    working_directory: ~/sensu_go
+    steps:
+      - wrapper:
+          ansible: << parameters.ansible >>
+          kind: integration
+          test_commands:
+            - run: ansible-galaxy collection build
+            - run: ansible-galaxy collection install sensu-sensu_go-*.tar.gz
+            - run_integration_tests
 
 commands:
   run_integration_tests:
