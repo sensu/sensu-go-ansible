@@ -63,7 +63,7 @@ workflows:
           matrix: &devel-matrix
             parameters:
               ansible: [ devel ]
-              image_ubuntu: [ "ubuntu-2004:202101-01" ]
+              image_ubuntu: [ "ubuntu-2204:2023.07.2" ]
 
       - unit_test:
           matrix: *devel-matrix
