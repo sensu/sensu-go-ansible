@@ -310,7 +310,7 @@ class TestDatastoreParams(ModuleTestCase):
                 {'type': 'PostgresConfig', 'api_version': 'store/v1', 'metadata': {'name': 'my_resource'},
                     'spec':
                         {
-                            'dsn': '', 'pool_size': 0,'max_idle_conns': 0, 'batch_workers': 0, 'batch_buffer': 0,
+                            'dsn': '', 'pool_size': 0, 'max_idle_conns': 0, 'batch_workers': 0, 'batch_buffer': 0,
                             'batch_size': 0, 'enable_round_robin': False, 'strict': True}}),
 
             ("my_resource", "absent", "postgresql://user:secret@host:port/dbname", 2, 1, 1, 1, 2, 3,
