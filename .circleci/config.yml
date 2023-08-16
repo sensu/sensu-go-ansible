@@ -33,6 +33,58 @@ workflows:
             - unit_test
           matrix: *matrix
 
+      - integration_test_galaxy:
+          filters: { branches: { only: [ stable ] } }
+          requires:
+            - integration_test_git
+          matrix: *matrix
+
+  cron_master:
+    triggers:
+      - schedule:
+          cron: "12 5 * * 0,3"
+          filters: { branches: { only: [ master ] } }
+    jobs:
+      - integration_test_git:
+          matrix: *matrix
+
+  cron_released:
+    triggers:
+      - schedule:
+          cron: "12 5 * * 1,4"
+          filters: { branches: { only: [ stable ] } }
+    jobs:
+      - integration_test_galaxy:
+          matrix: *matrix
+
+  cron_ansible_devel:
+    triggers:
+      - schedule:
+          cron: "12 5 * * 2,5"
+          filters: { branches: { only: [ master ] } }
+    jobs:
+      - sanity_test:
+          matrix: &devel-matrix
+            parameters:
+              ansible: [ devel ]
+
+      - unit_test:
+          matrix: *devel-matrix
+
+      - integration_test_git:
+          requires:
+            - sanity_test
+            - unit_test
+          matrix: *devel-matrix
+
+  windows_version_check:
+    triggers:
+      - schedule:
+          cron: "12 3 * * 0,2,4"
+          filters: { branches: { only: [ master ] } }
+    jobs:
+      - windows_version_check
+
 jobs:
   sanity_test:
     parameters:
@@ -93,6 +145,35 @@ jobs:
             - run: ansible-galaxy collection build
             - run: ansible-galaxy collection install sensu-sensu_go-*.tar.gz
             - run_integration_tests
+
+  integration_test_galaxy:
+    parallelism: 6
+    parameters:
+      ansible:
+        description: Ansible version to use
+        type: string
+      image_ubuntu:
+        description: Ubuntu image
+        type: string
+    machine: *ci-machine
+    working_directory: ~/sensu_go
+    steps:
+      - wrapper:
+          ansible: << parameters.ansible >>
+          kind: integration
+          test_commands:
+            - run: |
+                ansible-galaxy collection install \
+                  sensu.sensu_go:$(grep version: galaxy.yml | cut -d" " -f2)
+            - run_integration_tests
+
+  windows_version_check:
+    docker:
+      - image: cimg/python:3.10.6
+    steps:
+      - checkout
+      - run: pip3 install pyyaml
+      - run: make check_windows_versions
 
 commands:
   run_integration_tests:
