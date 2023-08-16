@@ -99,6 +99,7 @@ jobs:
           ansible: << parameters.ansible >>
           kind: sanity
           test_commands:
+            - run: python --version
             - run: make sanity
 
   unit_test:
