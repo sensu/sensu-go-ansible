@@ -99,9 +99,8 @@ jobs:
           ansible: << parameters.ansible >>
           kind: sanity
           test_commands:
-            - run: python --version
             - run: pip3 install -r sanity.requirements -r collection.requirements
-            - run: ansible-lint
+            - run: ansible-lint -p roles/*
             - run: make sanity
 
   unit_test:
