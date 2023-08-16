@@ -24,6 +24,9 @@ workflows:
               - ansible: "stable-2.14"
                 image_ubuntu: "ubuntu-2004:202101-01"
 
+      - unit_test:
+          matrix: *matrix
+
 jobs:
   sanity_test:
     parameters:
@@ -42,6 +45,28 @@ jobs:
           kind: sanity
           test_commands:
             - run: make sanity
+
+  unit_test:
+    parameters:
+      ansible:
+        description: Ansible version to use
+        type: string
+      image_ubuntu:
+        description: Ubuntu image
+        type: string
+    machine: *ci-machine
+    working_directory: ~/ansible_collections/sensu/sensu_go
+    steps:
+      - wrapper:
+          ansible: << parameters.ansible >>
+          kind: sanity
+          test_commands:
+            - run: make units
+            - store_artifacts:
+                path: tests/output/reports/coverage
+                destination: coverage-report
+            - store_test_results:
+                path: tests/output/junit
 
 commands:
   run_integration_tests:
