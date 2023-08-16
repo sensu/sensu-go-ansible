@@ -47,7 +47,6 @@ jobs:
         description: Ansible version to use
         type: string
     machine: &ci-machine
-      image: << parameters.image_ubuntu >>
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
