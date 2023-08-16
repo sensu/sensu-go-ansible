@@ -9,10 +9,10 @@ workflows:
             parameters:
               # ansible is branch name in ansible/ansible git repo
               ansible: [stable-2.9, stable-2.10, stable-2.11, stable-2.12, stable-2.13, stable-2.14]
-              image: [ubuntu-2004:202101-01, ubuntu-2204:2023.07.2]
+              image_ubuntu: [ubuntu-2004:202101-01, ubuntu-2204:2023.07.2]
             inlcude:
-              - image: ubuntu-2004:202101-01
-              - image: ubuntu-2204:2023.07.2
+              - image_ubuntu: ubuntu-2004:202101-01
+              - image_ubuntu: ubuntu-2204:2023.07.2
                 parameters.ansible: stable-2.14
 
 
@@ -84,7 +84,7 @@ jobs:
         description: Ansible version to use
         type: string
     machine: &ci-machine
-      image: ${{ matrix.image }}
+      image: ${{ matrix.image_ubuntu }}
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
