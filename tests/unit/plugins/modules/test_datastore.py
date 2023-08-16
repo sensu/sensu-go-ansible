@@ -305,12 +305,12 @@ class TestDatastoreParams(ModuleTestCase):
                             'max_idle_conns': 0, 'batch_workers': 0, 'batch_buffer': 0, 'batch_size': 0,
                             'enable_round_robin': False, 'strict': False}}),
             # Absent
-            ("my_resource", "absent", "", None, None, None, None, None, None,
+            ("my_resource", "absent", "", None, None, 0, None, None, None,
              False, True,
                 {'type': 'PostgresConfig', 'api_version': 'store/v1', 'metadata': {'name': 'my_resource'},
                     'spec':
                         {
-                            'dsn': '', 'enable_round_robin': False, 'strict': True}}),
+                            'dsn': '', 'max_idle_conns': 0, 'enable_round_robin': False, 'strict': True}}),
 
             ("my_resource", "absent", "postgresql://user:secret@host:port/dbname", 2, 1, 1, 1, 2, 3,
              False, True,
