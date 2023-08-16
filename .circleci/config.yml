@@ -30,6 +30,9 @@ jobs:
       ansible:
         description: Ansible version to use
         type: string
+      image_ubuntu: 
+        description: Ubuntu image
+        type: string
     machine: &ci-machine
       image: << parameters.image_ubuntu >>
     working_directory: ~/ansible_collections/sensu/sensu_go
