@@ -471,21 +471,16 @@ class TestDoSecretsDiffer:
 class TestDeprecate:
     def test_ansible_lt_2_9_10(self, mocker):
         module = mocker.MagicMock()
-        module.deprecate.side_effect = (
-            TypeError("Simulating Ansible 2.9.9 and older"),
-            None,  # Success, since no exception is raised
-        )
+        module.deprecate.side_effect = [TypeError("Simulating Ansible 2.9.9 and older"), None]
 
         utils.deprecate(module, "Test msg", "3.2.1")
 
         assert module.deprecate.call_count == 2
-        assert module.deprecate.called_once_with("Test msg", version="3.2.1")
+        module.deprecate.assert_called_with("Test msg", version="3.2.1")
 
     def test_ansible_ge_2_9_10(self, mocker):
         module = mocker.MagicMock()
 
         utils.deprecate(module, "Test msg", "3.2.1")
 
-        assert module.deprecate.called_once_with(
-            "Test msg", version="3.2.1", collection_name="sensu.sensu_go",
-        )
+        module.deprecate.assert_called_once_with("Test msg", version="3.2.1", collection_name="sensu.sensu_go")
