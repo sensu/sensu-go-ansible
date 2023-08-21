@@ -479,13 +479,13 @@ class TestDeprecate:
         utils.deprecate(module, "Test msg", "3.2.1")
 
         assert module.deprecate.call_count == 2
-        assert module.deprecate.called_once_with("Test msg", version="3.2.1")
+        assert module.deprecate.assert_called_once_with("Test msg", version="3.2.1")
 
     def test_ansible_ge_2_9_10(self, mocker):
         module = mocker.MagicMock()
 
         utils.deprecate(module, "Test msg", "3.2.1")
 
-        assert module.deprecate.called_once_with(
+        assert module.deprecate.assert_called_once_with(
             "Test msg", version="3.2.1", collection_name="sensu.sensu_go",
         )
