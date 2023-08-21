@@ -29,13 +29,29 @@ description:
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements
+  - sensu.sensu_go.auth
   - sensu.sensu_go.name
+  - sensu.sensu_go.namespace
+  - sensu.sensu_go.labels
+  - sensu.sensu_go.annotations
 options:
   version:
     description:
       - Version number of the asset to install.
     type: str
     required: true
+  rename:
+    description:
+      - The name that will be used when adding the asset to Sensu.
+      - If not present, value of the I(name) parameter will be used.
+    type: str
+  on_remote:
+    description:
+      - If set to C(true), module will download asset defnition on remote host.
+      - If not set or set to C(false), ansible downloads asset definition
+        on control node.
+    type: bool
+    version_added: 1.13.0
 notes:
   - I(labels) and I(annotations) values are merged with the values obtained
     from Bonsai. Values passed-in as parameters take precedence over the
