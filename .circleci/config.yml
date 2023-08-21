@@ -103,8 +103,8 @@ jobs:
             - run: python3 --version
             - run: ansible --version
             - run: ansible-lint --version
-            - run: ansible-lint -p roles/*
             - run: make sanity
+            - run: ansible-lint -p roles/*
 
   unit_test:
     parameters:
