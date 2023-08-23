@@ -23,6 +23,8 @@ workflows:
                 image_ubuntu: "ubuntu-2204:2023.07.2"
               - ansible: "stable-2.14"
                 image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.15"
+                image_ubuntu: "ubuntu-2004:202101-01"
 
       - unit_test:
           matrix: *matrix
