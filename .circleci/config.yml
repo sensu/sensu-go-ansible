@@ -58,6 +58,10 @@ workflows:
           matrix: *matrix
 
   cron_ansible_devel:
+    triggers:
+      - schedule:
+          cron: "12 5 * * 2,5"
+          filters: { branches: { only: [ master ] } }
     jobs:
       - sanity_test_devel:
           matrix: &devel-matrix
@@ -99,12 +103,7 @@ jobs:
           ansible: << parameters.ansible >>
           kind: sanity
           test_commands:
-            - run: pip3 install -r sanity.requirements -r collection.requirements
-            - run: python3 --version
-            - run: ansible --version
-            - run: ansible-lint --version
             - run: make sanity
-            - run: ansible-lint -p roles/*
 
   sanity_test_devel:
     parameters:
@@ -124,7 +123,8 @@ jobs:
             - run: pip3 install -r sanity.requirements -r collection.requirements
             - run: python3 --version
             - run: ansible --version
-            # ansible-lint can't find roles for some reason; We run sanity check without roles for devel
+            # ansible-lint can't find roles for some reason;
+            # pylint inside ansible-test finds them ...
             - run: ansible-test sanity
 
   unit_test:
