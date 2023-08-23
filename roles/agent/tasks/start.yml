@@ -1,6 +1,6 @@
 ---
 - name: Start sensu-agent (Linux)
-  ansible.builtin.systemd_service:
+  ansible.builtin.service:
     name: sensu-agent
     state: started
     enabled: true
