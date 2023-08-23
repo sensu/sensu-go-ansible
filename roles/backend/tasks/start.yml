@@ -1,12 +1,12 @@
 ---
 - name: Start sensu-backend
-  service:
+  ansible.builtin.service:
     name: sensu-backend
     state: started
     enabled: true
 
 - name: Check for sensu-backend init command
-  command:
+  ansible.builtin.command:
     cmd: sensu-backend init -h
   register: init_command_test
   failed_when: false  # Never fail, we just want to know if init exists.
@@ -14,7 +14,7 @@
   check_mode: false  # We do not modify the system, so we can always run
 
 - name: Initialize backend
-  command:
+  ansible.builtin.command:
     cmd: sensu-backend init
   environment:
     SENSU_BACKEND_CLUSTER_ADMIN_USERNAME: "{{ cluster_admin_username }}"

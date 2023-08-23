@@ -1,8 +1,8 @@
 ---
 - name: Configure agent (Linux)
-  include_tasks: linux/configure.yml
+  ansible.builtin.include_tasks: linux/configure.yml
   when: ansible_facts.os_family != "Windows"
 
 - name: Configure agent (Windows)
-  include_tasks: windows/configure.yml
+  ansible.builtin.include_tasks: windows/configure.yml
   when: ansible_facts.os_family == "Windows"

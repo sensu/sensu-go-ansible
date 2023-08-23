@@ -1,9 +1,9 @@
 ---
 - name: Load Linux locations
-  include_vars: linux.yml
+  ansible.builtin.include_vars: linux.yml
 
 - name: Install agent communication PKI
-  copy:
+  ansible.builtin.copy:
     src: "{{ agent_trusted_ca_file }}"
     dest: "{{ trusted_ca_file_path }}"
     # Keep this in sync with what the backend service is running as from packager
@@ -13,7 +13,7 @@
   when: agent_trusted_ca_file is defined
 
 - name: Configure sensu-agent ({{ agent_config_path }})
-  template:
+  ansible.builtin.template:
     src: agent.yml.j2
     dest: "{{ agent_config_path }}"
     owner: *sensu_user

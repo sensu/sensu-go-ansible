@@ -1,10 +1,10 @@
 ---
 - name: Include distro-specific vars ({{ ansible_distribution }})
-  include_vars:
+  ansible.builtin.include_vars:
     file: '{{ ansible_distribution }}.yml'
 
 - name: Add yum repository
-  yum_repository:
+  ansible.builtin. yum_repository:
     name: sensu_{{ channel }}
     description: sensu_{{ channel }}
     file: sensu
@@ -18,7 +18,7 @@
     metadata_expire: '300'
 
 - name: Add yum source repository
-  yum_repository:
+  ansible.builtin.yum_repository:
     name: sensu_{{ channel }}-source
     description: sensu_{{ channel }}-source
     file: sensu

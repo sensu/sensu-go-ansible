@@ -1,13 +1,13 @@
 ---
 - name: Restart Linux agent
-  service:
+  ansible.builtin.service:
     name: sensu-agent
     state: restarted
   when: manage_sensu_agent_service | default(False)
 
 - name: Restart Windows agent
   action:
-    module: win_service
+    module: ansible.windows.win_service
     name: SensuAgent
     state: restarted
   when: manage_sensu_agent_service | default(False)
