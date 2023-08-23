@@ -7,8 +7,8 @@
   when: ansible_facts.os_family != "Windows"
 
 - name: Start sensu-agent (Windows)
-  ansible.builtin.action:
-    module: win_service
+  action:
+    module: ansible.windows.win_service
     name: SensuAgent
     path: C:\Program Files\sensu\sensu-agent\bin\sensu-agent.exe service run
     state: started

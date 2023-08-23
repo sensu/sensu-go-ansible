@@ -4,7 +4,7 @@
     file: '{{ ansible_distribution }}.yml'
 
 - name: Add yum repository
-  ansible.builtin. yum_repository:
+  ansible.builtin.yum_repository:
     name: sensu_{{ channel }}
     description: sensu_{{ channel }}
     file: sensu
