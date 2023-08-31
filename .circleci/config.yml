@@ -167,7 +167,7 @@ jobs:
           command: |
             apt-get update
             apt-get install -y dbus
-            service dbus start  # Start D-Bus service
+          #  service dbus start  # Start D-Bus service
       - wrapper:
           ansible: << parameters.ansible >>
           kind: integration
