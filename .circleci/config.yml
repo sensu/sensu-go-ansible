@@ -33,13 +33,55 @@ workflows:
           requires:
             - sanity_test
             - unit_test
-          matrix: *matrix
+          matrix:
+            parameters:
+              # ansible is branch name in ansible/ansible git repo
+              ansible: ["stable-2.9", "stable-2.10", "stable-2.11", "stable-2.12", "stable-2.13", "stable-2.14", "stable-2.15"]
+              image_ubuntu: ["ubuntu-2004:202101-01", "ubuntu-2204:2023.07.2"]
+            exclude:
+              - ansible: "stable-2.9"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.10"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.11"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.12"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.13"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.14"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.15"
+                image_ubuntu: "ubuntu-2004:202101-01"
+              - ansible: "stable-2.15"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
 
       - integration_test_galaxy:
           filters: { branches: { only: [ stable ] } }
           requires:
             - integration_test_git
-          matrix: *matrix
+          matrix:
+            parameters:
+              # ansible is branch name in ansible/ansible git repo
+              ansible: ["stable-2.9", "stable-2.10", "stable-2.11", "stable-2.12", "stable-2.13", "stable-2.14", "stable-2.15"]
+              image_ubuntu: ["ubuntu-2004:202101-01", "ubuntu-2204:2023.07.2"]
+            exclude:
+              - ansible: "stable-2.9"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.10"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.11"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.12"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.13"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.14"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.15"
+                image_ubuntu: "ubuntu-2004:202101-01"
+              - ansible: "stable-2.15"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
 
   cron_master:
     triggers:
