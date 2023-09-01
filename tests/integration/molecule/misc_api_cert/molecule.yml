@@ -15,6 +15,7 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    cgroupns_mode: host
     etc_hosts:
       # sensu-api is the hostname used in the test certificate
       sensu-api: 127.0.0.1

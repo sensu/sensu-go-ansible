@@ -9,6 +9,7 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    cgroupns_mode: host
 
 # Upstream container - just to populate the inventory
 provisioner:
