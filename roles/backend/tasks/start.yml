@@ -1,6 +1,6 @@
 ---
 - name: Start sensu-backend
-  ansible.builtin.systemd:
+  ansible.builtin.service:
     name: sensu-backend
     state: started
     enabled: true
