@@ -1,4 +1,5 @@
-molecule ~= 5.0.1
+molecule ~= 6.0.1; python_version >= "3.10"
+molecule ~= 5.0.1; python_version < "3.10"
 molecule-docker ~= 2.1.0
 pytest
 pytest-molecule ~= 2.0.0

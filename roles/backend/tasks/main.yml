@@ -1,16 +1,16 @@
 ---
 - name: Install sensu-go-backend binary
-  include_role:
+  ansible.builtin.include_role:
     name: install
   vars:
-    components: [sensu-go-backend]
+    components: [sensu-go-backend] # noqa: var-naming[no-role-prefix]
 
 - name: Inform restart handler that we are in charge of the backend service
-  set_fact:
+  ansible.builtin.set_fact:
     manage_sensu_backend_service: true
 
 - name: Configure the backend
-  include_tasks: configure.yml
+  ansible.builtin.include_tasks: configure.yml
 
 - name: Start the backend
-  include_tasks: start.yml
+  ansible.builtin.include_tasks: start.yml

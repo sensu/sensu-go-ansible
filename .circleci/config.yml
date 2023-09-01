@@ -8,14 +8,23 @@ workflows:
           matrix: &matrix
             parameters:
               # ansible is branch name in ansible/ansible git repo
-              ansible:
-                - stable-2.9
-                - stable-2.10
-                - stable-2.11
-                - stable-2.12
-                - stable-2.13
-                - stable-2.14
-
+              ansible: ["stable-2.9", "stable-2.10", "stable-2.11", "stable-2.12", "stable-2.13", "stable-2.14", "stable-2.15"]
+              image_ubuntu: ["ubuntu-2004:202101-01", "ubuntu-2204:2023.07.2"]
+            exclude:
+              - ansible: "stable-2.9"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.10"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.11"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.12"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.13"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.14"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.15"
+                image_ubuntu: "ubuntu-2004:202101-01"
 
       - unit_test:
           matrix: *matrix
@@ -24,13 +33,51 @@ workflows:
           requires:
             - sanity_test
             - unit_test
-          matrix: *matrix
+          matrix:
+            parameters:
+              # ansible is branch name in ansible/ansible git repo
+              ansible: ["stable-2.9", "stable-2.10", "stable-2.11", "stable-2.12", "stable-2.13", "stable-2.14", "stable-2.15"]
+              image_ubuntu: ["ubuntu-2004:202101-01", "ubuntu-2204:2023.07.2"]
+            exclude:
+              - ansible: "stable-2.9"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.10"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.11"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.12"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.13"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.14"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.15"
+                image_ubuntu: "ubuntu-2004:202101-01"
 
       - integration_test_galaxy:
           filters: { branches: { only: [ stable ] } }
           requires:
             - integration_test_git
-          matrix: *matrix
+          matrix:
+            parameters:
+              # ansible is branch name in ansible/ansible git repo
+              ansible: ["stable-2.9", "stable-2.10", "stable-2.11", "stable-2.12", "stable-2.13", "stable-2.14", "stable-2.15"]
+              image_ubuntu: ["ubuntu-2004:202101-01", "ubuntu-2204:2023.07.2"]
+            exclude:
+              - ansible: "stable-2.9"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.10"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.11"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.12"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.13"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.14"
+                image_ubuntu: "ubuntu-2204:2023.07.2"
+              - ansible: "stable-2.15"
+                image_ubuntu: "ubuntu-2004:202101-01"
 
   cron_master:
     triggers:
@@ -56,17 +103,18 @@ workflows:
           cron: "12 5 * * 2,5"
           filters: { branches: { only: [ master ] } }
     jobs:
-      - sanity_test:
+      - sanity_test_devel:
           matrix: &devel-matrix
             parameters:
               ansible: [ devel ]
+              image_ubuntu: [ "ubuntu-2204:2023.07.2" ]
 
       - unit_test:
           matrix: *devel-matrix
 
       - integration_test_git:
           requires:
-            - sanity_test
+            - sanity_test_devel
             - unit_test
           matrix: *devel-matrix
 
@@ -84,8 +132,11 @@ jobs:
       ansible:
         description: Ansible version to use
         type: string
+      image_ubuntu: 
+        description: Ubuntu image
+        type: string
     machine: &ci-machine
-      image: ubuntu-2004:202101-01
+      image: << parameters.image_ubuntu >>
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper:
@@ -94,10 +145,35 @@ jobs:
           test_commands:
             - run: make sanity
 
+  sanity_test_devel:
+    parameters:
+      ansible:
+        description: Ansible version to use
+        type: string
+      image_ubuntu: 
+        description: Ubuntu image
+        type: string
+    machine: *ci-machine
+    working_directory: ~/ansible_collections/sensu/sensu_go
+    steps:
+      - wrapper:
+          ansible: << parameters.ansible >>
+          kind: sanity
+          test_commands:
+            - run: pip3 install -r sanity.requirements -r collection.requirements
+            - run: python3 --version
+            - run: ansible --version
+            # ansible-lint can't find roles for some reason;
+            # pylint inside ansible-test finds them ...
+            - run: ansible-test sanity
+
   unit_test:
     parameters:
       ansible:
         description: Ansible version to use
+        type: string
+      image_ubuntu:
+        description: Ubuntu image
         type: string
     machine: *ci-machine
     working_directory: ~/ansible_collections/sensu/sensu_go
@@ -119,9 +195,17 @@ jobs:
       ansible:
         description: Ansible version to use
         type: string
+      image_ubuntu:
+        description: Ubuntu image
+        type: string
     machine: *ci-machine
     working_directory: ~/sensu_go
     steps:
+      - run:
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y dbus
+          #  service dbus start  # Start D-Bus service
       - wrapper:
           ansible: << parameters.ansible >>
           kind: integration
@@ -135,6 +219,9 @@ jobs:
     parameters:
       ansible:
         description: Ansible version to use
+        type: string
+      image_ubuntu:
+        description: Ubuntu image
         type: string
     machine: *ci-machine
     working_directory: ~/sensu_go

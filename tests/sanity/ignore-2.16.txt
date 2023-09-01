@@ -1,0 +1,2 @@
+plugins/modules/bonsai_asset.py validate-modules:nonexistent-parameter-documented # This is not a real module, more helper for the asset module
+tests/unit/plugins/module_utils/test_utils.py pylint!skip # Issue with depricate module in ansible devel version

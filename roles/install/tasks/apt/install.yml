@@ -1,6 +1,6 @@
 ---
 - name: Install component
-  apt:
+  ansible.builtin.apt:
     name: "{{ 'apt' | sensu.sensu_go.package_name(item, version, build) }}"
     state: "{{ (version == 'latest') | ternary('latest', 'present') }}"
     # FIXME(@tadeboro): This is a temporary "fix" for
