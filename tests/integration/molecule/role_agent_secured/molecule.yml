@@ -1,7 +1,7 @@
 ---
 platforms:
   - name: centos
-    image: quay.io/xlab-steampunk/sensu-go-tests-centos:7
+    image: quay.io/xlab-steampunk/sensu-go-tests-centos:8
     pre_build_image: true
     pull: true
     groups: [agents]
