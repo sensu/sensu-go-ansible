@@ -9,8 +9,8 @@ scenario:
 platforms:
   - name: backend
     image: quay.io/xlab-steampunk/sensu-go-tests-centos:7
-    pre_build_image: false
-    pull: false
+    pre_build_image: true
+    pull: true
     override_command: false
     privileged: true
     volumes:
