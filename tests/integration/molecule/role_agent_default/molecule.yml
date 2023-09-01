@@ -17,7 +17,7 @@ platforms:
     override_command: false
     privileged: true
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
     cgroupns_mode: host
 
 # Upstream container - just to populate the inventory
