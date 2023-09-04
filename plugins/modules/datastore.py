@@ -43,6 +43,7 @@ options:
       - The maximum number of connections to hold in the PostgreSQL connection
         pool.
     type: int
+    default: 0
   max_conn_lifetime:
     description:
       - Maximum time a connection can persist before being destroyed.

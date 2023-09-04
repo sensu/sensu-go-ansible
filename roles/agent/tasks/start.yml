@@ -1,6 +1,6 @@
 ---
 - name: Start sensu-agent (Linux)
-  service:
+  ansible.builtin.service:
     name: sensu-agent
     state: started
     enabled: true
@@ -8,7 +8,7 @@
 
 - name: Start sensu-agent (Windows)
   action:
-    module: win_service
+    module: ansible.windows.win_service
     name: SensuAgent
     path: C:\Program Files\sensu\sensu-agent\bin\sensu-agent.exe service run
     state: started

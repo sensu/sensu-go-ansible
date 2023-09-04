@@ -1,6 +1,6 @@
 ---
 - name: Install etcd communication PKI
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.source }}"
     dest: "/etc/sensu/{{ item.filename }}"
     # Keep this in sync with what the backend service is running as from packager
@@ -27,7 +27,7 @@
         etcd_peer_key_file is defined
 
 - name: Install API communication PKI
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.source }}"
     dest: "/etc/sensu/{{ item.filename }}"
     owner: *sensu_user
@@ -45,7 +45,7 @@
         api_trusted_ca_file is defined
 
 - name: Install dashboard communication PKI
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.source }}"
     dest: "/etc/sensu/{{ item.filename }}"
     owner: *sensu_user
@@ -61,7 +61,7 @@
   when: dashboard_cert_file is defined or dashboard_key_file is defined
 
 - name: Configure sensu-backend (/etc/sensu/backend.yml)
-  template:
+  ansible.builtin.template:
     src: backend.yml.j2
     dest: /etc/sensu/backend.yml
     owner: *sensu_user
