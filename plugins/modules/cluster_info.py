@@ -21,7 +21,7 @@ short_description: List available Sensu Go clusters
 description:
   - Retrieve information about Sensu Go clusters.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/operations/deploy-sensu/cluster-sensu/).
+    U(https://docs.sensu.io/sensu-go/latest/operations/control-access/rbac/#cluster-role-bindings).
 version_added: 1.9.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

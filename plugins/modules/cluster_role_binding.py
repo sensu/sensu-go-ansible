@@ -25,7 +25,7 @@ short_description: Manage Sensu cluster role bindings
 description:
   - Create, update or delete Sensu cluster role binding.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#role-bindings-and-cluster-role-bindings).
+    U(https://docs.sensu.io/sensu-go/latest/operations/control-access/rbac/#cluster-role-bindings).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

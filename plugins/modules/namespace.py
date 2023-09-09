@@ -25,7 +25,7 @@ short_description: Manage Sensu namespaces
 description:
   - Create, update or delete a Sensu namespace.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces).
+    U(https://docs.sensu.io/sensu-go/latest/operations/control-access/namespaces/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

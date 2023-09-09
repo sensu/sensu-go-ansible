@@ -11,7 +11,7 @@ argument_specs:
           - Any option that is valid for the Sensu Go agent version we are
             installing.
           - All valid options are listed at
-            U(https://docs.sensu.io/sensu-go/latest/reference/agent/#configuration).
+            U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-schedule/agent/#general-configuration).
           - Role copies the key-value pairs from the I(agent_config) variable
             verbatim to the configuration file. This means that we must copy
             the key names B(exactly) as they appear in the configuration

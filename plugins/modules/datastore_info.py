@@ -22,7 +22,7 @@ short_description: List external Sensu datastore providers
 description:
   - Retrieve information about external Sensu datastores.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/datastore/).
+    U(https://docs.sensu.io/sensu-go/latest/operations/deploy-sensu/datastore/).
 version_added: 1.1.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

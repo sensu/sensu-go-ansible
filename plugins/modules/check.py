@@ -26,7 +26,7 @@ short_description: Manage Sensu checks
 description:
   - Create, update or delete Sensu Go check.
   - For more information, refer to the Sensu Go documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/checks/).
+    U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-schedule/checks/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

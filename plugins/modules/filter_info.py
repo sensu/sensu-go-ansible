@@ -25,7 +25,7 @@ short_description: List Sensu info
 description:
   - Retrieve information about Sensu filters.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/filters/).
+    U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-filter/filters/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

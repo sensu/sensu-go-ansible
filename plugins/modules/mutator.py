@@ -25,7 +25,7 @@ short_description: Manage Sensu mutators
 description:
   - Create, update or delete Sensu mutator.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/mutators/).
+    U(https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-transform/mutators/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements

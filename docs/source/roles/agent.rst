@@ -26,7 +26,7 @@ Go agent version we are installing. All valid options are listed in the
 `official Sensu documentation`_.
 
 .. _official Sensu documentation:
-   https://docs.sensu.io/sensu-go/latest/reference/agent/#configuration
+   https://docs.sensu.io/sensu-go/latest/observability-pipeline/observe-schedule/agent/#general-configuration
 
 .. note::
 

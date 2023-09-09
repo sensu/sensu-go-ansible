@@ -24,7 +24,7 @@ short_description: List Sensu namespaces
 description:
   - Retrieve information about Sensu namespaces.
   - For more information, refer to the Sensu documentation at
-    U(https://docs.sensu.io/sensu-go/latest/reference/rbac/#namespaces).
+    U(https://docs.sensu.io/sensu-go/latest/operations/control-access/namespaces/).
 version_added: 1.0.0
 extends_documentation_fragment:
   - sensu.sensu_go.requirements
