@@ -46,7 +46,7 @@ options:
           - This replaces I(auth.user) and I(auth.password) parameters.
           - For more information about the API key, refer to the official
             Sensu documentation at
-            U(https://docs.sensu.io/sensu-go/latest/guides/use-apikey-feature/).
+            U(https://docs.sensu.io/sensu-go/latest/operations/control-access/use-apikeys/).
         type: str
         version_added: 1.3.0
       verify:
