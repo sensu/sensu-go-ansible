@@ -141,9 +141,17 @@ options:
       - opentsdb_line
   output_metric_handlers:
     description:
-      - List of handlers which receive check results. I'm not sure why this exists.
+      - List of handlers which receive check results.
     type: list
     elements: str
+  output_metric_tags:
+    description:
+      - Custom tags to enrich metric points produced by check output metric
+        extraction.
+      - See check metrics example below for more information on exact mapping
+        structure.
+    type: list
+    elements: dict
   round_robin:
     description:
       -  An array of environment variables to use with command execution.
@@ -219,6 +227,21 @@ EXAMPLES = '''
       critical:
         - failing-hook
         - always-run-this-hook
+
+- name: Check that collects metrics
+  sensu.sensu_go.check:
+    name: check
+    command: check-cpu.sh -w 75 -c 90
+    subscriptions:
+      - checks
+    interval: 30
+    output_metric_format: nagios_perfdata
+    output_metric_handlers:
+      - influxdb
+    output_metric_tags:
+      - name: sensu_check_name
+        value: check
+    publish: yes
 
 - name: Remove check
   sensu.sensu_go.check:
@@ -323,6 +346,7 @@ def build_api_payload(params):
         'low_flap_threshold',
         'output_metric_format',
         'output_metric_handlers',
+        'output_metric_tags',
         'proxy_entity_name',
         'publish',
         'round_robin',
@@ -422,6 +446,10 @@ def main():
             ),
             output_metric_handlers=dict(
                 type='list', elements='str',
+            ),
+            output_metric_tags=dict(
+                type='list', elements='dict',
+                #type='dict',
             ),
             round_robin=dict(
                 type='bool'
