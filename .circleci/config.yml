@@ -8,23 +8,23 @@ workflows:
           matrix: &matrix
             parameters:
               # ansible is branch name in ansible/ansible git repo
-              ansible: ["stable-2.9", "stable-2.10", "stable-2.11", "stable-2.12", "stable-2.13", "stable-2.14", "stable-2.15"]
-              image_ubuntu: ["ubuntu-2004:202101-01", "ubuntu-2204:2023.07.2"]
+              ansible: ["stable-2.9", "stable-2.10", "stable-2.11", "stable-2.12", "stable-2.13", "stable-2.14", "stable-2.15", "stable-2.16", "stable-2.17", "stable-2.18", "stable-2.19"]
+              image_ubuntu: ["ubuntu-2204:2023.07.2", "ubuntu-2404:2025.04.1"]
             exclude:
               - ansible: "stable-2.9"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.10"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.11"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.12"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.13"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.14"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.15"
-                image_ubuntu: "ubuntu-2004:202101-01"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
 
       - unit_test:
           matrix: *matrix
@@ -36,25 +36,23 @@ workflows:
           matrix: &integration_matrix
             parameters:
               # ansible is branch name in ansible/ansible git repo
-              ansible: ["stable-2.9", "stable-2.10", "stable-2.11", "stable-2.12", "stable-2.13", "stable-2.14", "stable-2.15"]
-              image_ubuntu: ["ubuntu-2004:202101-01", "ubuntu-2204:2023.07.2"]
+              ansible: ["stable-2.9", "stable-2.10", "stable-2.11", "stable-2.12", "stable-2.13", "stable-2.14", "stable-2.15", "stable-2.16", "stable-2.17", "stable-2.18", "stable-2.19"]
+              image_ubuntu: ["ubuntu-2204:2023.07.2", "ubuntu-2404:2025.04.1"]
             exclude:
               - ansible: "stable-2.9"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.10"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.11"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.12"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.13"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.14"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
               - ansible: "stable-2.15"
-                image_ubuntu: "ubuntu-2004:202101-01"
-              - ansible: "stable-2.15"
-                image_ubuntu: "ubuntu-2204:2023.07.2"
+                image_ubuntu: "ubuntu-2404:2025.04.1"
 
       - integration_test_galaxy:
           filters: { branches: { only: [ stable ] } }
@@ -90,7 +88,7 @@ workflows:
           matrix: &devel-matrix
             parameters:
               ansible: [ devel ]
-              image_ubuntu: [ "ubuntu-2204:2023.07.2" ]
+              image_ubuntu: [ "ubuntu-2404:2025.04.1" ]
 
       - unit_test:
           matrix: *devel-matrix
