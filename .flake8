@@ -17,7 +17,9 @@ exclude =
     # about.
     tests/output,
     # Exclude virtual environment
-    venv
+    venv,
+    # Exclude built collection directory
+    .ansible
 
 per-file-ignores =
     # Modules have their imports listed after the metadata.
