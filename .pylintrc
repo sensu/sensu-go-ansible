@@ -1,0 +1,20 @@
+[MASTER]
+# Disable specific pylint checks
+disable=
+    unused-import,
+    used-before-assignment
+
+# Or be more specific with file patterns
+[MESSAGES CONTROL]
+disable=
+    unused-import,
+    used-before-assignment
+
+# Ignore specific files
+[MASTER]
+ignore=venv,.ansible
+
+# Ignore specific patterns
+ignore-patterns=
+    .ansible/.*
+    venv/.*
