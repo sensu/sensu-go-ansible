@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2019, XLAB Steampunk <steampunk@xlab.si>
 #
@@ -114,6 +113,36 @@ def main():
             version=dict(
                 type="str",
                 required=True,
+            ),
+            rename=dict(
+                type="str",
+            ),
+            on_remote=dict(
+                type="bool",
+                default=False,
+            ),
+            namespace=dict(
+                type="str",
+                default="default",
+            ),
+            labels=dict(
+                type="dict",
+                default={},
+            ),
+            annotations=dict(
+                type="dict",
+                default={},
+            ),
+            auth=dict(
+                type="dict",
+                options=dict(
+                    user=dict(type="str", default="admin"),
+                    password=dict(type="str", default="P@ssw0rd!"),
+                    url=dict(type="str", default="http://localhost:8080"),
+                    api_key=dict(type="str"),
+                    verify=dict(type="bool", default=True),
+                    ca_path=dict(type="str"),
+                ),
             ),
         ),
     )

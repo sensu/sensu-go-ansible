@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2019, Cameron Hurst <cahurst@cisco.com>
 # Copyright: (c) 2019, XLAB Steampunk <steampunk@xlab.si>

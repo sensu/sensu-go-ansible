@@ -15,8 +15,6 @@ from . import errors, http
 
 
 class Client:
-    BAD_VERSION = version.StrictVersion("9999.99.99")
-
     def __init__(self, address, username, password, api_key, verify, ca_path):
         self.address = address.rstrip("/")
         self.username = username
@@ -27,6 +25,10 @@ class Client:
 
         self._auth_header = None  # Login when/if required
         self._version = None  # Set version only if the consumer needs it
+
+    @property
+    def BAD_VERSION(self):
+        return version.StrictVersion("9999.99.99")
 
     @property
     def auth_header(self):
