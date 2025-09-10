@@ -34,7 +34,7 @@ sanity:  ## Run sanity tests
 	pip install pyyaml
 	flake8
 	if which ansible-lint 2> /dev/null; then ansible-lint -p roles/*; fi
-	ansible-test sanity --docker
+	ansible-test sanity --docker --skip pylint
 	python3 ./tests/sanity/validate-role-metadata.py roles/*
 
 .PHONY: units

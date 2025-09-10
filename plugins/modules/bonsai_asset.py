@@ -119,7 +119,6 @@ def main():
             ),
             on_remote=dict(
                 type="bool",
-                default=False,
             ),
             namespace=dict(
                 type="str",
@@ -137,11 +136,11 @@ def main():
                 type="dict",
                 options=dict(
                     user=dict(type="str", default="admin"),
-                    password=dict(type="str", default="P@ssw0rd!"),
+                    password=dict(type="str", default="P@ssw0rd!", no_log=True),
                     url=dict(type="str", default="http://localhost:8080"),
-                    api_key=dict(type="str"),
+                    api_key=dict(type="str", no_log=True),
                     verify=dict(type="bool", default=True),
-                    ca_path=dict(type="str"),
+                    ca_path=dict(type="path"),
                 ),
             ),
         ),
