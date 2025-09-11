@@ -19,7 +19,7 @@ def set_module_args(**args):
     # Ensure serialization profile is set
     basic._ANSIBLE_PROFILE = 'legacy'
     os.environ['ANSIBLE_SERIALIZATION_PROFILE'] = 'legacy'
-    
+
     if '_ansible_remote_tmp' not in args:
         args['_ansible_remote_tmp'] = '/tmp'
     if '_ansible_keep_remote_files' not in args:

@@ -6,12 +6,12 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
+from . import errors, http
+
 try:
     from ansible.module_utils.compat import version
 except ImportError:
     from distutils import version
-
-from . import errors, http
 
 
 class Client:
