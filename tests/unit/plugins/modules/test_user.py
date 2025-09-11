@@ -9,6 +9,9 @@ from ansible_collections.sensu.sensu_go.plugins.module_utils import (
     arguments, errors, http, utils
 )
 from ansible_collections.sensu.sensu_go.plugins.modules import user
+from .common.utils import (
+    AnsibleExitJson, AnsibleFailJson, ModuleTestCase, set_module_args,
+)
 
 # Version comparison compatibility layer
 
@@ -55,10 +58,6 @@ class StrictVersion:
 class version:
     StrictVersion = StrictVersion
 
-
-from .common.utils import (
-    AnsibleExitJson, AnsibleFailJson, ModuleTestCase, set_module_args,
-)
 
 pytestmark = pytest.mark.skipif(
     sys.version_info < (2, 7), reason="requires python2.7 or higher"

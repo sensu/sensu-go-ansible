@@ -12,9 +12,8 @@ try:
     from ansible.module_utils.compat import version
 except ImportError:
     # Version comparison compatibility layer
-    import sys
-
-    # Use custom version comparison for all Python versions to avoid distutils deprecation warnings
+    # Use custom version comparison for all Python versions to avoid distutils
+    # deprecation warnings
     class StrictVersion:
         def __init__(self, version_string):
             self.version = version_string
