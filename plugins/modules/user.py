@@ -118,6 +118,13 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ..module_utils import arguments, errors, utils
 
 try:
+    from packaging import version
+    # Create a compatibility alias for StrictVersion
+    version.StrictVersion = version.Version
+except ImportError:
+    from distutils import version
+
+try:
     import bcrypt
     HAS_BCRYPT = True
     BCRYPT_IMPORT_ERROR = None
@@ -141,7 +148,7 @@ def update_password(client, path, username, password, check_mode):
         return False
 
     if not check_mode:
-        if client.version < "5.21.0":
+        if client.version < version.StrictVersion("5.21.0"):
             utils.put(client, path + '/password', dict(
                 username=username, password=password,
             ))
@@ -160,7 +167,7 @@ def update_password(client, path, username, password, check_mode):
 
 def update_password_hash(client, path, username, password_hash, check_mode):
     # Some older Sensu Go versions do not have support for password hashes.
-    if client.version < "5.21.0":
+    if client.version < version.StrictVersion("5.21.0"):
         raise errors.SensuError(
             "Sensu Go < 5.21.0 does not support password hashes"
         )

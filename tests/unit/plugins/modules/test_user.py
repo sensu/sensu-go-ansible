@@ -3,7 +3,12 @@ __metaclass__ = type
 
 import sys
 
-from distutils import version
+try:
+    from packaging import version
+    # Create a compatibility alias for StrictVersion
+    version.StrictVersion = version.Version
+except ImportError:
+    from distutils import version
 
 import pytest
 

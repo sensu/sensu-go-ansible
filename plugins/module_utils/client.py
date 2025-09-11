@@ -11,7 +11,12 @@ from . import errors, http
 try:
     from ansible.module_utils.compat import version
 except ImportError:
-    from distutils import version
+    try:
+        from packaging import version
+        # Create a compatibility alias for StrictVersion
+        version.StrictVersion = version.Version
+    except ImportError:
+        from distutils import version
 
 
 class Client:
