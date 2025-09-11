@@ -118,57 +118,50 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ..module_utils import arguments, errors, utils
 
 # Version comparison compatibility layer
-import sys
 
-if sys.version_info >= (3, 12):
-    # Python 3.12+ - use a simple version comparison
-    class StrictVersion:
-        def __init__(self, version_string):
-            self.version = version_string
-            self.parts = tuple(int(x) for x in version_string.split('.'))
 
-        def __lt__(self, other):
-            if isinstance(other, str):
-                other = StrictVersion(other)
-            return self.parts < other.parts
+# Use custom version comparison for all Python versions to avoid distutils
+# deprecation warnings
+class StrictVersion:
+    def __init__(self, version_string):
+        self.version = version_string
+        self.parts = tuple(int(x) for x in version_string.split('.'))
 
-        def __le__(self, other):
-            if isinstance(other, str):
-                other = StrictVersion(other)
-            return self.parts <= other.parts
+    def __lt__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts < other.parts
 
-        def __gt__(self, other):
-            if isinstance(other, str):
-                other = StrictVersion(other)
-            return self.parts > other.parts
+    def __le__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts <= other.parts
 
-        def __ge__(self, other):
-            if isinstance(other, str):
-                other = StrictVersion(other)
-            return self.parts >= other.parts
+    def __gt__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts > other.parts
 
-        def __eq__(self, other):
-            if isinstance(other, str):
-                other = StrictVersion(other)
-            return self.parts == other.parts
+    def __ge__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts >= other.parts
 
-        def __ne__(self, other):
-            return not self.__eq__(other)
+    def __eq__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts == other.parts
 
-        def __str__(self):
-            return self.version
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
-    class version:
-        StrictVersion = StrictVersion
-else:
-    # Python < 3.12 - use distutils
-    try:
-        from distutils import version
-    except ImportError:
-        # Fallback for systems without distutils
-        from packaging.version import Version as StrictVersion
-        import packaging.version as version
-        version.StrictVersion = StrictVersion
+    def __str__(self):
+        return self.version
+
+
+class version:
+    StrictVersion = StrictVersion
+
 
 try:
     import bcrypt
