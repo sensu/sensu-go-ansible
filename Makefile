@@ -39,6 +39,7 @@ sanity:  ## Run sanity tests
 .PHONY: units
 units:  ## Run unit tests
 	pip3 install -r collection.requirements
+	mkdir -p tests/output/coverage
 	-ansible-test coverage erase # On first run, there is nothing to erase.
 	ansible-test units --coverage
 	ansible-test coverage html --requirements

@@ -1,2 +1,7 @@
 bcrypt
 packaging
+coverage
+pytest
+pytest-xdist
+pytest-mock
+mock
