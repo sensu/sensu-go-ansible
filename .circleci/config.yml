@@ -86,6 +86,10 @@ workflows:
     jobs:
       - windows_version_check
 
+# Machine definition for integration tests
+ci-machine: &ci-machine
+  image: << parameters.image_ubuntu >>
+
 jobs:
   sanity_test_old:
     parameters:
