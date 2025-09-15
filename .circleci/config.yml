@@ -4,19 +4,30 @@ workflows:
   version: 2
   main_workflow:
     jobs:
-      - sanity_test:
-          matrix: &matrix
+      - sanity_test_old:
+          matrix: &old_matrix
             parameters:
-              ansible: ["2.13.13", "2.15.10", "2.18.2", "2.19.1"]
-              image_ubuntu: ["ubuntu-2204:current", "ubuntu-2404:2024.11.1"]
+              ansible: ["2.13.13", "2.15.10"]
+              python_version: ["3.10"]
+      
+      - sanity_test_new:
+          matrix: &new_matrix
+            parameters:
+              ansible: ["2.18.2", "2.19.1"]
+              python_version: ["3.13"]
 
-      - unit_test:
-          matrix: *matrix
+      - unit_test_old:
+          matrix: *old_matrix
+      
+      - unit_test_new:
+          matrix: *new_matrix
 
       - integration_test_git:
           requires:
-            - sanity_test
-            - unit_test
+            - sanity_test_old
+            - sanity_test_new
+            - unit_test_old
+            - unit_test_new
           matrix: &integration_matrix
             parameters:
               ansible: ["2.13.13", "2.15.10", "2.18.2", "2.19.1"]
@@ -52,19 +63,19 @@ workflows:
           cron: "12 5 * * 2,5"
           filters: { branches: { only: [ master ] } }
     jobs:
-      - sanity_test:
+      - sanity_test_new:
           matrix: &devel-matrix
             parameters:
               ansible: [ "devel" ]
-              image_ubuntu: [ "ubuntu-2404:2024.11.1" ]
+              python_version: [ "3.13" ]
 
-      - unit_test:
+      - unit_test_new:
           matrix: *devel-matrix
 
       - integration_test_git:
           requires:
-            - sanity_test
-            - unit_test
+            - sanity_test_new
+            - unit_test_new
           matrix: *devel-matrix
 
   windows_version_check:
@@ -76,36 +87,78 @@ workflows:
       - windows_version_check
 
 jobs:
-  sanity_test:
+  sanity_test_old:
     parameters:
       ansible:
         description: Ansible version to use
         type: string
-      image_ubuntu: 
-        description: Ubuntu image
+      python_version:
+        description: Python version to use
         type: string
-    machine: &ci-machine
-      image: << parameters.image_ubuntu >>
+    docker:
+      - image: cimg/python:<< parameters.python_version >>
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
-      - wrapper:
+      - wrapper_docker:
           ansible: << parameters.ansible >>
           kind: sanity
           test_commands:
             - run: make sanity
 
-  unit_test:
+  sanity_test_new:
     parameters:
       ansible:
         description: Ansible version to use
         type: string
-      image_ubuntu:
-        description: Ubuntu image
+      python_version:
+        description: Python version to use
         type: string
-    machine: *ci-machine
+    docker:
+      - image: cimg/python:<< parameters.python_version >>
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
-      - wrapper:
+      - wrapper_docker:
+          ansible: << parameters.ansible >>
+          kind: sanity
+          test_commands:
+            - run: make sanity
+
+  unit_test_old:
+    parameters:
+      ansible:
+        description: Ansible version to use
+        type: string
+      python_version:
+        description: Python version to use
+        type: string
+    docker:
+      - image: cimg/python:<< parameters.python_version >>
+    working_directory: ~/ansible_collections/sensu/sensu_go
+    steps:
+      - wrapper_docker:
+          ansible: << parameters.ansible >>
+          kind: unit
+          test_commands:
+            - run: make units
+            - store_artifacts:
+                path: tests/output/reports/coverage
+                destination: coverage-report
+            - store_test_results:
+                path: tests/output/junit
+
+  unit_test_new:
+    parameters:
+      ansible:
+        description: Ansible version to use
+        type: string
+      python_version:
+        description: Python version to use
+        type: string
+    docker:
+      - image: cimg/python:<< parameters.python_version >>
+    working_directory: ~/ansible_collections/sensu/sensu_go
+    steps:
+      - wrapper_docker:
           ansible: << parameters.ansible >>
           kind: unit
           test_commands:
@@ -222,3 +275,32 @@ commands:
           key: '{{ checksum "cache-id.txt" }}'
           paths:
             - "~/venv"
+
+  wrapper_docker:
+    description: Wrapper command for Docker-based jobs
+    parameters:
+      ansible:
+        description: Ansible version to install
+        type: string
+      kind:
+        description: Test kind (used to construct cache name)
+        type: string
+      test_commands:
+        description: Test commands to execute
+        type: steps
+    steps:
+      - checkout: { path: . }
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y git
+      - run:
+          name: Install Ansible
+          command: |
+            if [ "<< parameters.ansible >>" = "devel" ]; then
+              pip3 install git+https://github.com/ansible/ansible.git@devel
+            else
+              pip3 install "ansible-core==<< parameters.ansible >>"
+            fi
+      - steps: << parameters.test_commands >>
