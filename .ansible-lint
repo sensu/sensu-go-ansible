@@ -9,6 +9,7 @@ exclude_paths:
   - .ansible/
   - venv/
   - tests/output/
+  - get-pip.py
 
 # Use a more lenient profile for legacy codebase
 profile: basic

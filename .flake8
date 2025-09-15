@@ -19,7 +19,9 @@ exclude =
     # Exclude virtual environment
     venv,
     # Exclude built collection directory
-    .ansible
+    .ansible,
+    # Exclude temporary pip installation file
+    get-pip.py
 
 per-file-ignores =
     # Modules have their imports listed after the metadata.

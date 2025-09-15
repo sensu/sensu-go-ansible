@@ -336,13 +336,15 @@ commands:
         type: steps
     steps:
       - checkout: { path: . }
-      - run:
-          name: Install system dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y git python3.10 python3.10-distutils python3-pip
-            # Ensure pip is available for Python 3.10
-            python3.10 -m ensurepip --upgrade
+               - run:
+                   name: Install system dependencies
+                   command: |
+                     sudo apt-get update
+                     sudo apt-get install -y git python3.10 python3.10-distutils python3-pip
+                     # Install pip for Python 3.10 using get-pip.py
+                     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+                     python3.10 get-pip.py
+                     rm get-pip.py
       - run:
           name: Install collection requirements
           command: |
