@@ -1,0 +1,8 @@
+---
+sanity:
+  profile: basic
+
+units:
+  pytest:
+    # Override default pytest arguments to exclude --forked
+    addopts: "-r a -n auto --color yes -p no:cacheprovider --strict-markers"

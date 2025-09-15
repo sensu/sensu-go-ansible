@@ -362,4 +362,10 @@ commands:
             else
               pip3 install "ansible-core==<< parameters.ansible >>"
             fi
+      - run:
+          name: Set pytest environment variables
+          command: |
+            # Override pytest arguments to exclude --forked
+            echo 'export PYTEST_ADDOPTS="-r a -n auto --color yes -p no:cacheprovider --strict-markers"' >> ~/.bashrc
+            source ~/.bashrc
       - steps: << parameters.test_commands >>
