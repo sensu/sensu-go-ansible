@@ -344,13 +344,19 @@ commands:
       - run:
           name: Install collection requirements
           command: |
-            pip3 install -r collection.requirements
+            # Install for all available Python versions to ensure coverage is available for all test environments
+            python3 -m pip install -r collection.requirements
+            # Also install for specific versions that ansible-test might use
+            python3.10 -m pip install -r collection.requirements 2>/dev/null || true
+            python3.11 -m pip install -r collection.requirements 2>/dev/null || true
+            python3.12 -m pip install -r collection.requirements 2>/dev/null || true
+            python3.13 -m pip install -r collection.requirements 2>/dev/null || true
       - run:
           name: Install Ansible
           command: |
             if [ "<< parameters.ansible >>" = "devel" ]; then
-              pip3 install git+https://github.com/ansible/ansible.git@devel
+              python3 -m pip install git+https://github.com/ansible/ansible.git@devel
             else
-              pip3 install "ansible-core==<< parameters.ansible >>"
+              python3 -m pip install "ansible-core==<< parameters.ansible >>"
             fi
       - steps: << parameters.test_commands >>
