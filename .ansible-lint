@@ -10,6 +10,8 @@ exclude_paths:
   - venv/
   - tests/output/
   - get-pip.py
+  - collection.requirements.python310
+  - collection.requirements.python313
 
 # Use a more lenient profile for legacy codebase
 profile: basic

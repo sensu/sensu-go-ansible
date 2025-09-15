@@ -30,7 +30,13 @@ help:
 
 .PHONY: sanity
 sanity:  ## Run sanity tests
-	pip3 install -r sanity.requirements -r collection.requirements
+	pip3 install -r sanity.requirements
+	# Install requirements based on Python version
+	if python --version | grep -q "3.10"; then \
+		pip3 install -r collection.requirements.python310; \
+	else \
+		pip3 install -r collection.requirements.python313; \
+	fi
 	pip install pyyaml
 	flake8
 	if which ansible-lint 2> /dev/null; then ansible-lint -p roles/* --skip-list var-naming[no-role-prefix],fqcn[action-core]; fi
@@ -38,7 +44,12 @@ sanity:  ## Run sanity tests
 
 .PHONY: units
 units:  ## Run unit tests
-	pip3 install -r collection.requirements
+	# Install requirements based on Python version
+	if python --version | grep -q "3.10"; then \
+		pip3 install -r collection.requirements.python310; \
+	else \
+		pip3 install -r collection.requirements.python313; \
+	fi
 	mkdir -p tests/output/coverage
 	-ansible-test coverage erase # On first run, there is nothing to erase.
 	ansible-test units --coverage
@@ -47,7 +58,13 @@ units:  ## Run unit tests
 
 .PHONY: integration
 integration:  ## Run integration tests
-	pip3 install -r integration.requirements -r collection.requirements
+	pip3 install -r integration.requirements
+	# Install requirements based on Python version
+	if python --version | grep -q "3.10"; then \
+		pip3 install -r collection.requirements.python310; \
+	else \
+		pip3 install -r collection.requirements.python313; \
+	fi
 	pytest -s --molecule-base-config=base.yml tests/integration/molecule
 
 .PHONY: $(molecule_scenarios)

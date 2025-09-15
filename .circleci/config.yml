@@ -349,9 +349,9 @@ commands:
           name: Install collection requirements
           command: |
             # Install collection requirements for Python 3.13 (default)
-            pip3 install -r collection.requirements
+            pip3 install -r collection.requirements.python313
             # Install collection requirements for Python 3.10 (needed for unit tests)
-            python3.10 -m pip install -r collection.requirements
+            python3.10 -m pip install -r collection.requirements.python310
             # Install additional dependencies for Python 3.10 (discovered during local testing)
             python3.10 -m pip install pyyaml ansible-core
       - run:
@@ -362,10 +362,4 @@ commands:
             else
               pip3 install "ansible-core==<< parameters.ansible >>"
             fi
-      - run:
-          name: Set pytest environment variables
-          command: |
-            # Override pytest arguments to exclude --forked
-            echo 'export PYTEST_ADDOPTS="-r a -n auto --color yes -p no:cacheprovider --strict-markers"' >> ~/.bashrc
-            source ~/.bashrc
       - steps: << parameters.test_commands >>

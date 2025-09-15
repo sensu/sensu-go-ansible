@@ -21,7 +21,10 @@ exclude =
     # Exclude built collection directory
     .ansible,
     # Exclude temporary pip installation file
-    get-pip.py
+    get-pip.py,
+    # Exclude version-specific requirements files
+    collection.requirements.python310,
+    collection.requirements.python313
 
 per-file-ignores =
     # Modules have their imports listed after the metadata.
