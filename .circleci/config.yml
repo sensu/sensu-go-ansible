@@ -13,12 +13,14 @@ workflows:
             parameters:
               ansible: ["2.13.13", "2.15.10"]
               python_version: ["3.10"]
+              docker_image: ["cimg/python:3.10"]
       
       - sanity_test_new:
           matrix: &new_matrix
             parameters:
               ansible: ["2.18.2", "2.19.1"]
               python_version: ["3.13"]
+              docker_image: ["cimg/python:3.13"]
 
       - unit_test_old:
           matrix: *old_matrix
@@ -111,6 +113,7 @@ workflows:
             parameters:
               ansible: [ "devel" ]
               python_version: [ "3.13" ]
+              docker_image: [ "cimg/python:3.13" ]
 
       - unit_test_new:
           matrix: *devel-matrix
@@ -141,8 +144,11 @@ jobs:
       python_version:
         description: Python version to use
         type: string
+      docker_image:
+        description: Docker image to use
+        type: string
     docker:
-      - image: cimg/python:<< parameters.python_version >>
+      - image: << parameters.docker_image >>
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper_docker:
@@ -159,8 +165,11 @@ jobs:
       python_version:
         description: Python version to use
         type: string
+      docker_image:
+        description: Docker image to use
+        type: string
     docker:
-      - image: cimg/python:<< parameters.python_version >>
+      - image: << parameters.docker_image >>
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper_docker:
@@ -177,8 +186,11 @@ jobs:
       python_version:
         description: Python version to use
         type: string
+      docker_image:
+        description: Docker image to use
+        type: string
     docker:
-      - image: cimg/python:<< parameters.python_version >>
+      - image: << parameters.docker_image >>
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper_docker:
@@ -200,8 +212,11 @@ jobs:
       python_version:
         description: Python version to use
         type: string
+      docker_image:
+        description: Docker image to use
+        type: string
     docker:
-      - image: cimg/python:<< parameters.python_version >>
+      - image: << parameters.docker_image >>
     working_directory: ~/ansible_collections/sensu/sensu_go
     steps:
       - wrapper_docker:
@@ -344,19 +359,13 @@ commands:
       - run:
           name: Install collection requirements
           command: |
-            # Install for all available Python versions to ensure coverage is available for all test environments
-            python3 -m pip install -r collection.requirements
-            # Also install for specific versions that ansible-test might use
-            python3.10 -m pip install -r collection.requirements 2>/dev/null || true
-            python3.11 -m pip install -r collection.requirements 2>/dev/null || true
-            python3.12 -m pip install -r collection.requirements 2>/dev/null || true
-            python3.13 -m pip install -r collection.requirements 2>/dev/null || true
+            pip3 install -r collection.requirements
       - run:
           name: Install Ansible
           command: |
             if [ "<< parameters.ansible >>" = "devel" ]; then
-              python3 -m pip install git+https://github.com/ansible/ansible.git@devel
+              pip3 install git+https://github.com/ansible/ansible.git@devel
             else
-              python3 -m pip install "ansible-core==<< parameters.ansible >>"
+              pip3 install "ansible-core==<< parameters.ansible >>"
             fi
       - steps: << parameters.test_commands >>
