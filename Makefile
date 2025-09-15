@@ -34,13 +34,13 @@ sanity:  ## Run sanity tests
 	pip install pyyaml
 	flake8
 	if which ansible-lint 2> /dev/null; then ansible-lint -p roles/* --skip-list var-naming[no-role-prefix],fqcn[action-core]; fi
-	ansible-test sanity --docker --skip pylint
+	ansible-test sanity --skip pylint --profile basic
 
 .PHONY: units
 units:  ## Run unit tests
 	pip3 install -r collection.requirements
 	-ansible-test coverage erase # On first run, there is nothing to erase.
-	ansible-test units --docker --coverage
+	ansible-test units --coverage
 	ansible-test coverage html --requirements
 	ansible-test coverage report --omit 'tests/*' --show-missing
 
