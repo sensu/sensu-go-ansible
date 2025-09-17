@@ -2,7 +2,7 @@
 platforms:
   # yum test
   - name: redhat-7
-    image: quay.io/xlab-steampunk/sensu-go-tests-redhat:7
+    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:14.04
     pre_build_image: true
     pull: true
 
