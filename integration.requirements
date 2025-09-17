@@ -1,6 +1,5 @@
 molecule ~= 6.0.1; python_version >= "3.10"
 molecule ~= 5.0.1; python_version < "3.10"
-molecule-docker ~= 2.1.0
 pytest
 git+https://github.com/sensu/pytest-molecule.git
 git+https://github.com/sensu/molecule-docker.git
