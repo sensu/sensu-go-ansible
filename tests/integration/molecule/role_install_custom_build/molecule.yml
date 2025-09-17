@@ -4,8 +4,3 @@ platforms:
     image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:18.04
     pre_build_image: true
     pull: true
-
-  - name: centos
-    image: quay.io/xlab-steampunk/sensu-go-tests-centos:8
-    pre_build_image: true
-    pull: true

@@ -9,8 +9,8 @@ scenario:
     - destroy
 
 platforms:
-  - name: centos
-    image: quay.io/xlab-steampunk/sensu-go-tests-centos:8
+  - name: redhat-7
+    image: quay.io/xlab-steampunk/sensu-go-tests-redhat:7
     pre_build_image: true
     pull: true
     groups: [agents]
