@@ -6,6 +6,6 @@ platforms:
     pull: true
 
   - name: centos
-    image: quay.io/xlab-steampunk/sensu-go-tests-centos:7
+    image: quay.io/centos/centos:stream9
     pre_build_image: true
     pull: true

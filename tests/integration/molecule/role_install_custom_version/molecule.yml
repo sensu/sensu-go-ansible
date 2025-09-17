@@ -1,11 +1,19 @@
 ---
+dependency:
+  name: galaxy
+driver:
+  name: docker
 platforms:
-  - name: ubuntu
-    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:18.04
-    pre_build_image: true
-    pull: true
-
   - name: centos
-    image: quay.io/xlab-steampunk/sensu-go-tests-centos:7
+    image: quay.io/centos/centos:stream9
     pre_build_image: true
-    pull: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      ansible_python_interpreter: /usr/bin/python3
+verifier:
+  name: ansible
