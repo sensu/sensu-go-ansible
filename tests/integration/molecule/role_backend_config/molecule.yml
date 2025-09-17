@@ -9,6 +9,6 @@ scenario:
 
 platforms:
   - name: centos
-    image: quay.io/centos/centos:stream9
+    image: quay.io/centos/centos:8
     pre_build_image: true
     pull: true
