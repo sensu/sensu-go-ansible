@@ -278,7 +278,12 @@ commands:
           command: |
             circleci tests glob "tests/integration/molecule/*/molecule.yml" \
              | circleci tests split --split-by=timings
-      - run: make integration_ci
+      - run:
+          name: Run integration tests with Ansible tmp configuration
+          command: |
+            export ANSIBLE_REMOTE_TMP=/tmp/.ansible-tmp
+            export ANSIBLE_LOCAL_TMP=/tmp/.ansible-tmp
+            make integration_ci
       - store_test_results:
           path: test_results
       - store_artifacts:
