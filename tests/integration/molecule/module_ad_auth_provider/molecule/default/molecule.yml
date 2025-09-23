@@ -1,0 +1,59 @@
+---
+scenario:
+  test_sequence:
+    - destroy
+    - create
+    - converge
+    - destroy
+dependency:
+  name: galaxy
+driver:
+  name: docker
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      interpreter_python: auto_silent
+  lint:
+    enabled: false
+platforms:
+  - name: v6.10.0
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.10.0
+    pre_build_image: true
+    pull: true
+    override_command: false
+  - name: v6.9.0
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.9.0
+    pre_build_image: true
+    pull: true
+    override_command: false
+  - name: v6.8.2
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.8.2
+    pre_build_image: true
+    pull: true
+    override_command: false
+  - name: v6.7.5
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.7.5
+    pre_build_image: true
+    pull: true
+    override_command: false
+  - name: v6.6.2
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.6.2
+    pre_build_image: true
+    pull: true
+    override_command: false
+  - name: v6.5.5
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.5.5
+    pre_build_image: true
+    pull: true
+    override_command: false
+  - name: v6.4.3
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.4.3
+    pre_build_image: true
+    pull: true
+    override_command: false
+  - name: v6.3.0
+    image: quay.io/xlab-steampunk/sensu-go-tests-sensu:6.3.0
+    pre_build_image: true
+    pull: true
+    override_command: false
