@@ -2,7 +2,7 @@
 driver:
   name: docker
 platforms:
-  - name: centos
+  - name: rocky-8
     image: rockylinux:8
     pre_build_image: false
     pull: false
