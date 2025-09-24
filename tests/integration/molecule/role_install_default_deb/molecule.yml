@@ -20,6 +20,3 @@ platforms:
     image: ubuntu:22.04
     pre_build_image: false
     pull: false
-
-
-

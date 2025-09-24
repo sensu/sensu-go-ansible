@@ -14,7 +14,7 @@
     - name: Verify sensu-go-backend is installed and executable
       command: sensu-backend version
       register: backend_version
-      
+
     - name: Verify backend version contains expected version string
       assert:
         that:
@@ -34,7 +34,7 @@
     - name: Verify sensu-go-agent is installed and executable
       command: sensu-agent version
       register: agent_version
-      
+
     - name: Verify agent version contains expected version string
       assert:
         that:

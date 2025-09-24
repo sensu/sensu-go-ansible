@@ -8,7 +8,7 @@
       shell: echo "127.0.0.1 sensu-api" >> /etc/hosts
       args:
         creates: /tmp/sensu-api-host-added
-      
+
     - name: Create marker file
       file:
         path: /tmp/sensu-api-host-added
