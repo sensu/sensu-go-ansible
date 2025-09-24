@@ -8,21 +8,21 @@
       vars:
         components: [sensu-go-backend]
         channel: testing
-        version: 5.16.0
-        build: 8290
+        version: 6.8.0
+        build: 6646
 
     - package_facts:
         manager: auto
 
     - assert:
         that:
-          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0-8290"
+          - ansible_facts.packages["sensu-go-backend"][0].version == "6.8.0-6646"
       when: ansible_facts.packages["sensu-go-backend"][0].source == "apt"
 
     - assert:
         that:
-          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0"
-          - ansible_facts.packages["sensu-go-backend"][0].release == "8290"
+          - ansible_facts.packages["sensu-go-backend"][0].version == "6.8.0"
+          - ansible_facts.packages["sensu-go-backend"][0].release == "6646"
       when: ansible_facts.packages["sensu-go-backend"][0].source == "rpm"
 
     - name: Update to a specific build
@@ -32,19 +32,19 @@
       vars:
         components: [sensu-go-backend]
         channel: testing
-        version: 5.16.0
-        build: 8320
+        version: 6.9.1
+        build: 6927
 
     - package_facts:
         manager: auto
 
     - assert:
         that:
-          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0-8320"
+          - ansible_facts.packages["sensu-go-backend"][0].version == "6.9.1-6927"
       when: ansible_facts.packages["sensu-go-backend"][0].source == "apt"
 
     - assert:
         that:
-          - ansible_facts.packages["sensu-go-backend"][0].version == "5.16.0"
-          - ansible_facts.packages["sensu-go-backend"][0].release == "8320"
+          - ansible_facts.packages["sensu-go-backend"][0].version == "6.9.1"
+          - ansible_facts.packages["sensu-go-backend"][0].release == "6927"
       when: ansible_facts.packages["sensu-go-backend"][0].source == "rpm"

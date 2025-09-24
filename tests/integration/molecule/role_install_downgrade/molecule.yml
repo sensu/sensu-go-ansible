@@ -1,7 +1,7 @@
 ---
 platforms:
   # yum test - using Rocky Linux 8 for modern Python support
-  - name: redhat-8
+  - name: rocky-8
     image: rockylinux:8
     dockerfile: ../../../../docker/rocky-8.docker
     ansible_python_interpreter: /usr/bin/python3.8
