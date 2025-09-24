@@ -14,6 +14,15 @@ provisioner:
   config_options:
     defaults:
       interpreter_python: auto_silent
+      remote_tmp: /tmp
+      local_tmp: /tmp
+    ssh_connection:
+      control_path_dir: /tmp
+      ssh_args: -o ControlMaster=auto -o ControlPersist=60s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+  env:
+    ANSIBLE_REMOTE_TMP: /tmp
+    ANSIBLE_LOCAL_TMP: /tmp
+    ANSIBLE_SSH_CONTROL_PATH_DIR: /tmp
   lint:
     enabled: false
 platforms:

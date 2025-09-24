@@ -1,6 +1,36 @@
 FROM rockylinux:8
+
+# Install required packages for Ansible and systemd
 RUN dnf makecache \
-      && dnf install -y \
-           /usr/bin/python3 /usr/bin/python3-config /usr/bin/dnf-3 \
-           sudo bash iproute \
-      && dnf clean all
+    && dnf install -y \
+        platform-python \
+        python3-pip \
+        python3-dnf \
+        systemd \
+        systemd-devel \
+        openssh-server \
+        sudo \
+        bash \
+        iproute \
+    && dnf clean all
+
+# Configure systemd
+RUN systemctl enable sshd \
+    && mkdir -p /run/systemd/system
+
+# Configure container hostname and SSH
+RUN echo 'docker' > /etc/hostname \
+    && echo 'root:docker' | chpasswd \
+    && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
+    && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
+    && ssh-keygen -A
+
+# Fix temp directory permissions for Ansible (Critical for CentOS 8 migration)
+RUN chmod 1777 /tmp
+
+# Create Python 3.6 symlink for compatibility (platform-python is 3.6)
+RUN ln -sf /usr/bin/python3.6 /usr/bin/python3
+
+# Configure systemd volumes and init
+VOLUME ["/sys/fs/cgroup"]
+CMD ["/usr/sbin/init"]
