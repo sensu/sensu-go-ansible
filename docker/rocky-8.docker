@@ -28,8 +28,9 @@ RUN echo 'docker' > /etc/hostname \
 # Fix temp directory permissions for Ansible (Critical for CentOS 8 migration)
 RUN chmod 1777 /tmp
 
-# Create Python 3.6 symlink for compatibility (platform-python is 3.6)
-RUN ln -sf /usr/bin/python3.6 /usr/bin/python3
+# Set platform-python as the default Python 3 interpreter for Ansible compatibility  
+RUN ln -sf /usr/libexec/platform-python /usr/bin/python3 \
+    && ln -sf /usr/libexec/platform-python /usr/bin/python
 
 # Configure systemd volumes and init
 VOLUME ["/sys/fs/cgroup"]
