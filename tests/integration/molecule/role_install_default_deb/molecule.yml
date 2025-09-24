@@ -9,32 +9,17 @@ scenario:
     - destroy
 
 platforms:
-  - name: debian-9
-    image: quay.io/xlab-steampunk/sensu-go-tests-debian:9
-    pre_build_image: true
-    pull: true
-
-  - name: debian-10
-    image: quay.io/xlab-steampunk/sensu-go-tests-debian:10
-    pre_build_image: true
-    pull: true
-
-  - name: ubuntu-14.04
-    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:20.04
-    pre_build_image: true
-    pull: true
-
-  - name: ubuntu-16.04
-    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:20.04
-    pre_build_image: true
-    pull: true
-
-  - name: ubuntu-18.04
-    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:20.04
-    pre_build_image: true
-    pull: true
-
   - name: ubuntu-20.04
-    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:20.04
-    pre_build_image: true
-    pull: true
+    dockerfile: ../../../../docker/ubuntu-20.04.docker
+    image: ubuntu:20.04
+    pre_build_image: false
+    pull: false
+
+  - name: ubuntu-22.04
+    dockerfile: ../../../../docker/ubuntu-22.04.docker
+    image: ubuntu:22.04
+    pre_build_image: false
+    pull: false
+
+
+

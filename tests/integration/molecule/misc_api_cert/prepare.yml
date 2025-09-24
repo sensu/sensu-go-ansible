@@ -7,7 +7,7 @@
       include_role:
         name: sensu.sensu_go.backend
       vars:
-        version: 5.21.0
+        version: 6.10.0
         api_cert_file: files/sensu-api.crt
         api_key_file: files/sensu-api.key
         api_trusted_ca_file: files/sensu-api-ca.crt

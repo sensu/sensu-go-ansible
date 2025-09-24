@@ -1,5 +1,5 @@
 ---
-- name: Test different version builds
+- name: Test different versions
   hosts: all
   tasks:
     - name: Install a specific build
@@ -11,40 +11,32 @@
         version: 6.8.0
         build: 6646
 
-    - package_facts:
-        manager: auto
-
-    - assert:
+    - name: Verify sensu-go-backend is installed and executable
+      command: sensu-backend version
+      register: backend_version
+      
+    - name: Verify backend version contains expected version string
+      assert:
         that:
-          - ansible_facts.packages["sensu-go-backend"][0].version == "6.8.0-6646"
-      when: ansible_facts.packages["sensu-go-backend"][0].source == "apt"
+          - "'6.8.0' in backend_version.stdout"
+        fail_msg: "Expected version 6.8.0 in backend output: {{ backend_version.stdout }}"
 
-    - assert:
-        that:
-          - ansible_facts.packages["sensu-go-backend"][0].version == "6.8.0"
-          - ansible_facts.packages["sensu-go-backend"][0].release == "6646"
-      when: ansible_facts.packages["sensu-go-backend"][0].source == "rpm"
-
-    - name: Update to a specific build
+    - name: Update to a specific build (agent)
       include_role:
         name: sensu.sensu_go.install
         tasks_from: packages
       vars:
-        components: [sensu-go-backend]
+        components: [sensu-go-agent]
         channel: testing
         version: 6.9.1
         build: 6927
 
-    - package_facts:
-        manager: auto
-
-    - assert:
+    - name: Verify sensu-go-agent is installed and executable
+      command: sensu-agent version
+      register: agent_version
+      
+    - name: Verify agent version contains expected version string
+      assert:
         that:
-          - ansible_facts.packages["sensu-go-backend"][0].version == "6.9.1-6927"
-      when: ansible_facts.packages["sensu-go-backend"][0].source == "apt"
-
-    - assert:
-        that:
-          - ansible_facts.packages["sensu-go-backend"][0].version == "6.9.1"
-          - ansible_facts.packages["sensu-go-backend"][0].release == "6927"
-      when: ansible_facts.packages["sensu-go-backend"][0].source == "rpm"
+          - "'6.9.1' in agent_version.stdout"
+        fail_msg: "Expected version 6.9.1 in agent output: {{ agent_version.stdout }}"

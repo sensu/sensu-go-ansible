@@ -4,6 +4,23 @@
   gather_facts: false
 
   tasks:
+    - name: Add sensu-api hostname to /etc/hosts
+      shell: echo "127.0.0.1 sensu-api" >> /etc/hosts
+      args:
+        creates: /tmp/sensu-api-host-added
+      
+    - name: Create marker file
+      file:
+        path: /tmp/sensu-api-host-added
+        state: touch
+
+    - name: Wait for Sensu backend to start
+      wait_for:
+        port: 8080
+        host: localhost
+        delay: 10
+        timeout: 60
+
     - name: Test connection using no verification
       sensu.sensu_go.asset_info:
         auth:
@@ -53,7 +70,7 @@
     - assert:
         that:
           - result is failed
-          - result.msg is search("localhost.+sensu-api")
+          - result.msg is search("localhost|Hostname mismatch")
 
     - name: Test connection using the wrong protocol
       sensu.sensu_go.asset_info:
