@@ -1,4 +1,7 @@
 ---
+driver:
+  name: docker
+
 scenario:
   test_sequence:
     - destroy
@@ -22,5 +25,5 @@ platforms:
     tmpfs:
       - /tmp:exec,mode=1777
     cgroupns_mode: host
-    ansible_python_interpreter: /usr/libexec/platform-python
+    ansible_python_interpreter: /usr/bin/python3.8
     dockerfile: ../../../../docker/rocky-8.docker

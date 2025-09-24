@@ -3,7 +3,7 @@
 # able to upgrade the packages to the latest stable version.
 - name: Install component
   ansible.builtin.command:
-    cmd: "dnf install -y {{ 'yum' | sensu.sensu_go.package_name(item, version, build) }}"
+    cmd: "/usr/libexec/platform-python /usr/bin/dnf install -y {{ 'yum' | sensu.sensu_go.package_name(item, version, build) }}"
   register: dnf_result
   changed_when: "'Nothing to do' not in dnf_result.stdout"
   failed_when: dnf_result.rc != 0

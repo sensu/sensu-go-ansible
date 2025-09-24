@@ -1,4 +1,6 @@
 ---
+driver:
+  name: docker
 platforms:
   - name: rocky-8
     image: rockylinux:8
@@ -13,4 +15,4 @@ platforms:
       - /tmp:exec,mode=1777
     cgroupns_mode: host
     dockerfile: ../../../../docker/rocky-8.docker
-    ansible_python_interpreter: /usr/libexec/platform-python
+    ansible_python_interpreter: /usr/bin/python3.8
