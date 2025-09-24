@@ -1,13 +1,26 @@
 ---
 platforms:
-  # yum test
-  - name: redhat-7
-    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:20.04
-    pre_build_image: true
-    pull: true
+  # yum test - using Rocky Linux 8 for modern Python support
+  - name: redhat-8
+    image: rockylinux:8
+    dockerfile: ../../../../docker/rocky-8.docker
+    ansible_python_interpreter: /usr/bin/python3.8
+    pre_build_image: false
+    privileged: true
+    pull: false
+    command: /usr/sbin/init
+    cgroupns_mode: host
+    tmpfs:
+      - /tmp:exec,mode=1777
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    groups:
+      - backends
 
-  # apt test
+  # apt test - using Ubuntu 22.04 for modern Python support
   - name: debian-10
-    image: quay.io/xlab-steampunk/sensu-go-tests-debian:10
-    pre_build_image: true
-    pull: true
+    image: ubuntu:22.04
+    pre_build_image: false
+    dockerfile: ../../../../docker/ubuntu-22.04.docker
+    pull: false
+    ansible_python_interpreter: /usr/bin/python3

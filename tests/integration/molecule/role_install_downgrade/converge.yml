@@ -9,7 +9,7 @@
       vars:
         components:
           - sensu-go-agent
-        version: 6.2.5
+        version: 6.10.0
 
     - name: Make sure components are installed
       command:
@@ -18,7 +18,7 @@
     - assert:
         # quiet: true
         that:
-          - result.stdout is search("6.2.5")
+          - result.stdout is search("6.10.0")
 
     - name: Downgrade components
       include_role:
@@ -27,7 +27,7 @@
       vars:
         components:
           - sensu-go-agent
-        version: 6.1.4
+        version: 6.9.0
 
     - name: Make sure components were downgraded
       command:
@@ -36,4 +36,4 @@
     - assert:
         quiet: true
         that:
-          - result.stdout is search("6.1.4")
+          - result.stdout is search("6.9.0")
