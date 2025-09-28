@@ -11,6 +11,8 @@ from . import errors, http
 # Version comparison compatibility layer
 # Use custom version comparison for all Python versions to avoid distutils
 # deprecation warnings and ensure consistent behavior
+
+
 class StrictVersion:
     def __init__(self, version_string):
         self.version = version_string
@@ -46,6 +48,7 @@ class StrictVersion:
 
     def __str__(self):
         return self.version
+
 
 class version:
     StrictVersion = StrictVersion
