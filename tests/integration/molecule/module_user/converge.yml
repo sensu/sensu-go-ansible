@@ -8,11 +8,31 @@
     SENSU_URL: http://localhost:8080
 
   tasks:
+    - name: Wait for Sensu services to be ready
+      wait_for:
+        host: localhost
+        port: 8080
+        delay: 10
+        timeout: 60
+        state: started
+
+    - name: DEBUG - Show environment variables
+      debug:
+        msg: "SENSU_URL is {{ ansible_env.SENSU_URL | default('NOT SET') }}"
+        
+    - name: DEBUG - Show module parameters before execution
+      debug:
+        msg: "About to create user: awesome_username"
+
     - name: Create user with minimal parameters
       user:
         name: awesome_username
         password: hidden_password?
       register: result
+      
+    - name: DEBUG - Show result after user creation
+      debug:
+        var: result
 
     - assert:
         that:
