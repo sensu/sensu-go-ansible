@@ -34,7 +34,7 @@ workflows:
             - unit_test_new
           matrix: &integration_matrix
             parameters:
-              ansible: ["2.13.13", "2.15.10", "2.18.2", "2.19.1"]
+              ansible: ["2.15.10", "2.18.2", "2.19.1"]
               image_ubuntu: ["ubuntu-2204:current", "ubuntu-2404:2024.11.1"]
 
       - integration_test_galaxy:
@@ -319,12 +319,7 @@ commands:
             if [ "<< parameters.ansible >>" = "devel" ]; then
               pip3 install git+https://github.com/ansible/ansible.git@devel
             else
-              # Fix for Ansible 2.13 Galaxy SSL error
-              if [ "<< parameters.ansible >>" = "2.13.13" ]; then
-                pip3 install "urllib3<2.0" "ansible-core==<< parameters.ansible >>"
-              else
-                pip3 install "ansible-core==<< parameters.ansible >>"
-              fi
+              pip3 install "ansible-core==<< parameters.ansible >>"
             fi
       - steps: << parameters.test_commands >>
       - save_cache:
@@ -370,11 +365,6 @@ commands:
             if [ "<< parameters.ansible >>" = "devel" ]; then
               pip3 install git+https://github.com/ansible/ansible.git@devel
             else
-              # Fix for Ansible 2.13 Galaxy SSL error
-              if [ "<< parameters.ansible >>" = "2.13.13" ]; then
-                pip3 install "urllib3<2.0" "ansible-core==<< parameters.ansible >>"
-              else
-                pip3 install "ansible-core==<< parameters.ansible >>"
-              fi
+              pip3 install "ansible-core==<< parameters.ansible >>"
             fi
       - steps: << parameters.test_commands >>
