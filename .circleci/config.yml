@@ -319,7 +319,12 @@ commands:
             if [ "<< parameters.ansible >>" = "devel" ]; then
               pip3 install git+https://github.com/ansible/ansible.git@devel
             else
-              pip3 install "ansible-core==<< parameters.ansible >>"
+              # Fix for Ansible 2.13 Galaxy SSL error
+              if [ "<< parameters.ansible >>" = "2.13.13" ]; then
+                pip3 install "urllib3<2.0" "ansible-core==<< parameters.ansible >>"
+              else
+                pip3 install "ansible-core==<< parameters.ansible >>"
+              fi
             fi
       - steps: << parameters.test_commands >>
       - save_cache:
@@ -365,6 +370,11 @@ commands:
             if [ "<< parameters.ansible >>" = "devel" ]; then
               pip3 install git+https://github.com/ansible/ansible.git@devel
             else
-              pip3 install "ansible-core==<< parameters.ansible >>"
+              # Fix for Ansible 2.13 Galaxy SSL error
+              if [ "<< parameters.ansible >>" = "2.13.13" ]; then
+                pip3 install "urllib3<2.0" "ansible-core==<< parameters.ansible >>"
+              else
+                pip3 install "ansible-core==<< parameters.ansible >>"
+              fi
             fi
       - steps: << parameters.test_commands >>
