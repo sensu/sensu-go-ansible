@@ -11,7 +11,7 @@
           - sensu-go-backend
           - sensu-go-agent
           - sensu-go-cli
-        version: 5.14.1
+        version: 6.9.0
 
     - name: Make sure components are installed
       command:
@@ -25,7 +25,7 @@
     - assert:
         quiet: true
         that:
-          - item.stdout is search("5.14.1")
+          - item.stdout is search("6.9.0")
       loop: "{{ result.results }}"
       loop_control:
         label: "{{ item.item }}"  # Reduce verbosity a bit

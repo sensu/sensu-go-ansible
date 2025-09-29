@@ -6,17 +6,55 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
-try:
-    from ansible.module_utils.compat import version
-except ImportError:
-    from distutils import version
-
 from . import errors, http
+
+# Version comparison compatibility layer
+# Use custom version comparison for all Python versions to avoid distutils
+# deprecation warnings and ensure consistent behavior
+
+
+class StrictVersion:
+    def __init__(self, version_string):
+        self.version = version_string
+        self.parts = tuple(int(x) for x in version_string.split('.'))
+
+    def __lt__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts < other.parts
+
+    def __le__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts <= other.parts
+
+    def __gt__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts > other.parts
+
+    def __ge__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts >= other.parts
+
+    def __eq__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts == other.parts
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __str__(self):
+        return self.version
+
+
+class version:
+    StrictVersion = StrictVersion
 
 
 class Client:
-    BAD_VERSION = version.StrictVersion("9999.99.99")
-
     def __init__(self, address, username, password, api_key, verify, ca_path):
         self.address = address.rstrip("/")
         self.username = username
@@ -27,6 +65,10 @@ class Client:
 
         self._auth_header = None  # Login when/if required
         self._version = None  # Set version only if the consumer needs it
+
+    @property
+    def BAD_VERSION(self):
+        return version.StrictVersion("9999.99.99")
 
     @property
     def auth_header(self):

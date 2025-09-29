@@ -1,6 +1,53 @@
 FROM rockylinux:8
+
+# Install required packages for Ansible and systemd
 RUN dnf makecache \
-      && dnf install -y \
-           /usr/bin/python3 /usr/bin/python3-config /usr/bin/dnf-3 \
-           sudo bash iproute \
-      && dnf clean all
+    && dnf install -y \
+        platform-python \
+        python38 \
+        python38-pip \
+        python3-dnf \
+        systemd \
+        systemd-devel \
+        openssh-server \
+        sudo \
+        bash \
+        iproute \
+    && dnf clean all
+
+# Configure systemd for container environment
+RUN systemctl enable sshd \
+    && mkdir -p /run/systemd/system \
+    && (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done) \
+    && rm -f /lib/systemd/system/multi-user.target.wants/* \
+    && rm -f /etc/systemd/system/*.wants/* \
+    && rm -f /lib/systemd/system/local-fs.target.wants/* \
+    && rm -f /lib/systemd/system/sockets.target.wants/*udev* \
+    && rm -f /lib/systemd/system/sockets.target.wants/*initctl* \
+    && rm -f /lib/systemd/system/basic.target.wants/* \
+    && rm -f /lib/systemd/system/anaconda.target.wants/*
+
+# Configure container hostname and SSH
+RUN echo 'docker' > /etc/hostname \
+    && echo 'root:docker' | chpasswd \
+    && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
+    && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
+    && ssh-keygen -A
+
+# Fix temp directory permissions for Ansible (Critical for CentOS 8 migration)
+RUN chmod 1777 /tmp
+
+# Set Python 3.8 as the Ansible interpreter while preserving system DNF functionality  
+# This resolves 'from __future__ import annotations' syntax errors in Ansible 2.19+
+# Keep platform-python as the original system Python for DNF compatibility
+RUN ln -sf /usr/bin/python3.8 /usr/bin/python \
+    && python3.8 -m pip install --upgrade pip
+
+# Create a wrapper script for DNF that uses the correct Python interpreter
+RUN echo '#!/bin/bash' > /usr/local/bin/dnf-wrapper \
+    && echo 'PYTHONPATH=/usr/lib/python3.6/site-packages /usr/libexec/platform-python /usr/bin/dnf "$@"' >> /usr/local/bin/dnf-wrapper \
+    && chmod +x /usr/local/bin/dnf-wrapper
+
+# Configure systemd volumes and init
+VOLUME ["/sys/fs/cgroup"]
+CMD ["/usr/sbin/init"]

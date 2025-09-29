@@ -15,7 +15,16 @@ max-doc-length = 92
 exclude =
     # ansible-test creates all sorts of temporary stuff that we do not care
     # about.
-    tests/output
+    tests/output,
+    # Exclude virtual environment
+    venv,
+    # Exclude built collection directory
+    .ansible,
+    # Exclude temporary pip installation file
+    get-pip.py,
+    # Exclude version-specific requirements files
+    collection.requirements.python310,
+    collection.requirements.python313
 
 per-file-ignores =
     # Modules have their imports listed after the metadata.

@@ -24,7 +24,7 @@
     - ansible.builtin.assert:
         that:
           - result is failed
-          - "'state is present but all of the following are missing' in result.msg"
+          - "result.msg == 'state is present but all of the following are missing: servers'"
 
     - name: Create LDAP auth provider with minimal params (check mode)
       sensu.sensu_go.ldap_auth_provider: &create-provider

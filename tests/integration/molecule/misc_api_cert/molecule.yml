@@ -1,3 +1,7 @@
+---
+driver:
+  name: docker
+
 scenario:
   test_sequence:
     - destroy
@@ -7,15 +11,17 @@ scenario:
     - destroy
 
 platforms:
-  - name: backend
-    image: quay.io/xlab-steampunk/sensu-go-tests-centos:7
-    pre_build_image: true
-    pull: true
-    override_command: false
+  - name: misc-api-cert-rocky-8
+    image: rockylinux:8
+    pre_build_image: false
+    pull: false
+    groups: [api]
+    command: /usr/sbin/init
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    tmpfs:
+      - /tmp:exec,mode=1777
     cgroupns_mode: host
-    etc_hosts:
-      # sensu-api is the hostname used in the test certificate
-      sensu-api: 127.0.0.1
+    ansible_python_interpreter: /usr/bin/python3.8
+    dockerfile: ../../../../docker/rocky-8.docker

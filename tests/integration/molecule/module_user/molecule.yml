@@ -1,0 +1,23 @@
+platforms:
+  - name: sensu-6.4.3
+    image: sensu/sensu:6.4.3
+    groups: [has_api_key_support]
+    pre_build_image: false
+    pull: false
+    override_command: false
+    privileged: true
+    tmpfs:
+      - /tmp:exec,mode=1777
+    dockerfile: ../../../../docker/sensu-6.4.3.docker
+    ansible_python_interpreter: /usr/bin/python3
+  - name: sensu-6.10.0
+    image: sensu/sensu:6.10.0
+    groups: [has_password_hash_support]
+    pre_build_image: false
+    pull: false
+    override_command: false
+    privileged: true
+    tmpfs:
+      - /tmp:exec,mode=1777
+    dockerfile: ../../../../docker/sensu-6.10.0.docker
+    ansible_python_interpreter: /usr/bin/python3

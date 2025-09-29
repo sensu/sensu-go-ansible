@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2019, Paul Arthur <paul.arthur@flowerysong.com>
 # Copyright: (c) 2019, XLAB Steampunk <steampunk@xlab.si>
@@ -118,6 +117,52 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 
 from ..module_utils import arguments, errors, utils
 
+# Version comparison compatibility layer
+
+
+# Use custom version comparison for all Python versions to avoid distutils
+# deprecation warnings
+class StrictVersion:
+    def __init__(self, version_string):
+        self.version = version_string
+        self.parts = tuple(int(x) for x in version_string.split('.'))
+
+    def __lt__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts < other.parts
+
+    def __le__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts <= other.parts
+
+    def __gt__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts > other.parts
+
+    def __ge__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts >= other.parts
+
+    def __eq__(self, other):
+        if isinstance(other, str):
+            other = StrictVersion(other)
+        return self.parts == other.parts
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __str__(self):
+        return self.version
+
+
+class version:
+    StrictVersion = StrictVersion
+
+
 try:
     import bcrypt
     HAS_BCRYPT = True
@@ -142,7 +187,7 @@ def update_password(client, path, username, password, check_mode):
         return False
 
     if not check_mode:
-        if client.version < "5.21.0":
+        if client.version < version.StrictVersion("5.21.0"):
             utils.put(client, path + '/password', dict(
                 username=username, password=password,
             ))
@@ -161,7 +206,7 @@ def update_password(client, path, username, password, check_mode):
 
 def update_password_hash(client, path, username, password_hash, check_mode):
     # Some older Sensu Go versions do not have support for password hashes.
-    if client.version < "5.21.0":
+    if client.version < version.StrictVersion("5.21.0"):
         raise errors.SensuError(
             "Sensu Go < 5.21.0 does not support password hashes"
         )

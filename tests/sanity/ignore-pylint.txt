@@ -1,0 +1,4 @@
+# Ignore pylint false positives
+plugins/module_utils/http.py:2:0: unused-import: Unused IntEnum imported from enum
+plugins/module_utils/http.py:3:0: unused-import: Unused namedtuple imported from collections
+plugins/module_utils/client.py:18:18: used-before-assignment: Using variable 'version' before assignment

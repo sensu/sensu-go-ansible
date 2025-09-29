@@ -1,11 +1,26 @@
 ---
+dependency:
+  name: galaxy
+driver:
+  name: docker
 platforms:
-  - name: ubuntu
-    image: quay.io/xlab-steampunk/sensu-go-tests-ubuntu:18.04
-    pre_build_image: true
-    pull: true
-
-  - name: centos
-    image: quay.io/xlab-steampunk/sensu-go-tests-centos:7
-    pre_build_image: true
-    pull: true
+  - name: rocky-8
+    image: rockylinux:8
+    pre_build_image: false
+    pull: false
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    tmpfs:
+      - /tmp:exec,mode=1777
+    cgroupns_mode: host
+    ansible_python_interpreter: /usr/bin/python3.8
+    dockerfile: ../../../../docker/rocky-8.docker
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      ansible_python_interpreter: /usr/bin/python3
+verifier:
+  name: ansible

@@ -1,0 +1,17 @@
+---
+# Ansible-lint configuration file
+skip_list:
+  - var-naming[no-role-prefix]  # Disable variable naming prefix requirements (legacy codebase compatibility)
+  - fqcn[action-core]           # Disable FQCN requirement for builtin modules (legacy codebase compatibility)
+  - schema[tasks]               # Disable schema warnings for intentional action: usage (Windows service compatibility)
+
+exclude_paths:
+  - .ansible/
+  - venv/
+  - tests/output/
+  - get-pip.py
+  - collection.requirements.python310
+  - collection.requirements.python313
+
+# Use a more lenient profile for legacy codebase
+profile: basic

@@ -9,22 +9,41 @@ scenario:
     - destroy
 
 platforms:
-  - name: redhat-7
-    image: quay.io/xlab-steampunk/sensu-go-tests-redhat:7
-    pre_build_image: true
-    pull: true
+  - name: rocky-8
+    dockerfile: ../../../../docker/rocky-8.docker
+    image: rockylinux:8
+    pre_build_image: false
+    pull: false
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    tmpfs:
+      - /tmp:exec,mode=1777
+    cgroupns_mode: host
 
-  - name: amazon-1
-    image: quay.io/xlab-steampunk/sensu-go-tests-amazon:1
-    pre_build_image: true
-    pull: true
-
-  - name: amazon-2
-    image: quay.io/xlab-steampunk/sensu-go-tests-amazon:2
-    pre_build_image: true
-    pull: true
+  # - name: amazon-2
+  #   image: amazonlinux:2
+  #   dockerfile: ../../../../docker/amazon-2.docker
+  #   pre_build_image: false
+  #   pull: false
+  #   command: /usr/local/bin/start-ssh.sh
+  #   privileged: true
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  #   tmpfs:
+  #     - /tmp:exec,mode=1777
+  #   cgroupns_mode: host
 
   - name: oracle-8
-    image: quay.io/xlab-steampunk/sensu-go-tests-oracle:8
-    pre_build_image: true
-    pull: true
+    dockerfile: ../../../../docker/oracle-8.docker
+    image: oraclelinux:8
+    pre_build_image: false
+    pull: false
+    command: /usr/sbin/init
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    tmpfs:
+      - /tmp:exec,mode=1777
+    cgroupns_mode: host
